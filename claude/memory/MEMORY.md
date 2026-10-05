@@ -1,0 +1,1 @@
+- [MNQ prop-firm NT8 project](ifvg-sniper-nt8-project.md) — research verdicts (IFVG no edge, NY ORB+trend validated), data pipeline, compile-check method

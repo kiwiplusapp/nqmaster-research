@@ -1,0 +1,14 @@
+configs: 2288 {'VOL_BREAK': 192, 'PIVOT_FADE': 512, 'PIVOT_BREAK': 288, 'ROUND_NUM': 288, 'WEEK_LEVEL': 192, 'RSI_DIV': 192, 'ON_INVENTORY': 576, 'INSIDE_DAY': 48}
+0 5 s
+200 5 s
+400 6 s
+600 6 s
+800 6 s
+1000 6 s
+1200 7 s
+1400 7 s
+1600 9 s
+1800 9 s
+2000 9 s
+2200 9 s
+done 9 s; errors: 0

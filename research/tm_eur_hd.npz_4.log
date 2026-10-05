@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\NinjaTrader Strategy\research\gold_tmom.py", line 17, in <module>
+    df = tmom.run(D[n], X[n], t, L, rev, sk, R, H, tf); u = df.pts * PV - COMM
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\NinjaTrader Strategy\research\tmom.py", line 61, in run
+    k = sim(D["o"], D["h"], D["l"], D["c"], D["om"].astype(np.int64), D["dayid"].astype(np.int64), atr, trend, t, L, rev, sk, R, H, tfil, out)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 18.0 MiB for an array with shape (2356719,) and data type int64

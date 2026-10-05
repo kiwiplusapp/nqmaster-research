@@ -1,0 +1,41 @@
+Traceback (most recent call last):
+  File "D:\NinjaTrader Strategy\research\gold_tmom.py", line 17, in <module>
+    df = tmom.run(D[n], X[n], t, L, rev, sk, R, H, tf); u = df.pts * PV - COMM
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\NinjaTrader Strategy\research\tmom.py", line 61, in run
+    k = sim(D["o"], D["h"], D["l"], D["c"], D["om"].astype(np.int64), D["dayid"].astype(np.int64), atr, trend, t, L, rev, sk, R, H, tfil, out)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\dispatcher.py", line 443, in _compile_for_args
+    raise e
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\dispatcher.py", line 376, in _compile_for_args
+    return_val = self.compile(tuple(argtypes))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\dispatcher.py", line 889, in compile
+    cres = self._cache.load_overload(sig, self.targetctx)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\caching.py", line 719, in load_overload
+    target_context.refresh()
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\base.py", line 267, in refresh
+    self.load_additional_registries()
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\cpu.py", line 103, in load_additional_registries
+    rtsys.initialize(self)
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\compiler_lock.py", line 35, in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\runtime\nrt.py", line 45, in initialize
+    self._library = nrtdynmod.compile_nrt_functions(ctx)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\runtime\nrtdynmod.py", line 212, in compile_nrt_functions
+    library.add_ir_module(ir_mod)
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\codegen.py", line 739, in add_ir_module
+    self.add_llvm_module(ll_module)
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\codegen.py", line 742, in add_llvm_module
+    self._optimize_functions(ll_module)
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\numba\core\codegen.py", line 665, in _optimize_functions
+    fpm.run(func, pb)
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\llvmlite\binding\newpassmanagers.py", line 124, in run
+    ffi.lib.LLVMPY_RunNewFunctionPassManager(self, IR, pb)
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\llvmlite\binding\ffi.py", line 212, in __call__
+    return self._cfn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError -529697949] Windows Error 0xe06d7363

@@ -1,0 +1,32 @@
+__pycache__/
+*.pyc
+research/tmp/
+*.part
+# >>> big originals (restored by tools/restore_data.py)
+/research/data/es_hd.npz
+/research/data/es_hd_utc.pkl
+/research/data/eur_hd.npz
+/research/data/eur_hd_raw.npz
+/research/data/eurusd_hd_utc.pkl
+/research/data/mgc_fut.npz
+/research/data/mgc_fut_raw.npz
+/research/data/mnq_fut.npz
+/research/data/nq_1m.npz
+/research/data/nq_1m_utc.pkl
+/research/data/nq_1m_utc_1519.pkl
+/research/data/nq_fut.npz
+/research/data/nq_hd.npz
+/research/data/nq_hd_utc.pkl
+/research/data/nqhd_long.npz
+/research/data/nqhd_long_utc.pkl
+/research/data/nsx_1519_utc.pkl
+/research/data/wti_duka_utc.pkl
+/research/data/wtiusd_hd_utc.pkl
+/research/data/xag_hd.npz
+/research/data/xag_hd_raw.npz
+/research/data/xagusd_hd_utc.pkl
+/research/data/xau_hd.npz
+/research/data/xau_hd_raw.npz
+/research/data/xau_hd_utc.pkl
+/research/mine/daytype_trades.pkl
+# <<< big originals

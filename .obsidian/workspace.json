@@ -1,0 +1,224 @@
+{
+  "main": {
+    "id": "dca22cc3b93b56d1",
+    "type": "split",
+    "children": [
+      {
+        "id": "2c276416b8d4a665",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4db23eb78af84037",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "c5f51e9b927d6ad9",
+    "type": "split",
+    "children": [
+      {
+        "id": "1b5a309e9360559c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7a660672184526df",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "bd17a4ed93a47ba0",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "6bcf4d54aa23dd84",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "56486f8cdfd7c7c1",
+    "type": "split",
+    "children": [
+      {
+        "id": "9f8397a7182e9f48",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "87d5ad65e335d1dd",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes"
+            }
+          },
+          {
+            "id": "a9e34162422c5187",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes"
+            }
+          },
+          {
+            "id": "dedfc3db6960614d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "08f8851c0fb09367",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas las propiedades"
+            }
+          },
+          {
+            "id": "bf18d08ab3ee26dd",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false
+    }
+  },
+  "active": "4db23eb78af84037",
+  "lastOpenFiles": [
+    "research/gold_modules_eur_hd.csv",
+    "research/gold_modules_xag_hd.csv",
+    "research/dl_wtiusd2.log",
+    "research/tm_xag_hd.npz_4.log",
+    "research/tm_xag_hd.npz_3.log",
+    "research/tm_xag_hd.npz_2.log",
+    "research/tm_xag_hd.npz_1.log",
+    "research/tm_xag_hd.npz_0.log",
+    "research/mod_xag_hd.npz.log",
+    "research/tm_eur_hd.npz_4.log",
+    "research/tm_eur_hd.npz_3.log",
+    "Conocimiento/00 - MAPA.md",
+    "NQMASTER_GUIA.md",
+    "Mapa.canvas",
+    "Conocimiento/Descartado/Machine learning.md",
+    "Conocimiento/Descartado/Filtros y optimizaciones rechazadas.md",
+    "Conocimiento/Descartado/Oro por horario.md",
+    "Conocimiento/Descartado/Order flow y perfil de volumen.md",
+    "Conocimiento/Descartado/Estrategias TradingView.md",
+    "Conocimiento/Descartado/ICT Sniper y PO3.md",
+    "Conocimiento/Descartado/IFVG y SMC.md",
+    "Conocimiento/Proximos pasos.md",
+    "Conocimiento/Estrategias legacy.md",
+    "Conocimiento/Evaluaciones prop firm.md",
+    "Conocimiento/Resultados NinjaTrader.md",
+    "Conocimiento/NQMaster.md",
+    "Conocimiento/Proceso/Objetivo y reglas.md",
+    "Conocimiento/Proceso/Metodologia.md",
+    "Conocimiento/Proceso/Datos.md",
+    "Conocimiento/Proceso/Lecciones clave.md",
+    "Conocimiento/Proceso/Cronologia.md",
+    "Conocimiento/Modulos/ORB60 Pullback Day.md",
+    "Conocimiento/Modulos/MSEQ Momentum Sequence.md",
+    "Conocimiento/Modulos/MOM11.md",
+    "Conocimiento/Modulos/Modulos por horario.md",
+    "Conocimiento/Modulos/LON London FVG.md",
+    "Conocimiento/Modulos/ICT Open.md"
+  ]
+}

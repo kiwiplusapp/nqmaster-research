@@ -1,0 +1,100 @@
+configs: 9254 {'AMD_POC': 1344, 'RANGE_BREAK': 672, 'LEVEL_RETEST': 384, 'LEVEL_FADE': 512, 'VWAP_PULLBACK': 576, 'VWAP_BAND': 432, 'OPEN_DRIVE': 288, 'OD_PULLBACK': 162, 'PATTERN_5M': 352, 'VA_80': 108, 'CLOCK_ANCHOR': 1728, 'GAP': 216, 'HOD_RETEST': 192, 'VOL_BREAK': 192, 'PIVOT_FADE': 512, 'PIVOT_BREAK': 288, 'ROUND_NUM': 288, 'WEEK_LEVEL': 192, 'RSI_DIV': 192, 'ON_INVENTORY': 576, 'INSIDE_DAY': 48}
+Process SpawnPoolWorker-9:
+Traceback (most recent call last):
+  File "C:\Users\XINTETICO\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Users\XINTETICO\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\XINTETICO\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\pool.py", line 109, in worker
+    initializer(*initargs)
+  File "D:\NinjaTrader Strategy\research\mine\run_mine.py", line 12, in init
+    G["nq"] = Data(os.environ.get("MINE_DATA", "nq_1m.npz")); G["mnq"] = Data("mnq_fut.npz")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\NinjaTrader Strategy\research\mine\core.py", line 49, in __init__
+    spv = pd.Series(tp * df.v).groupby(self.day).cumsum().to_numpy(); svv = pd.Series(df.v).groupby(self.day).cumsum().to_numpy()
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\pandas\core\groupby\groupby.py", line 5351, in cumsum
+    return self._cython_transform("cumsum", numeric_only, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\pandas\core\groupby\generic.py", line 794, in _cython_transform
+    result = self._grouper._cython_operation(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\pandas\core\groupby\ops.py", line 963, in _cython_operation
+    return cy_op.cython_operation(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\pandas\core\groupby\ops.py", line 562, in cython_operation
+    return self._cython_op_ndim_compat(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\pandas\core\groupby\ops.py", line 331, in _cython_op_ndim_compat
+    res = self._call_cython_op(
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Roaming\Python\Python311\site-packages\pandas\core\groupby\ops.py", line 412, in _call_cython_op
+    result = maybe_fill(np.empty(out_shape, dtype=out_dtype))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 30.1 MiB for an array with shape (3944328, 1) and data type float64
+Process SpawnPoolWorker-4:
+Traceback (most recent call last):
+  File "C:\Users\XINTETICO\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Users\XINTETICO\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\XINTETICO\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\pool.py", line 109, in worker
+    initializer(*initargs)
+  File "D:\NinjaTrader Strategy\research\mine\run_mine.py", line 12, in init
+    G["nq"] = Data(os.environ.get("MINE_DATA", "nq_1m.npz")); G["mnq"] = Data("mnq_fut.npz")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\NinjaTrader Strategy\research\mine\core.py", line 52, in __init__
+    self.pd_poc, self.pd_vah, self.pd_val = value_area(self, 0.70)
+                                            ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\NinjaTrader Strategy\research\mine\core.py", line 69, in value_area
+    tp = np.round((D.h + D.l + D.c) / 3)
+                   ~~~~^~~~~
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 30.1 MiB for an array with shape (3944328,) and data type float64
+0 7 s
+200 8 s
+400 8 s
+600 8 s
+800 8 s
+1000 9 s
+1200 9 s
+1400 9 s
+1600 9 s
+1800 9 s
+2000 10 s
+2200 10 s
+2400 10 s
+2600 11 s
+2800 11 s
+3000 11 s
+3200 12 s
+3400 12 s
+3600 13 s
+3800 13 s
+4000 13 s
+4200 13 s
+4400 15 s
+4600 16 s
+4800 17 s
+5000 18 s
+5200 18 s
+5400 18 s
+5600 18 s
+5800 18 s
+6000 19 s
+6200 20 s
+6400 22 s
+6600 23 s
+6800 23 s
+7000 23 s
+7200 24 s
+7400 24 s
+7600 24 s
+7800 25 s
+8000 25 s
+8200 25 s
+8400 26 s
+8600 26 s
+8800 26 s
+9000 27 s
+9200 27 s
+done 27 s; errors: 0

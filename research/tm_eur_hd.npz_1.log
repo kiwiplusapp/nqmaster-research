@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "D:\NinjaTrader Strategy\research\gold_tmom.py", line 7, in <module>
+    D = {n: tmom.load(n) for n in sets}; X = {n: tmom.day_levels(D[n]) for n in D}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\NinjaTrader Strategy\research\gold_tmom.py", line 7, in <dictcomp>
+    D = {n: tmom.load(n) for n in sets}; X = {n: tmom.day_levels(D[n]) for n in D}
+            ^^^^^^^^^^^^
+  File "D:\NinjaTrader Strategy\research\ict.py", line 23, in load
+    return {k: z[k] for k in z.files}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\NinjaTrader Strategy\research\ict.py", line 23, in <dictcomp>
+    return {k: z[k] for k in z.files}
+               ~^^^
+  File "C:\Users\XINTETICO\AppData\Local\Programs\Python\Python311\Lib\site-packages\numpy\lib\_npyio_impl.py", line 257, in __getitem__
+    return format.read_array(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\XINTETICO\AppData\Local\Programs\Python\Python311\Lib\site-packages\numpy\lib\_format_impl.py", line 860, in read_array
+    array = numpy.ndarray(count, dtype=dtype)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 8.99 MiB for an array with shape (2356719,) and data type int32

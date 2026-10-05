@@ -1,0 +1,8 @@
+﻿Ultra 1-3,9 done
+WR70Plus 1-3,9 done
+Core6 1-3,9 done
+DSR done
+PBO done {'PBO': 0.4, 'median_logit': 0.56, 'N': 1820, 'combos': 12870, 'IS_best_sharpe_ann': 2.05, 'OOS_sharpe_of_IS_best_ann': 0.59, 'P_OOS_loss': 0.197}
+regimes done
+corr done
+ALL DONE

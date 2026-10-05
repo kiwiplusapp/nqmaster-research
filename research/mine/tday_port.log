@@ -1,0 +1,134 @@
+﻿IS days 948 trend-day rate 0.533 AUC 0.648
+C24 days 657 trend-day rate 0.473 AUC 0.637
+REAL days 629 trend-day rate 0.466 AUC 0.631
+coef: {'or15': np.float64(0.089), 'or30': np.float64(0.174), 'or60': np.float64(-0.458), 'mv60': np.float64(0.262), 'er60': np.float64(0.414), 'gap': np.float64(-0.091), 'onr': np.float64(0.106), 'trend_align': np.float64(0.04), 'prev_td': np.float64(-0.098), 'atr_ratio': np.float64(-0.041)}
+or15 [0.522 0.506 0.512]
+or30 [0.528 0.539 0.546]
+or60 [0.534 0.542 0.552]
+mv60 [0.623 0.613 0.612]
+er60 [0.631 0.627 0.624]
+gap [0.502 0.495 0.493]
+onr [0.502 0.5   0.508]
+trend_align [0.527 0.515 0.518]
+prev_td [0.473 0.49  0.481]
+atr_ratio [0.499 0.5   0.498]
+tpd
+    prof                      add  IS_tpd  C24_tpd  REAL_tpd  R26_tpd
+   Ultra                     BASE    4.66     4.62      4.45     3.91
+   Ultra   TDAY q50 k0.45 sin obj    5.03     5.02      4.85     4.35
+   Ultra        TDAY q67 k0.45 2R    4.94     4.89      4.73     4.19
+   Ultra        TDAY q80 k0.30 2R    4.84     4.81      4.64     4.13
+   Ultra        TDAY q50 k0.30 2R    5.08     5.05      4.88     4.39
+   Ultra TDAY q67 extremo sin obj    4.86     4.80      4.63     4.07
+WR70Plus                     BASE    3.06     3.01      2.94     2.63
+WR70Plus   TDAY q50 k0.45 sin obj    3.40     3.35      3.29     3.01
+WR70Plus        TDAY q67 k0.45 2R    3.32     3.25      3.19     2.85
+WR70Plus        TDAY q80 k0.30 2R    3.24     3.18      3.11     2.80
+WR70Plus        TDAY q50 k0.30 2R    3.45     3.40      3.33     3.05
+WR70Plus TDAY q67 extremo sin obj    3.25     3.16      3.10     2.75
+   Core6                     BASE    1.85     1.87      1.80     1.58
+   Core6   TDAY q50 k0.45 sin obj    2.26     2.28      2.21     2.03
+   Core6        TDAY q67 k0.45 2R    2.14     2.14      2.08     1.86
+   Core6        TDAY q80 k0.30 2R    2.04     2.06      1.99     1.80
+   Core6        TDAY q50 k0.30 2R    2.29     2.30      2.23     2.06
+   Core6 TDAY q67 extremo sin obj    2.06     2.05      1.99     1.74
+wr
+    prof                      add  IS_wr  C24_wr  REAL_wr  R26_wr
+   Ultra                     BASE   64.9    63.5     64.3    66.6
+   Ultra   TDAY q50 k0.45 sin obj   64.2    62.4     63.1    65.6
+   Ultra        TDAY q67 k0.45 2R   64.6    62.8     63.4    65.7
+   Ultra        TDAY q80 k0.30 2R   64.5    62.8     63.4    65.7
+   Ultra        TDAY q50 k0.30 2R   63.8    62.2     62.8    64.9
+   Ultra TDAY q67 extremo sin obj   64.6    63.4     64.0    66.9
+WR70Plus                     BASE   72.8    70.8     71.5    71.9
+WR70Plus   TDAY q50 k0.45 sin obj   71.2    68.6     69.2    70.6
+WR70Plus        TDAY q67 k0.45 2R   72.2    69.3     69.8    71.1
+WR70Plus        TDAY q80 k0.30 2R   71.8    69.5     70.0    71.0
+WR70Plus        TDAY q50 k0.30 2R   70.4    68.1     68.8    69.5
+WR70Plus TDAY q67 extremo sin obj   72.2    70.3     70.9    72.4
+   Core6                     BASE   56.4    54.1     53.8    55.5
+   Core6   TDAY q50 k0.45 sin obj   56.6    53.6     53.3    55.5
+   Core6        TDAY q67 k0.45 2R   57.0    53.7     53.1    54.8
+   Core6        TDAY q80 k0.30 2R   56.3    53.4     52.9    54.7
+   Core6        TDAY q50 k0.30 2R   55.5    53.1     52.7    54.4
+   Core6 TDAY q67 extremo sin obj   56.7    54.6     54.2    57.1
+pf
+    prof                      add  IS_pf  C24_pf  REAL_pf  R26_pf
+   Ultra                     BASE  1.422   1.449    1.479   1.630
+   Ultra   TDAY q50 k0.45 sin obj  1.414   1.416    1.446   1.617
+   Ultra        TDAY q67 k0.45 2R  1.443   1.436    1.451   1.609
+   Ultra        TDAY q80 k0.30 2R  1.434   1.442    1.462   1.627
+   Ultra        TDAY q50 k0.30 2R  1.431   1.423    1.454   1.576
+   Ultra TDAY q67 extremo sin obj  1.413   1.480    1.504   1.709
+WR70Plus                     BASE  1.545   1.454    1.502   1.546
+WR70Plus   TDAY q50 k0.45 sin obj  1.528   1.408    1.453   1.578
+WR70Plus        TDAY q67 k0.45 2R  1.593   1.436    1.461   1.571
+WR70Plus        TDAY q80 k0.30 2R  1.561   1.440    1.473   1.581
+WR70Plus        TDAY q50 k0.30 2R  1.545   1.410    1.464   1.521
+WR70Plus TDAY q67 extremo sin obj  1.550   1.512    1.545   1.688
+   Core6                     BASE  1.383   1.506    1.500   1.597
+   Core6   TDAY q50 k0.45 sin obj  1.379   1.433    1.434   1.580
+   Core6        TDAY q67 k0.45 2R  1.423   1.464    1.439   1.554
+   Core6        TDAY q80 k0.30 2R  1.408   1.481    1.465   1.597
+   Core6        TDAY q50 k0.30 2R  1.399   1.452    1.459   1.522
+   Core6 TDAY q67 extremo sin obj  1.372   1.550    1.531   1.704
+sharpe
+    prof                      add  IS_sharpe  C24_sharpe  REAL_sharpe  R26_sharpe
+   Ultra                     BASE       3.09        3.43         3.61        4.23
+   Ultra   TDAY q50 k0.45 sin obj       2.91        3.08         3.29        4.07
+   Ultra        TDAY q67 k0.45 2R       3.11        3.27         3.37        4.09
+   Ultra        TDAY q80 k0.30 2R       3.11        3.35         3.48        4.25
+   Ultra        TDAY q50 k0.30 2R       3.10        3.21         3.43        4.03
+   Ultra TDAY q67 extremo sin obj       2.97        3.58         3.73        4.61
+WR70Plus                     BASE       3.22        2.84         3.07        2.95
+WR70Plus   TDAY q50 k0.45 sin obj       3.18        2.62         2.86        3.26
+WR70Plus        TDAY q67 k0.45 2R       3.48        2.79         2.92        3.23
+WR70Plus        TDAY q80 k0.30 2R       3.31        2.82         3.00        3.28
+WR70Plus        TDAY q50 k0.30 2R       3.33        2.70         3.00        3.13
+WR70Plus TDAY q67 extremo sin obj       3.26        3.15         3.31        3.59
+   Core6                     BASE       2.45        2.94         2.88        3.36
+   Core6   TDAY q50 k0.45 sin obj       2.29        2.55         2.55        3.20
+   Core6        TDAY q67 k0.45 2R       2.53        2.71         2.58        3.13
+   Core6        TDAY q80 k0.30 2R       2.52        2.82         2.73        3.40
+   Core6        TDAY q50 k0.30 2R       2.51        2.74         2.76        3.16
+   Core6 TDAY q67 extremo sin obj       2.31        3.12         3.02        3.76
+mo
+    prof                      add  IS_mo  C24_mo  REAL_mo  R26_mo
+   Ultra                     BASE   1656    2317     2429    3266
+   Ultra   TDAY q50 k0.45 sin obj   1879    2485     2630    3770
+   Ultra        TDAY q67 k0.45 2R   1897    2489     2553    3548
+   Ultra        TDAY q80 k0.30 2R   1805    2434     2511    3537
+   Ultra        TDAY q50 k0.30 2R   1934    2526     2676    3624
+   Ultra TDAY q67 extremo sin obj   1736    2582     2678    3763
+WR70Plus                     BASE   1344    1527     1639    1879
+WR70Plus   TDAY q50 k0.45 sin obj   1601    1666     1807    2445
+WR70Plus        TDAY q67 k0.45 2R   1646    1679     1750    2252
+WR70Plus        TDAY q80 k0.30 2R   1504    1620     1702    2207
+WR70Plus        TDAY q50 k0.30 2R   1632    1683     1850    2298
+WR70Plus TDAY q67 extremo sin obj   1487    1804     1886    2400
+   Core6                     BASE    768    1280     1270    1617
+   Core6   TDAY q50 k0.45 sin obj   1018    1477     1485    2147
+   Core6        TDAY q67 k0.45 2R   1015    1446     1395    1892
+   Core6        TDAY q80 k0.30 2R    917    1392     1355    1888
+   Core6        TDAY q50 k0.30 2R   1046    1518     1538    1993
+   Core6 TDAY q67 extremo sin obj    863    1527     1493    2042
+dd
+    prof                      add  IS_dd  C24_dd  REAL_dd  R26_dd
+   Ultra                     BASE   2679    4962     4890    4258
+   Ultra   TDAY q50 k0.45 sin obj   4662    6755     6632    4848
+   Ultra        TDAY q67 k0.45 2R   3040    6146     6360    4542
+   Ultra        TDAY q80 k0.30 2R   3034    5560     5430    4829
+   Ultra        TDAY q50 k0.30 2R   4194    5968     5837    5523
+   Ultra TDAY q67 extremo sin obj   2736    5529     5743    4368
+WR70Plus                     BASE   2401    5051     4144    3841
+WR70Plus   TDAY q50 k0.45 sin obj   4091    6782     5901    4725
+WR70Plus        TDAY q67 k0.45 2R   2294    6172     5629    4482
+WR70Plus        TDAY q80 k0.30 2R   2402    5587     4726    4726
+WR70Plus        TDAY q50 k0.30 2R   3720    5995     5699    5699
+WR70Plus TDAY q67 extremo sin obj   2068    5476     4941    4375
+   Core6                     BASE   3201    2818     3126    3126
+   Core6   TDAY q50 k0.45 sin obj   4810    4549     4576    3860
+   Core6        TDAY q67 k0.45 2R   4062    4073     4369    3454
+   Core6        TDAY q80 k0.30 2R   3453    3488     3697    3697
+   Core6        TDAY q50 k0.30 2R   2915    3761     4686    4686
+   Core6 TDAY q67 extremo sin obj   4019    3371     3602    3389

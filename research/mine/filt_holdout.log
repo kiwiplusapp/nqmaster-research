@@ -1,0 +1,23 @@
+rules passing IS + 2024-25 (both CFD and real):
+  boost CRT11    trend  high33  IS in 2.07 out 1.53
+  boost CRT11    gap    high33  IS in 2.33 out 1.45
+  boost CRT11    pdret  high33  IS in 3.69 out 1.00
+  boost MSEQ     pos    high33  IS in 3.04 out 1.52
+  boost MSEQ     m30    high33  IS in 2.19 out 1.54
+  boost MSEQ     ret5   high20  IS in 2.28 out 1.69
+  drop  ON07     pdret  low20   IS in 0.81 out 1.25
+  boost ORB60    gap    high20  IS in 1.98 out 1.59
+  boost ORB60    ret5   high20  IS in 2.48 out 1.50
+  boost ORB60    atr    high20  IS in 1.93 out 1.58
+  boost ORB90    vw     low20   IS in 2.27 out 1.35
+  boost ORB90    open   high20  IS in 1.95 out 1.38
+
+2026 HOLDOUT (never used for selection):
+C24 base    {'n': 696, 'wr': np.float64(67.24), 'pf': np.float64(1.419), 'sharpe': np.float64(3.11), 'mo': 1752, 'maxdd': 3251}
+C24 drops   {'n': 684, 'wr': np.float64(67.4), 'pf': np.float64(1.416), 'sharpe': np.float64(3.08), 'mo': 1725, 'maxdd': 3278}
+C24 boosts  {'n': 696, 'wr': np.float64(67.24), 'pf': np.float64(1.524), 'sharpe': np.float64(3.25), 'mo': 2554, 'maxdd': 4154}
+C24 all     {'n': 684, 'wr': np.float64(67.4), 'pf': np.float64(1.523), 'sharpe': np.float64(3.23), 'mo': 2527, 'maxdd': 4180}
+REAL base    {'n': 591, 'wr': np.float64(68.87), 'pf': np.float64(1.504), 'sharpe': np.float64(3.51), 'mo': 1778, 'maxdd': 2414}
+REAL drops   {'n': 583, 'wr': np.float64(68.95), 'pf': np.float64(1.495), 'sharpe': np.float64(3.44), 'mo': 1734, 'maxdd': 2414}
+REAL boosts  {'n': 591, 'wr': np.float64(68.87), 'pf': np.float64(1.595), 'sharpe': np.float64(3.47), 'mo': 2472, 'maxdd': 3293}
+REAL all     {'n': 583, 'wr': np.float64(68.95), 'pf': np.float64(1.587), 'sharpe': np.float64(3.42), 'mo': 2428, 'maxdd': 3293}

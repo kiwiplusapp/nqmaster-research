@@ -1,0 +1,54 @@
+﻿{'K': 'sin tope', 'IS_tpd': 4.66, 'IS_pf': np.float64(1.422), 'IS_mo': 1656, 'IS_pass_pol': 48.4, 'IS_bust_pol': 45.5, 'IS_pass_k2': 44.0, 'IS_PA_Ecash': 9119, 'C24_tpd': 4.62, 'C24_pf': np.float64(1.449), 'C24_mo': 2317, 'C24_pass_pol': 48.9, 'C24_bust_pol': 49.2, 'C24_pass_k2': 47.9, 'C24_PA_Ecash': 8276, 'REAL_tpd': 4.45, 'REAL_pf': np.float64(1.479), 'REAL_mo': 2429, 'REAL_pass_pol': 50.2, 'REAL_bust_pol': 47.8, 'REAL_pass_k2': 47.5, 'REAL_PA_Ecash': 8866}
+{'K': 4, 'IS_tpd': 4.47, 'IS_pf': np.float64(1.41), 'IS_mo': 1529, 'IS_pass_pol': 49.4, 'IS_bust_pol': 44.1, 'IS_pass_k2': 45.7, 'IS_PA_Ecash': 9109, 'C24_tpd': 4.44, 'C24_pf': np.float64(1.398), 'C24_mo': 1992, 'C24_pass_pol': 47.6, 'C24_bust_pol': 49.2, 'C24_pass_k2': 47.7, 'C24_PA_Ecash': 7364, 'REAL_tpd': 4.28, 'REAL_pf': np.float64(1.434), 'REAL_mo': 2134, 'REAL_pass_pol': 50.0, 'REAL_bust_pol': 48.0, 'REAL_pass_k2': 47.3, 'REAL_PA_Ecash': 8274}
+{'K': 3, 'IS_tpd': 4.22, 'IS_pf': np.float64(1.367), 'IS_mo': 1289, 'IS_pass_pol': 47.4, 'IS_bust_pol': 42.6, 'IS_pass_k2': 42.0, 'IS_PA_Ecash': 9022, 'C24_tpd': 4.21, 'C24_pf': np.float64(1.357), 'C24_mo': 1697, 'C24_pass_pol': 45.8, 'C24_bust_pol': 49.7, 'C24_pass_k2': 45.2, 'C24_PA_Ecash': 7263, 'REAL_tpd': 4.05, 'REAL_pf': np.float64(1.392), 'REAL_mo': 1831, 'REAL_pass_pol': 50.5, 'REAL_bust_pol': 47.2, 'REAL_pass_k2': 49.1, 'REAL_PA_Ecash': 8685}
+{'K': 2, 'IS_tpd': 3.84, 'IS_pf': np.float64(1.308), 'IS_mo': 971, 'IS_pass_pol': 40.6, 'IS_bust_pol': 40.6, 'IS_pass_k2': 34.8, 'IS_PA_Ecash': 8302, 'C24_tpd': 3.83, 'C24_pf': np.float64(1.356), 'C24_mo': 1509, 'C24_pass_pol': 45.9, 'C24_bust_pol': 46.8, 'C24_pass_k2': 41.7, 'C24_PA_Ecash': 8518, 'REAL_tpd': 3.69, 'REAL_pf': np.float64(1.386), 'REAL_mo': 1614, 'REAL_pass_pol': 48.4, 'REAL_bust_pol': 45.3, 'REAL_pass_k2': 43.6, 'REAL_PA_Ecash': 9984}
+{'K': 1, 'IS_tpd': 2.65, 'IS_pf': np.float64(1.193), 'IS_mo': 426, 'IS_pass_pol': 17.6, 'IS_bust_pol': 27.5, 'IS_pass_k2': 11.2, 'IS_PA_Ecash': 4516, 'C24_tpd': 2.73, 'C24_pf': np.float64(1.318), 'C24_mo': 915, 'C24_pass_pol': 34.7, 'C24_bust_pol': 38.7, 'C24_pass_k2': 29.3, 'C24_PA_Ecash': 7735, 'REAL_tpd': 2.61, 'REAL_pf': np.float64(1.304), 'REAL_mo': 880, 'REAL_pass_pol': 33.5, 'REAL_bust_pol': 36.2, 'REAL_pass_k2': 29.7, 'REAL_PA_Ecash': 7237}
+tpd
+       K  IS_tpd  C24_tpd  REAL_tpd
+sin tope    4.66     4.62      4.45
+       4    4.47     4.44      4.28
+       3    4.22     4.21      4.05
+       2    3.84     3.83      3.69
+       1    2.65     2.73      2.61
+pf
+       K  IS_pf  C24_pf  REAL_pf
+sin tope  1.422   1.449    1.479
+       4  1.410   1.398    1.434
+       3  1.367   1.357    1.392
+       2  1.308   1.356    1.386
+       1  1.193   1.318    1.304
+mo
+       K  IS_mo  C24_mo  REAL_mo
+sin tope   1656    2317     2429
+       4   1529    1992     2134
+       3   1289    1697     1831
+       2    971    1509     1614
+       1    426     915      880
+pass_pol
+       K  IS_pass_pol  C24_pass_pol  REAL_pass_pol
+sin tope         48.4          48.9           50.2
+       4         49.4          47.6           50.0
+       3         47.4          45.8           50.5
+       2         40.6          45.9           48.4
+       1         17.6          34.7           33.5
+bust_pol
+       K  IS_bust_pol  C24_bust_pol  REAL_bust_pol
+sin tope         45.5          49.2           47.8
+       4         44.1          49.2           48.0
+       3         42.6          49.7           47.2
+       2         40.6          46.8           45.3
+       1         27.5          38.7           36.2
+pass_k2
+       K  IS_pass_k2  C24_pass_k2  REAL_pass_k2
+sin tope        44.0         47.9          47.5
+       4        45.7         47.7          47.3
+       3        42.0         45.2          49.1
+       2        34.8         41.7          43.6
+       1        11.2         29.3          29.7
+PA_Ecash
+       K  IS_PA_Ecash  C24_PA_Ecash  REAL_PA_Ecash
+sin tope         9119          8276           8866
+       4         9109          7364           8274
+       3         9022          7263           8685
+       2         8302          8518           9984
+       1         4516          7735           7237

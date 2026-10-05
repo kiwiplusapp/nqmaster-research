@@ -1,0 +1,6 @@
+gap exit 0
+sweep exit 0
+noise exit 0
+orb exit 0
+fvg exit 0
+ifvg exit 0

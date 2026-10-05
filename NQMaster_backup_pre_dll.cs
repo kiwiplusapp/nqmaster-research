@@ -1,0 +1,858 @@
+//
+// NQ MASTER - the whole research portfolio in ONE strategy (NinjaTrader 8, single file)
+// ------------------------------------------------------------------------------------------------
+// Run on a 1-MINUTE chart (CME US Index Futures ETH): MNQ for the Nasdaq modules, MGC for the gold module.
+// A 5-minute series is added internally (MSEQ and ICT modules).
+// Profiles (Profile parameter; every module can still be switched on/off below):
+//   MaxSharpe : ORB60 0.6R (pullback days) + MSEQ + CRT11 + MOM11 + MOM13 + MOM1030 + ON07 + REV06 + LON + ICT  (use with a Gold chart)
+//   WinRate70 : ORB60 0.75R + MSEQ + CRT11 + MOM11 + MOM1030 + ON07 + REV06 + ICT  (NQ only, ~70% win rate)
+//   Gold      : ORB30 2R with the daily trend, all days (run on an MGC chart)
+//   WR70Plus  : >=70% win rate build (research/mine/wr70_*.py): ORB60 0.75R, ORB90, MSEQ, MSEQS, CRT11, ICT x2, MOM11, REV06, VW13
+//               (>=0.15 ATR, 2 lots when >=0.30), VOLB with the trend at 0.5R; LON/ON07/MOM13/MOM1030 off; confluence + context rules.
+//               Real MNQ 2024-26: WR 71.5%, PF 1.50, 2.9 trades/day (1 lot base).
+//   Ultra     : MaxPlus2 + VOLB (L. Williams volatility breakout: stop entries at RTH open +/- 0.45 x prior RTH range, stop at the
+//               RTH open, 2R, both directions; robust 2015-2026 cost-normalised; big stop -> NOT for 25K accounts)
+//   MaxPlus2  : MaxPlus + context-sized rules (x2 / skip, research/mine/filt_holdout.py) + VW13 (13:01 VWAP-distance momentum, 0.5R)
+//   MaxPlus   : MaxSharpe (NQ) + ORB90 0.6R (pullback days) + MSEQS (short momentum sequence, only after ORB60 entered SHORT)
+//   MaxTrades : MaxSharpe (NQ) + MOM1130 (11:30 momentum, VWAP-agree, 0.3R) + RSI2 (5m RSI(2)<10 / >90 pullback with the
+//               daily trend AND the intraday trend, 10:30-15:45, stop 0.15 ATRd, 0.3R, max 120 min, up to 3 per day)
+// Research results (real MNQ/MGC 2024-26, 1 contract per module, FOMC days skipped, no opposite MNQ positions):
+//   MaxSharpe (+Gold chart): WR 64.4%, PF 1.35, Sharpe 3.55, 4.3 trades/day
+//   WinRate70            : WR 70.9%, PF 1.42, Sharpe 3.32, 2.9 trades/day
+//   MaxPlus (NQ only)    : WR 66.8%, PF 1.40, Sharpe 3.22, 3.9 trades/day, ICT x2 (equal risk) + confluence rules (+9-15% $/month)
+//   MaxTrades (NQ only)  : WR 70.1%, PF 1.30, Sharpe 3.08, 5.2 trades/day (MaxSharpe NQ only: WR 67.1%, PF 1.38, 3.7 trades/day)
+// Account layer: FOMC days skipped, shared pause file, eval-target stop and drawdown guard (realtime).
+// Managed orders: one signal per module. An entry is skipped if the strategy holds (or is working) the opposite direction.
+// ------------------------------------------------------------------------------------------------
+#region Using declarations
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Windows.Media;
+using NinjaTrader.Cbi;
+using NinjaTrader.Data;
+using NinjaTrader.Gui;
+using NinjaTrader.Gui.Tools;
+using NinjaTrader.NinjaScript;
+using NinjaTrader.NinjaScript.DrawingTools;
+#endregion
+
+namespace NinjaTrader.NinjaScript.Strategies
+{
+	public enum NQMasterProfile { MaxSharpe, WinRate70, Gold, Custom, MaxTrades, MaxPlus, MaxPlus2, Ultra, WR70Plus }
+
+	public class NQMaster : Strategy
+	{
+		private const int RthOpen = 570, RthClose = 960;
+
+		#region Module state
+		private class Mod
+		{
+			public string Sig; public bool On; public double R; public int Kind;	// Kind: 0 ORB, 1 time, 2 other
+			public bool InTrade; public Order Entry; public int Dir; public double StopPx; public double EntryPx; public int EntryBar;
+			// ORB
+			public int Range; public double OrH, OrL; public bool OrReady, Armed; public int Trades; public bool UsePullback;
+			// time module
+			public int Time; public int Lookback; public bool Reverse; public double StopAtr; public int MaxHold; public bool Trend; public bool Vwap; public bool Done; public double MinDist; public double DoubleDist;
+			// target set on fill (price mode)
+			public bool PriceTarget;
+			public bool Retry;
+		}
+		private List<Mod> mods;
+		private Mod orb, orb2, mseq, mseqs, crt, lon, ict, rsi, volb;
+		private double volbUp = double.NaN, volbDn = double.NaN; private bool volbDone, volbTrendOnly;
+		private int orbFirstDir, orbFirstMin = 9999;
+		private int m11Dir, onSum, lonDir;	// confluence state (MOM11 direction, overnight modules ON07/REV06/LON)
+		private List<Mod> timeMods;
+		#endregion
+
+		#region Fields
+		private TimeZoneInfo etZone;
+		private SimpleFont dashFont;
+		private bool badTimeframe;
+		private HashSet<int> fomc;
+
+		// completed RTH days
+		private int rthDay = -1, rthDaysSeen, atrCount;
+		private double dayHigh, dayLow, dayClose, atrDaily = double.NaN, atrPrevClose = double.NaN, prevRthHigh = double.NaN, prevRthLow = double.NaN;
+		private double full1 = double.NaN, full2 = double.NaN;
+		private bool dayHasBars;
+		private int dayLastOpen = -1;
+		private List<double> rthCloses;
+		private int trendDir;
+		private double todayAtr = double.NaN, prevRet = double.NaN;
+		private bool pullbackDay, fomcToday;
+
+		// session / intraday
+		private double sessOpen = double.NaN, rthOpenPx = double.NaN, vwPv, vwV;
+		private double onH, onL, lonH, lonL, postH, postL; private bool onHas, lonHas, postHas;
+		private double c1H, c1L, c2H, c2L, c2C; private bool c1Has, c2Has;
+		private double rH, rL; private bool rHas; private int lonStage;
+		private double[] lvl = new double[6]; private bool[] taken = new bool[6]; private bool levelsReady;
+		private bool[] ictAct = new bool[2]; private double[] ictExt = new double[2]; private int[] ictExtBar = new int[2];
+		private int ictTrades, ictExpiry; private double ictExtPend;
+		private int flattenBar = -1;
+		private double rsiUp = double.NaN, rsiDn = double.NaN, rsiVal = 50; private int rsiTrades;
+		private string status = "waiting";
+
+		// account layer
+		private double highWater = double.NaN; private bool ddTripped, targetHit;
+		private int tradesProcessed, totalTrades, totalWins; private double grossWin, grossLoss, netPnl;
+		#endregion
+
+		protected override void OnStateChange()
+		{
+			if (State == State.SetDefaults)
+			{
+				Description = "Whole NQ/Gold research portfolio in one strategy: ORB, MSEQ, CRT11, clock-time modules, London FVG, ICT open, account guard.";
+				Name = "NQMaster";
+				Calculate = Calculate.OnBarClose;
+				EntriesPerDirection = 1;
+				EntryHandling = EntryHandling.UniqueEntries;
+				IsExitOnSessionCloseStrategy = true;
+				ExitOnSessionCloseSeconds = 30;
+				IsFillLimitOnTouch = false;
+				MaximumBarsLookBack = MaximumBarsLookBack.Infinite;
+				OrderFillResolution = OrderFillResolution.Standard;
+				Slippage = 1;
+				StartBehavior = StartBehavior.WaitUntilFlat;
+				TimeInForce = TimeInForce.Gtc;
+				RealtimeErrorHandling = RealtimeErrorHandling.StopCancelClose;
+				StopTargetHandling = StopTargetHandling.PerEntryExecution;
+				BarsRequiredToTrade = 20;
+				IsInstantiatedOnEachOptimizationIteration = true;
+
+				Profile = NQMasterProfile.MaxSharpe;
+				UseOrb = true; OrbRangeMin = 60; OrbTargetR = 0.6; OrbPullbackFilter = true; PullbackMaxRet = 0.44; StopCapAtr = 0.35;
+				UseMseq = true; UseCrt = true; UseMom11 = true; UseMom1130 = true; UseRsi2 = true; UseOrb90 = true; UseMseqShort = true; UseMom13 = true; UseMom1030 = true; UseOn07 = true; UseRev06 = true; UseLon = true; UseIct = true;
+				Contracts = 1; FlattenTime = 1555; SkipFomc = true;
+				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true;
+				FomcDates = "2024-01-31,2024-03-20,2024-05-01,2024-06-12,2024-07-31,2024-09-18,2024-11-07,2024-12-18,2025-01-29,2025-03-19,2025-05-07,2025-06-18,2025-07-30,2025-09-17,2025-10-29,2025-12-10,2026-01-28,2026-03-18,2026-04-29,2026-06-17,2026-07-29,2026-09-16,2026-10-28,2026-12-09";
+				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250;
+				PauseFile = "pause_trading.txt"; ShowDashboard = true; PrintLog = true;
+			}
+			else if (State == State.Configure)
+			{
+				AddDataSeries(BarsPeriodType.Minute, 5);
+			}
+			else if (State == State.DataLoaded)
+			{
+				rthCloses = new List<double>(); atrHist = new List<double>();
+				dashFont = new SimpleFont("Consolas", 11);
+				try { etZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"); } catch { etZone = null; }
+				badTimeframe = !(BarsPeriod.BarsPeriodType == BarsPeriodType.Minute && BarsPeriod.Value == 1);
+				if (badTimeframe) Print("NQMaster | Needs a 1-MINUTE chart (CME US Index Futures ETH).");
+				fomc = new HashSet<int>();
+				foreach (string raw in (FomcDates ?? "").Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					DateTime d;
+					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
+				}
+				BuildModules();
+			}
+			else if (State == State.Realtime)
+			{
+				foreach (Mod m in mods) if (m.Entry != null) m.Entry = GetRealtimeOrder(m.Entry);
+				eqPeak = netPnl;	// adaptive size measures the drawdown from the moment the strategy goes live
+			}
+			else if (State == State.Terminated)
+			{
+				if (mods != null && totalTrades == 0 && rthDaysSeen < 25)
+					Print(string.Format("NQMaster | 0 trades: only {0} RTH days loaded; needs ~25 days of warm-up. Start the test 2+ months earlier.", rthDaysSeen));
+			}
+		}
+
+		public override string DisplayName { get { return "NQ MASTER (" + Profile + ")"; } }
+
+		private void BuildModules()
+		{
+			bool w7 = Profile == NQMasterProfile.WR70Plus, mt = Profile == NQMasterProfile.MaxTrades, ul = Profile == NQMasterProfile.Ultra, mp2 = Profile == NQMasterProfile.MaxPlus2 || ul, mp = Profile == NQMasterProfile.MaxPlus || mp2, ms = Profile == NQMasterProfile.MaxSharpe || mt || mp, wr = Profile == NQMasterProfile.WinRate70, gold = Profile == NQMasterProfile.Gold, custom = Profile == NQMasterProfile.Custom;
+			mods = new List<Mod>(); timeMods = new List<Mod>();
+			orb = new Mod(); orb.Sig = gold ? "GC_ORB30" : "ORB60"; orb.Kind = 0;
+			orb.On = (custom ? UseOrb : (true) && UseOrb);
+			orb.Range = custom ? OrbRangeMin : (gold ? 30 : 60);
+			orb.R = custom ? OrbTargetR : (gold ? 2.0 : ((wr || w7) ? 0.75 : 0.6));
+			orb.UsePullback = custom ? OrbPullbackFilter : !gold;
+			mods.Add(orb);
+			orb2 = new Mod(); orb2.Sig = "ORB90"; orb2.Kind = 0; orb2.On = (custom ? UseOrb90 : (mp || w7) && UseOrb90); orb2.Range = 90; orb2.R = 0.6; orb2.UsePullback = true;
+			mods.Add(orb2);
+			mseq = NewMod("MSEQ", (custom ? UseMseq : (!gold) && UseMseq), 0.5); mseq.PriceTarget = true;
+			mseqs = NewMod("MSEQS", (custom ? UseMseqShort : (mp || w7) && UseMseqShort), 0.75); mseqs.PriceTarget = true;
+			crt = NewMod("CRT11", (custom ? UseCrt : (!gold) && UseCrt), 2.0); crt.PriceTarget = true;
+			lon = NewMod("LON", (custom ? UseLon : (ms) && UseLon), 2.0); lon.PriceTarget = true;
+			ict = NewMod("ICT", (custom ? UseIct : (!gold) && UseIct), 1.0); ict.PriceTarget = true;
+			AddTime("MOM11", (custom ? UseMom11 : (!gold) && UseMom11), 1100, -2, false, 0.25, 0.3, 0, false, true);
+			AddTime("MOM13", (custom ? UseMom13 : (ms) && UseMom13), 1300, -2, false, 0.20, 1.0, 240, true, false);
+			AddTime("MOM1030", (custom ? UseMom1030 : (!gold && !w7) && UseMom1030), 1030, -2, false, 0.20, 0.3, 60, true, false);
+			AddTime("ON07", (custom ? UseOn07 : (!gold && !w7) && UseOn07), 700, 30, false, 0.20, 1.0, 60, true, false);
+			AddTime("REV06", (custom ? UseRev06 : (!gold) && UseRev06), 600, 30, true, 0.20, 0.3, 240, true, false);
+			AddTime("MOM1130", (custom ? UseMom1130 : (mt) && UseMom1130), 1130, -2, false, 0.25, 0.3, 0, false, true);
+			Mod vw13 = AddTime("VW13", (custom ? UseVw13 : (mp2 || w7) && UseVw13), 1301, -3, false, 0.15, 0.5, 120, true, false); vw13.MinDist = w7 ? 0.15 : 0.30; vw13.DoubleDist = w7 ? 0.30 : 0;
+			volb = NewMod("VOLB", (custom ? UseVolBreak : (ul || w7) && UseVolBreak), w7 ? 0.5 : 2.0); volb.PriceTarget = true; volb.MaxHold = 400; volbTrendOnly = w7;
+			rsi = NewMod("RSI2", (custom ? UseRsi2 : (mt) && UseRsi2), 0.3); rsi.StopAtr = 0.15; rsi.MaxHold = 120;
+			StringBuilder sb = new StringBuilder();
+			foreach (Mod m in mods) if (m.On) sb.Append(m.Sig + " ");
+			Print("NQMaster | profile " + Profile + " | modules: " + sb.ToString());
+			if (!custom && (OrbRangeMin != 60 || Math.Abs(OrbTargetR - 0.6) > 1e-9 || !OrbPullbackFilter))
+				Print("NQMaster | NOTE: ORB range / target R / pullback filter only apply with Profile = Custom. The profile values are being used.");
+		}
+		private Mod NewMod(string sig, bool on, double r) { Mod m = new Mod(); m.Sig = sig; m.On = on; m.R = r; m.Kind = 2; mods.Add(m); return m; }
+		private Mod AddTime(string sig, bool on, int t, int lb, bool rev, double sa, double r, int hold, bool trend, bool vwap)
+		{
+			Mod m = new Mod(); m.Sig = sig; m.On = on; m.Kind = 1; m.Time = t; m.Lookback = lb; m.Reverse = rev; m.StopAtr = sa; m.R = r; m.MaxHold = hold; m.Trend = trend; m.Vwap = vwap;
+			mods.Add(m); timeMods.Add(m); return m;
+		}
+
+		protected override void OnBarUpdate()
+		{
+			if (badTimeframe || CurrentBars[0] < 3) return;
+			if (BarsInProgress == 1) { OnFiveMinute(); return; }
+
+			DateTime etClose = ToEt(Time[0]);
+			DateTime etOpen = etClose.AddMinutes(-1);
+			int openMin = etOpen.Hour * 60 + etOpen.Minute;
+			int closeMin = etClose.Hour * 60 + etClose.Minute;
+			int etDate = etOpen.Year * 10000 + etOpen.Month * 100 + etOpen.Day;
+
+			ProcessClosedTrades();
+
+			if (Bars.IsFirstBarOfSession)
+			{
+				// the session that just ended: finalize its RTH day, or mark it as a session without a complete RTH day
+				if (dayHasBars) FinalizeRthDay();
+				else if (rthDaysSeen > 0) { full2 = full1; full1 = double.NaN; }
+				DateTime tradeDay = etOpen.Hour >= 18 ? etOpen.Date.AddDays(1) : etOpen.Date;
+				fomcToday = SkipFomc && fomc.Contains(tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day);
+				NewSession();
+				sessHi = High[0]; sessLo = Low[0];
+			}
+			sessHi = Math.Max(sessHi, High[0]); sessLo = Math.Min(sessLo, Low[0]);
+			bool inRth = openMin >= RthOpen && openMin < RthClose;
+			bool overnight = openMin < RthOpen || openMin >= 18 * 60;
+			if (overnight && openMin < RthOpen)
+			{
+				if (!onHas) { onH = High[0]; onL = Low[0]; onHas = true; } else { onH = Math.Max(onH, High[0]); onL = Math.Min(onL, Low[0]); }
+				if (openMin >= 120 && openMin < 300) { if (!lonHas) { lonH = High[0]; lonL = Low[0]; lonHas = true; } else { lonH = Math.Max(lonH, High[0]); lonL = Math.Min(lonL, Low[0]); } }
+				else if (openMin >= 300) { if (!postHas) { postH = High[0]; postL = Low[0]; postHas = true; } else { postH = Math.Max(postH, High[0]); postL = Math.Min(postL, Low[0]); } }
+			}
+			else if (overnight)
+			{
+				if (!onHas) { onH = High[0]; onL = Low[0]; onHas = true; } else { onH = Math.Max(onH, High[0]); onL = Math.Min(onL, Low[0]); }
+			}
+			if (inRth)
+			{
+				if (etDate != rthDay) StartRthDay(etDate);
+				if (!dayHasBars) { dayHigh = High[0]; dayLow = Low[0]; dayHasBars = true; rthOpenPx = Open[0]; SetupIctLevels();
+					double prng = prevRthHigh - prevRthLow; volbUp = double.IsNaN(prng) ? double.NaN : rthOpenPx + 0.45 * prng; volbDn = double.IsNaN(prng) ? double.NaN : rthOpenPx - 0.45 * prng; }
+				else { dayHigh = Math.Max(dayHigh, High[0]); dayLow = Math.Min(dayLow, Low[0]); }
+				dayClose = Close[0]; dayLastOpen = openMin;
+				double vol = Volume[0] > 0 ? Volume[0] : 1.0;
+				vwPv += (High[0] + Low[0] + Close[0]) / 3.0 * vol; vwV += vol;
+				foreach (Mod o in new Mod[] { orb, orb2 })
+					if (o.On && openMin < RthOpen + o.Range)
+					{
+						if (!o.OrReady && o.OrH == 0 && o.OrL == 0) { o.OrH = High[0]; o.OrL = Low[0]; }
+						else { o.OrH = Math.Max(o.OrH, High[0]); o.OrL = Math.Min(o.OrL, Low[0]); }
+						if (openMin == RthOpen + o.Range - 1) { o.OrReady = true; o.Armed = true; }
+					}
+				// CRT candles
+				if (openMin >= 600 && openMin < 660) { if (!c1Has) { c1H = High[0]; c1L = Low[0]; c1Has = true; } else { c1H = Math.Max(c1H, High[0]); c1L = Math.Min(c1L, Low[0]); } }
+				else if (openMin >= 660 && openMin < 720) { if (!c2Has) { c2H = High[0]; c2L = Low[0]; c2Has = true; } else { c2H = Math.Max(c2H, High[0]); c2L = Math.Min(c2L, Low[0]); } c2C = Close[0]; }
+			}
+
+			AccountGuard();
+
+			// exits: module time exits, London exit, flatten
+			if (FlattenTime > 0 && closeMin >= Hm(FlattenTime) && closeMin < 18 * 60) { FlattenAll("end of day"); UpdateDashboard(); return; }
+			foreach (Mod m in timeMods)
+				if (m.InTrade && m.MaxHold > 0 && CurrentBars[0] - m.EntryBar >= m.MaxHold) ExitModule(m, "time exit");
+			if (rsi.InTrade && CurrentBars[0] - rsi.EntryBar >= rsi.MaxHold) ExitModule(rsi, "time exit");
+			if (volb.InTrade && CurrentBars[0] - volb.EntryBar >= volb.MaxHold) ExitModule(volb, "time exit");
+			if (lon.InTrade && openMin >= 570 && openMin < 18 * 60) ExitModule(lon, "London exit 09:30");
+			if (Working(lon.Entry) && (openMin >= 480 && openMin < 18 * 60)) CancelOrder(lon.Entry);
+
+			bool canTrade = CanTrade();
+			if (!canTrade) { CancelAllEntries(); UpdateDashboard(); return; }
+
+			// ---- modules on the 1-minute series
+			foreach (Mod o in new Mod[] { orb, orb2 })
+				if (o.On && inRth && etDate == rthDay && o.OrReady && closeMin >= Math.Max(630, RthOpen + o.Range)) ManageOrb(o, closeMin);
+			foreach (Mod m in timeMods)
+			{
+				if (m.Retry) { m.Retry = false; TimeEntry(m); if (lastDeferred) m.Retry = false; continue; }
+				if (m.On && !m.Done && closeMin == Hm(m.Time)) { m.Done = true; TimeEntry(m); if (lastDeferred) m.Retry = true; }
+			}
+			if (crt.On && inRth && crt.Retry) { crt.Retry = false; crt.Done = false; CrtEntry(); crt.Retry = false; }
+			else if (crt.On && inRth && openMin == 719 && c1Has && c2Has) { CrtEntry(); if (lastDeferred) crt.Retry = true; }
+			if (lon.On && overnight && openMin < RthOpen) LondonStep(openMin);
+			if (volb.On && inRth && etDate == rthDay) ManageVolb(openMin);
+			UpdateDashboard();
+		}
+
+		#region Session / daily statistics
+		private void NewSession()
+		{
+			sessOpen = Open[0]; rthOpenPx = double.NaN; vwPv = 0; vwV = 0;
+			onHas = lonHas = postHas = false; c1Has = c2Has = false; rHas = false; lonStage = 0; levelsReady = false;
+			ictAct[0] = ictAct[1] = false; ictTrades = 0;
+			orb.OrH = 0; orb.OrL = 0; orb.OrReady = false; orb.Armed = false; orb.Trades = 0;
+			orb2.OrH = 0; orb2.OrL = 0; orb2.OrReady = false; orb2.Armed = false; orb2.Trades = 0;
+			orbFirstDir = 0; orbFirstMin = 9999;
+			foreach (Mod m in timeMods) { m.Done = false; m.Retry = false; }
+			crt.Done = false; crt.Retry = false;
+			rsiTrades = 0;
+			volbDone = false; volbUp = double.NaN; volbDn = double.NaN;
+			m11Dir = 0; onSum = 0; lonDir = 0;
+		}
+
+		private void StartRthDay(int etDate)
+		{
+			FinalizeRthDay();
+			rthDay = etDate; dayHasBars = false;
+			todayAtr = atrDaily;
+			atrRatio = double.NaN;
+			if (atrHist.Count >= 20 && todayAtr > 0) { List<double> srt = new List<double>(atrHist); srt.Sort(); int nn = srt.Count; double med = nn % 2 == 1 ? srt[nn / 2] : 0.5 * (srt[nn / 2 - 1] + srt[nn / 2]); atrRatio = med > 0 ? todayAtr / med : double.NaN; }
+			if (!double.IsNaN(todayAtr)) { atrHist.Add(todayAtr); while (atrHist.Count > 100) atrHist.RemoveAt(0); }
+			prevRet = (!double.IsNaN(full1) && !double.IsNaN(full2) && todayAtr > 0 && trendDir != 0) ? (full1 - full2) / todayAtr * trendDir : double.NaN;
+			pullbackDay = !double.IsNaN(prevRet) && prevRet < PullbackMaxRet;
+			rthDaysSeen++;
+		}
+
+		private void FinalizeRthDay()
+		{
+			if (!dayHasBars) { return; }
+			double tr = double.IsNaN(atrPrevClose) ? dayHigh - dayLow : Math.Max(dayHigh - dayLow, Math.Max(Math.Abs(dayHigh - atrPrevClose), Math.Abs(dayLow - atrPrevClose)));
+			atrCount++;
+			int k = Math.Min(atrCount, 14);
+			atrDaily = double.IsNaN(atrDaily) ? tr : ((k - 1) * atrDaily + tr) / k;
+			atrPrevClose = dayClose; prevRthHigh = dayHigh; prevRthLow = dayLow;
+			full2 = full1; full1 = dayLastOpen >= RthClose - 1 ? dayClose : double.NaN;
+			rthCloses.Add(dayClose);
+			while (rthCloses.Count > 20) rthCloses.RemoveAt(0);
+			trendDir = 0;
+			if (rthCloses.Count >= 15)
+			{
+				double s = 0; foreach (double x in rthCloses) s += x;
+				trendDir = dayClose > s / rthCloses.Count ? 1 : (dayClose < s / rthCloses.Count ? -1 : 0);
+			}
+			todayAtr = atrDaily;
+			dayHasBars = false;
+		}
+		#endregion
+
+		#region Modules
+		private void ManageOrb(Mod o, int closeMin)
+		{
+			if (o.UsePullback && !pullbackDay) return;
+			if (trendDir == 0 || atrCount < 14 || double.IsNaN(todayAtr)) return;
+			bool window = closeMin < 780;
+			if (!window) { if (Working(o.Entry)) CancelOrder(o.Entry); return; }
+			if (!o.Armed && !o.InTrade && !Working(o.Entry) && o.Trades > 0 && o.Trades < 2 && Close[0] < o.OrH && Close[0] > o.OrL) o.Armed = true;
+			if (!o.Armed || o.InTrade || Working(o.Entry) || o.Trades >= 2) return;
+			int d = trendDir;
+			double entry = d == 1 ? o.OrH + TickSize : o.OrL - TickSize;
+			double opp = d == 1 ? o.OrL - TickSize : o.OrH + TickSize;
+			int st = Math.Max(8, (int)Math.Round(Math.Min(Math.Abs(entry - opp), StopCapAtr * todayAtr) / TickSize));
+			o.Armed = false;
+			if (!DirectionAllowed(d)) return;
+			SetStopLoss(o.Sig, CalculationMode.Ticks, st, false);
+			SetProfitTarget(o.Sig, CalculationMode.Ticks, Math.Max(1, (int)Math.Round(st * o.R)));
+			bool through = d == 1 ? Close[0] >= entry : Close[0] <= entry;
+			o.Dir = d;
+			bool oc = o == orb ? (FeatGap(d) >= 0.3311 || FeatRet5(d) >= 1.8118 || atrRatio >= 1.2615) : (FeatVw(d, entry) < 0.1231 || FeatOpen(d, entry) >= 0.5458);
+			int oq = CtxBoost(Qty(), oc, o.Sig);
+			if (d == 1) { if (through) EnterLong(0, oq, o.Sig); else EnterLongStopMarket(0, true, oq, entry, o.Sig); }
+			else { if (through) EnterShort(0, oq, o.Sig); else EnterShortStopMarket(0, true, oq, entry, o.Sig); }
+			Log(string.Format("{0} {1} @ {2} | SL {3}t | TP {4:0.##}R", o.Sig, d == 1 ? "BUY" : "SELL", Fmt(entry), st, o.R));
+		}
+
+		// ---- VOLB: one stop entry per day at RTH open +/- 0.45 x prior RTH range (the side nearer to price is kept working),
+		// stop at the RTH open price, target 2R, max 400 min, 09:30-15:00 entries (research/mine/families2.py, VOL_BREAK).
+		private void ManageVolb(int openMin)
+		{
+			if (volbDone || volb.InTrade || double.IsNaN(volbUp) || double.IsNaN(rthOpenPx) || atrCount < 14) return;
+			if (openMin >= 900) { if (Working(volb.Entry)) CancelOrder(volb.Entry); volbDone = true; return; }
+			int d = (volbUp - Close[0]) <= (Close[0] - volbDn) ? 1 : -1;
+			if (volbTrendOnly)
+			{
+				if (trendDir == 0 || (trendDir == 1 && Low[0] <= volbDn) || (trendDir == -1 && High[0] >= volbUp)) { if (Working(volb.Entry)) CancelOrder(volb.Entry); volbDone = true; return; }
+				d = trendDir;
+			}
+			if (Working(volb.Entry))
+			{
+				if (volb.Dir == d) return;
+				CancelOrder(volb.Entry); return;                    // switch side on the next bar
+			}
+			double lvl = d == 1 ? Instrument.MasterInstrument.RoundToTickSize(volbUp) : Instrument.MasterInstrument.RoundToTickSize(volbDn);
+			if ((d == 1 && Close[0] >= lvl) || (d == -1 && Close[0] <= lvl)) { volbDone = true; return; }   // already through: no chase
+			// never cancel other modules' working entries for VOLB: wait while the position or a working order points the other way
+			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return;
+			foreach (Mod o in mods) if (o != volb && Working(o.Entry) && o.Dir == -d) return;
+			ArmPriceBracket(volb, d, Instrument.MasterInstrument.RoundToTickSize(rthOpenPx));
+			if (d == 1) EnterLongStopMarket(0, true, Qty(), lvl, volb.Sig); else EnterShortStopMarket(0, true, Qty(), lvl, volb.Sig);
+		}
+
+		private void TimeEntry(Mod m)
+		{
+			lastDeferred = false;
+			if (atrCount < 14 || double.IsNaN(atrDaily) || m.InTrade) return;
+			double reference = double.NaN;
+			if (m.Lookback == -1) reference = sessOpen;
+			else if (m.Lookback == -2) reference = rthOpenPx;
+			else if (m.Lookback == -3) reference = vwV > 0 ? vwPv / vwV : double.NaN;
+			else if (m.Lookback > 0 && CurrentBars[0] > m.Lookback) reference = Close[m.Lookback - 1];
+			if (double.IsNaN(reference) || Close[0] == reference) return;
+			int d = Close[0] > reference ? 1 : -1;
+			if (m.Reverse) d = -d;
+			if (m.Trend && d != trendDir) return;
+			if (m.MinDist > 0 && Math.Abs(Close[0] - reference) < m.MinDist * atrDaily) return;
+			if (CtxOn && m.Sig == "ON07" && FeatPdRet(d) < -0.3619) { Log("ON07 skipped: prior day moved against (context rule)"); return; }
+			if (RulesOn && m.Sig == "REV06" && lonDir == d) { onSum += d; Log("REV06 skipped: LON already in the same direction"); return; }
+			if (m.Vwap)
+			{
+				if (vwV <= 0) return;
+				double vw = vwPv / vwV;
+				int vd = Close[0] > vw ? 1 : (Close[0] < vw ? -1 : 0);
+				if (vd != (Close[0] > reference ? 1 : -1)) return;
+			}
+			if (!DirectionAllowed(d)) return;
+			int st = Math.Max(4, (int)Math.Round(m.StopAtr * atrDaily / TickSize));
+			SetStopLoss(m.Sig, CalculationMode.Ticks, st, false);
+			SetProfitTarget(m.Sig, CalculationMode.Ticks, Math.Max(1, (int)Math.Round(m.R * st)));
+			m.Dir = d; m.EntryBar = CurrentBars[0] + 1;
+			int tq = m.Sig == "MOM13" ? LateQty(d, Hm(m.Time)) : Qty();
+			if (m.DoubleDist > 0 && Math.Abs(Close[0] - reference) >= m.DoubleDist * atrDaily) tq = 2 * Qty();
+			if (d == 1) EnterLong(0, tq, m.Sig); else EnterShort(0, tq, m.Sig);
+			Log(string.Format("{0} {1} | ref {2} | SL {3}t", m.Sig, d == 1 ? "BUY" : "SELL", Fmt(reference), st));
+		}
+
+		private void CrtEntry()
+		{
+			lastDeferred = false;
+			if (crt.Done || crt.InTrade) return;
+			crt.Done = true;
+			if (atrCount < 14 || double.IsNaN(todayAtr) || todayAtr <= 0) return;
+			int d = 0;
+			if (c2H > c1H && c2C < c1H && c2C > c1L && c2L >= c1L) d = -1;
+			else if (c2L < c1L && c2C > c1L && c2C < c1H && c2H <= c1H) d = 1;
+			if (d == 0 || d != trendDir) return;
+			double stop = d == 1 ? c2L - TickSize : c2H + TickSize;
+			double risk = (Close[0] + d * TickSize - stop) * d;
+			if (risk <= 0 || risk > 0.5 * todayAtr || !DirectionAllowed(d)) return;
+			ArmPriceBracket(crt, d, stop);
+			int cq = CtxBoost(LateQty(d, 720), FeatTrend(d) >= 1.7456 || FeatGap(d) >= 0.1048 || FeatPdRet(d) >= 0.6155, "CRT11");
+			if (d == 1) EnterLong(0, cq, crt.Sig); else EnterShort(0, cq, crt.Sig);
+			Log(string.Format("CRT11 {0} | SL {1}", d == 1 ? "BUY" : "SELL", Fmt(stop)));
+		}
+
+		private void LondonStep(int openMin)
+		{
+			if (openMin < 180) { if (!rHas) { rH = High[0]; rL = Low[0]; rHas = true; } else { rH = Math.Max(rH, High[0]); rL = Math.Min(rL, Low[0]); } return; }
+			if (!rHas || lonStage >= 3 || lon.InTrade) return;
+			if (lonStage == 0)
+			{
+				if (openMin >= 360) { lonStage = 3; return; }
+				if (Close[0] > rH || Close[0] < rL)
+				{
+					int d = Close[0] > rH ? 1 : -1;
+					if (atrCount < 14 || double.IsNaN(atrDaily) || d != trendDir) { lonStage = 3; return; }
+					lon.Dir = d; lonStage = 1;
+				}
+				else return;
+			}
+			if (lonStage == 1)
+			{
+				if (openMin >= 480) { lonStage = 3; return; }
+				bool gap = lon.Dir == 1 ? Low[0] > High[2] : High[0] < Low[2];
+				if (!gap) return;
+				double lim = lon.Dir == 1 ? Low[0] : High[0];
+				double stop = lon.Dir == 1 ? rL : rH;
+				double risk = (lim - stop) * lon.Dir;
+				lonStage = 2;
+				if (risk <= 0 || risk > 0.25 * atrDaily || !DirectionAllowed(lon.Dir)) { lonStage = 3; return; }
+				ArmPriceBracket(lon, lon.Dir, stop);
+				if (lon.Dir == 1) EnterLongLimit(0, true, Qty(), lim, lon.Sig); else EnterShortLimit(0, true, Qty(), lim, lon.Sig);
+				Log(string.Format("LON {0} LIMIT @ {1} | SL {2}", lon.Dir == 1 ? "BUY" : "SELL", Fmt(lim), Fmt(stop)));
+			}
+		}
+
+		private void SetupIctLevels()
+		{
+			lvl[0] = prevRthHigh; lvl[1] = onHas ? onH : double.NaN; lvl[2] = lonHas ? lonH : double.NaN;
+			lvl[3] = prevRthLow; lvl[4] = onHas ? onL : double.NaN; lvl[5] = lonHas ? lonL : double.NaN;
+			for (int q = 0; q < 6; q++) taken[q] = double.IsNaN(lvl[q]);
+			if (onHas) { if (!taken[0] && onH > lvl[0]) taken[0] = true; if (!taken[3] && onL < lvl[3]) taken[3] = true; }
+			if (postHas) { if (!taken[2] && postH > lvl[2]) taken[2] = true; if (!taken[5] && postL < lvl[5]) taken[5] = true; }
+			levelsReady = true;
+		}
+
+		private void OnFiveMinute()
+		{
+			if (CurrentBars[1] < 8) return;
+			// RSI(2) on the 5-minute closes (Wilder, alpha 0.5), updated on every 5m bar
+			double chg = Closes[1][0] - Closes[1][1];
+			if (double.IsNaN(rsiUp)) { rsiUp = Math.Max(chg, 0); rsiDn = Math.Max(-chg, 0); }
+			else { rsiUp = 0.5 * rsiUp + 0.5 * Math.Max(chg, 0); rsiDn = 0.5 * rsiDn + 0.5 * Math.Max(-chg, 0); }
+			rsiVal = rsiDn > 0 ? 100 - 100 / (1 + rsiUp / rsiDn) : 50;
+			DateTime etClose = ToEt(Times[1][0]);
+			DateTime etOpen = etClose.AddMinutes(-5);
+			int openMin = etOpen.Hour * 60 + etOpen.Minute;
+			int closeMin = etClose.Hour * 60 + etClose.Minute;
+			int etDate = etOpen.Year * 10000 + etOpen.Month * 100 + etOpen.Day;
+			if (etDate != rthDay || !CanTrade()) return;
+			if (FlattenTime > 0 && closeMin >= Hm(FlattenTime)) return;
+
+			// ---- MSEQ (uptrend days, signal bar opening 10:30-15:45)
+			if (mseq.On && !mseq.InTrade && !Working(mseq.Entry) && trendDir == 1 && openMin >= 630 && openMin < 945 && atrCount >= 14)
+			{
+				int n = 5; bool ok = Closes[1][n] < Opens[1][n];
+				double mainLow = Lows[1][n];
+				for (int j = 0; ok && j < n; j++)
+				{
+					if (Closes[1][j] <= Opens[1][j] || Lows[1][j] <= mainLow) ok = false;
+					if (j < n - 1 && Closes[1][j] <= Closes[1][j + 1]) ok = false;
+				}
+				if (ok && DirectionAllowed(1))
+				{
+					double c0 = Closes[1][0]; double stop = Instrument.MasterInstrument.RoundDownToTickSize(c0 - (c0 - mainLow) * 1.75);
+					if (stop < c0) { ArmPriceBracket(mseq, 1, stop); EnterLong(0, CtxBoost(LateQty(1, closeMin), FeatPos(1, Closes[0][0]) >= 0.9686 || FeatM30(1) >= 0.1728 || FeatRet5(1) >= 2.0674, "MSEQ"), mseq.Sig); Log("MSEQ BUY | SL " + Fmt(stop)); }
+				}
+			}
+
+			// ---- MSEQS: mirrored momentum sequence (bullish main candle + 5 falling bearish candles below its high), only on days
+			// where ORB60 has already entered SHORT (pullback down-trend day), 5m bar opening at/after that entry, 10:30-15:45
+			if (mseqs.On && !mseqs.InTrade && !Working(mseqs.Entry) && orbFirstDir == -1 && openMin >= orbFirstMin && openMin >= 630 && openMin < 945)
+			{
+				int n = 5; bool ok = Closes[1][n] > Opens[1][n];
+				double mainHigh = Highs[1][n];
+				for (int j = 0; ok && j < n; j++)
+				{
+					if (Closes[1][j] >= Opens[1][j] || Highs[1][j] >= mainHigh) ok = false;
+					if (j < n - 1 && Closes[1][j] >= Closes[1][j + 1]) ok = false;
+				}
+				if (ok && DirectionAllowed(-1))
+				{
+					double c0 = Closes[1][0]; double stop = Instrument.MasterInstrument.RoundToTickSize(c0 + (mainHigh - c0) * 1.75);
+					if (stop > c0) { ArmPriceBracket(mseqs, -1, stop); EnterShort(0, LateQty(-1, closeMin), mseqs.Sig); Log("MSEQS SELL | SL " + Fmt(stop)); }
+				}
+			}
+
+			// ---- RSI2 pullback: RSI(2) < 10 (> 90) with the daily trend and the intraday trend (price vs RTH open and VWAP agree)
+			if (rsi.On && !rsi.InTrade && !Working(rsi.Entry) && rsiTrades < 3 && closeMin >= 630 && closeMin < 945 && atrCount >= 14 && trendDir != 0
+				&& !double.IsNaN(rthOpenPx) && vwV > 0 && !double.IsNaN(todayAtr) && todayAtr > 0)
+			{
+				double c0 = Closes[1][0], vw = vwPv / vwV;
+				int it = (c0 > rthOpenPx && c0 > vw) ? 1 : ((c0 < rthOpenPx && c0 < vw) ? -1 : 0);
+				int d = 0;
+				if (rsiVal < 10 && trendDir == 1 && it == 1) d = 1;
+				else if (rsiVal > 90 && trendDir == -1 && it == -1) d = -1;
+				if (d != 0 && DirectionAllowed(d))
+				{
+					int st = Math.Max(4, (int)Math.Round(rsi.StopAtr * todayAtr / TickSize));
+					SetStopLoss(rsi.Sig, CalculationMode.Ticks, st, false);
+					SetProfitTarget(rsi.Sig, CalculationMode.Ticks, Math.Max(1, (int)Math.Round(rsi.R * st)));
+					rsi.Dir = d; rsiTrades++;
+					if (d == 1) EnterLong(0, Qty(), rsi.Sig); else EnterShort(0, Qty(), rsi.Sig);
+					Log(string.Format("RSI2 {0} | RSI {1:0.0} | SL {2}t", d == 1 ? "BUY" : "SELL", rsiVal, st));
+				}
+			}
+
+			// ---- ICT open (09:30-10:30 bar open)
+			if (!ict.On || !levelsReady) return;
+			if (Working(ict.Entry))
+			{
+				bool invalid = (ict.Dir == -1 && Highs[1][0] > ictExtPend) || (ict.Dir == 1 && Lows[1][0] < ictExtPend);
+				if (CurrentBars[1] >= ictExpiry || invalid) CancelOrder(ict.Entry);
+			}
+			bool inWin = openMin >= 570 && openMin < 630;
+			for (int q = 0; q < 6; q++)
+			{
+				if (taken[q]) continue;
+				bool hit = q < 3 ? Highs[1][0] > lvl[q] : Lows[1][0] < lvl[q];
+				if (!hit) continue;
+				taken[q] = true;
+				if (!inWin) continue;
+				int s = q < 3 ? 0 : 1;
+				if (s == 0 && (!ictAct[0] || Highs[1][0] > ictExt[0])) { ictAct[0] = true; ictExt[0] = Highs[1][0]; ictExtBar[0] = CurrentBars[1]; }
+				if (s == 1 && (!ictAct[1] || Lows[1][0] < ictExt[1])) { ictAct[1] = true; ictExt[1] = Lows[1][0]; ictExtBar[1] = CurrentBars[1]; }
+			}
+			if (!inWin) { ictAct[0] = ictAct[1] = false; return; }
+			for (int s = 0; s < 2; s++)
+			{
+				if (!ictAct[s]) continue;
+				if (s == 0 && Highs[1][0] > ictExt[0]) { ictExt[0] = Highs[1][0]; ictExtBar[0] = CurrentBars[1]; }
+				if (s == 1 && Lows[1][0] < ictExt[1]) { ictExt[1] = Lows[1][0]; ictExtBar[1] = CurrentBars[1]; }
+				if (CurrentBars[1] - ictExtBar[s] > 4) { ictAct[s] = false; continue; }
+				if (CurrentBars[1] == ictExtBar[s]) continue;
+				int j = CurrentBars[1] - ictExtBar[s];
+				if (s == 0) { if (Closes[1][j] <= Opens[1][j]) j++; while (j + 1 <= CurrentBars[1] && Closes[1][j] > Opens[1][j] && Closes[1][j + 1] > Opens[1][j + 1]) j++; }
+				else { if (Closes[1][j] >= Opens[1][j]) j++; while (j + 1 <= CurrentBars[1] && Closes[1][j] < Opens[1][j] && Closes[1][j + 1] < Opens[1][j + 1]) j++; }
+				double cisd = Opens[1][j];
+				bool trig = s == 0 ? Closes[1][0] < cisd : Closes[1][0] > cisd;
+				if (!trig) continue;
+				ictAct[s] = false;
+				int d = s == 0 ? -1 : 1;
+				if (ict.InTrade || Working(ict.Entry) || ictTrades >= 3 || d != trendDir || atrCount < 14) continue;
+				double stop = d == -1 ? ictExt[s] + TickSize : ictExt[s] - TickSize;
+				double lim = Instrument.MasterInstrument.RoundToTickSize(cisd);
+				if ((d == -1 && lim <= Closes[1][0]) || (d == 1 && lim >= Closes[1][0])) continue;
+				double risk = (stop - lim) * (-d);
+				if (risk <= 0 || risk > 0.25 * todayAtr || !DirectionAllowed(d)) continue;
+				ict.Dir = d; ictExtPend = ictExt[s]; ictExpiry = CurrentBars[1] + 20;
+				ArmPriceBracket(ict, d, stop);
+				int iq = Qty() * ((Profile == NQMasterProfile.MaxPlus || Profile == NQMasterProfile.MaxPlus2 || Profile == NQMasterProfile.Ultra || Profile == NQMasterProfile.WR70Plus || Profile == NQMasterProfile.Custom) ? IctMultiplier : 1);
+				if (d == 1) EnterLongLimit(0, true, iq, lim, ict.Sig); else EnterShortLimit(0, true, iq, lim, ict.Sig);
+				Log(string.Format("ICT {0} LIMIT @ {1} | SL {2}", d == 1 ? "BUY" : "SELL", Fmt(lim), Fmt(stop)));
+			}
+		}
+
+		private void ArmPriceBracket(Mod m, int d, double stop)
+		{
+			m.Dir = d; m.StopPx = stop;
+			SetStopLoss(m.Sig, CalculationMode.Price, stop, false);
+			SetProfitTarget(m.Sig, CalculationMode.Ticks, 4000);	// replaced on fill
+		}
+		#endregion
+
+		#region Account layer and helpers
+		// ---- position size: fixed Contracts, or adaptive (SizeHigh while the strategy's closed-trade drawdown from its
+		// peak is below SizeDownDrawdown, SizeLow otherwise). Research (Apex 50K, real MNQ): 2 -> 1 when DD > $800 gives
+		// pass-in-30-days 29% with 5% bust vs fixed 2: 33% pass / 21% bust.
+		private double eqPeak;
+		private int Qty()
+		{
+			if (!AdaptiveSize) return Contracts;
+			return (eqPeak - netPnl) > SizeDownDrawdown ? SizeLow : SizeHigh;
+		}
+
+		// ---- confluence rules (research/improve2.py, chosen on CFD 2020-23, held every year 2020-26 and on real MNQ):
+		// A) late modules (CRT11, MOM13, MSEQ, MSEQS entering after 11:00) trade 2x size when they go AGAINST today's MOM11 trade
+		//    and WITH the overnight modules (sign of ON07+REV06+LON directions): PF 2.06 / 1.81 / 1.63 vs 1.38 / 1.16 / 1.22.
+		// B) REV06 is skipped when LON already entered the same direction today: PF 0.83 / 0.92 / 1.12 vs 1.37 / 1.29 / 1.20.
+		private bool RulesOn { get { return UseConfluence && (Profile == NQMasterProfile.MaxPlus || Profile == NQMasterProfile.MaxPlus2 || Profile == NQMasterProfile.Ultra || Profile == NQMasterProfile.WR70Plus || Profile == NQMasterProfile.Custom); } }
+
+		// ---- context rules (MaxPlus2; research/mine/filt_mine.py + filt_holdout.py): thresholds chosen on CFD 2020-23 (tertiles/quintiles),
+		// kept only if they also held in 2024-25 on CFD AND real MNQ; 2026 was a clean holdout (PF 1.50 -> 1.58 real, 1.42 -> 1.49 CFD).
+		// Boosts double the size (never above 2x the base size), the ON07 rule skips the trade. Features are in daily-ATR units,
+		// oriented with the trade direction d.
+		private double sessHi, sessLo, atrRatio = double.NaN;
+		private List<double> atrHist;
+		private bool CtxOn { get { return UseContextRules && (Profile == NQMasterProfile.MaxPlus2 || Profile == NQMasterProfile.Ultra || Profile == NQMasterProfile.WR70Plus || Profile == NQMasterProfile.Custom); } }
+		private int CtxBoost(int q, bool cond, string who)
+		{
+			if (!CtxOn || !cond) return q;
+			int cap = 2 * Qty();
+			if (q >= cap) return q;
+			Log(who + " context x2"); return cap;
+		}
+		private double LastClose(int back) { int n = rthCloses.Count; return n > back ? rthCloses[n - 1 - back] : double.NaN; }
+		private double FeatTrend(int d)
+		{
+			if (rthCloses.Count < 15 || double.IsNaN(todayAtr) || todayAtr <= 0) return double.NaN;
+			double sm = 0; foreach (double x in rthCloses) sm += x; sm /= rthCloses.Count;
+			return (LastClose(0) - sm) * d / todayAtr;
+		}
+		private double FeatGap(int d) { return (double.IsNaN(rthOpenPx) || todayAtr <= 0) ? double.NaN : (rthOpenPx - LastClose(0)) * d / todayAtr; }
+		private double FeatPdRet(int d) { return (double.IsNaN(full1) || double.IsNaN(full2) || todayAtr <= 0) ? double.NaN : (full1 - full2) * d / todayAtr; }
+		private double FeatRet5(int d) { return todayAtr > 0 ? (LastClose(0) - LastClose(5)) * d / todayAtr : double.NaN; }
+		private double FeatPos(int d, double px) { return sessHi > sessLo ? (d == 1 ? (px - sessLo) : (sessHi - px)) / (sessHi - sessLo) : double.NaN; }
+		private double FeatM30(int d) { return (CurrentBars[0] > 31 && todayAtr > 0) ? (Closes[0][0] - Closes[0][30]) * d / todayAtr : double.NaN; }
+		private double FeatVw(int d, double px) { return (vwV > 0 && todayAtr > 0) ? (px - vwPv / vwV) * d / todayAtr : double.NaN; }
+		private double FeatOpen(int d, double px) { return (double.IsNaN(rthOpenPx) || todayAtr <= 0) ? double.NaN : (px - rthOpenPx) * d / todayAtr; }
+		private int LateQty(int d, int entryMin)
+		{
+			int q = Qty();
+			if (RulesOn && m11Dir == -d && onSum * d > 0 && entryMin > 660) { q *= 2; Log("confluence x2 (against MOM11, with overnight)"); }
+			return q;
+		}
+
+		private bool lastDeferred;
+		// Opposite open position -> skip. Opposite WORKING entry orders (e.g. an ORB stop order) -> cancel them and defer this entry
+		// one bar (NinjaTrader's managed rules ignore an entry while an opposite entry order is working).
+		private bool DirectionAllowed(int d)
+		{
+			lastDeferred = false;
+			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return false;
+			bool blocked = false;
+			foreach (Mod m in mods) if (Working(m.Entry) && m.Dir == -d) { CancelOrder(m.Entry); blocked = true; }
+			if (blocked) { lastDeferred = true; return false; }
+			return true;
+		}
+
+		private bool CanTrade()
+		{
+			if (fomcToday) { status = "FOMC day: no trading"; return false; }
+			if (targetHit) { status = "eval target reached"; return false; }
+			if (ddTripped) { status = "drawdown guard"; return false; }
+			if (PauseActive()) { status = "MANUAL PAUSE (file)"; return false; }
+			status = "trading";
+			return true;
+		}
+
+		private void AccountGuard()
+		{
+			if (State != State.Realtime) return;
+			double bal = Account.Get(AccountItem.CashValue, Currency.UsDollar);
+			if (double.IsNaN(highWater) || bal > highWater) highWater = bal;
+			if (EvalTarget > 0 && bal >= StartBalance + EvalTarget && !targetHit) { targetHit = true; FlattenAll("eval target"); Print("NQMaster | EVAL TARGET REACHED - trading stopped."); }
+			if (MaxDrawdown > 0 && bal <= highWater - MaxDrawdown + DrawdownBuffer && !ddTripped) { ddTripped = true; FlattenAll("drawdown guard"); Print("NQMaster | DRAWDOWN GUARD - trading stopped."); }
+		}
+
+		private void ExitModule(Mod m, string why)
+		{
+			if (Position.MarketPosition == MarketPosition.Long) ExitLong(0, Math.Max(Contracts, SizeHigh) * 2 * Math.Max(1, IctMultiplier), m.Sig + "X", m.Sig);
+			else if (Position.MarketPosition == MarketPosition.Short) ExitShort(0, Math.Max(Contracts, SizeHigh) * 2 * Math.Max(1, IctMultiplier), m.Sig + "X", m.Sig);
+			Log(m.Sig + " exit: " + why);
+		}
+
+		private void FlattenAll(string why)
+		{
+			CancelAllEntries();
+			if (Position.MarketPosition == MarketPosition.Flat || flattenBar == CurrentBars[0]) return;
+			flattenBar = CurrentBars[0];
+			if (Position.MarketPosition == MarketPosition.Long) ExitLong(); else ExitShort();
+			Log("FLATTEN: " + why);
+		}
+
+		private void CancelAllEntries() { foreach (Mod m in mods) if (Working(m.Entry)) CancelOrder(m.Entry); }
+
+		private static bool Working(Order o)
+		{
+			if (o == null) return false;
+			OrderState s = o.OrderState;
+			return s != OrderState.Filled && s != OrderState.Cancelled && s != OrderState.Rejected && s != OrderState.Unknown;
+		}
+		private Mod BySig(string sig) { if (mods == null || string.IsNullOrEmpty(sig)) return null; foreach (Mod m in mods) if (m.Sig == sig) return m; return null; }
+
+		protected override void OnOrderUpdate(Order order, double limitPrice, double stopPrice, int quantity, int filled, double averageFillPrice,
+			OrderState orderState, DateTime time, ErrorCode error, string nativeError)
+		{
+			Mod m = BySig(order.Name);
+			if (m != null) m.Entry = order;
+			if (orderState == OrderState.Rejected) Print(string.Format("NQMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
+		}
+
+		protected override void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity,
+			MarketPosition marketPosition, string orderId, DateTime time)
+		{
+			if (execution.Order == null) return;
+			Mod m = BySig(execution.Order.Name);
+			if (m != null)
+			{
+				if (execution.Order.OrderState != OrderState.Filled) return;
+				m.InTrade = true; m.EntryPx = execution.Order.AverageFillPrice;
+				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(Times[0][0]).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
+				if (m == orb2) orb2.Trades++;
+				if (m == volb) { volbDone = true; volb.EntryBar = CurrentBars[0]; }
+				if (m.Sig == "MOM11" && m11Dir == 0) m11Dir = m.Dir;
+				if (m == lon || m.Sig == "ON07" || m.Sig == "REV06") onSum += m.Dir;
+				if (m == lon && lonDir == 0) lonDir = lon.Dir;
+				if (m == ict) ictTrades++;
+				if (m.Kind == 1 || m == rsi) m.EntryBar = CurrentBars[0];
+				// cancel opposite working entries
+				foreach (Mod o in mods) if (o != m && Working(o.Entry) && o.Dir == -m.Dir) CancelOrder(o.Entry);
+				if (m.PriceTarget)
+				{
+					double fill = m.EntryPx; double risk = (fill - m.StopPx) * m.Dir;
+					if (risk <= 0) { ExitModule(m, "filled beyond stop"); return; }
+					double tgt = Instrument.MasterInstrument.RoundToTickSize(fill + m.Dir * m.R * risk);
+					SetProfitTarget(m.Sig, CalculationMode.Price, tgt);
+				}
+				Log(string.Format("{0} filled @ {1}", m.Sig, Fmt(m.EntryPx)));
+				return;
+			}
+			Mod from = BySig(execution.Order.FromEntrySignal);
+			if (from != null && execution.Order.OrderState == OrderState.Filled) from.InTrade = false;
+			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) x.InTrade = false;
+		}
+
+		private void ProcessClosedTrades()
+		{
+			int count = SystemPerformance.AllTrades.Count;
+			for (int i = tradesProcessed; i < count; i++)
+			{
+				double pnl = SystemPerformance.AllTrades[i].ProfitCurrency;
+				totalTrades++; netPnl += pnl;
+				if (pnl > 0) { totalWins++; grossWin += pnl; } else grossLoss -= pnl;
+				if (netPnl > eqPeak) eqPeak = netPnl;
+			}
+			tradesProcessed = count;
+			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) x.InTrade = false;
+		}
+
+		private bool PauseActive()
+		{
+			if (string.IsNullOrWhiteSpace(PauseFile)) return false;
+			try { string p = Path.IsPathRooted(PauseFile) ? PauseFile : Path.Combine(Core.Globals.UserDataDir, PauseFile); return File.Exists(p); }
+			catch { return false; }
+		}
+		private DateTime ToEt(DateTime t)
+		{
+			if (etZone == null) return t;
+			try { return TimeZoneInfo.ConvertTime(DateTime.SpecifyKind(t, DateTimeKind.Unspecified), Core.Globals.GeneralOptions.TimeZoneInfo, etZone); }
+			catch { return t; }
+		}
+		private static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100; }
+		private string Fmt(double p) { return Instrument.MasterInstrument.FormatPrice(p); }
+		private void Log(string m) { if (PrintLog) Print(string.Format("{0} | NQM | {1}", Times[0][0].ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), m)); }
+		private void UpdateDashboard()
+		{
+			if (!ShowDashboard || (State == State.Historical && CurrentBars[0] < Count - 2)) return;
+			double pf = grossLoss > 0 ? grossWin / grossLoss : 0;
+			StringBuilder mm = new StringBuilder();
+			foreach (Mod m in mods) if (m.On) mm.Append(m.Sig + (m.InTrade ? "*" : Working(m.Entry) ? "~" : "") + " ");
+			string txt = string.Format("NQ MASTER ({0}) | {1}\ntrend {2} | ATRd {3:0.0} | pullback day {4}\n{5}\nTotal {6} tr | WR {7:0.0}% | PF {8:0.00} | ${9:0.00}",
+				Profile, status, trendDir == 1 ? "UP" : trendDir == -1 ? "DOWN" : "-", todayAtr, pullbackDay ? "yes" : "no", mm.ToString(),
+				totalTrades, totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
+			Draw.TextFixed(this, "NQM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
+		}
+		#endregion
+
+		#region Properties
+		[NinjaScriptProperty][Display(Name = "Profile", Order = 0, GroupName = "00. Profile")] public NQMasterProfile Profile { get; set; }
+		[NinjaScriptProperty][Display(Name = "ORB on ", Order = 1, GroupName = "01. Module switches (any profile)")] public bool UseOrb { get; set; }
+		[NinjaScriptProperty][Range(15, 120)][Display(Name = "ORB range min ", Order = 2, GroupName = "01. Module switches (any profile)")] public int OrbRangeMin { get; set; }
+		[NinjaScriptProperty][Range(0.2, 5.0)][Display(Name = "ORB target R ", Order = 3, GroupName = "01. Module switches (any profile)")] public double OrbTargetR { get; set; }
+		[NinjaScriptProperty][Display(Name = "ORB pullback-day filter ", Order = 4, GroupName = "01. Module switches (any profile)")] public bool OrbPullbackFilter { get; set; }
+		[NinjaScriptProperty][Display(Name = "MSEQ on ", Order = 5, GroupName = "01. Module switches (any profile)")] public bool UseMseq { get; set; }
+		[NinjaScriptProperty][Display(Name = "CRT11 on ", Order = 6, GroupName = "01. Module switches (any profile)")] public bool UseCrt { get; set; }
+		[NinjaScriptProperty][Display(Name = "MOM11 on ", Order = 7, GroupName = "01. Module switches (any profile)")] public bool UseMom11 { get; set; }
+		[NinjaScriptProperty][Display(Name = "MOM13 on ", Order = 8, GroupName = "01. Module switches (any profile)")] public bool UseMom13 { get; set; }
+		[NinjaScriptProperty][Display(Name = "MOM1030 on ", Order = 9, GroupName = "01. Module switches (any profile)")] public bool UseMom1030 { get; set; }
+		[NinjaScriptProperty][Display(Name = "ON07 on ", Order = 10, GroupName = "01. Module switches (any profile)")] public bool UseOn07 { get; set; }
+		[NinjaScriptProperty][Display(Name = "REV06 on ", Order = 11, GroupName = "01. Module switches (any profile)")] public bool UseRev06 { get; set; }
+		[NinjaScriptProperty][Display(Name = "LON on ", Order = 12, GroupName = "01. Module switches (any profile)")] public bool UseLon { get; set; }
+		[NinjaScriptProperty][Display(Name = "ICT on ", Order = 13, GroupName = "01. Module switches (any profile)")] public bool UseIct { get; set; }
+		[NinjaScriptProperty][Display(Name = "MOM1130 on ", Order = 14, GroupName = "01. Module switches (any profile)")] public bool UseMom1130 { get; set; }
+		[NinjaScriptProperty][Display(Name = "RSI2 on ", Order = 15, GroupName = "01. Module switches (any profile)")] public bool UseRsi2 { get; set; }
+		[NinjaScriptProperty][Display(Name = "ORB90 on ", Order = 16, GroupName = "01. Module switches (any profile)")] public bool UseOrb90 { get; set; }
+		[NinjaScriptProperty][Display(Name = "MSEQS on ", Order = 17, GroupName = "01. Module switches (any profile)")] public bool UseMseqShort { get; set; }
+		[NinjaScriptProperty][Range(-5.0, 5.0)][Display(Name = "Pullback max prior-day move (x ATRd)", Order = 20, GroupName = "02. Edge")] public double PullbackMaxRet { get; set; }
+		[NinjaScriptProperty][Range(0.05, 1.0)][Display(Name = "ORB stop cap (x ATRd)", Order = 21, GroupName = "02. Edge")] public double StopCapAtr { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Contracts per module", Order = 30, GroupName = "03. Risk / account")] public int Contracts { get; set; }
+		[NinjaScriptProperty][Range(1000, 1659)][Display(Name = "Flatten time (ET HHmm)", Order = 31, GroupName = "03. Risk / account")] public int FlattenTime { get; set; }
+		[NinjaScriptProperty][Display(Name = "Skip FOMC days", Order = 32, GroupName = "03. Risk / account")] public bool SkipFomc { get; set; }
+		[NinjaScriptProperty][Display(Name = "FOMC dates (yyyy-MM-dd list)", Order = 33, GroupName = "03. Risk / account")] public string FomcDates { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Start balance $", Order = 34, GroupName = "03. Risk / account")] public double StartBalance { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval target $ (0 = off, realtime)", Order = 35, GroupName = "03. Risk / account")] public double EvalTarget { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Max drawdown $ (0 = off, realtime)", Order = 36, GroupName = "03. Risk / account")] public double MaxDrawdown { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Drawdown buffer $", Order = 37, GroupName = "03. Risk / account")] public double DrawdownBuffer { get; set; }
+		[NinjaScriptProperty][Display(Name = "Pause file", Order = 38, GroupName = "03. Risk / account")] public string PauseFile { get; set; }
+		[NinjaScriptProperty][Display(Name = "Context rules (MaxPlus2/Custom): x2 ORB60/ORB90/CRT11/MSEQ in favourable context, skip ON07 after a counter day", Order = 45, GroupName = "03. Risk / account")] public bool UseContextRules { get; set; }
+		[NinjaScriptProperty][Display(Name = "VOLB on ", Order = 19, GroupName = "01. Module switches (any profile)")] public bool UseVolBreak { get; set; }
+		[NinjaScriptProperty][Display(Name = "VW13 on ", Order = 18, GroupName = "01. Module switches (any profile)")] public bool UseVw13 { get; set; }
+		[NinjaScriptProperty][Display(Name = "Confluence rules (MaxPlus/Custom): x2 late trades vs MOM11 + with overnight, skip REV06 after same-dir LON", Order = 44, GroupName = "03. Risk / account")] public bool UseConfluence { get; set; }
+		[NinjaScriptProperty][Range(1, 5)][Display(Name = "ICT size multiplier (MaxPlus/Custom; equal-risk: ICT stops are the smallest)", Order = 43, GroupName = "03. Risk / account")] public int IctMultiplier { get; set; }
+		[NinjaScriptProperty][Display(Name = "Adaptive size (eval mode)", Order = 39, GroupName = "03. Risk / account")] public bool AdaptiveSize { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Adaptive: size normal", Order = 40, GroupName = "03. Risk / account")] public int SizeHigh { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Adaptive: size after drawdown", Order = 41, GroupName = "03. Risk / account")] public int SizeLow { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Adaptive: drawdown $ to size down", Order = 42, GroupName = "03. Risk / account")] public double SizeDownDrawdown { get; set; }
+		[Display(Name = "Show dashboard", Order = 50, GroupName = "04. Display")] public bool ShowDashboard { get; set; }
+		[Display(Name = "Print log", Order = 51, GroupName = "04. Display")] public bool PrintLog { get; set; }
+		#endregion
+	}
+}

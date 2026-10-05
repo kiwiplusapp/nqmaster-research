@@ -1,0 +1,511 @@
+{
+ "nodes": [
+  {
+   "id": "mapa",
+   "type": "file",
+   "file": "Conocimiento/00 - MAPA.md",
+   "x": -130,
+   "y": -40,
+   "width": 300,
+   "height": 100,
+   "color": "6"
+  },
+  {
+   "id": "obj",
+   "type": "file",
+   "file": "Conocimiento/Proceso/Objetivo y reglas.md",
+   "x": -620,
+   "y": -300,
+   "width": 260,
+   "height": 80,
+   "color": "5"
+  },
+  {
+   "id": "cron",
+   "type": "file",
+   "file": "Conocimiento/Proceso/Cronologia.md",
+   "x": -620,
+   "y": -170,
+   "width": 260,
+   "height": 80,
+   "color": "5"
+  },
+  {
+   "id": "met",
+   "type": "file",
+   "file": "Conocimiento/Proceso/Metodologia.md",
+   "x": -620,
+   "y": -40,
+   "width": 260,
+   "height": 80,
+   "color": "5"
+  },
+  {
+   "id": "dat",
+   "type": "file",
+   "file": "Conocimiento/Proceso/Datos.md",
+   "x": -620,
+   "y": 90,
+   "width": 260,
+   "height": 80,
+   "color": "5"
+  },
+  {
+   "id": "lec",
+   "type": "file",
+   "file": "Conocimiento/Proceso/Lecciones clave.md",
+   "x": -620,
+   "y": 220,
+   "width": 260,
+   "height": 80,
+   "color": "5"
+  },
+  {
+   "id": "master",
+   "type": "file",
+   "file": "Conocimiento/NQMaster.md",
+   "x": -130,
+   "y": 250,
+   "width": 300,
+   "height": 90,
+   "color": "4"
+  },
+  {
+   "id": "orb",
+   "type": "file",
+   "file": "Conocimiento/Modulos/ORB60 Pullback Day.md",
+   "x": -700,
+   "y": 460,
+   "width": 260,
+   "height": 80,
+   "color": "4"
+  },
+  {
+   "id": "mseq",
+   "type": "file",
+   "file": "Conocimiento/Modulos/MSEQ Momentum Sequence.md",
+   "x": -400,
+   "y": 460,
+   "width": 260,
+   "height": 80,
+   "color": "4"
+  },
+  {
+   "id": "crt",
+   "type": "file",
+   "file": "Conocimiento/Modulos/CRT11.md",
+   "x": -100,
+   "y": 460,
+   "width": 260,
+   "height": 80,
+   "color": "4"
+  },
+  {
+   "id": "m11",
+   "type": "file",
+   "file": "Conocimiento/Modulos/MOM11.md",
+   "x": 200,
+   "y": 460,
+   "width": 260,
+   "height": 80,
+   "color": "4"
+  },
+  {
+   "id": "tm",
+   "type": "file",
+   "file": "Conocimiento/Modulos/Modulos por horario.md",
+   "x": 500,
+   "y": 460,
+   "width": 260,
+   "height": 80,
+   "color": "4"
+  },
+  {
+   "id": "lon",
+   "type": "file",
+   "file": "Conocimiento/Modulos/LON London FVG.md",
+   "x": -700,
+   "y": 590,
+   "width": 260,
+   "height": 80,
+   "color": "4"
+  },
+  {
+   "id": "ict",
+   "type": "file",
+   "file": "Conocimiento/Modulos/ICT Open.md",
+   "x": -400,
+   "y": 590,
+   "width": 260,
+   "height": 80,
+   "color": "4"
+  },
+  {
+   "id": "gold",
+   "type": "file",
+   "file": "Conocimiento/Modulos/GOLD ORB30.md",
+   "x": -100,
+   "y": 590,
+   "width": 260,
+   "height": 80,
+   "color": "4"
+  },
+  {
+   "id": "guard",
+   "type": "file",
+   "file": "Conocimiento/Modulos/Account Guard.md",
+   "x": 200,
+   "y": 590,
+   "width": 260,
+   "height": 80,
+   "color": "4"
+  },
+  {
+   "id": "res",
+   "type": "file",
+   "file": "Conocimiento/Resultados NinjaTrader.md",
+   "x": 420,
+   "y": 150,
+   "width": 260,
+   "height": 80,
+   "color": "3"
+  },
+  {
+   "id": "eval",
+   "type": "file",
+   "file": "Conocimiento/Evaluaciones prop firm.md",
+   "x": 420,
+   "y": 290,
+   "width": 260,
+   "height": 80,
+   "color": "3"
+  },
+  {
+   "id": "next",
+   "type": "file",
+   "file": "Conocimiento/Proximos pasos.md",
+   "x": 420,
+   "y": 430,
+   "width": 260,
+   "height": 80,
+   "color": "6"
+  },
+  {
+   "id": "leg",
+   "type": "file",
+   "file": "Conocimiento/Estrategias legacy.md",
+   "x": 420,
+   "y": 10,
+   "width": 260,
+   "height": 80,
+   "color": "0"
+  },
+  {
+   "id": "dtitle",
+   "type": "text",
+   "text": "## ❌ Descartado con datos",
+   "x": 420,
+   "y": -420,
+   "width": 300,
+   "height": 60,
+   "color": "1"
+  },
+  {
+   "id": "d1",
+   "type": "file",
+   "file": "Conocimiento/Descartado/IFVG y SMC.md",
+   "x": 760,
+   "y": -440,
+   "width": 270,
+   "height": 70,
+   "color": "1"
+  },
+  {
+   "id": "d2",
+   "type": "file",
+   "file": "Conocimiento/Descartado/ICT Sniper y PO3.md",
+   "x": 1050,
+   "y": -440,
+   "width": 270,
+   "height": 70,
+   "color": "1"
+  },
+  {
+   "id": "d3",
+   "type": "file",
+   "file": "Conocimiento/Descartado/Estrategias TradingView.md",
+   "x": 760,
+   "y": -330,
+   "width": 270,
+   "height": 70,
+   "color": "1"
+  },
+  {
+   "id": "d4",
+   "type": "file",
+   "file": "Conocimiento/Descartado/Order flow y perfil de volumen.md",
+   "x": 1050,
+   "y": -330,
+   "width": 270,
+   "height": 70,
+   "color": "1"
+  },
+  {
+   "id": "d5",
+   "type": "file",
+   "file": "Conocimiento/Descartado/Oro por horario.md",
+   "x": 760,
+   "y": -220,
+   "width": 270,
+   "height": 70,
+   "color": "1"
+  },
+  {
+   "id": "d6",
+   "type": "file",
+   "file": "Conocimiento/Descartado/Filtros y optimizaciones rechazadas.md",
+   "x": 1050,
+   "y": -220,
+   "width": 270,
+   "height": 70,
+   "color": "1"
+  },
+  {
+   "id": "d7",
+   "type": "file",
+   "file": "Conocimiento/Descartado/Machine learning.md",
+   "x": 760,
+   "y": -110,
+   "width": 270,
+   "height": 70,
+   "color": "1"
+  },
+  {
+   "id": "kpi",
+   "type": "text",
+   "text": "**Estado 28-sep-2026**\nNQ: PF 1.30 · WR 65.9% · +$30k\nOro: PF 1.21 · +$5k\nTopstep 50K: ~85% de aprobación\n→ Sim 2–4 semanas",
+   "x": -130,
+   "y": 90,
+   "width": 300,
+   "height": 130,
+   "color": "2"
+  }
+ ],
+ "edges": [
+  {
+   "id": "e0",
+   "fromNode": "mapa",
+   "fromSide": "left",
+   "toNode": "obj",
+   "toSide": "right"
+  },
+  {
+   "id": "e1",
+   "fromNode": "mapa",
+   "fromSide": "left",
+   "toNode": "cron",
+   "toSide": "right"
+  },
+  {
+   "id": "e2",
+   "fromNode": "mapa",
+   "fromSide": "left",
+   "toNode": "met",
+   "toSide": "right"
+  },
+  {
+   "id": "e3",
+   "fromNode": "mapa",
+   "fromSide": "left",
+   "toNode": "dat",
+   "toSide": "right"
+  },
+  {
+   "id": "e4",
+   "fromNode": "mapa",
+   "fromSide": "left",
+   "toNode": "lec",
+   "toSide": "right"
+  },
+  {
+   "id": "e5",
+   "fromNode": "mapa",
+   "fromSide": "bottom",
+   "toNode": "master",
+   "toSide": "top",
+   "label": "estrategia final"
+  },
+  {
+   "id": "e6",
+   "fromNode": "master",
+   "fromSide": "bottom",
+   "toNode": "orb",
+   "toSide": "top"
+  },
+  {
+   "id": "e7",
+   "fromNode": "master",
+   "fromSide": "bottom",
+   "toNode": "mseq",
+   "toSide": "top"
+  },
+  {
+   "id": "e8",
+   "fromNode": "master",
+   "fromSide": "bottom",
+   "toNode": "crt",
+   "toSide": "top"
+  },
+  {
+   "id": "e9",
+   "fromNode": "master",
+   "fromSide": "bottom",
+   "toNode": "m11",
+   "toSide": "top"
+  },
+  {
+   "id": "e10",
+   "fromNode": "master",
+   "fromSide": "bottom",
+   "toNode": "tm",
+   "toSide": "top"
+  },
+  {
+   "id": "e11",
+   "fromNode": "master",
+   "fromSide": "bottom",
+   "toNode": "lon",
+   "toSide": "top"
+  },
+  {
+   "id": "e12",
+   "fromNode": "master",
+   "fromSide": "bottom",
+   "toNode": "ict",
+   "toSide": "top"
+  },
+  {
+   "id": "e13",
+   "fromNode": "master",
+   "fromSide": "bottom",
+   "toNode": "gold",
+   "toSide": "top"
+  },
+  {
+   "id": "e14",
+   "fromNode": "master",
+   "fromSide": "bottom",
+   "toNode": "guard",
+   "toSide": "top"
+  },
+  {
+   "id": "e15",
+   "fromNode": "master",
+   "fromSide": "right",
+   "toNode": "res",
+   "toSide": "left",
+   "label": "validado PF 1.30"
+  },
+  {
+   "id": "e16",
+   "fromNode": "res",
+   "fromSide": "bottom",
+   "toNode": "eval",
+   "toSide": "top"
+  },
+  {
+   "id": "e17",
+   "fromNode": "eval",
+   "fromSide": "bottom",
+   "toNode": "next",
+   "toSide": "top"
+  },
+  {
+   "id": "e18",
+   "fromNode": "mapa",
+   "fromSide": "right",
+   "toNode": "leg",
+   "toSide": "left"
+  },
+  {
+   "id": "e19",
+   "fromNode": "mapa",
+   "fromSide": "top",
+   "toNode": "dtitle",
+   "toSide": "left",
+   "label": "no funciona"
+  },
+  {
+   "id": "e20",
+   "fromNode": "dtitle",
+   "fromSide": "right",
+   "toNode": "d1",
+   "toSide": "left"
+  },
+  {
+   "id": "e21",
+   "fromNode": "dtitle",
+   "fromSide": "right",
+   "toNode": "d2",
+   "toSide": "left"
+  },
+  {
+   "id": "e22",
+   "fromNode": "dtitle",
+   "fromSide": "right",
+   "toNode": "d3",
+   "toSide": "left"
+  },
+  {
+   "id": "e23",
+   "fromNode": "dtitle",
+   "fromSide": "right",
+   "toNode": "d4",
+   "toSide": "left"
+  },
+  {
+   "id": "e24",
+   "fromNode": "dtitle",
+   "fromSide": "right",
+   "toNode": "d5",
+   "toSide": "left"
+  },
+  {
+   "id": "e25",
+   "fromNode": "dtitle",
+   "fromSide": "right",
+   "toNode": "d6",
+   "toSide": "left"
+  },
+  {
+   "id": "e26",
+   "fromNode": "dtitle",
+   "fromSide": "right",
+   "toNode": "d7",
+   "toSide": "left"
+  },
+  {
+   "id": "e27",
+   "fromNode": "d3",
+   "fromSide": "bottom",
+   "toNode": "mseq",
+   "toSide": "top",
+   "label": "origen"
+  },
+  {
+   "id": "e28",
+   "fromNode": "d2",
+   "fromSide": "bottom",
+   "toNode": "ict",
+   "toSide": "right",
+   "label": "única pieza útil"
+  },
+  {
+   "id": "e29",
+   "fromNode": "mapa",
+   "fromSide": "bottom",
+   "toNode": "kpi",
+   "toSide": "top"
+  }
+ ]
+}
