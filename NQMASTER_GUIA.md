@@ -103,3 +103,29 @@ Gana menos dinero que Ultra: elegilo si priorizás el winrate.
 - Activo en Ultra, WR70Plus y Core (switch "LATE15 on").
 - Resultado solo: PF 1.44 / 1.29 / 1.29 (CFD 2020-23 / CFD 2024-26 / MNQ real) y 1.39 en 2015-19. Unos 0.17 trades por día.
 - En la cartera suma +$30-40 por mes por lote, sin empeorar el Sharpe ni el drawdown.
+
+## Cuentas de prop con 1 contrato: modo Eval / Funded (2026-10-05)
+Grupo **"07. Prop account (cushion gating)"**. El "colchón" es lo que separa el saldo del nivel de liquidación. El nivel de liquidación es el drawdown de $2.000 que sigue al máximo saldo de cierre, y se fija en +$100 cuando ese máximo llega a +$2.100. Cada día, al empezar la sesión, NQMaster mira el colchón y elige el modo:
+- **Eval:** si el colchón es ≥ $900, modo **FULL** (el perfil completo). Si es menor, modo **SAFE**. Además corta el día si la cuenta pierde $700 (contando MNQ + MGC).
+- **Funded:** si el colchón es < $1.500, modo **SAFE**. Si es mayor, modo **NO-BOOST**. Pedí el cobro cuando la ganancia llegue a **$6.000**; el panel avisa.
+- **SAFE:** sin tamaño ×2 (contexto, confluencia, ICT ×2, VW13 doble). Apaga VOLB, LON, MOM1030 y MOM11, que son los de peor ganancia por unidad de riesgo con 1 contrato.
+- **NO-BOOST:** todos los módulos del perfil, sin ×2.
+- **Cuándo empezar una evaluación:** solo los días en que el panel dice *"ATR ratio … OK to start a new eval"*, es decir, ATR < 1,15 veces su mediana de 60 días.
+
+Configuración en NinjaTrader:
+- **NQMaster:** Profile = Ultra, Contracts = 1, PropMode = Eval (o Funded), StartBalance = 50000.
+- **GoldMaster:** Profile = WinRate, Contracts = 1. En la evaluación, *Account daily stop* = 700.
+- Si NinjaTrader se reinicia, el máximo saldo de cierre se guarda en `Documents\NinjaTrader 8\nqmaster_prop_<cuenta>.txt`. Si no coincide con el de la prop firm, ponelo a mano en "Highest end-of-day balance" o cargá directamente el nivel de liquidación en "Liquidation threshold override".
+
+Resultados (Lucid Flex 50K, 1 contrato por módulo, NQ Ultra + oro WinRate; CFD 2020-23 / CFD 2024-26 / futuros reales 2024-26):
+
+| | Hoy (Ultra, cualquier día) | Nuevo protocolo |
+|---|---|---|
+| Aprueba la evaluación | 87,2 / 78,7 / 78,0% | **94,6 / 81,5 / 88,9%** |
+| Evaluaciones perdidas | 12,8 / 21,3 / 22,0% | **5,4 / 18,5 / 11,1%** |
+| Días hasta aprobar (mediana) | 30 / 24,5 / 22 | 32 / 22 / 25 (igual) |
+| Fondeada quemada en 12 meses | 15 / 44 / 44% | **3 / 22 / 25%** |
+| Cobro por cuenta fondeada | $7.557 / $5.429 / $5.618 | $6.905 / **$6.770 / $6.844** |
+
+Mejora de aprobación con intervalo del 90% (bootstrap): +7,6 [+1,5; +15] en 2020-23 y +11,1 [+2,1; +20] en MNQ real. En CFD 2024-26 la mejora (+3) no es significativa.
+Investigación: `research/mine/dense_build.py`, `acct_lab.py`, `acct_mods.py`, `acct_policy*.py`, `acct_timing*.py`, `acct_final.py`.

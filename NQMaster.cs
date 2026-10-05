@@ -44,6 +44,7 @@ using NinjaTrader.NinjaScript.DrawingTools;
 namespace NinjaTrader.NinjaScript.Strategies
 {
 	public enum NQMasterProfile { MaxSharpe, WinRate70, Gold, Custom, MaxTrades, MaxPlus, MaxPlus2, Ultra, WR70Plus, Core }
+	public enum NQMasterPropMode { Off, Eval, Funded }
 
 	public class NQMaster : Strategy
 	{
@@ -62,6 +63,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public int Time; public int Lookback; public bool Reverse; public double StopAtr; public int MaxHold; public bool Trend; public bool Vwap; public bool Done; public double MinDist; public double DoubleDist;
 			// target set on fill (price mode)
 			public bool PriceTarget;
+			public bool BaseOn;
 			public bool Retry;
 		}
 		private List<Mod> mods;
@@ -138,6 +140,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3;
 				PauseFile = "pause_trading.txt"; ShowDashboard = true; PrintLog = true;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0;
+				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 900; EvalDailyStop = 700; FundedCushionSafe = 1500; FundedPayoutAt = 6000;
+				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 1.15;
 			}
 			else if (State == State.Configure)
 			{
@@ -157,12 +161,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
 				}
 				BuildModules();
+				foreach (Mod m in mods) m.BaseOn = m.On;
 				EdgeParams();
 			}
 			else if (State == State.Realtime)
 			{
 				foreach (Mod m in mods) if (m.Entry != null) m.Entry = GetRealtimeOrder(m.Entry);
 				eqPeak = netPnl;	// adaptive size measures the drawdown from the moment the strategy goes live
+				PropGoLive();
 			}
 			else if (State == State.Terminated)
 			{
@@ -238,6 +244,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				EvalSessionStart(tradeDay);
 				edgeDayQty = Qty(); edgeDayTradable = !fomcToday; edgeDayDate = tradeDay;
 				NewSession();
+				PropSessionStart();
 				sessHi = High[0]; sessLo = Low[0];
 			}
 			sessHi = Math.Max(sessHi, High[0]); sessLo = Math.Min(sessLo, Low[0]);
@@ -277,6 +284,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 			AccountGuard();
 			DailyLossCheck();
+			PropDailyCheck();
 
 			// exits: module time exits, London exit, flatten
 			if (FlattenTime > 0 && closeMin >= Hm(FlattenTime) && closeMin < 18 * 60) { FlattenAll("end of day"); UpdateDashboard(); return; }
@@ -437,7 +445,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			SetProfitTarget(m.Sig, CalculationMode.Ticks, Math.Max(1, (int)Math.Round(m.R * st)));
 			m.Dir = d; m.EntryBar = CurrentBars[0] + 1;
 			int tq = m.Sig == "MOM13" ? LateQty(d, Hm(m.Time)) : Qty();
-			if (m.DoubleDist > 0 && Math.Abs(Close[0] - reference) >= m.DoubleDist * atrDaily) tq = 2 * Qty();
+			if (m.DoubleDist > 0 && !noBoost && Math.Abs(Close[0] - reference) >= m.DoubleDist * atrDaily) tq = 2 * Qty();
 			if (d == 1) EnterLong(0, tq, m.Sig); else EnterShort(0, tq, m.Sig);
 			Log(string.Format("{0} {1} | ref {2} | SL {3}t", m.Sig, d == 1 ? "BUY" : "SELL", Fmt(reference), st));
 		}
@@ -616,7 +624,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (risk <= 0 || risk > 0.25 * todayAtr || !DirectionAllowed(d)) continue;
 				ict.Dir = d; ictExtPend = ictExt[s]; ictExpiry = CurrentBars[1] + 20;
 				ArmPriceBracket(ict, d, stop);
-				int iq = Qty() * ((Profile == NQMasterProfile.MaxPlus || Profile == NQMasterProfile.MaxPlus2 || Profile == NQMasterProfile.Ultra || Profile == NQMasterProfile.WR70Plus || Profile == NQMasterProfile.Core || Profile == NQMasterProfile.Custom) ? IctMultiplier : 1);
+				int iq = Qty() * ((Profile == NQMasterProfile.MaxPlus || Profile == NQMasterProfile.MaxPlus2 || Profile == NQMasterProfile.Ultra || Profile == NQMasterProfile.WR70Plus || Profile == NQMasterProfile.Core || Profile == NQMasterProfile.Custom) ? (noBoost ? 1 : IctMultiplier) : 1);
 				if (d == 1) EnterLongLimit(0, true, iq, lim, ict.Sig); else EnterShortLimit(0, true, iq, lim, ict.Sig);
 				Log(string.Format("ICT {0} LIMIT @ {1} | SL {2}", d == 1 ? "BUY" : "SELL", Fmt(lim), Fmt(stop)));
 			}
@@ -683,7 +691,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private bool CtxOn { get { return UseContextRules && (Profile == NQMasterProfile.MaxPlus2 || Profile == NQMasterProfile.Ultra || Profile == NQMasterProfile.WR70Plus || Profile == NQMasterProfile.Custom); } }
 		private int CtxBoost(int q, bool cond, string who)
 		{
-			if (!CtxOn || !cond) return q;
+			if (!CtxOn || !cond || noBoost) return q;
 			int cap = 2 * Qty();
 			if (q >= cap) return q;
 			Log(who + " context x2"); return cap;
@@ -705,7 +713,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private int LateQty(int d, int entryMin)
 		{
 			int q = Qty();
-			if (RulesOn && m11Dir == -d && onSum * d > 0 && entryMin > 660) { q *= 2; Log("confluence x2 (against MOM11, with overnight)"); }
+			if (RulesOn && !noBoost && m11Dir == -d && onSum * d > 0 && entryMin > 660) { q *= 2; Log("confluence x2 (against MOM11, with overnight)"); }
 			return q;
 		}
 
@@ -750,6 +758,63 @@ namespace NinjaTrader.NinjaScript.Strategies
 			edgeDayRth = false;
 		}
 
+
+		// ---- prop-account cushion gating (research/mine/acct_final.py; Lucid Flex 50K, 1 contract per module, MNQ + MGC 2024-26)
+		// Eval  : FULL while the cushion over the liquidation threshold is >= EvalCushionFull ($900), SAFE below; own daily stop $700.
+		//         Pass 88.9% vs 78.0% (busts 11% vs 22%) when evals are also started only with ATR < 1.15 x its 60-day median.
+		// Funded: SAFE while cushion < FundedCushionSafe ($1,500), NO-BOOST above; request payouts at >= $6,000 profit.
+		//         Accounts lost within 12 months 25% vs 44%; cash per account ~$6.8k vs ~$5.6k.
+		private enum GateMode { Full, NoBoost, Safe }
+		private GateMode gate = GateMode.Full; private bool noBoost, propStopped;
+		private double propPeak = double.NaN, propThr = double.NaN, propCushion = double.NaN, propDayStart = double.NaN, atrStartRatio = double.NaN;
+		private bool propLive;
+		private string PropFile { get { try { return Path.Combine(Core.Globals.UserDataDir, "nqmaster_prop_" + (Account != null ? Account.Name : "acct") + ".txt"); } catch { return null; } } }
+		private double PropEquity()
+		{
+			if (State == State.Realtime) return Account.Get(AccountItem.CashValue, Currency.UsDollar);
+			return StartBalance + netPnl;
+		}
+		private void PropGoLive()
+		{
+			if (PropMode == NQMasterPropMode.Off) return;
+			propLive = true; propPeak = Math.Max(StartBalance, PropEquity());
+			try { string f = PropFile; if (f != null && File.Exists(f)) { double v; if (double.TryParse(File.ReadAllText(f).Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out v)) propPeak = Math.Max(propPeak, v); } } catch { }
+			if (PropPeakOverride > 0) propPeak = PropPeakOverride;
+			PropSessionStart();
+		}
+		private void PropSessionStart()
+		{
+			gate = GateMode.Full; noBoost = false; propStopped = false;
+			if (PropMode != NQMasterPropMode.Off)
+			{
+				double eq = PropEquity(); propDayStart = eq;
+				if (double.IsNaN(propPeak)) propPeak = Math.Max(StartBalance, PropPeakOverride > 0 ? PropPeakOverride : eq);
+				if (eq > propPeak) { propPeak = eq; if (propLive) try { File.WriteAllText(PropFile, propPeak.ToString("0.00", CultureInfo.InvariantCulture)); } catch { } }
+				propThr = propPeak >= StartBalance + PropTrailingDD + 100 ? StartBalance + 100 : propPeak - PropTrailingDD;
+				if (PropThresholdOverride > 0) propThr = PropThresholdOverride;
+				propCushion = eq - propThr;
+				if (PropMode == NQMasterPropMode.Eval) gate = propCushion >= EvalCushionFull ? GateMode.Full : GateMode.Safe;
+				else gate = propCushion >= FundedCushionSafe ? GateMode.NoBoost : GateMode.Safe;
+				noBoost = gate != GateMode.Full;
+			}
+			foreach (Mod m in mods)
+				m.On = m.BaseOn && !(gate == GateMode.Safe && (m.Sig == "VOLB" || m.Sig == "LON" || m.Sig == "MOM1030" || m.Sig == "MOM11"));
+			atrStartRatio = double.NaN;
+			if (atrHist != null && atrHist.Count >= 20 && !double.IsNaN(todayAtr) && todayAtr > 0)
+			{
+				List<double> srt = new List<double>(atrHist.Count > 60 ? atrHist.GetRange(atrHist.Count - 60, 60) : atrHist); srt.Sort(); int nn = srt.Count;
+				double med = nn % 2 == 1 ? srt[nn / 2] : 0.5 * (srt[nn / 2 - 1] + srt[nn / 2]); atrStartRatio = med > 0 ? todayAtr / med : double.NaN;
+			}
+			if (PropMode != NQMasterPropMode.Off) Log(string.Format("PROP {0}: equity {1:0} | threshold {2:0} | cushion {3:0} -> {4}", PropMode, PropEquity(), propThr, propCushion, gate));
+		}
+		private void PropDailyCheck()
+		{
+			if (PropMode != NQMasterPropMode.Eval || EvalDailyStop <= 0 || propStopped || double.IsNaN(propDayStart)) return;
+			double now = State == State.Realtime ? Account.Get(AccountItem.CashValue, Currency.UsDollar) + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar)
+				: StartBalance + netPnl + (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Closes[0][0]));
+			if (now - propDayStart <= -EvalDailyStop) { propStopped = true; FlattenAll("prop daily stop"); Log(string.Format("PROP DAILY STOP: {0:0} today", now - propDayStart)); }
+		}
+
 		private bool lastDeferred;
 		// Opposite open position -> skip. Opposite WORKING entry orders (e.g. an ORB stop order) -> cancel them and defer this entry
 		// one bar (NinjaTrader's managed rules ignore an entry while an opposite entry order is working).
@@ -769,6 +834,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (targetHit) { status = "eval target reached"; return false; }
 			if (ddTripped) { status = "drawdown guard"; return false; }
 			if (dayStopped) { status = "daily loss limit"; return false; }
+			if (propStopped) { status = "prop daily stop"; return false; }
 			if (MinAtrPoints > 0 && Profile != NQMasterProfile.Gold && !double.IsNaN(todayAtr) && todayAtr < MinAtrPoints) { status = "low volatility (ATR " + todayAtr.ToString("0") + " < " + MinAtrPoints.ToString("0") + ")"; return false; }
 			if (PauseActive()) { status = "MANUAL PAUSE (file)"; return false; }
 			if (edgePaused) { status = "EDGE MONITOR ALARM - review before trading"; return false; }
@@ -892,6 +958,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Profile, status, trendDir == 1 ? "UP" : trendDir == -1 ? "DOWN" : "-", todayAtr, pullbackDay ? "yes" : "no", mm.ToString(),
 				totalTrades, totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
 			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / edgeH, edgeDays, edgeAlarm ? " | ALARM" : "");
+			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1} | cushion ${2:0} (threshold ${3:0})", PropMode, gate, propCushion, propThr);
+			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += string.Format("\nPAYOUT: profit >= ${0:0} -> request it", FundedPayoutAt);
+			if (!double.IsNaN(atrStartRatio)) txt += string.Format("\nATR ratio {0:0.00}: {1}", atrStartRatio, atrStartRatio < AtrStartMax ? "OK to start a new eval" : "do NOT start a new eval today");
 			Draw.TextFixed(this, "NQM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
 		}
 		#endregion
@@ -950,6 +1019,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Edge monitor start date (yyyy-MM-dd)", Order = 3, GroupName = "06. Edge monitor")] public string EdgeMonitorStart { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "k (0 = profile calibration)", Order = 4, GroupName = "06. Edge monitor")] public double EdgeK { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "h (0 = profile calibration)", Order = 5, GroupName = "06. Edge monitor")] public double EdgeH { get; set; }
+		[NinjaScriptProperty][Display(Name = "Prop mode (Off / Eval / Funded)", Order = 1, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropMode PropMode { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Trailing drawdown $ (EOD, locks at start+100)", Order = 2, GroupName = "07. Prop account (cushion gating)")] public double PropTrailingDD { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: full mode when cushion >= $", Order = 3, GroupName = "07. Prop account (cushion gating)")] public double EvalCushionFull { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: account daily stop $ (0 = off)", Order = 4, GroupName = "07. Prop account (cushion gating)")] public double EvalDailyStop { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: safe mode when cushion < $", Order = 5, GroupName = "07. Prop account (cushion gating)")] public double FundedCushionSafe { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: request payout at profit >= $", Order = 6, GroupName = "07. Prop account (cushion gating)")] public double FundedPayoutAt { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Highest end-of-day balance so far $ (0 = auto)", Order = 7, GroupName = "07. Prop account (cushion gating)")] public double PropPeakOverride { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Liquidation threshold $ override (0 = auto)", Order = 8, GroupName = "07. Prop account (cushion gating)")] public double PropThresholdOverride { get; set; }
+		[NinjaScriptProperty][Range(0, 10)][Display(Name = "Start new evals only when ATR / 60-day median <", Order = 9, GroupName = "07. Prop account (cushion gating)")] public double AtrStartMax { get; set; }
 		#endregion
 	}
 }

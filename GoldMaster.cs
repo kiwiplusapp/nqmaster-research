@@ -71,7 +71,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double odH, odL; private bool odHas;
 		private double asH, asL; private bool asHas, asBroken;
 		private int flattenBar = -1; private string status = "waiting";
-		private double dayStartPnl; private bool dayStopped;
+		private double dayStartPnl, acctDayStart = double.NaN; private bool dayStopped, acctStopped;
 		private int tradesProcessed, totalTrades, totalWins; private double grossWin, grossLoss, netPnl;
 		#endregion
 
@@ -100,7 +100,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Profile = GoldMasterProfile.WinRate;
 				UseOd = true; UseEng0408 = true; UseSvwap = true; UseEng0610 = true; UseAsia = true; UseEng0206 = true; UseLate = false;
 				Contracts = 1; FlattenTime = 1651; SkipFomc = true; FomcDates = "";
-				DailyLossLimit = 0; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
+				DailyLossLimit = 0; AccountDailyStop = 0; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
 			}
 			else if (State == State.DataLoaded)
 			{
@@ -225,7 +225,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			svPv = 0; svV = 0; odHas = false; asHas = false; asBroken = false;
 			for (int k = 0; k < 6; k++) cHas[k] = false;
 			foreach (Mod m in mods) { m.Done = false; m.ExpireMin = -1; m.Dir = 0; }
-			dayStartPnl = netPnl; dayStopped = false;
+			dayStartPnl = netPnl; dayStopped = false; acctStopped = false; acctDayStart = AcctEquity();
 		}
 		#endregion
 
@@ -373,8 +373,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 		#endregion
 
 		#region Account layer and helpers
+		// account-level daily stop (realtime: whole account incl. NQMaster; historical: this strategy) - prop eval protection
+		private double AcctEquity()
+		{
+			if (State == State.Realtime) return Account.Get(AccountItem.CashValue, Currency.UsDollar) + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar);
+			return netPnl + (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Close[0]));
+		}
 		private void DailyLossCheck()
 		{
+			if (AccountDailyStop > 0 && !acctStopped && !double.IsNaN(acctDayStart) && AcctEquity() - acctDayStart <= -AccountDailyStop) { acctStopped = true; FlattenAll("account daily stop"); Log("ACCOUNT DAILY STOP reached"); }
 			if (DailyLossLimit <= 0 || dayStopped) return;
 			if (netPnl - dayStartPnl <= -DailyLossLimit) { dayStopped = true; FlattenAll("daily loss limit"); Log("DAILY LOSS LIMIT reached"); }
 		}
@@ -382,6 +389,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			if (fomcToday) { status = "FOMC day: no trading"; return false; }
 			if (dayStopped) { status = "daily loss limit"; return false; }
+			if (acctStopped) { status = "account daily stop"; return false; }
 			if (PauseActive()) { status = "MANUAL PAUSE (file)"; return false; }
 			status = AtrOk ? "trading" : "warming up (needs ~20 RTH days)";
 			return true;
@@ -442,6 +450,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Extra FOMC dates (yyyy-MM-dd list)", Order = 4, GroupName = "02. Risk / account")] public string FomcDates { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Daily loss limit $ (0 = off)", Order = 5, GroupName = "02. Risk / account")] public double DailyLossLimit { get; set; }
 		[NinjaScriptProperty][Display(Name = "Pause file", Order = 6, GroupName = "02. Risk / account")] public string PauseFile { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Account daily stop $ (whole account in realtime; eval: 700, 0 = off)", Order = 7, GroupName = "02. Risk / account")] public double AccountDailyStop { get; set; }
 		[Display(Name = "Show dashboard", Order = 1, GroupName = "03. Display")] public bool ShowDashboard { get; set; }
 		[Display(Name = "Print log", Order = 2, GroupName = "03. Display")] public bool PrintLog { get; set; }
 		#endregion

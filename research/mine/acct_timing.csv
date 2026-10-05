@@ -1,0 +1,109 @@
+pol,per,cond,n,pass_,p21,days
+FULL fijo,IS,todas,798,83.1,27.9,29.0
+FULL fijo,IS,últimos 5d > 0,559,83.2,28.3,29.0
+FULL fijo,IS,últimos 5d <= 0,239,82.8,27.2,30.5
+FULL fijo,IS,últimos 10d > 0,624,82.7,26.6,29.0
+FULL fijo,IS,últimos 10d <= 0,174,84.5,32.8,31.0
+FULL fijo,IS,últimos 20d > 0,686,82.5,28.9,28.0
+FULL fijo,IS,últimos 20d <= 0,112,86.6,22.3,35.0
+FULL fijo,IS,últimos 40d > 0,741,82.1,29.1,28.0
+FULL fijo,IS,últimos 40d <= 0,57,96.5,12.3,37.0
+FULL fijo,IS,ATR bajo (<0.9 mediana),292,92.8,24.7,34.0
+FULL fijo,IS,ATR normal,343,80.5,30.6,27.0
+FULL fijo,IS,ATR alto (>=1.15),163,71.2,28.2,28.0
+FULL fijo,C24,todas,503,76.5,36.6,22.0
+FULL fijo,C24,últimos 5d > 0,349,71.9,35.8,22.0
+FULL fijo,C24,últimos 5d <= 0,154,87.0,38.3,23.5
+FULL fijo,C24,últimos 10d > 0,374,72.7,35.6,22.0
+FULL fijo,C24,últimos 10d <= 0,129,87.6,39.5,23.0
+FULL fijo,C24,últimos 20d > 0,409,72.6,35.5,22.0
+FULL fijo,C24,últimos 20d <= 0,94,93.6,41.5,27.0
+FULL fijo,C24,últimos 40d > 0,439,73.1,39.4,20.0
+FULL fijo,C24,últimos 40d <= 0,64,100.0,17.2,36.0
+FULL fijo,C24,ATR bajo (<0.9 mediana),136,94.9,19.1,36.0
+FULL fijo,C24,ATR normal,194,74.7,51.0,18.0
+FULL fijo,C24,ATR alto (>=1.15),173,64.2,34.1,20.0
+FULL fijo,REAL,todas,477,75.5,39.2,21.0
+FULL fijo,REAL,últimos 5d > 0,343,74.3,39.4,21.0
+FULL fijo,REAL,últimos 5d <= 0,134,78.4,38.8,22.0
+FULL fijo,REAL,últimos 10d > 0,376,73.9,37.8,21.0
+FULL fijo,REAL,últimos 10d <= 0,101,81.2,44.6,21.0
+FULL fijo,REAL,últimos 20d > 0,419,74.7,41.1,20.0
+FULL fijo,REAL,últimos 20d <= 0,58,81.0,25.9,38.0
+FULL fijo,REAL,últimos 40d > 0,431,76.6,43.2,20.0
+FULL fijo,REAL,últimos 40d <= 0,46,65.2,2.2,36.0
+FULL fijo,REAL,ATR bajo (<0.9 mediana),134,68.7,25.4,28.0
+FULL fijo,REAL,ATR normal,181,86.2,48.6,20.0
+FULL fijo,REAL,ATR alto (>=1.15),162,69.1,40.1,18.0
+Ultra fijo,IS,todas,798,87.2,27.2,30.0
+Ultra fijo,IS,últimos 5d > 0,559,87.3,27.7,30.0
+Ultra fijo,IS,últimos 5d <= 0,239,87.0,25.9,30.5
+Ultra fijo,IS,últimos 10d > 0,624,87.0,25.8,30.0
+Ultra fijo,IS,últimos 10d <= 0,174,87.9,32.2,31.0
+Ultra fijo,IS,últimos 20d > 0,686,87.3,28.0,29.0
+Ultra fijo,IS,últimos 20d <= 0,112,86.6,22.3,35.0
+Ultra fijo,IS,últimos 40d > 0,741,86.5,28.3,29.0
+Ultra fijo,IS,últimos 40d <= 0,57,96.5,12.3,37.0
+Ultra fijo,IS,ATR bajo (<0.9 mediana),292,99.3,24.0,38.0
+Ultra fijo,IS,ATR normal,343,84.5,29.4,27.5
+Ultra fijo,IS,ATR alto (>=1.15),163,71.2,28.2,29.0
+Ultra fijo,C24,todas,503,78.7,34.2,24.5
+Ultra fijo,C24,últimos 5d > 0,349,75.1,33.8,24.0
+Ultra fijo,C24,últimos 5d <= 0,154,87.0,35.1,25.0
+Ultra fijo,C24,últimos 10d > 0,374,75.7,34.2,24.0
+Ultra fijo,C24,últimos 10d <= 0,129,87.6,34.1,25.0
+Ultra fijo,C24,últimos 20d > 0,409,75.3,33.3,24.0
+Ultra fijo,C24,últimos 20d <= 0,94,93.6,38.3,39.5
+Ultra fijo,C24,últimos 40d > 0,439,75.6,37.1,22.0
+Ultra fijo,C24,últimos 40d <= 0,64,100.0,14.1,36.0
+Ultra fijo,C24,ATR bajo (<0.9 mediana),136,94.9,16.9,36.0
+Ultra fijo,C24,ATR normal,194,76.8,48.5,19.0
+Ultra fijo,C24,ATR alto (>=1.15),173,68.2,31.8,23.5
+Ultra fijo,REAL,todas,477,78.0,38.2,22.0
+Ultra fijo,REAL,últimos 5d > 0,343,74.6,36.7,22.0
+Ultra fijo,REAL,últimos 5d <= 0,134,86.6,41.8,23.0
+Ultra fijo,REAL,últimos 10d > 0,376,75.8,37.0,23.0
+Ultra fijo,REAL,últimos 10d <= 0,101,86.1,42.6,22.0
+Ultra fijo,REAL,últimos 20d > 0,419,75.7,41.1,20.0
+Ultra fijo,REAL,últimos 20d <= 0,58,94.8,17.2,41.0
+Ultra fijo,REAL,últimos 40d > 0,431,75.6,42.0,20.0
+Ultra fijo,REAL,últimos 40d <= 0,46,100.0,2.2,36.5
+Ultra fijo,REAL,ATR bajo (<0.9 mediana),134,91.8,23.1,33.0
+Ultra fijo,REAL,ATR normal,181,75.1,46.4,18.0
+Ultra fijo,REAL,ATR alto (>=1.15),162,69.8,41.4,18.0
+Gating 900 DL700,IS,todas,798,91.0,27.7,32.0
+Gating 900 DL700,IS,últimos 5d > 0,559,89.8,28.3,31.0
+Gating 900 DL700,IS,últimos 5d <= 0,239,93.7,26.4,35.0
+Gating 900 DL700,IS,últimos 10d > 0,624,89.7,26.4,31.0
+Gating 900 DL700,IS,últimos 10d <= 0,174,95.4,32.2,36.0
+Gating 900 DL700,IS,últimos 20d > 0,686,89.5,28.6,31.0
+Gating 900 DL700,IS,últimos 20d <= 0,112,100.0,22.3,39.0
+Gating 900 DL700,IS,últimos 40d > 0,741,90.3,28.9,31.0
+Gating 900 DL700,IS,últimos 40d <= 0,57,100.0,12.3,37.0
+Gating 900 DL700,IS,ATR bajo (<0.9 mediana),292,98.6,24.7,39.0
+Gating 900 DL700,IS,ATR normal,343,91.3,30.3,30.0
+Gating 900 DL700,IS,ATR alto (>=1.15),163,76.7,27.6,31.0
+Gating 900 DL700,C24,todas,503,76.7,36.8,22.0
+Gating 900 DL700,C24,últimos 5d > 0,349,73.9,36.4,22.0
+Gating 900 DL700,C24,últimos 5d <= 0,154,83.1,37.7,23.0
+Gating 900 DL700,C24,últimos 10d > 0,374,75.1,36.1,22.0
+Gating 900 DL700,C24,últimos 10d <= 0,129,81.4,38.8,23.0
+Gating 900 DL700,C24,últimos 20d > 0,409,76.0,35.9,22.0
+Gating 900 DL700,C24,últimos 20d <= 0,94,79.8,40.4,21.0
+Gating 900 DL700,C24,últimos 40d > 0,439,76.5,39.6,21.0
+Gating 900 DL700,C24,últimos 40d <= 0,64,78.1,17.2,35.5
+Gating 900 DL700,C24,ATR bajo (<0.9 mediana),136,64.7,19.1,34.5
+Gating 900 DL700,C24,ATR normal,194,93.3,54.1,20.0
+Gating 900 DL700,C24,ATR alto (>=1.15),173,67.6,31.2,23.0
+Gating 900 DL700,REAL,todas,477,82.8,36.3,24.0
+Gating 900 DL700,REAL,últimos 5d > 0,343,81.9,35.3,25.0
+Gating 900 DL700,REAL,últimos 5d <= 0,134,85.1,38.8,24.0
+Gating 900 DL700,REAL,últimos 10d > 0,376,81.9,34.8,25.5
+Gating 900 DL700,REAL,últimos 10d <= 0,101,86.1,41.6,23.0
+Gating 900 DL700,REAL,últimos 20d > 0,419,80.7,39.1,22.0
+Gating 900 DL700,REAL,últimos 20d <= 0,58,98.3,15.5,42.0
+Gating 900 DL700,REAL,últimos 40d > 0,431,81.0,39.9,22.0
+Gating 900 DL700,REAL,últimos 40d <= 0,46,100.0,2.2,39.5
+Gating 900 DL700,REAL,ATR bajo (<0.9 mediana),134,88.8,23.9,36.0
+Gating 900 DL700,REAL,ATR normal,181,89.0,45.9,21.0
+Gating 900 DL700,REAL,ATR alto (>=1.15),162,71.0,35.8,20.0

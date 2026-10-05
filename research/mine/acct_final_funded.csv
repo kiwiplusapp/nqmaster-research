@@ -1,0 +1,10 @@
+per,prot,bust,cash,payouts,all5
+IS,"BASE Ultra, cobro a $5k",15.0,7557,4.2,80.7
+IS,"F1 SAFE, cobro a $6k",0.0,5393,3.0,35.8
+IS,"F2 SAFE<1500<=NOB, cobro a $6k",3.3,6905,3.84,54.0
+C24,"BASE Ultra, cobro a $5k",43.6,5429,3.02,56.4
+C24,"F1 SAFE, cobro a $6k",13.7,6248,3.47,40.1
+C24,"F2 SAFE<1500<=NOB, cobro a $6k",21.8,6770,3.76,66.8
+REAL,"BASE Ultra, cobro a $5k",43.5,5618,3.12,56.5
+REAL,"F1 SAFE, cobro a $6k",17.5,6351,3.53,39.8
+REAL,"F2 SAFE<1500<=NOB, cobro a $6k",25.2,6844,3.8,74.1

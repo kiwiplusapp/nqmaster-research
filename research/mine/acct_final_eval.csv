@@ -1,0 +1,10 @@
+per,prot,starts,L_pass,L_bust,L_p21,L_days,A_pass
+IS,BASE Ultra (hoy),100,87.2,12.8,27.2,30.0,27.4
+IS,"E1 Ultra+oro, ATR<1.15",80,86.1,13.9,27.9,29.0,28.0
+IS,"E2 gating+DL700, ATR<1.15",80,94.6,5.4,27.7,32.0,27.9
+C24,BASE Ultra (hoy),100,78.7,21.3,34.2,24.5,36.0
+C24,"E1 Ultra+oro, ATR<1.15",66,83.0,17.0,37.9,23.0,39.1
+C24,"E2 gating+DL700, ATR<1.15",66,81.5,18.5,39.7,22.0,40.9
+REAL,BASE Ultra (hoy),100,78.0,22.0,38.2,22.0,41.5
+REAL,"E1 Ultra+oro, ATR<1.15",66,78.7,21.3,38.7,22.0,39.4
+REAL,"E2 gating+DL700, ATR<1.15",66,88.9,11.1,36.5,25.0,39.4

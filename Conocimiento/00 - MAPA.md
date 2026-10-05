@@ -40,3 +40,4 @@
 
 ## Oro (5-oct-2026)
 - [[GoldMaster (oro)]]: estrategia propia para MGC. Perfil WinRate: WR 70%, PF 1,99 en MGC real 2024-26 (0,3 trades/día). Perfil Robust: PF 1,37 y positivo en 16 años.
+- [[Prop con 1 contrato]]: modo Eval / Funded de NQMaster (colchón, stop diario, ATR al empezar). Aprobación 78% → 89% en MNQ real; fondeadas quemadas 44% → 25%.

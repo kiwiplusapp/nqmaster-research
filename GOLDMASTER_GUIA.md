@@ -56,3 +56,6 @@ Las diferencias chicas son normales: el orden de llenado intrabarra de NinjaTrad
 - Hace pocos trades (~6 por mes con WinRate). Para que mueva la cuenta, subí los contratos por módulo.
 
 Investigación: `research/mine/gold_*.py`, `families_gold.py`, `results_gold*.csv`. Datos: `research/data/xau_long.npz` (oro 2010-2026) y `mgc_fut.npz`.
+
+## Evaluaciones de prop junto a NQMaster
+Poné **Account daily stop = 700** durante la evaluación. En tiempo real mira toda la cuenta (MNQ + MGC) y corta el día si se pierden $700. NQMaster en PropMode = Eval aplica el mismo corte. Ver la sección "Cuentas de prop con 1 contrato" en NQMASTER_GUIA.md.
