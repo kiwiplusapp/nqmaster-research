@@ -161,3 +161,16 @@ Simulación del ciclo completo, protocolo EQUILIBRIO (2020-23 CFD / 2024-26 CFD 
 **Configuración en 100K:**
 - **NQMaster:** StartBalance = 100000, PropTrailingDD = 3000, EvalTarget = 6000, FundedCushionSafe = 1125, FundedPayoutAt = 5000.
 - **GoldMaster:** StartBalance = 100000, EvalTarget = 6000 en la evaluación.
+
+## Configuración elegida por Federico (2026-10-05): 50K con EQ2
+Prioridad: más ingreso, aunque se quemen más cuentas.
+- **Evaluación:**
+  - NQMaster: Ultra, Contracts 1, PropMode Eval, EvalTarget 3000, ConsistencyPct 50.
+  - GoldMaster: Robust, Contracts 1, EvalTarget 3000, StartBalance 50000.
+- **Fondeada:**
+  - NQMaster: PropMode Funded, FundedCushionSafe 750, FundedCushionFull 1500, cobro cuando la ganancia llega a $4.000 (FundedPayoutAt 4000).
+  - GoldMaster: WinRate, EvalTarget 0.
+- **Esperado por cuenta:**
+  - Aprobación ~71-84%, en ~20-29 días.
+  - $871 / $1.031 / $1.293 por mes (historia) y $700 / $1.053 / $1.110 (Monte Carlo).
+  - Fondeadas quemadas ~0,1-0,9 por año.
