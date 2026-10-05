@@ -19,6 +19,7 @@ def S(hhmm):                      # ET HHMM -> session minute
 class Data:
     def __init__(self, name):
         D = load(name); self.name = name
+        self.pv = 4.0 if name.startswith(("xau", "mgc")) else 2.0; self.comm = 1.9      # $ per research point (gold x2.5: tick 0.25 = $1 MGC)
         self.o, self.h, self.l, self.c = [np.ascontiguousarray(D[k], dtype=np.float64) for k in "ohlc"]
         self.v = np.maximum(np.asarray(D["v"], np.float64), 1e-9)
         self.om = D["om"].astype(np.int64); self.day = D["dayid"].astype(np.int64); self.date = D["date"].astype(np.int64)
@@ -138,7 +139,7 @@ def run_events(D, ev, flat=955, maxday=1, slip=SLIP, norm_cost=None):
     k = execute(D.o, D.h, D.l, D.c, D.om, D.day, a["i"].astype(np.int64), a["d"].astype(np.int64), a["t"].astype(np.int64), a["px"].astype(np.float64),
                 a["sl"].astype(np.float64), a["tp"].astype(np.float64), a["exp"].astype(np.int64), a["hold"].astype(np.int64), flat, maxday, out, slip)
     o = out[:k]; fi = o[:, 1].astype(np.int64)
-    df = pd.DataFrame(dict(date=D.date[fi], usd=o[:, 0] * 2 - 1.9, fi=fi, xi=o[:, 2].astype(np.int64), d=o[:, 3], risk=o[:, 4]))
+    df = pd.DataFrame(dict(date=D.date[fi], usd=o[:, 0] * D.pv - D.comm, fi=fi, xi=o[:, 2].astype(np.int64), d=o[:, 3], risk=o[:, 4]))
     if norm_cost is not None:            # cost-normalised P&L in daily-ATR units: gross points minus norm_cost * ATR
         A = D.atr[D.day[fi]]; df["usd"] = np.where(A > 0, (o[:, 0] - norm_cost * A) / np.where(A > 0, A, 1) * 100, 0.0)
     return df
@@ -157,9 +158,11 @@ def pf(u):
 
 def split_stats(name, df):
     out = {}
-    if name.startswith("nqhd_long"):
+    if name.startswith("xau_long"):
+        parts = (("G1", (df.date >= 20100201) & (df.date < 20150101)), ("G2", (df.date >= 20150101) & (df.date < 20200101)), ("T1", (df.date >= 20200101) & (df.date < 20240101)), ("T2", df.date >= 20240101))
+    elif name.startswith("nqhd_long"):
         parts = (("TR", (df.date >= 20150201) & (df.date < 20200101)), ("T1", (df.date >= 20200101) & (df.date < 20240101)), ("T2", df.date >= 20240101))
-    elif name.startswith("nq_1m"):
+    elif name.startswith(("nq_1m", "xau")):
         parts = (("IS", (df.date >= 20200201) & (df.date < 20240101)), ("C24", df.date >= 20240101))
     else:
         parts = (("REAL", df.date >= 20240201),)

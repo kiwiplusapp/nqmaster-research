@@ -87,6 +87,10 @@
   "sha256": "7bc9a272d2f5b39c3ec9bb134b7fc505de91aa9a772391eb3e8dd94f1c381efc",
   "size": 111540203
  },
+ "research/data/xau_1019_utc.pkl": {
+  "sha256": "09e951bc1efefd15b0beffbb3bb94ed54b1a587099b59da887bc00f9d68a5345",
+  "size": 169147211
+ },
  "research/data/xau_hd.npz": {
   "sha256": "e61190f986d98813612b66968b8040633b42461bc7fe9164d35fbc7687de81cc",
   "size": 149344116
@@ -99,8 +103,24 @@
   "sha256": "2ab85ded8c6dcb5476a772651b38ec955f615217562201b9018430c591b248cd",
   "size": 112332491
  },
+ "research/data/xau_long.npz": {
+  "sha256": "d6096592548798b23b94016d80d40c2cf51e51ed78be0d1d0292de5272c11ad6",
+  "size": 373974936
+ },
+ "research/data/xau_long_raw.npz": {
+  "sha256": "a6b95621bf15e8ff36baaaadd6f99396867d66a438a85158243e6a908b781767",
+  "size": 373974936
+ },
+ "research/data/xau_long_utc.pkl": {
+  "sha256": "d5c1de831724927eba7d799a0a88fdc27502280f1242b4526a2f632fb08ff1f2",
+  "size": 281478347
+ },
  "research/mine/daytype_trades.pkl": {
   "sha256": "9ddfb7bd896f358019e400d0ff7b71c60919ff2ed1d2a3eab43dca3376e0b1d0",
   "size": 116086329
+ },
+ "research/mine/trades_goldlongnorm.pkl": {
+  "sha256": "29dd2dc2925d31ae14f4295ad3b265b49c75910b4e09dc693228f50d1965ea4e",
+  "size": 72325262
  }
 }

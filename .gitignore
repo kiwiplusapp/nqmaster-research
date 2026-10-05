@@ -25,8 +25,13 @@ research/tmp/
 /research/data/xag_hd.npz
 /research/data/xag_hd_raw.npz
 /research/data/xagusd_hd_utc.pkl
+/research/data/xau_1019_utc.pkl
 /research/data/xau_hd.npz
 /research/data/xau_hd_raw.npz
 /research/data/xau_hd_utc.pkl
+/research/data/xau_long.npz
+/research/data/xau_long_raw.npz
+/research/data/xau_long_utc.pkl
 /research/mine/daytype_trades.pkl
+/research/mine/trades_goldlongnorm.pkl
 # <<< big originals

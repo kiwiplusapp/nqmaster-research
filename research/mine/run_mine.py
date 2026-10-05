@@ -8,22 +8,24 @@ from families import FAMILIES as F1
 from families2 import FAMILIES2
 from families3 import FAMILIES3
 from families4 import FAMILIES4
-FAMILIES = {**F1, **FAMILIES2, **FAMILIES3, **FAMILIES4}
+from families_gold import FAMILIES_GOLD
+FAMILIES = {**F1, **FAMILIES2, **FAMILIES3, **FAMILIES4, **FAMILIES_GOLD}
+FLAT = int(os.environ.get("MINE_FLAT", "955"))
 G = {}
 def init():
-    G["nq"] = Data(os.environ.get("MINE_DATA", "nq_1m.npz")); G["mnq"] = Data("mnq_fut.npz")
+    G["nq"] = Data(os.environ.get("MINE_DATA", "nq_1m.npz")); G["mnq"] = Data(os.environ.get("MINE_REAL", "mnq_fut.npz"))
 def task(arg):
     fam, j = arg; gen, grid, maxday = FAMILIES[fam]; p = grid[j]
     row = dict(fam=fam, j=j, params=repr(p)); keep = {}
     try:
         for key in ("nq", "mnq"):
             D = G[key]; nc = float(os.environ['NORM_COST']) if (os.environ.get('NORM_COST') and key == 'nq') else None
-            df = run_events(D, gen(D, p), flat=955, maxday=maxday, slip=(0.0 if nc is not None else 0.25), norm_cost=nc)
+            df = run_events(D, gen(D, p), flat=FLAT, maxday=maxday, slip=(0.0 if nc is not None else 0.25), norm_cost=nc)
             df["tin"] = D.sm[df.fi.to_numpy().astype(int)] if len(df) else []; df["tout"] = D.sm[df.xi.to_numpy().astype(int)] + 1 if len(df) else []
             row.update(split_stats(D.name, df)); keep[key] = df[["date", "usd", "tin", "tout", "d"]]
     except Exception as e:
         row["err"] = repr(e)[:200]; return row, None
-    good = ((row.get("IS_n", 0) >= 80) and (row.get("IS_pf", 0) or 0) >= 1.15) or ((row.get("TR_n", 0) >= 100) and (row.get("TR_pf", 0) or 0) >= 1.15)
+    good = any((row.get(f"{p}_n", 0) >= 80) and ((row.get(f"{p}_pf", 0) or 0) >= 1.15) for p in ("IS", "TR", "G2", "T1"))
     return row, (keep if good else None)
 if __name__ == "__main__":
     fams = sys.argv[1:] or list(FAMILIES)
