@@ -104,28 +104,45 @@ Gana menos dinero que Ultra: elegilo si priorizás el winrate.
 - Resultado solo: PF 1.44 / 1.29 / 1.29 (CFD 2020-23 / CFD 2024-26 / MNQ real) y 1.39 en 2015-19. Unos 0.17 trades por día.
 - En la cartera suma +$30-40 por mes por lote, sin empeorar el Sharpe ni el drawdown.
 
-## Cuentas de prop con 1 contrato: modo Eval / Funded (2026-10-05)
-Grupo **"07. Prop account (cushion gating)"**. El "colchón" es lo que separa el saldo del nivel de liquidación. El nivel de liquidación es el drawdown de $2.000 que sigue al máximo saldo de cierre, y se fija en +$100 cuando ese máximo llega a +$2.100. Cada día, al empezar la sesión, NQMaster mira el colchón y elige el modo:
-- **Eval:** si el colchón es ≥ $900, modo **FULL** (el perfil completo). Si es menor, modo **SAFE**. Además corta el día si la cuenta pierde $700 (contando MNQ + MGC).
-- **Funded:** si el colchón es < $1.500, modo **SAFE**. Si es mayor, modo **NO-BOOST**. Pedí el cobro cuando la ganancia llegue a **$6.000**; el panel avisa.
-- **SAFE:** sin tamaño ×2 (contexto, confluencia, ICT ×2, VW13 doble). Apaga VOLB, LON, MOM1030 y MOM11, que son los de peor ganancia por unidad de riesgo con 1 contrato.
-- **NO-BOOST:** todos los módulos del perfil, sin ×2.
-- **Cuándo empezar una evaluación:** solo los días en que el panel dice *"ATR ratio … OK to start a new eval"*, es decir, ATR < 1,15 veces su mediana de 60 días.
+## Cuentas de prop con 1 contrato (actualizado 2026-10-05: protocolo EQUILIBRIO)
+Optimizado sobre el ciclo completo de 12 meses: evaluación, fondeada, cobros y costos de cada evaluación. Lucid Flex 50K, 1 contrato por módulo.
 
-Configuración en NinjaTrader:
-- **NQMaster:** Profile = Ultra, Contracts = 1, PropMode = Eval (o Funded), StartBalance = 50000.
-- **GoldMaster:** Profile = WinRate, Contracts = 1. En la evaluación, *Account daily stop* = 700.
-- Si NinjaTrader se reinicia, el máximo saldo de cierre se guarda en `Documents\NinjaTrader 8\nqmaster_prop_<cuenta>.txt`. Si no coincide con el de la prop firm, ponelo a mano en "Highest end-of-day balance" o cargá directamente el nivel de liquidación en "Liquidation threshold override".
+**Evaluación**
+- **NQMaster:** Profile = Ultra, Contracts = 1, PropMode = **Eval**, EvalTarget = 3000, ConsistencyPct = 50. El objetivo real pasa a ser el mayor entre $3.000 y 2× el mejor día, por la regla del 50% de Lucid.
+- **GoldMaster:** Profile = **Robust**, Contracts = 1, EvalTarget = 3000, StartBalance = 50000.
+- Arrancá apenas compres la evaluación. Esperar a un ATR "bueno" sube la aprobación, pero cuesta más ingreso del que recupera.
 
-Resultados (Lucid Flex 50K, 1 contrato por módulo, NQ Ultra + oro WinRate; CFD 2020-23 / CFD 2024-26 / futuros reales 2024-26):
+**Fondeada**
+- **NQMaster:** PropMode = **Funded**. Opera en SAFE (sin ×2 y sin VOLB, LON, MOM1030 ni MOM11) si el colchón sobre el nivel de liquidación es < $750, y completo por encima.
+- **GoldMaster:** Profile = **WinRate**, EvalTarget = 0.
+- Pedí el cobro cuando la ganancia llegue a **$5.000**; el panel avisa.
 
-| | Hoy (Ultra, cualquier día) | Nuevo protocolo |
+**Resultado por cuenta y por mes** (CFD 2020-23 / CFD 2024-26 / MNQ+MGC real 2024-26):
+
+| Prueba | Hoy (Ultra / Ultra / cobro $5k) | EQUILIBRIO |
 |---|---|---|
-| Aprueba la evaluación | 87,2 / 78,7 / 78,0% | **94,6 / 81,5 / 88,9%** |
-| Evaluaciones perdidas | 12,8 / 21,3 / 22,0% | **5,4 / 18,5 / 11,1%** |
-| Días hasta aprobar (mediana) | 30 / 24,5 / 22 | 32 / 22 / 25 (igual) |
-| Fondeada quemada en 12 meses | 15 / 44 / 44% | **3 / 22 / 25%** |
-| Cobro por cuenta fondeada | $7.557 / $5.429 / $5.618 | $6.905 / **$6.770 / $6.844** |
+| Historia | $794 / $833 / $1.010 | **$822 / $943 / $1.209** |
+| Costos +1 tick por lado | $723 / $851 / $885 | **$759 / $923 / $1.085** |
+| Monte Carlo (2.000 años) | $658 / $939 / $978 | **$677 / $1.012 / $1.087** |
+| Fondeadas quemadas por año (historia) | 0,16 / 1,26 / 1,00 | **0,08 / 0,72 / 0,58** |
+| Días para aprobar la evaluación (mediana) | 30 / 25 / 22 | **29 / 22 / 20** |
+| Aprobación de la evaluación | 84 / 72 / 75% | 84 / 71 / 74% (igual) |
 
-Mejora de aprobación con intervalo del 90% (bootstrap): +7,6 [+1,5; +15] en 2020-23 y +11,1 [+2,1; +20] en MNQ real. En CFD 2024-26 la mejora (+3) no es significativa.
-Investigación: `research/mine/dense_build.py`, `acct_lab.py`, `acct_mods.py`, `acct_policy*.py`, `acct_timing*.py`, `acct_final.py`.
+**Varias cuentas a la vez** (Monte Carlo, ingreso total por mes, EQUILIBRIO; 2020-23 / 2024-26 real):
+- 3 cuentas: $2.043 / $3.224. El 10% de peores años: $847 / $1.995.
+- 5 cuentas: $3.405 / $5.370. El 10% de peores años: $1.454 / $3.255.
+- Probabilidad de un año negativo: menos de 4%.
+
+**Alternativa APROBACIÓN** (si preferís perder menos evaluaciones aunque se gane menos):
+- EvalCushionFull = 900, EvalDailyStop = 700, AtrStartMax = 1,15 (empezar solo con el panel en "OK").
+- FundedCushionSafe = 1500, FundedHighFull = false, cobro a $6.000.
+- Aprobación 95 / 82 / 89%, pero ~$475-800 por mes por cuenta.
+
+**Lo que no se puede:** con 1 contrato, aprobar en más porcentaje y a la vez más rápido. Los dos dependen de la ganancia por unidad de varianza, y la ventaja por trade ya está en su techo. Las variaciones de ±5 puntos en el porcentaje de aprobación son ruido estadístico.
+
+Investigación: `research/mine/acct_*.py` (`acct_life2.py`, `acct_mc.py`, `acct_multi.py`, `acct_evalcheck.py`).
+
+**Variante EQ2** (un poco más de ingreso, algunas fondeadas quemadas más):
+- Configuración: FundedCushionSafe = 750, **FundedCushionFull = 1500**, cobro a **$4.000**.
+- Opera SAFE con colchón < $750, sin ×2 entre $750 y $1.500, y completo por encima.
+- Ingreso por cuenta y por mes: $871 / $1.031 / $1.293 (historia) y $699 / $1.066 / $1.111 (Monte Carlo). Es +5-9% sobre EQUILIBRIO.

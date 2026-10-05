@@ -57,5 +57,13 @@ Las diferencias chicas son normales: el orden de llenado intrabarra de NinjaTrad
 
 Investigación: `research/mine/gold_*.py`, `families_gold.py`, `results_gold*.csv`. Datos: `research/data/xau_long.npz` (oro 2010-2026) y `mgc_fut.npz`.
 
-## Evaluaciones de prop junto a NQMaster
-Poné **Account daily stop = 700** durante la evaluación. En tiempo real mira toda la cuenta (MNQ + MGC) y corta el día si se pierden $700. NQMaster en PropMode = Eval aplica el mismo corte. Ver la sección "Cuentas de prop con 1 contrato" en NQMASTER_GUIA.md.
+## Cuentas de prop junto a NQMaster (protocolo EQUILIBRIO)
+- **Evaluación:** Profile = **Robust**, EvalTarget = 3000, StartBalance = 50000, ConsistencyPct = 50. Mira toda la cuenta y deja de operar cuando la evaluación está aprobada.
+- **Fondeada:** Profile = **WinRate**, EvalTarget = 0.
+
+## Monitor de ventaja (grupo "04. Edge monitor")
+Es un CUSUM del resultado diario por contrato dividido por 10 × ATR.
+- Falsas alarmas: ~1,5-2% por año, y ninguna en 2020-26 ni en MGC real.
+- Si la ventaja desaparece, tarda ~14 meses en detectarlo, porque la ventaja del oro es chica.
+- En el régimen del oro de 2010-19, WinRate habría dado alarma a los ~2,6 años; Robust nunca.
+- Poné *Edge monitor start date* = el día que arrancás en vivo.

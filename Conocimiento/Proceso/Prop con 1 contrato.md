@@ -8,3 +8,16 @@ Volver a [[00 - MAPA]] · Guía: sección "Cuentas de prop con 1 contrato" en `N
 - **Hallazgo 4:** empezar la evaluación con ATR alto (≥ 1,15 veces la mediana de 60 días) baja la aprobación 7-14 puntos en los tres períodos. Con ATR bajo se tarda mucho. También mejora empezar después de 10 días malos de la estrategia (+4 a +12 puntos), pero ocurre pocas veces (~20% de los días).
 - **Hallazgo 5 (fondeada):** SAFE con colchón < $1.500, NO-BOOST por encima y cobro a $6.000 → cuentas quemadas en 12 meses: 44% → 22-25%; cobro por cuenta $5,5k → $6,8k (en 2024-26).
 - **No mejora:** la velocidad. Con 1 contrato, ser más rápido exige más ganancia por unidad de riesgo, y la ventaja por trade ya está en su techo.
+
+## Actualización: ciclo completo de 12 meses (protocolo EQUILIBRIO)
+- Lo que importa es el ingreso del ciclo completo (evaluación + fondeada + costos), no cada fase por separado. Con 1 contrato, la fondeada es la que más pesa.
+- **EQUILIBRIO:**
+  - Evaluación con Ultra + GoldMaster Robust, sin regla de ATR ni stop diario.
+  - Fondeada en SAFE con colchón < $750, completa por encima, cobro a $5.000.
+  - Gana a la configuración actual en historia, con costos +1 tick y en Monte Carlo, en 2020-23 y en 2024-26.
+  - Quema menos fondeadas (0,58 contra 1,00 por año en real) y aprueba más rápido (20 contra 22 días), con la misma aprobación.
+- La superficie umbral × cobro es plana entre $500-1.000 y $4.000-5.000: no es un número afortunado.
+- **La regla de ATR para empezar** sube la aprobación pero cuesta ingreso, porque se espera. Queda como opción.
+- **Petróleo (MCL):** descartado. Los candidatos de 2020-26 pierden en 2011-19 y el costo es 2,3% del ATR.
+- **Monitor de ventaja del oro:** agregado a GoldMaster (CUSUM, ~14 meses para detectar que la ventaja murió).
+- Informe visual del plan de cuentas: https://claude.ai/artifact/HcWik3V4oEwdGv3gTqedjV

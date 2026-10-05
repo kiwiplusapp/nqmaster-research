@@ -9,6 +9,6 @@ Probé los mismos dos tests que con el oro: el mapa horario completo y todos los
 | **Plata (SIL)** | 0.66 / 0.68 / 0.90 | 0.82 / 0.69 / 1.06 | ❌ Nada consistente |
 | **S&P (ES)** | — | MOM11 PF 0.76; ORB en retroceso +0.15R a 2R | ❌ Además se mueve igual que el NQ |
 | **Oro (MGC)** | 0.74–0.90 | Solo ORB30 | ⚠️ [[GOLD ORB30]], débil |
-| **Petróleo (MCL)** | Pendiente | Pendiente | histdata no tiene 2024–26 y Dukascopy limita las descargas |
+| **Petróleo (MCL)** | Minero completo (38.000 variantes) 2020-26 + validación 2011-19 | Solo 11 variantes con PF ≥ 1,2 en 2020-23 y 2024-26, y casi todas pierden en 2011-19 | ❌ Costo 2,3% del ATR por operación (5 veces el del NQ) |
 
 **Conclusión:** la ventaja del sistema es **propia del Nasdaq**, el mercado más tendencial y con más momentum intradía. Sumar mercados no mejora el portafolio con estas lógicas.

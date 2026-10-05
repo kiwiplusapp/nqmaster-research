@@ -20,7 +20,13 @@ research/tmp/
 /research/data/nqhd_long.npz
 /research/data/nqhd_long_utc.pkl
 /research/data/nsx_1519_utc.pkl
+/research/data/wti.npz
+/research/data/wti_1019_utc.pkl
 /research/data/wti_duka_utc.pkl
+/research/data/wti_long.npz
+/research/data/wti_long_raw.npz
+/research/data/wti_long_utc.pkl
+/research/data/wti_raw.npz
 /research/data/wtiusd_hd_utc.pkl
 /research/data/xag_hd.npz
 /research/data/xag_hd_raw.npz

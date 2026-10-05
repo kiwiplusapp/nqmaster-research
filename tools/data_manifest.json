@@ -67,9 +67,33 @@
   "sha256": "5046928b1a65f8d29ba3396ca60a7940538daf12575f734356c3782ccb8ca399",
   "size": 81467339
  },
+ "research/data/wti.npz": {
+  "sha256": "4962b16164a41603926f2d668442f5c8366790d45cfef959bf8fca8004cba470",
+  "size": 147831108
+ },
+ "research/data/wti_1019_utc.pkl": {
+  "sha256": "97d4a9677d3fa3bd7c9aa99d9c2e9b57ffc9815095b8130af990508a656418b9",
+  "size": 138259163
+ },
  "research/data/wti_duka_utc.pkl": {
   "sha256": "9628dc2813bc7bbd4b9fa1956117ea11548ef043e45418fe0a3733754bdff36a",
   "size": 110867292
+ },
+ "research/data/wti_long.npz": {
+  "sha256": "1fafc5253ca2ff7b5a5e8bb98334a86f1239c22c97d6cb2691bdb39f3cd2d716",
+  "size": 331113920
+ },
+ "research/data/wti_long_raw.npz": {
+  "sha256": "215e87c93dd5c4033d5fdf6018efaa96812472e056383db9d4358d5d2143aff1",
+  "size": 331113920
+ },
+ "research/data/wti_long_utc.pkl": {
+  "sha256": "1b6c6d97580d89e8f7c34d24d9af99d81b67605d22ecc62361b4c20a0c6bdf7a",
+  "size": 249125339
+ },
+ "research/data/wti_raw.npz": {
+  "sha256": "994d9ddb1b151c6990317871f0b570ef9a733464dbed5f0ad5047b05731d8a3f",
+  "size": 147831108
  },
  "research/data/wtiusd_hd_utc.pkl": {
   "sha256": "cf6e673501ca536e53db73d78fc524f7eeb00079e5293dc695b32b145f5c53e6",

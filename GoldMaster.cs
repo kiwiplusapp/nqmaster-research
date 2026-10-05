@@ -72,6 +72,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double asH, asL; private bool asHas, asBroken;
 		private int flattenBar = -1; private string status = "waiting";
 		private double dayStartPnl, acctDayStart = double.NaN; private bool dayStopped, acctStopped;
+		private double evDayStart = double.NaN, evBestDay = double.NaN; private bool targetHit;
 		private int tradesProcessed, totalTrades, totalWins; private double grossWin, grossLoss, netPnl;
 		#endregion
 
@@ -100,7 +101,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Profile = GoldMasterProfile.WinRate;
 				UseOd = true; UseEng0408 = true; UseSvwap = true; UseEng0610 = true; UseAsia = true; UseEng0206 = true; UseLate = false;
 				Contracts = 1; FlattenTime = 1651; SkipFomc = true; FomcDates = "";
-				DailyLossLimit = 0; AccountDailyStop = 0; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
+				DailyLossLimit = 0; AccountDailyStop = 0; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0;
+				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
 			}
 			else if (State == State.DataLoaded)
 			{
@@ -207,6 +209,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		#region Session / daily statistics
 		private void NewSession(DateTime etOpen)
 		{
+			EdgeDayClose();
 			// finalize the previous RTH day (ATR: EWM 1/14 of RTH true ranges; trend: prior close vs SMA20 of RTH closes)
 			if (rthHas)
 			{
@@ -226,6 +229,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 			for (int k = 0; k < 6; k++) cHas[k] = false;
 			foreach (Mod m in mods) { m.Done = false; m.ExpireMin = -1; m.Dir = 0; }
 			dayStartPnl = netPnl; dayStopped = false; acctStopped = false; acctDayStart = AcctEquity();
+			if (State == State.Realtime)
+			{
+				double eq = Account.Get(AccountItem.CashValue, Currency.UsDollar);
+				if (double.IsNaN(evBestDay)) evBestDay = EvalBestDaySoFar;
+				if (!double.IsNaN(evDayStart)) evBestDay = Math.Max(evBestDay, eq - evDayStart);
+				evDayStart = eq;
+			}
 		}
 		#endregion
 
@@ -292,6 +302,31 @@ namespace NinjaTrader.NinjaScript.Strategies
 			MarketEntry(late, d, Close[0] - d * 1.0 * atr, Close[0] + d * 1.0 * atr);
 		}
 		#endregion
+
+
+		// ---- edge monitor (research/mine/gold_monitor.py): one-sided CUSUM on z = day P&L per contract / (10 x daily ATR in $ of gold),
+		// S = max(0, S + k - z), alarm when S > h. Calibrated on 2020-26 (CFD) with 30 sd: ~1.5-2% false alarms per year, no alarm in
+		// 2020-26 nor on real MGC 2024-26; a dead edge is detected after ~14 months (gold edges are small, so it needs time).
+		// Replay 2010-19 (old gold regime): WinRate would have alarmed after ~2.6 years; Robust never (it kept a small edge).
+		private double edgeS; private int edgeDays; private bool edgeAlarm, edgePaused, edgeDayRth;
+		private void EdgeDayClose()
+		{
+			bool counted = EdgeMonitor && rthHas && !fomcToday && AtrOk && sessionDate > 0;
+			DateTime st;
+			if (counted && DateTime.TryParseExact(EdgeMonitorStart ?? "", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out st) && sessionDate >= st.Year * 10000 + st.Month * 100 + st.Day)
+			{
+				double k = Profile == GoldMasterProfile.Robust ? 0.01215 : 0.00523, h = Profile == GoldMasterProfile.Robust ? 8.992 : 3.861;
+				double z = (netPnl - dayStartPnl) / Math.Max(1, Contracts) / (10.0 * atr);
+				edgeS = Math.Max(0.0, edgeS + k - z); edgeDays++;
+				if (PrintLog) Print(string.Format("{0} | GOLD | EDGE day {1}: z {2:0.000} | CUSUM {3:0.00} / {4:0.00} ({5:0}%)", sessionDate, edgeDays, z, edgeS, h, 100 * edgeS / h));
+				if (!edgeAlarm && edgeS > h)
+				{
+					edgeAlarm = true; edgePaused = EdgeMonitorPause;
+					Print(string.Format("GoldMaster | EDGE MONITOR ALARM {0}: live results no longer consistent with the backtested gold edge ({1} days). {2}", sessionDate, edgeDays,
+						EdgeMonitorPause ? "New entries paused." : "Alert only (pause is off)."));
+				}
+			}
+		}
 
 		#region Orders
 		private bool OppositeBusy(int d)
@@ -379,8 +414,19 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (State == State.Realtime) return Account.Get(AccountItem.CashValue, Currency.UsDollar) + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar);
 			return netPnl + (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Close[0]));
 		}
+		// eval target with Lucid-style consistency (realtime, whole account): stop when profit >= max(target, best day / consistency)
+		private void EvalTargetCheck()
+		{
+			if (EvalTarget <= 0 || targetHit || State != State.Realtime) return;
+			double bal = Account.Get(AccountItem.CashValue, Currency.UsDollar);
+			if (double.IsNaN(evDayStart)) { evDayStart = bal; if (double.IsNaN(evBestDay)) evBestDay = EvalBestDaySoFar; }
+			double need = EvalTarget;
+			if (ConsistencyPct > 0) need = Math.Max(need, Math.Max(evBestDay, bal - evDayStart) * 100.0 / ConsistencyPct);
+			if (bal - StartBalance >= need) { targetHit = true; FlattenAll("eval target"); Print(string.Format("GoldMaster | EVAL TARGET REACHED (+{0:0}, needed {1:0}) - trading stopped.", bal - StartBalance, need)); }
+		}
 		private void DailyLossCheck()
 		{
+			EvalTargetCheck();
 			if (AccountDailyStop > 0 && !acctStopped && !double.IsNaN(acctDayStart) && AcctEquity() - acctDayStart <= -AccountDailyStop) { acctStopped = true; FlattenAll("account daily stop"); Log("ACCOUNT DAILY STOP reached"); }
 			if (DailyLossLimit <= 0 || dayStopped) return;
 			if (netPnl - dayStartPnl <= -DailyLossLimit) { dayStopped = true; FlattenAll("daily loss limit"); Log("DAILY LOSS LIMIT reached"); }
@@ -390,6 +436,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (fomcToday) { status = "FOMC day: no trading"; return false; }
 			if (dayStopped) { status = "daily loss limit"; return false; }
 			if (acctStopped) { status = "account daily stop"; return false; }
+			if (targetHit) { status = "eval target reached"; return false; }
+			if (edgePaused) { status = "EDGE MONITOR ALARM - review before trading"; return false; }
 			if (PauseActive()) { status = "MANUAL PAUSE (file)"; return false; }
 			status = AtrOk ? "trading" : "warming up (needs ~20 RTH days)";
 			return true;
@@ -431,6 +479,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			string txt = string.Format("GOLD MASTER ({0}) | {1}\ntrend {2} | ATRd {3:0.0}\n{4}\nTotal {5} tr | WR {6:0.0}% | PF {7:0.00} | ${8:0.00}",
 				Profile, status, trendDir == 1 ? "UP" : trendDir == -1 ? "DOWN" : "-", atr, mm.ToString(), totalTrades,
 				totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
+			if (EdgeMonitor && edgeDays > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / (Profile == GoldMasterProfile.Robust ? 8.992 : 3.861), edgeDays, edgeAlarm ? " | ALARM" : "");
 			Draw.TextFixed(this, "GM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
 		}
 		#endregion
@@ -450,8 +499,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Extra FOMC dates (yyyy-MM-dd list)", Order = 4, GroupName = "02. Risk / account")] public string FomcDates { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Daily loss limit $ (0 = off)", Order = 5, GroupName = "02. Risk / account")] public double DailyLossLimit { get; set; }
 		[NinjaScriptProperty][Display(Name = "Pause file", Order = 6, GroupName = "02. Risk / account")] public string PauseFile { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Account daily stop $ (whole account in realtime; eval: 700, 0 = off)", Order = 7, GroupName = "02. Risk / account")] public double AccountDailyStop { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Account daily stop $ (whole account in realtime; 0 = off)", Order = 7, GroupName = "02. Risk / account")] public double AccountDailyStop { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval target $ (realtime, whole account; 0 = off)", Order = 8, GroupName = "02. Risk / account")] public double EvalTarget { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Start balance $", Order = 9, GroupName = "02. Risk / account")] public double StartBalance { get; set; }
+		[NinjaScriptProperty][Range(0, 100)][Display(Name = "Eval consistency % (Lucid 50, 0 = off)", Order = 10, GroupName = "02. Risk / account")] public double ConsistencyPct { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: best day so far $ (after a restart)", Order = 11, GroupName = "02. Risk / account")] public double EvalBestDaySoFar { get; set; }
 		[Display(Name = "Show dashboard", Order = 1, GroupName = "03. Display")] public bool ShowDashboard { get; set; }
+		[NinjaScriptProperty][Display(Name = "Edge monitor on", Order = 1, GroupName = "04. Edge monitor")] public bool EdgeMonitor { get; set; }
+		[NinjaScriptProperty][Display(Name = "Pause new entries on alarm", Order = 2, GroupName = "04. Edge monitor")] public bool EdgeMonitorPause { get; set; }
+		[NinjaScriptProperty][Display(Name = "Edge monitor start date (yyyy-MM-dd)", Order = 3, GroupName = "04. Edge monitor")] public string EdgeMonitorStart { get; set; }
 		[Display(Name = "Print log", Order = 2, GroupName = "03. Display")] public bool PrintLog { get; set; }
 		#endregion
 	}
