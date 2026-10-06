@@ -4,7 +4,7 @@
 
 ## Cómo usarla
 1. Abrí un gráfico de **MGC de 1 minuto** con el horario completo de Globex (18:00-17:00 ET).
-2. Cargá al menos **30 días** antes del inicio del backtest: necesita ~20 días de sesión regular (09:30-16:00 ET) para calcular el ATR y la tendencia.
+2. Cargá al menos **120 días** antes del inicio del backtest (Days to load). Necesita 60 días de sesión regular (09:30-16:00 ET) para que el ATR y la tendencia sean confiables; antes de eso no opera y lo avisa.
 3. Agregá la estrategia **GoldMaster** y elegí el **Profile**.
 4. Cierra todo a las 16:51 ET y no opera los días de FOMC.
 
@@ -59,7 +59,15 @@ Investigación: `research/mine/gold_*.py`, `families_gold.py`, `results_gold*.cs
 
 ## Cuentas de prop junto a NQMaster (protocolo EQUILIBRIO)
 - **Evaluación:** Profile = **Robust**, EvalTarget = 3000, StartBalance = 50000, ConsistencyPct = 50. Mira toda la cuenta y deja de operar cuando la evaluación está aprobada.
-- **Fondeada:** Profile = **WinRate**, EvalTarget = 0.
+- **Fondeada:** Profile = **Robust** (desde 2026-10-06; antes WinRate), EvalTarget = 0. Con 2 contratos rinde más por cuenta (ver NQMASTER_GUIA, PERFIL FINAL).
+- **Modo pasar fácil (opcional):** Contracts 1, EvalMode on, EvalStartDate = día de inicio. Desde la 9ª sesión opera 2 contratos si la ganancia es menor a $2.100 y quedan al menos $1.000 sobre el límite. Toma el pico de la cuenta del archivo que guarda NQMaster.
+
+## Cambios de código (2026-10-06 noche)
+- **Choques entre módulos como en la investigación:** solo una posición opuesta abierta bloquea una entrada. Una orden stop bloqueada queda en espera y se vuelve a poner cuando se libera el lado contrario. Si el precio toca su nivel mientras espera, se descarta, igual que en la investigación. Antes se descartaba la señal; eso costaba unos $350-540 en 2024-26.
+- **En vivo:** si el precio ya pasó el nivel, entra a mercado (salvo que también haya pasado el objetivo). Un rechazo ya no apaga la estrategia, y un stop de protección rechazado cierra el módulo.
+- **ASIA:** la primera ruptura del rango decide aunque la orden no estuviera puesta. Si una barra rompe los dos lados, no opera.
+- **Cuenta:** el stop diario y el inicio del día de la evaluación descuentan lo ya ganado o perdido ese día si se activa a mitad de sesión. El objetivo de la evaluación cuenta la ganancia abierta, y si al cerrar no se cumple, sigue operando.
+- Llenados parciales contados una vez. Días FOMC cuentan como 0 en el monitor de ventaja. ENG0610 apagado por defecto.
 
 ## Monitor de ventaja (grupo "04. Edge monitor")
 Es un CUSUM del resultado diario por contrato dividido por 10 × ATR.

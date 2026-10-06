@@ -139,7 +139,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = true; UseLateFh = true; Vw13Wide = true;
 				FomcDates = "2024-01-31,2024-03-20,2024-05-01,2024-06-12,2024-07-31,2024-09-18,2024-11-07,2024-12-18,2025-01-29,2025-03-19,2025-05-07,2025-06-18,2025-07-30,2025-09-17,2025-10-29,2025-12-10,2026-01-28,2026-03-18,2026-04-29,2026-06-17,2026-07-29,2026-09-16,2026-10-28,2026-12-09";
 				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250; DailyLossLimit = 0; MinAtrPoints = 150;
-				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3; EvalLateMinCushion = 0;
+				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3;
 				PauseFile = "pause_trading.txt"; ShowDashboard = true; PrintLog = true;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0;
 				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 0; EvalDailyStop = 0; FundedCushionSafe = 750; FundedPayoutAt = 5000; FundedHighFull = true; FundedCushionFull = 0;
@@ -733,8 +733,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 		private int Qty()
 		{
-			if (EvalMode) return (evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal
-				&& (EvalLateMinCushion <= 0 || double.IsNaN(propCushion) || propCushion >= EvalLateMinCushion)) ? EvalLateContracts : Contracts;
+			if (EvalMode) return (evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal) ? EvalLateContracts : Contracts;
 			if (!AdaptiveSize) return Contracts;
 			return (eqPeak - netPnl) > SizeDownDrawdown ? SizeLow : SizeHigh;
 		}
@@ -1124,7 +1123,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(1, 30)][Display(Name = "Late day (sessions since start, 0-based)", Order = 3, GroupName = "05. Evaluation mode")] public int EvalLateDay { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late goal $ (size up if profit below)", Order = 4, GroupName = "05. Evaluation mode")] public double EvalLateGoal { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Late contracts", Order = 5, GroupName = "05. Evaluation mode")] public int EvalLateContracts { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late size only if cushion >= $ (0 = off; 'pass easy' 1000, needs PropMode Eval)", Order = 6, GroupName = "05. Evaluation mode")] public double EvalLateMinCushion { get; set; }
 		[NinjaScriptProperty][Display(Name = "Pause file", Order = 38, GroupName = "03. Risk / account")] public string PauseFile { get; set; }
 		[NinjaScriptProperty][Display(Name = "Context rules (MaxPlus2/Custom): x2 ORB60/ORB90/CRT11/MSEQ in favourable context, skip ON07 after a counter day", Order = 45, GroupName = "03. Risk / account")] public bool UseContextRules { get; set; }
 		[NinjaScriptProperty][Display(Name = "VOLB on ", Order = 19, GroupName = "01. Module switches (any profile)")] public bool UseVolBreak { get; set; }

@@ -68,7 +68,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 		private List<Mod> mods;
 		private Mod orb, orb2, mseq, mseqs, crt, lon, ict, rsi, volb, eng10;
-		private double rthFirstClose = double.NaN;
 		private double e10aO, e10aH, e10aL, e10aC, e10bO, e10bH, e10bL, e10bC, close10 = double.NaN; private bool e10aHas, e10bHas, eng10Done;
 		private double volbUp = double.NaN, volbDn = double.NaN; private bool volbDone, volbTrendOnly;
 		private int orbFirstDir, orbFirstMin = 9999;
@@ -127,7 +126,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Slippage = 1;
 				StartBehavior = StartBehavior.WaitUntilFlat;
 				TimeInForce = TimeInForce.Gtc;
-				RealtimeErrorHandling = RealtimeErrorHandling.IgnoreAllErrors;	// rejections handled in OnOrderUpdate
+				RealtimeErrorHandling = RealtimeErrorHandling.StopCancelClose;
 				StopTargetHandling = StopTargetHandling.PerEntryExecution;
 				BarsRequiredToTrade = 20;
 				IsInstantiatedOnEachOptimizationIteration = true;
@@ -135,11 +134,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Profile = NQMasterProfile.MaxSharpe;
 				UseOrb = true; OrbRangeMin = 60; OrbTargetR = 0.6; OrbPullbackFilter = true; PullbackMaxRet = 0.44; StopCapAtr = 0.35;
 				UseMseq = true; UseCrt = true; UseMom11 = true; UseMom1130 = true; UseRsi2 = true; UseOrb90 = true; UseMseqShort = true; UseMom13 = true; UseMom1030 = true; UseOn07 = true; UseRev06 = true; UseLon = true; UseIct = true;
-				Contracts = 1; FlattenTime = 1556; SkipFomc = true;
+				Contracts = 1; FlattenTime = 1555; SkipFomc = true;
 				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = true; UseLateFh = true; Vw13Wide = true;
 				FomcDates = "2024-01-31,2024-03-20,2024-05-01,2024-06-12,2024-07-31,2024-09-18,2024-11-07,2024-12-18,2025-01-29,2025-03-19,2025-05-07,2025-06-18,2025-07-30,2025-09-17,2025-10-29,2025-12-10,2026-01-28,2026-03-18,2026-04-29,2026-06-17,2026-07-29,2026-09-16,2026-10-28,2026-12-09";
 				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250; DailyLossLimit = 0; MinAtrPoints = 150;
-				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3; EvalLateMinCushion = 0;
+				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3;
 				PauseFile = "pause_trading.txt"; ShowDashboard = true; PrintLog = true;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0;
 				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 0; EvalDailyStop = 0; FundedCushionSafe = 750; FundedPayoutAt = 5000; FundedHighFull = true; FundedCushionFull = 0;
@@ -205,8 +204,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			AddTime("REV06", (custom ? UseRev06 : (!gold && !core) && UseRev06), 600, 30, true, 0.20, 0.3, 240, true, false);
 			AddTime("MOM1130", (custom ? UseMom1130 : (mt) && UseMom1130), 1130, -2, false, 0.25, 0.3, 0, false, true);
 			Mod vw13 = AddTime("VW13", (custom ? UseVw13 : (mp2 || w7) && UseVw13), 1301, -3, false, 0.15, 0.5, 120, true, false); bool vwWide = w7 || (ul && Vw13Wide); vw13.MinDist = vwWide ? 0.15 : 0.30; vw13.DoubleDist = vwWide ? 0.30 : 0;
-			Mod late15 = AddTime("LATE15", (custom ? UseLate15 : (ul || w7 || core) && UseLate15), 1500, -4, false, 0.30, 0.5, 0, true, false); late15.MinDist = 0.5;
-			Mod latefh = AddTime("LATEFH", (custom ? UseLateFh : ul && UseLateFh), 1500, -4, false, 0.20, 0.5, 0, false, false); latefh.MinDist = 0.25; latefh.FhCheck = true;
+			Mod late15 = AddTime("LATE15", (custom ? UseLate15 : (ul || w7 || core) && UseLate15), 1500, -2, false, 0.30, 0.5, 0, true, false); late15.MinDist = 0.5;
+			Mod latefh = AddTime("LATEFH", (custom ? UseLateFh : ul && UseLateFh), 1500, -2, false, 0.20, 0.5, 0, false, false); latefh.MinDist = 0.25; latefh.FhCheck = true;
 			eng10 = NewMod("ENG10", (custom ? UseEng10 : ul && UseEng10), 0.5); eng10.PriceTarget = true; eng10.MaxHold = 400;
 			volb = NewMod("VOLB", (custom ? UseVolBreak : (ul || w7 || core) && UseVolBreak), w7 ? 0.5 : 2.0); volb.PriceTarget = true; volb.MaxHold = 400; volbTrendOnly = w7;
 			rsi = NewMod("RSI2", (custom ? UseRsi2 : (mt) && UseRsi2), 0.3); rsi.StopAtr = 0.15; rsi.MaxHold = 120;
@@ -271,7 +270,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				edgeDayRth = true;
 				if (etDate != rthDay) StartRthDay(etDate);
-				if (!dayHasBars) { dayHigh = High[0]; dayLow = Low[0]; dayHasBars = true; rthOpenPx = Open[0]; rthFirstClose = Close[0]; SetupIctLevels();
+				if (!dayHasBars) { dayHigh = High[0]; dayLow = Low[0]; dayHasBars = true; rthOpenPx = Open[0]; SetupIctLevels();
 					double prng = prevRthHigh - prevRthLow; volbUp = double.IsNaN(prng) ? double.NaN : rthOpenPx + 0.45 * prng; volbDn = double.IsNaN(prng) ? double.NaN : rthOpenPx - 0.45 * prng; }
 				else { dayHigh = Math.Max(dayHigh, High[0]); dayLow = Math.Min(dayLow, Low[0]); }
 				dayClose = Close[0]; dayLastOpen = openMin;
@@ -335,7 +334,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			crt.Done = false; crt.Retry = false;
 			rsiTrades = 0;
 			volbDone = false; volbUp = double.NaN; volbDn = double.NaN;
-			e10aHas = false; e10bHas = false; eng10Done = false; eng10Retry = false; close10 = double.NaN; rthFirstClose = double.NaN;
+			e10aHas = false; e10bHas = false; eng10Done = false; close10 = double.NaN;
 			m11Dir = 0; onSum = 0; lonDir = 0;
 		}
 
@@ -388,10 +387,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			double opp = d == 1 ? o.OrL - TickSize : o.OrH + TickSize;
 			int st = Math.Max(8, (int)Math.Round(Math.Min(Math.Abs(entry - opp), StopCapAtr * todayAtr) / TickSize));
 			o.Armed = false;
-			if (!DirectionAllowed(d)) { if (lastDeferred) o.Armed = true; return; }
+			if (!DirectionAllowed(d)) return;
 			SetStopLoss(o.Sig, CalculationMode.Ticks, st, false);
 			SetProfitTarget(o.Sig, CalculationMode.Ticks, Math.Max(1, (int)Math.Round(st * o.R)));
-			bool through = PastLevel(d, entry);
+			bool through = d == 1 ? Close[0] >= entry : Close[0] <= entry;
 			o.Dir = d;
 			bool oc = o == orb ? (FeatGap(d) >= 0.3311 || FeatRet5(d) >= 1.8118 || atrRatio >= 1.2615) : (FeatVw(d, entry) < 0.1231 || FeatOpen(d, entry) >= 0.5458);
 			int oq = CtxBoost(Qty(), oc, o.Sig);
@@ -405,8 +404,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void ManageVolb(int openMin)
 		{
 			if (volbDone || volb.InTrade || double.IsNaN(volbUp) || double.IsNaN(rthOpenPx) || atrCount < 14) return;
-			if (CurrentBars[0] <= deferUntil && openMin < 899) return;      // another module is waiting for VOLB's order to be cancelled
-			if (openMin >= 899) { if (Working(volb.Entry)) CancelOrder(volb.Entry); volbDone = true; return; }
+			if (openMin >= 900) { if (Working(volb.Entry)) CancelOrder(volb.Entry); volbDone = true; return; }
 			int d = (volbUp - Close[0]) <= (Close[0] - volbDn) ? 1 : -1;
 			if (volbTrendOnly)
 			{
@@ -419,7 +417,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				CancelOrder(volb.Entry); return;                    // switch side on the next bar
 			}
 			double lvl = d == 1 ? Instrument.MasterInstrument.RoundToTickSize(volbUp) : Instrument.MasterInstrument.RoundToTickSize(volbDn);
-			if (PastLevel(d, lvl)) { volbDone = true; return; }   // already through: no chase
+			if ((d == 1 && Close[0] >= lvl) || (d == -1 && Close[0] <= lvl)) { volbDone = true; return; }   // already through: no chase
 			// never cancel other modules' working entries for VOLB: wait while the position or a working order points the other way
 			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return;
 			foreach (Mod o in mods) if (o != volb && Working(o.Entry) && o.Dir == -d) return;
@@ -436,7 +434,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (Working(eng10.Entry) && openMin >= 689 && openMin < 18 * 60) { CancelOrder(eng10.Entry); Log("ENG10 entry expired"); }
 				return;
 			}
-			if (eng10Retry && openMin < 689) { Eng10Place(); return; }
 			if (openMin != 599) return;
 			eng10Done = true;
 			if (!e10aHas || !e10bHas || atrCount < 14 || double.IsNaN(todayAtr) || todayAtr <= 0 || trendDir == 0) return;
@@ -447,27 +444,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if ((d == 1 && Close[0] >= px) || (d == -1 && Close[0] <= px)) return;
 			double sl = Instrument.MasterInstrument.RoundToTickSize(px - d * 0.5 * (e10bH - e10bL)), risk = (px - sl) * d;
 			if (risk <= 0.02 * todayAtr || risk > 0.6 * todayAtr) return;
-			e10d = d; e10px = px; e10sl = sl; eng10Retry = true; Eng10Place();
-		}
-		private int e10d; private double e10px, e10sl; private bool eng10Retry;
-		private void Eng10Place()
-		{
-			if (!DirectionAllowed(e10d)) { if (!lastDeferred) eng10Retry = false; return; }
-			eng10Retry = false;
-			ArmPriceBracket(eng10, e10d, e10sl);
-			if (PastLevel(e10d, e10px))
-			{
-				if ((Close[0] - e10px) * e10d > 0.5 * Math.Abs(e10px - e10sl)) { Log("ENG10 skipped (price ran > 0.5R past the level)"); return; }
-				if (e10d == 1) EnterLong(0, Qty(), eng10.Sig); else EnterShort(0, Qty(), eng10.Sig);
-			}
-			else if (e10d == 1) EnterLongStopMarket(0, true, Qty(), e10px, eng10.Sig); else EnterShortStopMarket(0, true, Qty(), e10px, eng10.Sig);
-			Log(string.Format("ENG10 {0} @ {1} | SL {2}", e10d == 1 ? "BUY" : "SELL", Fmt(e10px), Fmt(e10sl)));
-		}
-		// price already at/through a stop-entry level? historical: bar close; realtime: current ask / bid (a stop there would be rejected)
-		private bool PastLevel(int d, double px)
-		{
-			if (State == State.Realtime) { try { return d == 1 ? GetCurrentAsk() >= px : GetCurrentBid() <= px; } catch { } }
-			return d == 1 ? Close[0] >= px : Close[0] <= px;
+			if (!DirectionAllowed(d)) return;
+			ArmPriceBracket(eng10, d, sl);
+			if (d == 1) EnterLongStopMarket(0, true, Qty(), px, eng10.Sig); else EnterShortStopMarket(0, true, Qty(), px, eng10.Sig);
+			Log(string.Format("ENG10 {0} STOP @ {1} | SL {2}", d == 1 ? "BUY" : "SELL", Fmt(px), Fmt(sl)));
 		}
 
 		private void TimeEntry(Mod m)
@@ -477,7 +457,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			double reference = double.NaN;
 			if (m.Lookback == -1) reference = sessOpen;
 			else if (m.Lookback == -2) reference = rthOpenPx;
-			else if (m.Lookback == -4) { if (double.IsNaN(full1)) return; reference = rthFirstClose; }
 			else if (m.Lookback == -3) reference = vwV > 0 ? vwPv / vwV : double.NaN;
 			else if (m.Lookback > 0 && CurrentBars[0] > m.Lookback) reference = Close[m.Lookback - 1];
 			if (double.IsNaN(reference) || Close[0] == reference) return;
@@ -682,8 +661,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double lim = Instrument.MasterInstrument.RoundToTickSize(cisd);
 				if ((d == -1 && lim <= Closes[1][0]) || (d == 1 && lim >= Closes[1][0])) continue;
 				double risk = (stop - lim) * (-d);
-				if (risk <= 0 || risk > 0.25 * todayAtr) continue;
-				if (!DirectionAllowed(d)) { if (lastDeferred) ictAct[s] = true; continue; }
+				if (risk <= 0 || risk > 0.25 * todayAtr || !DirectionAllowed(d)) continue;
 				ict.Dir = d; ictExtPend = ictExt[s]; ictExpiry = CurrentBars[1] + 20;
 				ArmPriceBracket(ict, d, stop);
 				int iq = Qty() * ((Profile == NQMasterProfile.MaxPlus || Profile == NQMasterProfile.MaxPlus2 || Profile == NQMasterProfile.Ultra || Profile == NQMasterProfile.WR70Plus || Profile == NQMasterProfile.Core || Profile == NQMasterProfile.Custom) ? (noBoost ? 1 : IctMultiplier) : 1);
@@ -733,8 +711,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 		private int Qty()
 		{
-			if (EvalMode) return (evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal
-				&& (EvalLateMinCushion <= 0 || double.IsNaN(propCushion) || propCushion >= EvalLateMinCushion)) ? EvalLateContracts : Contracts;
+			if (EvalMode) return (evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal) ? EvalLateContracts : Contracts;
 			if (!AdaptiveSize) return Contracts;
 			return (eqPeak - netPnl) > SizeDownDrawdown ? SizeLow : SizeHigh;
 		}
@@ -833,12 +810,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private enum GateMode { Full, NoBoost, Safe }
 		private GateMode gate = GateMode.Full; private bool noBoost, propStopped;
 		private double propPeak = double.NaN, propThr = double.NaN, propCushion = double.NaN, propDayStart = double.NaN, atrStartRatio = double.NaN;
-		private bool propLive; private double propBestDay = 0; private int propRestoredDay = -1;
-		private void PropSave(int tradeDay)
-		{
-			if (!propLive) return;
-			try { File.WriteAllText(PropFile, string.Format(CultureInfo.InvariantCulture, "{0:0.00};{1};{2:0.00};{3:0.00}", propPeak, tradeDay, propDayStart, propBestDay)); } catch { }
-		}
+		private bool propLive; private double propBestDay = 0;
 		private string PropFile { get { try { return Path.Combine(Core.Globals.UserDataDir, "nqmaster_prop_" + (Account != null ? Account.Name : "acct") + ".txt"); } catch { return null; } } }
 		private double PropEquity()
 		{
@@ -848,25 +820,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void PropGoLive()
 		{
 			if (PropMode == NQMasterPropMode.Off) return;
-			propLive = true; propPeak = StartBalance; propDayStart = double.NaN; propBestDay = EvalBestDaySoFar;
-			DateTime et = ToEt(Times[0][0]); DateTime td = et.Hour >= 18 ? et.Date.AddDays(1) : et.Date; int today = td.Year * 10000 + td.Month * 100 + td.Day;
-			try
-			{
-				string f = PropFile;
-				if (f != null && File.Exists(f))
-				{
-					string[] a = File.ReadAllText(f).Trim().Split(';'); double v;
-					if (a.Length > 0 && double.TryParse(a[0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) propPeak = Math.Max(propPeak, v);
-					int fd; double ds, bd;
-					if (a.Length >= 4 && int.TryParse(a[1], out fd) && fd == today && double.TryParse(a[2], NumberStyles.Any, CultureInfo.InvariantCulture, out ds)) propDayStart = ds;
-					if (a.Length >= 4 && double.TryParse(a[3], NumberStyles.Any, CultureInfo.InvariantCulture, out bd)) propBestDay = Math.Max(propBestDay, bd);
-				}
-			}
-			catch { }
-			if (PropPeakOverride > 0) propPeak = Math.Max(propPeak, PropPeakOverride);
-			// first start of the day (no saved state): the day started at equity now minus what the account already realized today
-			if (double.IsNaN(propDayStart)) { try { propDayStart = PropEquity() - Account.Get(AccountItem.RealizedProfitLoss, Currency.UsDollar); } catch { } }
-			if (!double.IsNaN(propDayStart)) { propRestoredDay = today; }
+			propLive = true; propPeak = Math.Max(StartBalance, PropEquity()); propDayStart = double.NaN; propBestDay = EvalBestDaySoFar;
+			try { string f = PropFile; if (f != null && File.Exists(f)) { double v; if (double.TryParse(File.ReadAllText(f).Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out v)) propPeak = Math.Max(propPeak, v); } } catch { }
+			if (PropPeakOverride > 0) propPeak = PropPeakOverride;
 			PropSessionStart();
 		}
 		private void PropSessionStart()
@@ -875,13 +831,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (PropMode != NQMasterPropMode.Off)
 			{
 				double eq = PropEquity();
-				DateTime et0 = ToEt(Times[0][0]); DateTime td0 = et0.Hour >= 18 ? et0.Date.AddDays(1) : et0.Date; int tday = td0.Year * 10000 + td0.Month * 100 + td0.Day;
-				if (propRestoredDay == tday && !double.IsNaN(propDayStart)) { }                  // restarted mid-session: keep the saved day start
-				else { if (!double.IsNaN(propDayStart)) propBestDay = Math.Max(propBestDay, eq - propDayStart); propDayStart = eq; }
-				propRestoredDay = -1;
+				if (!double.IsNaN(propDayStart)) propBestDay = Math.Max(propBestDay, eq - propDayStart);
+				propDayStart = eq;
 				if (double.IsNaN(propPeak)) propPeak = Math.Max(StartBalance, PropPeakOverride > 0 ? PropPeakOverride : eq);
-				if (eq > propPeak) propPeak = eq;
-				PropSave(tday);
+				if (eq > propPeak) { propPeak = eq; if (propLive) try { File.WriteAllText(PropFile, propPeak.ToString("0.00", CultureInfo.InvariantCulture)); } catch { } }
 				propThr = propPeak >= StartBalance + PropTrailingDD + 100 ? StartBalance + 100 : propPeak - PropTrailingDD;
 				if (PropThresholdOverride > 0) propThr = PropThresholdOverride;
 				propCushion = eq - propThr;
@@ -909,7 +862,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			else if (EvalProfitStop > 0 && now - propDayStart >= EvalProfitStop) { propStopped = true; FlattenAll("eval daily profit stop"); Log(string.Format("EVAL DAILY PROFIT STOP: +{0:0} today (Lucid consistency)", now - propDayStart)); }
 		}
 
-		private bool lastDeferred; private int deferUntil = -1;
+		private bool lastDeferred;
 		// Opposite open position -> skip. Opposite WORKING entry orders (e.g. an ORB stop order) -> cancel them and defer this entry
 		// one bar (NinjaTrader's managed rules ignore an entry while an opposite entry order is working).
 		private bool DirectionAllowed(int d)
@@ -918,7 +871,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return false;
 			bool blocked = false;
 			foreach (Mod m in mods) if (Working(m.Entry) && m.Dir == -d) { CancelOrder(m.Entry); blocked = true; }
-			if (blocked) { lastDeferred = true; deferUntil = CurrentBars[0] + (BarsInProgress == 1 ? 5 : 1); return false; }
+			if (blocked) { lastDeferred = true; return false; }
 			return true;
 		}
 
@@ -944,18 +897,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (EvalTarget > 0 && !targetHit)
 			{
 				// Lucid-style consistency: the best day may be at most ConsistencyPct % of the total profit -> the real target can be higher
-				double eqNow = bal + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar);
-				double today = double.IsNaN(propDayStart) ? 0 : eqNow - propDayStart;
+				double today = double.IsNaN(propDayStart) ? 0 : bal - propDayStart;
 				double need = EvalTarget;
 				if (ConsistencyPct > 0) need = Math.Max(need, Math.Max(propBestDay, today) * 100.0 / ConsistencyPct);
-				if (eqNow >= StartBalance + need) { targetHit = true; FlattenAll("eval target"); Print(string.Format("NQMaster | EVAL TARGET REACHED (+{0:0}, needed {1:0}) - trading stopped.", bal - StartBalance, need)); }
-			}
-			if (EvalTarget > 0 && targetHit && Position.MarketPosition == MarketPosition.Flat)
-			{
-				double eqF = bal + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar);
-				double today = double.IsNaN(propDayStart) ? 0 : eqF - propDayStart, need = EvalTarget;
-				if (ConsistencyPct > 0) need = Math.Max(need, Math.Max(propBestDay, today) * 100.0 / ConsistencyPct);
-				if (eqF < StartBalance + need) { targetHit = false; Print(string.Format("NQMaster | eval target not met after closing (+{0:0}, needed {1:0}) - trading resumes.", bal - StartBalance, need)); }
+				if (bal >= StartBalance + need) { targetHit = true; FlattenAll("eval target"); Print(string.Format("NQMaster | EVAL TARGET REACHED (+{0:0}, needed {1:0}) - trading stopped.", bal - StartBalance, need)); }
 			}
 			if (MaxDrawdown > 0 && bal <= highWater - MaxDrawdown + DrawdownBuffer && !ddTripped) { ddTripped = true; FlattenAll("drawdown guard"); Print("NQMaster | DRAWDOWN GUARD - trading stopped."); }
 		}
@@ -991,12 +936,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			Mod m = BySig(order.Name);
 			if (m != null) m.Entry = order;
-			if (orderState == OrderState.Rejected)
-			{
-				Print(string.Format("NQMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
-				// a rejected stop-loss / target leaves a position unprotected -> flatten; a rejected entry is simply skipped
-				if (m == null && Position.MarketPosition != MarketPosition.Flat) FlattenAll("protective order rejected");
-			}
+			if (orderState == OrderState.Rejected) Print(string.Format("NQMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
 		}
 
 		protected override void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity,
@@ -1006,11 +946,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Mod m = BySig(execution.Order.Name);
 			if (m != null)
 			{
-				if (execution.Order.Filled <= 0) return;
-				bool first = !m.InTrade;
+				if (execution.Order.OrderState != OrderState.Filled) return;
 				m.InTrade = true; m.EntryPx = execution.Order.AverageFillPrice;
-				if (first)
-				{
 				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(Times[0][0]).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
 				if (m == orb2) orb2.Trades++;
 				if (m == volb) { volbDone = true; volb.EntryBar = CurrentBars[0]; }
@@ -1022,7 +959,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (m.Kind == 1 || m == rsi) m.EntryBar = CurrentBars[0];
 				// cancel opposite working entries
 				foreach (Mod o in mods) if (o != m && Working(o.Entry) && o.Dir == -m.Dir) CancelOrder(o.Entry);
-				}
 				if (m.PriceTarget)
 				{
 					double fill = m.EntryPx; double risk = (fill - m.StopPx) * m.Dir;
@@ -1124,7 +1060,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(1, 30)][Display(Name = "Late day (sessions since start, 0-based)", Order = 3, GroupName = "05. Evaluation mode")] public int EvalLateDay { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late goal $ (size up if profit below)", Order = 4, GroupName = "05. Evaluation mode")] public double EvalLateGoal { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Late contracts", Order = 5, GroupName = "05. Evaluation mode")] public int EvalLateContracts { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late size only if cushion >= $ (0 = off; 'pass easy' 1000, needs PropMode Eval)", Order = 6, GroupName = "05. Evaluation mode")] public double EvalLateMinCushion { get; set; }
 		[NinjaScriptProperty][Display(Name = "Pause file", Order = 38, GroupName = "03. Risk / account")] public string PauseFile { get; set; }
 		[NinjaScriptProperty][Display(Name = "Context rules (MaxPlus2/Custom): x2 ORB60/ORB90/CRT11/MSEQ in favourable context, skip ON07 after a counter day", Order = 45, GroupName = "03. Risk / account")] public bool UseContextRules { get; set; }
 		[NinjaScriptProperty][Display(Name = "VOLB on ", Order = 19, GroupName = "01. Module switches (any profile)")] public bool UseVolBreak { get; set; }

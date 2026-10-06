@@ -55,7 +55,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public string Sig; public bool On; public int MaxHold;
 			public bool Done, InTrade; public Order Entry; public int Dir; public int EntryBar = -1; public int ExpireMin = -1;
 			public double Sl, Tp;
-			public bool Def; public double DPx; public int Q = 1;		// parked stop setup (blocked by an opposite position / order)
 		}
 		private Mod od, e0408, svw, e0610, asia, e0206, late;
 		private List<Mod> mods;
@@ -70,8 +69,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double svPv, svV;
 		private double[] cH = new double[6], cL = new double[6], cO = new double[6], cC = new double[6]; private bool[] cHas = new bool[6];	// 4H candles: 22-02, 00-04, 02-06, 04-08, 06-10 (index by start)
 		private double odH, odL; private bool odHas;
-		private double asH, asL; private bool asHas, asBroken; private int asFirst, rthDays;
-		private Mod pendMod; private int pendBar = -1;
+		private double asH, asL; private bool asHas, asBroken;
 		private int flattenBar = -1; private string status = "waiting";
 		private double dayStartPnl, acctDayStart = double.NaN; private bool dayStopped, acctStopped;
 		private double evDayStart = double.NaN, evBestDay = double.NaN; private bool targetHit;
@@ -95,17 +93,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Slippage = 1;
 				StartBehavior = StartBehavior.WaitUntilFlat;
 				TimeInForce = TimeInForce.Gtc;
-				RealtimeErrorHandling = RealtimeErrorHandling.IgnoreAllErrors;	// rejections handled in OnOrderUpdate
+				RealtimeErrorHandling = RealtimeErrorHandling.StopCancelClose;
 				StopTargetHandling = StopTargetHandling.PerEntryExecution;
 				BarsRequiredToTrade = 20;
 				IsInstantiatedOnEachOptimizationIteration = true;
 
 				Profile = GoldMasterProfile.WinRate;
 				UseOd = true; UseEng0408 = true; UseSvwap = true; UseEng0610 = true; UseAsia = true; UseEng0206 = true; UseLate = false;
-				UseEng0610 = false;
 				Contracts = 1; FlattenTime = 1651; SkipFomc = true; FomcDates = "";
 				DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0;
-				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 8; EvalLateGoal = 2100; EvalLateContracts = 2; EvalLateMinCushion = 1000;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
 			}
 			else if (State == State.DataLoaded)
@@ -121,18 +117,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
 				}
 				BuildModules();
-			}
-			else if (State == State.Realtime)
-			{
-				// enabled mid-day: the day started at equity now minus what the account already realized today
-				try
-				{
-					double rp = Account.Get(AccountItem.RealizedProfitLoss, Currency.UsDollar);
-					acctDayStart = AcctEquity() - rp; evDayStart = Account.Get(AccountItem.CashValue, Currency.UsDollar) - rp;
-					if (double.IsNaN(evBestDay)) evBestDay = EvalBestDaySoFar;
-				}
-				catch { }
-				if (rthDays < 60) Print("GoldMaster | WARNING: only " + rthDays + " RTH days loaded - set Days to load >= 120 (ATR / trend warm-up).");
 			}
 		}
 
@@ -195,13 +179,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (!asHas) { asH = High[0]; asL = Low[0]; asHas = true; }
 				asH = Math.Max(asH, High[0]); asL = Math.Min(asL, Low[0]);
 			}
-			// ---- first Asian-range breakout 00:00-06:00 (research: the first breakout decides; both sides in one bar = no trade)
-			if (asHas && asFirst == 0 && sm >= S(0) && sm < S(600))
-			{
-				bool up = High[0] >= asH + TickSize, dn = Low[0] <= asL - TickSize;
-				asFirst = up && dn ? 2 : (up ? 1 : (dn ? -1 : 0));
-				if (asFirst == 2 && asia.InTrade) ExitModule(asia, "both Asian sides broken in one bar");
-			}
 
 			DailyLossCheck();
 			// ---- exits: flatten, time exits, expiries
@@ -211,24 +188,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (m.InTrade && m.EntryBar >= 0 && CurrentBar - m.EntryBar >= m.MaxHold) ExitModule(m, "time exit");
 				if (Working(m.Entry) && m.ExpireMin >= 0 && sm >= m.ExpireMin - 1) { CancelOrder(m.Entry); Log(m.Sig + " entry expired"); }
 			}
-			// the opposite side broke first -> no trade today
-			if (asia.On && Working(asia.Entry) && asia.Dir != 0 && asFirst != 0 && asFirst != asia.Dir) { CancelOrder(asia.Entry); asBroken = true; }
+			if (asia.On && Working(asia.Entry) && asia.Dir != 0)
+			{
+				// the opposite side broke first -> no trade today (research: the first breakout decides)
+				if ((asia.Dir == 1 && Low[0] <= asL - TickSize) || (asia.Dir == -1 && High[0] >= asH + TickSize)) { CancelOrder(asia.Entry); asBroken = true; }
+			}
 			if (!CanTrade()) { CancelAllEntries(); UpdateDashboard(); return; }
-			if (pendMod != null)
-			{
-				Mod pm = pendMod;
-				if (CurrentBar - pendBar > 1 || pm.InTrade || OppPos(pm.Dir)) pendMod = null;
-				else if (!OppWork(pm.Dir, pm)) { pendMod = null; SendMarket(pm); }
-			}
-			// parked stop setups: re-arm once no opposite position / order remains; drop if touched meanwhile (research drops a fill
-			// against an open opposite position) or expired
-			foreach (Mod m in mods)
-			{
-				if (!m.Def) continue;
-				bool hit = m.Dir == 1 ? High[0] >= m.DPx : Low[0] <= m.DPx;
-				if (hit || m.InTrade || (m.ExpireMin >= 0 && sm >= m.ExpireMin - 1) || (m == asia && asFirst != 0)) { m.Def = false; continue; }
-				if (!OppPos(m.Dir) && !OppWork(m.Dir, m)) { m.Def = false; StopEntry(m, m.Dir, m.DPx, m.Sl, m.Tp, m.ExpireMin); }
-			}
 
 			// ---- signals (evaluated at the close of the bar that OPENED at openMin)
 			if (od.On && !od.Done && openMin == RthOpen + 59 && odHas) { od.Done = true; OpenDrive(); }
@@ -251,7 +216,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double tr = double.IsNaN(prevRthClose) ? rthH - rthL : Math.Max(rthH - rthL, Math.Max(Math.Abs(rthH - prevRthClose), Math.Abs(rthL - prevRthClose)));
 				atr = double.IsNaN(atr) ? tr : atr + (tr - atr) / 14.0;
 				prevRthClose = rthC; pdc = rthLastOpen >= RthClose - 1 ? rthC : double.NaN;
-				closes.Add(rthC); while (closes.Count > 20) closes.RemoveAt(0); rthDays++;
+				closes.Add(rthC); while (closes.Count > 20) closes.RemoveAt(0);
 				trendDir = 0;
 				if (closes.Count >= 20) { double s = 0; foreach (double x in closes) s += x; s /= closes.Count; trendDir = rthC > s ? 1 : (rthC < s ? -1 : 0); }
 			}
@@ -260,10 +225,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 			DateTime tradeDay = etOpen.Hour >= 18 ? etOpen.Date.AddDays(1) : etOpen.Date;
 			sessionDate = tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day;
 			fomcToday = SkipFomc && fomc.Contains(sessionDate);
-			EvalSessionStart();
-			svPv = 0; svV = 0; odHas = false; asHas = false; asBroken = false; asFirst = 0; pendMod = null;
+			svPv = 0; svV = 0; odHas = false; asHas = false; asBroken = false;
 			for (int k = 0; k < 6; k++) cHas[k] = false;
-			foreach (Mod m in mods) { m.Done = false; m.ExpireMin = -1; m.Dir = 0; m.Def = false; }
+			foreach (Mod m in mods) { m.Done = false; m.ExpireMin = -1; m.Dir = 0; }
 			dayStartPnl = netPnl; dayStopped = false; acctStopped = false; acctDayStart = AcctEquity();
 			if (State == State.Realtime)
 			{
@@ -275,38 +239,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 		#endregion
 
-		// ---- evaluation mode ('pass easy', research/mine/eval_pol50.py): Contracts (1) per module; from the EvalLateDay-th session (0-based,
-		// from EvalStartDate) EvalLateContracts while the eval profit is below EvalLateGoal and the cushion over the EOD-trailing threshold
-		// is >= EvalLateMinCushion. Realtime: account equity and NQMaster's prop file (whole-account EOD peak); historical: this strategy.
-		private int evalDayIndex = -1; private double evalEqDayStart, evalPnlBase = double.NaN, evalPeak = double.NaN, evalCushion = double.NaN;
-		private void EvalSessionStart()
-		{
-			if (!EvalMode) return;
-			DateTime st;
-			if (!DateTime.TryParseExact(EvalStartDate ?? "", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out st) || sessionDate < st.Year * 10000 + st.Month * 100 + st.Day) return;
-			if (double.IsNaN(evalPnlBase)) evalPnlBase = netPnl;
-			evalDayIndex++; evalEqDayStart = State == State.Realtime ? Account.Get(AccountItem.CashValue, Currency.UsDollar) - StartBalance : netPnl - evalPnlBase;
-			double pk = double.NaN;
-			if (State == State.Realtime)
-				try
-				{
-					string f = Path.Combine(Core.Globals.UserDataDir, "nqmaster_prop_" + Account.Name + ".txt"); double v;
-					if (File.Exists(f) && double.TryParse(File.ReadAllText(f).Trim().Split(';')[0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) pk = v - StartBalance;
-				}
-				catch { }
-			evalPeak = double.IsNaN(evalPeak) ? Math.Max(0, evalEqDayStart) : Math.Max(evalPeak, evalEqDayStart);
-			if (double.IsNaN(pk)) pk = evalPeak; else pk = Math.Max(pk, evalEqDayStart);
-			double thr = pk >= 2100 ? 100 : pk - 2000; evalCushion = evalEqDayStart - thr;
-			if (PrintLog) Print(string.Format("{0} | GOLD | EVAL day {1}: profit {2:0}, cushion {3:0} -> {4} contracts", sessionDate, evalDayIndex, evalEqDayStart, evalCushion, Qty()));
-		}
-		private int Qty()
-		{
-			if (EvalMode && evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal && (EvalLateMinCushion <= 0 || double.IsNaN(evalCushion) || evalCushion >= EvalLateMinCushion)) return EvalLateContracts;
-			return Contracts;
-		}
-
 		#region Modules
-		private bool AtrOk { get { return !double.IsNaN(atr) && atr > 0 && closes.Count >= 15 && rthDays >= 60; } }
+		private bool AtrOk { get { return !double.IsNaN(atr) && atr > 0 && closes.Count >= 15; } }
 
 		private void OpenDrive()
 		{
@@ -349,7 +283,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 		private void AsiaArm()
 		{
-			if (!AtrOk || trendDir == 0 || asBroken || asFirst != 0) return;
+			if (!AtrOk || trendDir == 0 || asBroken) return;
 			int d = trendDir;
 			// if the opposite side is already broken at arming time, the day is lost
 			double lvl = d == 1 ? asH + TickSize : asL - TickSize;
@@ -377,12 +311,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double edgeS; private int edgeDays; private bool edgeAlarm, edgePaused, edgeDayRth;
 		private void EdgeDayClose()
 		{
-			bool counted = EdgeMonitor && rthHas && AtrOk && sessionDate > 0;
+			bool counted = EdgeMonitor && rthHas && !fomcToday && AtrOk && sessionDate > 0;
 			DateTime st;
 			if (counted && DateTime.TryParseExact(EdgeMonitorStart ?? "", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out st) && sessionDate >= st.Year * 10000 + st.Month * 100 + st.Day)
 			{
 				double k = Profile == GoldMasterProfile.Robust ? 0.01215 : 0.00523, h = Profile == GoldMasterProfile.Robust ? 8.992 : 3.861;
-				double z = fomcToday ? 0.0 : (netPnl - dayStartPnl) / Math.Max(1, Contracts) / (10.0 * atr);
+				double z = (netPnl - dayStartPnl) / Math.Max(1, Contracts) / (10.0 * atr);
 				edgeS = Math.Max(0.0, edgeS + k - z); edgeDays++;
 				if (PrintLog) Print(string.Format("{0} | GOLD | EDGE day {1}: z {2:0.000} | CUSUM {3:0.00} / {4:0.00} ({5:0}%)", sessionDate, edgeDays, z, edgeS, h, 100 * edgeS / h));
 				if (!edgeAlarm && edgeS > h)
@@ -395,53 +329,35 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 
 		#region Orders
-		private bool OppPos(int d) { return Position.MarketPosition == (d == 1 ? MarketPosition.Short : MarketPosition.Long); }
-		private bool OppWork(int d, Mod self) { foreach (Mod o in mods) if (o != self && Working(o.Entry) && o.Dir == -d) return true; return false; }
-		private void Park(Mod o) { o.Def = true; o.DPx = o.Entry.StopPrice; CancelOrder(o.Entry); Log(o.Sig + " stop order parked (opposite trade)"); }
+		private bool OppositeBusy(int d)
+		{
+			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return true;
+			foreach (Mod m in mods) if (Working(m.Entry) && m.Dir == -d) return true;
+			return false;
+		}
 		private void MarketEntry(Mod m, int d, double sl, double tp)
 		{
-			if (OppPos(d) || m.InTrade) { Log(m.Sig + " skipped (opposite position)"); return; }
+			if (OppositeBusy(d) || m.InTrade) { Log(m.Sig + " skipped (opposite position / order)"); return; }
 			sl = Instrument.MasterInstrument.RoundToTickSize(sl); tp = Instrument.MasterInstrument.RoundToTickSize(tp);
-			m.Dir = d; m.Sl = sl; m.Tp = tp; m.Def = false;
-			if (OppWork(d, m))
-			{
-				// NinjaTrader ignores an entry while an opposite entry order works: park those orders, enter once they are cancelled
-				pendMod = m; pendBar = CurrentBar;
-				foreach (Mod o in mods) if (o != m && Working(o.Entry) && o.Dir == -d) Park(o);
-				return;
-			}
-			SendMarket(m);
-		}
-		private void SendMarket(Mod m)
-		{
-			SetStopLoss(m.Sig, CalculationMode.Price, m.Sl, false);
-			SetProfitTarget(m.Sig, CalculationMode.Price, m.Tp);
-			m.Q = Qty();
-			if (m.Dir == 1) EnterLong(m.Q, m.Sig); else EnterShort(m.Q, m.Sig);
-			Log(string.Format("{0} {1} market | SL {2} TP {3}", m.Sig, m.Dir == 1 ? "BUY" : "SELL", Fmt(m.Sl), Fmt(m.Tp)));
+			m.Dir = d; m.Sl = sl; m.Tp = tp;
+			SetStopLoss(m.Sig, CalculationMode.Price, sl, false);
+			SetProfitTarget(m.Sig, CalculationMode.Price, tp);
+			if (d == 1) EnterLong(Contracts, m.Sig); else EnterShort(Contracts, m.Sig);
+			Log(string.Format("{0} {1} market | SL {2} TP {3}", m.Sig, d == 1 ? "BUY" : "SELL", Fmt(sl), Fmt(tp)));
 		}
 		private void StopEntry(Mod m, int d, double px, double sl, double tp, int expireSm)
 		{
-			if (m.InTrade) return;
+			if (OppositeBusy(d) || m.InTrade) { Log(m.Sig + " skipped (opposite position / order)"); return; }
 			px = Instrument.MasterInstrument.RoundToTickSize(px); sl = Instrument.MasterInstrument.RoundToTickSize(sl); tp = Instrument.MasterInstrument.RoundToTickSize(tp);
-			m.Dir = d; m.Sl = sl; m.Tp = tp; m.ExpireMin = expireSm; m.Def = false;
-			if (OppPos(d) || OppWork(d, m)) { m.Def = true; m.DPx = px; Log(m.Sig + " parked (opposite position / order)"); return; }
-			if (State == State.Realtime)
-			{
-				// level already passed (a stop there would be rejected): research fills at the open -> market entry unless the target is passed too
-				double mk = double.NaN;
-				try { mk = d == 1 ? GetCurrentAsk() : GetCurrentBid(); } catch { }
-				if (!double.IsNaN(mk) && (mk - px) * d >= 0) { if ((mk - tp) * d < 0) SendMarket(m); else Log(m.Sig + " skipped (target already passed)"); return; }
-			}
+			m.Dir = d; m.Sl = sl; m.Tp = tp; m.ExpireMin = expireSm;
 			SetStopLoss(m.Sig, CalculationMode.Price, sl, false);
 			SetProfitTarget(m.Sig, CalculationMode.Price, tp);
-			m.Q = Qty();
-			if (d == 1) EnterLongStopMarket(0, true, m.Q, px, m.Sig); else EnterShortStopMarket(0, true, m.Q, px, m.Sig);
+			if (d == 1) EnterLongStopMarket(0, true, Contracts, px, m.Sig); else EnterShortStopMarket(0, true, Contracts, px, m.Sig);
 			Log(string.Format("{0} {1} STOP @ {2} | SL {3} TP {4}", m.Sig, d == 1 ? "BUY" : "SELL", Fmt(px), Fmt(sl), Fmt(tp)));
 		}
 		private void ExitModule(Mod m, string why)
 		{
-			if (m.Dir == 1) ExitLong(0, Math.Max(1, m.Q), m.Sig + "X", m.Sig); else if (m.Dir == -1) ExitShort(0, Math.Max(1, m.Q), m.Sig + "X", m.Sig);
+			if (m.Dir == 1) ExitLong(0, Contracts, m.Sig + "X", m.Sig); else if (m.Dir == -1) ExitShort(0, Contracts, m.Sig + "X", m.Sig);
 			m.EntryBar = -1; Log(m.Sig + " exit: " + why);
 		}
 		private void FlattenAll(string why)
@@ -452,7 +368,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (Position.MarketPosition == MarketPosition.Long) ExitLong(); else ExitShort();
 			Log("FLATTEN: " + why);
 		}
-		private void CancelAllEntries() { pendMod = null; foreach (Mod m in mods) { m.Def = false; if (Working(m.Entry)) CancelOrder(m.Entry); } }
+		private void CancelAllEntries() { foreach (Mod m in mods) if (Working(m.Entry)) CancelOrder(m.Entry); }
 		private static bool Working(Order o)
 		{
 			if (o == null) return false;
@@ -466,15 +382,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			Mod m = BySig(order.Name);
 			if (m != null) m.Entry = order;
-			if (orderState == OrderState.Rejected)
-			{
-				Print(string.Format("GoldMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
-				Mod f = m == null && (order.Name == "Stop loss" || order.Name == "Profit target") ? BySig(order.FromEntrySignal) : null;
-				if (f != null && f.InTrade) ExitModule(f, "protective order rejected");
-				else if (m != null && !m.InTrade) { m.Dir = 0; m.ExpireMin = -1; m.Def = false; if (pendMod == m) pendMod = null; }
-			}
-			// a market entry waiting for an opposite stop order to be cancelled
-			if (orderState == OrderState.Cancelled && pendMod != null && !pendMod.InTrade && !OppPos(pendMod.Dir) && !OppWork(pendMod.Dir, pendMod)) { Mod pm = pendMod; pendMod = null; SendMarket(pm); }
+			if (orderState == OrderState.Rejected) Print(string.Format("GoldMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
 		}
 
 		protected override void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity, MarketPosition marketPosition, string orderId, DateTime time)
@@ -483,14 +391,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Mod m = BySig(execution.Order.Name);
 			if (m != null)
 			{
-				if (execution.Order.Filled <= 0) return;
-				if (m.InTrade) return;			// further partial fills of the same entry
-				m.InTrade = true; m.EntryBar = CurrentBar; m.Def = false;
+				if (execution.Order.OrderState != OrderState.Filled) return;
+				m.InTrade = true; m.EntryBar = CurrentBar;
 				double f = execution.Order.AverageFillPrice;
 				// research: skip the trade if the fill is already beyond the stop or the target
 				if ((m.Dir == 1 && (f <= m.Sl || f >= m.Tp)) || (m.Dir == -1 && (f >= m.Sl || f <= m.Tp))) ExitModule(m, "filled beyond stop/target");
 				// cancel opposite working entries
-				foreach (Mod o in mods) if (o != m && Working(o.Entry) && o.Dir == -m.Dir) Park(o);
+				foreach (Mod o in mods) if (o != m && Working(o.Entry) && o.Dir == -m.Dir) CancelOrder(o.Entry);
 				Log(string.Format("{0} filled @ {1}", m.Sig, Fmt(f)));
 				return;
 			}
@@ -510,14 +417,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// eval target with Lucid-style consistency (realtime, whole account): stop when profit >= max(target, best day / consistency)
 		private void EvalTargetCheck()
 		{
-			if (EvalTarget <= 0 || State != State.Realtime) return;
-			double bal = Account.Get(AccountItem.CashValue, Currency.UsDollar), eq = bal + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar);
+			if (EvalTarget <= 0 || targetHit || State != State.Realtime) return;
+			double bal = Account.Get(AccountItem.CashValue, Currency.UsDollar);
 			if (double.IsNaN(evDayStart)) { evDayStart = bal; if (double.IsNaN(evBestDay)) evBestDay = EvalBestDaySoFar; }
 			double need = EvalTarget;
-			if (ConsistencyPct > 0) need = Math.Max(need, Math.Max(evBestDay, eq - evDayStart) * 100.0 / ConsistencyPct);
-			if (!targetHit && eq - StartBalance >= need) { targetHit = true; FlattenAll("eval target"); Print(string.Format("GoldMaster | EVAL TARGET REACHED (+{0:0}, needed {1:0}) - trading stopped.", eq - StartBalance, need)); }
-			else if (targetHit && Position.MarketPosition == MarketPosition.Flat && eq - StartBalance < need)
-			{ targetHit = false; Print(string.Format("GoldMaster | eval target not met after closing (+{0:0}, needed {1:0}) - trading resumes.", eq - StartBalance, need)); }
+			if (ConsistencyPct > 0) need = Math.Max(need, Math.Max(evBestDay, bal - evDayStart) * 100.0 / ConsistencyPct);
+			if (bal - StartBalance >= need) { targetHit = true; FlattenAll("eval target"); Print(string.Format("GoldMaster | EVAL TARGET REACHED (+{0:0}, needed {1:0}) - trading stopped.", bal - StartBalance, need)); }
 		}
 		private void DailyLossCheck()
 		{
@@ -535,7 +440,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (targetHit) { status = "eval target reached"; return false; }
 			if (edgePaused) { status = "EDGE MONITOR ALARM - review before trading"; return false; }
 			if (PauseActive()) { status = "MANUAL PAUSE (file)"; return false; }
-			status = AtrOk ? "trading" : "warming up (needs 60 RTH days: Days to load >= 120)";
+			status = AtrOk ? "trading" : "warming up (needs ~20 RTH days)";
 			return true;
 		}
 		private void ProcessClosedTrades()
@@ -606,12 +511,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Pause new entries on alarm", Order = 2, GroupName = "04. Edge monitor")] public bool EdgeMonitorPause { get; set; }
 		[NinjaScriptProperty][Display(Name = "Edge monitor start date (yyyy-MM-dd)", Order = 3, GroupName = "04. Edge monitor")] public string EdgeMonitorStart { get; set; }
 		[Display(Name = "Print log", Order = 2, GroupName = "03. Display")] public bool PrintLog { get; set; }
-		[NinjaScriptProperty][Display(Name = "Eval mode (late size-up, 'pass easy')", Order = 1, GroupName = "05. Evaluation mode")] public bool EvalMode { get; set; }
-		[NinjaScriptProperty][Display(Name = "Eval start date (yyyy-MM-dd)", Order = 2, GroupName = "05. Evaluation mode")] public string EvalStartDate { get; set; }
-		[NinjaScriptProperty][Range(1, 30)][Display(Name = "Late day (sessions since start, 0-based)", Order = 3, GroupName = "05. Evaluation mode")] public int EvalLateDay { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late goal $ (size up if profit below)", Order = 4, GroupName = "05. Evaluation mode")] public double EvalLateGoal { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Late contracts", Order = 5, GroupName = "05. Evaluation mode")] public int EvalLateContracts { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late size only if cushion >= $ (0 = off)", Order = 6, GroupName = "05. Evaluation mode")] public double EvalLateMinCushion { get; set; }
 		#endregion
 	}
 }

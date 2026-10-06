@@ -15,19 +15,20 @@ def ictf(per, w):
 def metrics(F, days):
     x = F.u * F.w; d = x.groupby(F.date).sum().reindex(days, fill_value=0.0)
     return dict(tpd=round(len(F) / len(days), 2), wr=round(100 * (F.u > 0).mean(), 1), pf=round(x[x > 0].sum() / -x[x <= 0].sum(), 3), sharpe=round(d.mean() / d.std() * 252 ** .5, 2), mo=round(d.mean() * 21))
-rows = []
-for per in ("IS", "C24", "REAL"):
-    F, days = T["Ultra"][per]; F = F[["date", "mod", "tin", "tout", "d", "u", "w"]]; rest = F[F["mod"] != "ICT"]
-    V = {"ICT original x2 (sesgado)": F, "ICT corregido x2 (NQMaster hoy)": conflict_filter(pd.concat([rest, ictf(per, 2.0)], ignore_index=True).sort_values(["date", "tin"]).reset_index(drop=True)),
-         "ICT corregido x1": conflict_filter(pd.concat([rest, ictf(per, 1.0)], ignore_index=True).sort_values(["date", "tin"]).reset_index(drop=True)), "sin ICT": rest}
-    for nm, X in V.items(): rows.append(dict(per=per, ver=nm, **metrics(X, days)))
-    # dense grids for the corrected ICT
-    z = dict(np.load(os.path.join(DN, f"{per}.npz")))
-    for key, w in (("U:ICTF", 2.0), ("U1:ICTF", 1.0)):
-        L, R = dense(ictf(per, w), "nq", per, z["days"]); z[key + "|L"] = L; z[key + "|R"] = R
-    np.savez(os.path.join(DN, f"{per}.npz"), **z); print(per, "dense updated", flush=True)
-M = pd.DataFrame(rows); pd.set_option("display.width", 220)
-print(M.pivot_table(index="ver", columns="per", values=["tpd", "wr", "pf", "sharpe", "mo"], aggfunc="first").to_string())
-meta = pickle.load(open(os.path.join(DN, "meta.pkl"), "rb"))
-for per in meta: meta[per] = sorted(set(meta[per]) | {"U:ICTF", "U1:ICTF"})
-pickle.dump(meta, open(os.path.join(DN, "meta.pkl"), "wb"))
+if __name__ == "__main__":      # build only when run directly (importing must not rebuild the grids)
+    rows = []
+    for per in ("IS", "C24", "REAL"):
+        F, days = T["Ultra"][per]; F = F[["date", "mod", "tin", "tout", "d", "u", "w"]]; rest = F[F["mod"] != "ICT"]
+        V = {"ICT original x2 (sesgado)": F, "ICT corregido x2 (NQMaster hoy)": conflict_filter(pd.concat([rest, ictf(per, 2.0)], ignore_index=True).sort_values(["date", "tin"]).reset_index(drop=True)),
+             "ICT corregido x1": conflict_filter(pd.concat([rest, ictf(per, 1.0)], ignore_index=True).sort_values(["date", "tin"]).reset_index(drop=True)), "sin ICT": rest}
+        for nm, X in V.items(): rows.append(dict(per=per, ver=nm, **metrics(X, days)))
+        # dense grids for the corrected ICT
+        z = dict(np.load(os.path.join(DN, f"{per}.npz")))
+        for key, w in (("U:ICTF", 2.0), ("U1:ICTF", 1.0)):
+            L, R = dense(ictf(per, w), "nq", per, z["days"]); z[key + "|L"] = L; z[key + "|R"] = R
+        np.savez(os.path.join(DN, f"{per}.npz"), **z); print(per, "dense updated", flush=True)
+    M = pd.DataFrame(rows); pd.set_option("display.width", 220)
+    print(M.pivot_table(index="ver", columns="per", values=["tpd", "wr", "pf", "sharpe", "mo"], aggfunc="first").to_string())
+    meta = pickle.load(open(os.path.join(DN, "meta.pkl"), "rb"))
+    for per in meta: meta[per] = sorted(set(meta[per]) | {"U:ICTF", "U1:ICTF"})
+    pickle.dump(meta, open(os.path.join(DN, "meta.pkl"), "wb"))

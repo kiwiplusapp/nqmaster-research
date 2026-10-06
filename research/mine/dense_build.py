@@ -42,23 +42,24 @@ def late15(per):
     gen, G, md = FAMILIES4["LATE_MOM"]; p = G[762]; D = Data("mnq_fut.npz" if per == "REAL" else "nq_1m.npz")
     df = run_events(D, gen(D, p), flat=955, maxday=md); df["tin"] = D.sm[df.fi.to_numpy().astype(int)]; df["tout"] = D.sm[df.xi.to_numpy().astype(int)] + 1
     return pd.DataFrame(dict(date=df.date, mod="LATE15", tin=df.tin, tout=df.tout, d=df.d, u=df.usd, w=1.0))
-meta = {}
-for per in ("IS", "C24", "REAL"):
-    days = np.array(sorted(T["Ultra"][per][1])); lo, hi = days.min(), days.max(); arrs = {}
-    U = T["Ultra"][per][0]; W = T["WR70Plus"][per][0]; C = T["Core6"][per][0]
-    mods = {}
-    for m, g in U.groupby("mod"):
-        mods["U:" + m] = ("nq", g)
-        if (g.w != 1).any(): mods["U1:" + m] = ("nq", g.assign(w=np.minimum(g.w, 1.0)))
-    for m, g in W.groupby("mod"):
-        if m in ("ORB60", "VOLB_tf1", "VW13b", "REV06", "CRT11", "MSEQ"): mods["W:" + m] = ("nq", g)
-    mods["C:VOLB_tf0"] = ("nq", C[C["mod"] == "VOLB_tf0"])
-    L15 = late15(per); mods["N:LATE15"] = ("nq", L15[(L15.date >= lo) & (L15.date <= hi) & ~L15.date.isin(FOMC)])
-    for m, P in GC.items():
-        g = P[per]; mods["G:" + m] = ("gold", g[(g.date >= lo) & (g.date <= hi)])
-    for k, (inst, F) in mods.items():
-        L, R = dense(F, inst, per, days); arrs[k + "|L"] = L; arrs[k + "|R"] = R
-    np.savez(os.path.join(OUT, f"{per}.npz"), days=days, **arrs)
-    meta[per] = sorted(mods); print(per, len(days), "days", len(mods), "modules", flush=True)
-pickle.dump(meta, open(os.path.join(OUT, "meta.pkl"), "wb"))
-print(meta["REAL"])
+if __name__ == "__main__":      # build only when run directly (importing must not rebuild the grids)
+    meta = {}
+    for per in ("IS", "C24", "REAL"):
+        days = np.array(sorted(T["Ultra"][per][1])); lo, hi = days.min(), days.max(); arrs = {}
+        U = T["Ultra"][per][0]; W = T["WR70Plus"][per][0]; C = T["Core6"][per][0]
+        mods = {}
+        for m, g in U.groupby("mod"):
+            mods["U:" + m] = ("nq", g)
+            if (g.w != 1).any(): mods["U1:" + m] = ("nq", g.assign(w=np.minimum(g.w, 1.0)))
+        for m, g in W.groupby("mod"):
+            if m in ("ORB60", "VOLB_tf1", "VW13b", "REV06", "CRT11", "MSEQ"): mods["W:" + m] = ("nq", g)
+        mods["C:VOLB_tf0"] = ("nq", C[C["mod"] == "VOLB_tf0"])
+        L15 = late15(per); mods["N:LATE15"] = ("nq", L15[(L15.date >= lo) & (L15.date <= hi) & ~L15.date.isin(FOMC)])
+        for m, P in GC.items():
+            g = P[per]; mods["G:" + m] = ("gold", g[(g.date >= lo) & (g.date <= hi)])
+        for k, (inst, F) in mods.items():
+            L, R = dense(F, inst, per, days); arrs[k + "|L"] = L; arrs[k + "|R"] = R
+        np.savez(os.path.join(OUT, f"{per}.npz"), days=days, **arrs)
+        meta[per] = sorted(mods); print(per, len(days), "days", len(mods), "modules", flush=True)
+    pickle.dump(meta, open(os.path.join(OUT, "meta.pkl"), "wb"))
+    print(meta["REAL"])

@@ -55,7 +55,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public string Sig; public bool On; public int MaxHold;
 			public bool Done, InTrade; public Order Entry; public int Dir; public int EntryBar = -1; public int ExpireMin = -1;
 			public double Sl, Tp;
-			public bool Def; public double DPx; public int Q = 1;		// parked stop setup (blocked by an opposite position / order)
+			public bool Def; public double DPx;		// parked stop setup (blocked by an opposite position / order)
 		}
 		private Mod od, e0408, svw, e0610, asia, e0206, late;
 		private List<Mod> mods;
@@ -105,7 +105,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseEng0610 = false;
 				Contracts = 1; FlattenTime = 1651; SkipFomc = true; FomcDates = "";
 				DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0;
-				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 8; EvalLateGoal = 2100; EvalLateContracts = 2; EvalLateMinCushion = 1000;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
 			}
 			else if (State == State.DataLoaded)
@@ -260,7 +259,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			DateTime tradeDay = etOpen.Hour >= 18 ? etOpen.Date.AddDays(1) : etOpen.Date;
 			sessionDate = tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day;
 			fomcToday = SkipFomc && fomc.Contains(sessionDate);
-			EvalSessionStart();
 			svPv = 0; svV = 0; odHas = false; asHas = false; asBroken = false; asFirst = 0; pendMod = null;
 			for (int k = 0; k < 6; k++) cHas[k] = false;
 			foreach (Mod m in mods) { m.Done = false; m.ExpireMin = -1; m.Dir = 0; m.Def = false; }
@@ -274,36 +272,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 		}
 		#endregion
-
-		// ---- evaluation mode ('pass easy', research/mine/eval_pol50.py): Contracts (1) per module; from the EvalLateDay-th session (0-based,
-		// from EvalStartDate) EvalLateContracts while the eval profit is below EvalLateGoal and the cushion over the EOD-trailing threshold
-		// is >= EvalLateMinCushion. Realtime: account equity and NQMaster's prop file (whole-account EOD peak); historical: this strategy.
-		private int evalDayIndex = -1; private double evalEqDayStart, evalPnlBase = double.NaN, evalPeak = double.NaN, evalCushion = double.NaN;
-		private void EvalSessionStart()
-		{
-			if (!EvalMode) return;
-			DateTime st;
-			if (!DateTime.TryParseExact(EvalStartDate ?? "", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out st) || sessionDate < st.Year * 10000 + st.Month * 100 + st.Day) return;
-			if (double.IsNaN(evalPnlBase)) evalPnlBase = netPnl;
-			evalDayIndex++; evalEqDayStart = State == State.Realtime ? Account.Get(AccountItem.CashValue, Currency.UsDollar) - StartBalance : netPnl - evalPnlBase;
-			double pk = double.NaN;
-			if (State == State.Realtime)
-				try
-				{
-					string f = Path.Combine(Core.Globals.UserDataDir, "nqmaster_prop_" + Account.Name + ".txt"); double v;
-					if (File.Exists(f) && double.TryParse(File.ReadAllText(f).Trim().Split(';')[0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) pk = v - StartBalance;
-				}
-				catch { }
-			evalPeak = double.IsNaN(evalPeak) ? Math.Max(0, evalEqDayStart) : Math.Max(evalPeak, evalEqDayStart);
-			if (double.IsNaN(pk)) pk = evalPeak; else pk = Math.Max(pk, evalEqDayStart);
-			double thr = pk >= 2100 ? 100 : pk - 2000; evalCushion = evalEqDayStart - thr;
-			if (PrintLog) Print(string.Format("{0} | GOLD | EVAL day {1}: profit {2:0}, cushion {3:0} -> {4} contracts", sessionDate, evalDayIndex, evalEqDayStart, evalCushion, Qty()));
-		}
-		private int Qty()
-		{
-			if (EvalMode && evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal && (EvalLateMinCushion <= 0 || double.IsNaN(evalCushion) || evalCushion >= EvalLateMinCushion)) return EvalLateContracts;
-			return Contracts;
-		}
 
 		#region Modules
 		private bool AtrOk { get { return !double.IsNaN(atr) && atr > 0 && closes.Count >= 15 && rthDays >= 60; } }
@@ -416,8 +384,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			SetStopLoss(m.Sig, CalculationMode.Price, m.Sl, false);
 			SetProfitTarget(m.Sig, CalculationMode.Price, m.Tp);
-			m.Q = Qty();
-			if (m.Dir == 1) EnterLong(m.Q, m.Sig); else EnterShort(m.Q, m.Sig);
+			if (m.Dir == 1) EnterLong(Contracts, m.Sig); else EnterShort(Contracts, m.Sig);
 			Log(string.Format("{0} {1} market | SL {2} TP {3}", m.Sig, m.Dir == 1 ? "BUY" : "SELL", Fmt(m.Sl), Fmt(m.Tp)));
 		}
 		private void StopEntry(Mod m, int d, double px, double sl, double tp, int expireSm)
@@ -435,13 +402,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			SetStopLoss(m.Sig, CalculationMode.Price, sl, false);
 			SetProfitTarget(m.Sig, CalculationMode.Price, tp);
-			m.Q = Qty();
-			if (d == 1) EnterLongStopMarket(0, true, m.Q, px, m.Sig); else EnterShortStopMarket(0, true, m.Q, px, m.Sig);
+			if (d == 1) EnterLongStopMarket(0, true, Contracts, px, m.Sig); else EnterShortStopMarket(0, true, Contracts, px, m.Sig);
 			Log(string.Format("{0} {1} STOP @ {2} | SL {3} TP {4}", m.Sig, d == 1 ? "BUY" : "SELL", Fmt(px), Fmt(sl), Fmt(tp)));
 		}
 		private void ExitModule(Mod m, string why)
 		{
-			if (m.Dir == 1) ExitLong(0, Math.Max(1, m.Q), m.Sig + "X", m.Sig); else if (m.Dir == -1) ExitShort(0, Math.Max(1, m.Q), m.Sig + "X", m.Sig);
+			if (m.Dir == 1) ExitLong(0, Contracts, m.Sig + "X", m.Sig); else if (m.Dir == -1) ExitShort(0, Contracts, m.Sig + "X", m.Sig);
 			m.EntryBar = -1; Log(m.Sig + " exit: " + why);
 		}
 		private void FlattenAll(string why)
@@ -606,12 +572,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Pause new entries on alarm", Order = 2, GroupName = "04. Edge monitor")] public bool EdgeMonitorPause { get; set; }
 		[NinjaScriptProperty][Display(Name = "Edge monitor start date (yyyy-MM-dd)", Order = 3, GroupName = "04. Edge monitor")] public string EdgeMonitorStart { get; set; }
 		[Display(Name = "Print log", Order = 2, GroupName = "03. Display")] public bool PrintLog { get; set; }
-		[NinjaScriptProperty][Display(Name = "Eval mode (late size-up, 'pass easy')", Order = 1, GroupName = "05. Evaluation mode")] public bool EvalMode { get; set; }
-		[NinjaScriptProperty][Display(Name = "Eval start date (yyyy-MM-dd)", Order = 2, GroupName = "05. Evaluation mode")] public string EvalStartDate { get; set; }
-		[NinjaScriptProperty][Range(1, 30)][Display(Name = "Late day (sessions since start, 0-based)", Order = 3, GroupName = "05. Evaluation mode")] public int EvalLateDay { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late goal $ (size up if profit below)", Order = 4, GroupName = "05. Evaluation mode")] public double EvalLateGoal { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Late contracts", Order = 5, GroupName = "05. Evaluation mode")] public int EvalLateContracts { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late size only if cushion >= $ (0 = off)", Order = 6, GroupName = "05. Evaluation mode")] public double EvalLateMinCushion { get; set; }
 		#endregion
 	}
 }
