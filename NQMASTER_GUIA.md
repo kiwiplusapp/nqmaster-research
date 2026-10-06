@@ -197,3 +197,23 @@ Ciclo completo de 12 meses por cuenta, con el costo de cada evaluación ($105) d
 - **Fondeadas quemadas:** ~2-2,8 por año por cuenta. Es el precio de ganar más.
 - **Probabilidad de un año en pérdida:** ≤ 2%.
 - **Probado y descartado:** SAFE o stop diario en la evaluación con 2 contratos; 3 contratos (no entra en los límites); más contratos solo en el oro (quema más y gana menos en real).
+
+## Ultra ampliado: más trades con el mismo win rate (2026-10-06)
+Activos por defecto en el perfil Ultra (switches en "01. Module switches"):
+- **ENG10:** la vela de 4 h 06:00-10:00 cierra fuera del máximo o mínimo de la vela 02:00-06:00, a favor de la tendencia. Entre las 10:00 y las 11:30, orden stop 1 tick por fuera de la vela. Stop a mitad de su rango, objetivo 0,5R.
+- **LATEFH:** a las 15:00, si la primera media hora (cierre de las 10:00 contra el cierre anterior) y el movimiento del día van en la misma dirección, ambos ≥ 0,25 ATR, continúa. Stop 0,20 ATR, objetivo 0,5R.
+- **VW13 wide:** VW13 desde 0,15 ATR de distancia a la VWAP, con 2 lotes desde 0,30 (como en WR70Plus).
+
+Resultado (2020-23 / 2024-26 CFD / 2024-26 real):
+
+| | Ultra | Ultra ampliado |
+|---|---|---|
+| Trades por día | 4,63 / 4,67 / 4,46 | **5,39 / 5,45 / 5,15** |
+| Win rate | 63,3 / 64,7 / 64,2% | 63,7 / 65,0 / 64,1% |
+| PF | 1,44 / 1,41 / 1,47 | 1,42 / 1,41 / 1,45 |
+| Sharpe | 3,37 / 3,04 / 3,58 | 3,37 / 3,12 / 3,59 |
+| Ciclo de cuenta, Monte Carlo, 1 contrato ($/mes) | 1.054 / 686 / 1.114 | **1.084 / 766 / 1.129** |
+| Ídem, 2 contratos | 1.248 / 957 / 1.473 | 1.212 / 1.024 / 1.401 (parejo) |
+
+## Error corregido en la investigación de ICT
+La simulación cancelaba la orden límite si en la misma barra el precio también superaba el extremo del barrido. En la realidad se llena y pierde. Con la corrección (`research/ict_fix.py`), ICT da PF 1,23 / 1,39 / 1,37 en lugar de 1,53 / 1,56 / 1,53. El 1,23 coincide exacto con la validación en NinjaTrader. En el total de Ultra el efecto es chico: PF −0,01 y Sharpe −0,03 a −0,06. NQMaster no cambia: en NinjaTrader los llenados ya son reales.
