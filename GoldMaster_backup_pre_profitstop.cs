@@ -101,7 +101,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Profile = GoldMasterProfile.WinRate;
 				UseOd = true; UseEng0408 = true; UseSvwap = true; UseEng0610 = true; UseAsia = true; UseEng0206 = true; UseLate = false;
 				Contracts = 1; FlattenTime = 1651; SkipFomc = true; FomcDates = "";
-				DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0;
+				DailyLossLimit = 0; AccountDailyStop = 0; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
 			}
 			else if (State == State.DataLoaded)
@@ -428,7 +428,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			EvalTargetCheck();
 			if (AccountDailyStop > 0 && !acctStopped && !double.IsNaN(acctDayStart) && AcctEquity() - acctDayStart <= -AccountDailyStop) { acctStopped = true; FlattenAll("account daily stop"); Log("ACCOUNT DAILY STOP reached"); }
-			if (AccountProfitStop > 0 && !acctStopped && !double.IsNaN(acctDayStart) && AcctEquity() - acctDayStart >= AccountProfitStop) { acctStopped = true; FlattenAll("account daily profit stop"); Log("ACCOUNT DAILY PROFIT STOP reached (eval consistency)"); }
 			if (DailyLossLimit <= 0 || dayStopped) return;
 			if (netPnl - dayStartPnl <= -DailyLossLimit) { dayStopped = true; FlattenAll("daily loss limit"); Log("DAILY LOSS LIMIT reached"); }
 		}
@@ -502,7 +501,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Pause file", Order = 6, GroupName = "02. Risk / account")] public string PauseFile { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Account daily stop $ (whole account in realtime; 0 = off)", Order = 7, GroupName = "02. Risk / account")] public double AccountDailyStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval target $ (realtime, whole account; 0 = off)", Order = 8, GroupName = "02. Risk / account")] public double EvalTarget { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Account daily profit stop $ (eval: 1400 with 2 contracts; 0 = off)", Order = 12, GroupName = "02. Risk / account")] public double AccountProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Start balance $", Order = 9, GroupName = "02. Risk / account")] public double StartBalance { get; set; }
 		[NinjaScriptProperty][Range(0, 100)][Display(Name = "Eval consistency % (Lucid 50, 0 = off)", Order = 10, GroupName = "02. Risk / account")] public double ConsistencyPct { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: best day so far $ (after a restart)", Order = 11, GroupName = "02. Risk / account")] public double EvalBestDaySoFar { get; set; }

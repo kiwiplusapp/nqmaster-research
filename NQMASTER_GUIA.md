@@ -217,3 +217,29 @@ Resultado (2020-23 / 2024-26 CFD / 2024-26 real):
 
 ## Error corregido en la investigación de ICT
 La simulación cancelaba la orden límite si en la misma barra el precio también superaba el extremo del barrido. En la realidad se llena y pierde. Con la corrección (`research/ict_fix.py`), ICT da PF 1,23 / 1,39 / 1,37 en lugar de 1,53 / 1,56 / 1,53. El 1,23 coincide exacto con la validación en NinjaTrader. En el total de Ultra el efecto es chico: PF −0,01 y Sharpe −0,03 a −0,06. NQMaster no cambia: en NinjaTrader los llenados ya son reales.
+
+## ★ PERFIL FINAL (2026-10-06): 50K Lucid, 2 contratos, EQ2 + stop de ganancia en la evaluación
+Elegido entre 168 combinaciones (perfil de evaluación × perfil de fondeada × contratos × cobro), con ICT corregido. Cada una se probó con historia, costos +1 tick y Monte Carlo en 3 períodos (`research/mine/prof_grid.py`, `profit_lock.py`, `final_verify.py`).
+
+| Fase | NQMaster (MNQ) | GoldMaster (MGC) |
+|---|---|---|
+| **Evaluación** | Profile **Ultra** (ampliado: ENG10, LATEFH y VW13 wide activos) · **Contracts 2** · PropMode **Eval** · EvalTarget 3000 · ConsistencyPct 50 · **EvalProfitStop 1400** | Profile **Robust** · **Contracts 2** · EvalTarget 3000 · StartBalance 50000 · **AccountProfitStop 1400** |
+| **Fondeada** | **Contracts 2** · PropMode **Funded** · FundedCushionSafe **750** · FundedCushionFull **1500** · cobro a **$4.000** | Profile **WinRate** · **Contracts 2** · EvalTarget 0 · AccountProfitStop 0 |
+
+**Stop de ganancia en la evaluación:** si la cuenta gana $1.400 en el día, se deja de operar. Así ningún día supera el 50% de los $3.000 (regla de consistencia de Lucid) y se aprueba al llegar al objetivo. Suma +5-7% en Monte Carlo en los 3 períodos. Con 1 contrato, usá 700.
+
+**$ por mes por cuenta** (2024-26 CFD / 2020-23 CFD / 2024-26 real):
+
+| Prueba | Este perfil | Ultra anterior con 2 contratos |
+|---|---|---|
+| Historia | $1.351 / $1.323 / $1.238 | $1.158 / $1.383 / $1.356 |
+| Costos +1 tick por lado | $1.288 / $1.340 / $1.338 | $1.120 / $1.300 / $1.343 |
+| Monte Carlo (1.000 años) | $1.332 / $1.079 / $1.516 | $1.167 / $1.008 / $1.348 |
+
+- **Promedio de las 9 pruebas:** $1.312 contra $1.243.
+- **Probabilidad de un año en pérdida:** 0,4-1,8%.
+- **Por cuenta y por año:** ~9-13 evaluaciones compradas, ~3-4 fondeadas quemadas y ~8-11 cobros. Más contratos implican más cuentas quemadas, pero más plata.
+
+**Año por año** (Ultra ampliado + oro WinRate, 1 contrato, trading libre): todos los años ganan.
+- PF de 1,26 a 1,66, win rate de 62% a 68% y 64-100% de meses positivos (2020-2026).
+- En futuros reales: 2024 +$18.095, 2025 +$32.805, 2026 (hasta septiembre) +$34.972.

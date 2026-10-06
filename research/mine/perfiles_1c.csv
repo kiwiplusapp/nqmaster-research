@@ -1,0 +1,28 @@
+per,perfil,tpd,wr,pf,sharpe,mo,dd
+IS,NQ Ultra ampliado,5.45,65.0,1.41,3.12,1791,2550
+IS,NQ Ultra (anterior),4.67,64.7,1.413,3.04,1630,2696
+IS,NQ WR70Plus,3.08,72.4,1.528,3.16,1318,2541
+IS,NQ Core,1.87,56.0,1.361,2.34,733,3201
+IS,Oro WinRate,0.3,64.7,1.421,1.25,43,447
+IS,Oro Robust,0.88,59.4,1.216,1.26,101,1131
+IS,Ultra ampliado + Oro WinRate,5.75,65.0,1.41,3.19,1834,2426
+IS,Ultra ampliado + Oro Robust,6.34,64.2,1.391,3.26,1892,2856
+IS,WR70Plus + Oro WinRate,3.37,71.7,1.524,3.26,1361,2429
+C24,NQ Ultra ampliado,5.39,63.7,1.421,3.37,2445,5369
+C24,NQ Ultra (anterior),4.63,63.3,1.439,3.37,2275,4957
+C24,NQ WR70Plus,3.03,70.5,1.444,2.8,1511,5046
+C24,NQ Core,1.89,53.7,1.485,2.85,1245,2813
+C24,Oro WinRate,0.35,68.8,1.738,1.98,177,612
+C24,Oro Robust,0.94,61.4,1.354,1.62,392,1807
+C24,Ultra ampliado + Oro WinRate,5.74,64.0,1.434,3.58,2622,5295
+C24,Ultra ampliado + Oro Robust,6.33,63.4,1.411,3.68,2836,5475
+C24,WR70Plus + Oro WinRate,3.38,70.3,1.464,3.1,1688,4992
+REAL,NQ Ultra ampliado,5.15,64.1,1.449,3.59,2547,5326
+REAL,NQ Ultra (anterior),4.46,64.2,1.473,3.58,2409,4884
+REAL,NQ WR70Plus,2.96,71.3,1.493,3.04,1627,4139
+REAL,NQ Core,1.82,53.6,1.488,2.87,1267,3118
+REAL,Oro WinRate,0.29,70.3,1.986,2.32,210,550
+REAL,Oro Robust,0.89,61.9,1.37,1.68,431,1684
+REAL,Ultra ampliado + Oro WinRate,5.44,64.5,1.468,3.86,2757,5283
+REAL,Ultra ampliado + Oro Robust,6.04,63.8,1.435,3.92,2978,5593
+REAL,WR70Plus + Oro WinRate,3.26,71.2,1.523,3.4,1837,4091
