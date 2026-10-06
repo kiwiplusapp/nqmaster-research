@@ -174,3 +174,26 @@ Prioridad: más ingreso, aunque se quemen más cuentas.
   - Aprobación ~71-84%, en ~20-29 días.
   - $871 / $1.031 / $1.293 por mes (historia) y $700 / $1.053 / $1.110 (Monte Carlo).
   - Fondeadas quemadas ~0,1-0,9 por año.
+
+## MÁXIMO DINERO: 50K con 2 contratos (2026-10-05, reemplaza la configuración anterior)
+Ciclo completo de 12 meses por cuenta, con el costo de cada evaluación ($105) descontado (`research/mine/acct_k.py`, `acct_kmc.py`).
+- **Evaluación:**
+  - NQMaster: Ultra, **Contracts 2**, PropMode Eval, EvalTarget 3000, ConsistencyPct 50.
+  - GoldMaster: Robust, **Contracts 2**, EvalTarget 3000, StartBalance 50000.
+  - Sin stop diario ni modo SAFE: con 2 contratos no mejoran.
+- **Fondeada:**
+  - NQMaster: **Contracts 2**, PropMode Funded, FundedCushionSafe 750, FundedCushionFull 1500, cobro a **$4.000**.
+  - GoldMaster: WinRate, **Contracts 2**.
+- **Límites de Lucid:** el máximo de contratos abiertos a la vez sería ~20 micros en el peor día (16 en el 99% de los días). Entra en el límite de la evaluación (30) y en el de la fondeada inicial (20). Con 3 contratos se pasaría.
+
+| $/mes por cuenta | Historia | Costo +1 tick | Monte Carlo |
+|---|---|---|---|
+| 2020-23 | **$1.369** (antes $871) | $1.158 ($781) | $991 ($696) |
+| 2024-26 CFD | **$1.282** ($1.031) | $1.228 ($967) | $1.276 ($1.061) |
+| 2024-26 real | **$1.510** ($1.293) | $1.249 ($1.194) | $1.436 ($1.113) |
+
+- **Evaluación:** aprueba ~47-54% (antes ~70-87%), pero en **10-11 días** (antes 21-29).
+- **Costo:** se compran ~9 evaluaciones por año por cuenta (~$975), y aun así se gana más.
+- **Fondeadas quemadas:** ~2-2,8 por año por cuenta. Es el precio de ganar más.
+- **Probabilidad de un año en pérdida:** ≤ 2%.
+- **Probado y descartado:** SAFE o stop diario en la evaluación con 2 contratos; 3 contratos (no entra en los límites); más contratos solo en el oro (quema más y gana menos en real).

@@ -1,0 +1,55 @@
+per,cand,test,mo,p10,P_loss
+IS,EQ2 1/1 $4k,historia,871,425,0.0
+IS,EQ2 1/1 $4k,costo +1 tick,781,282,0.0
+IS,EQ2 1/1 $4k,Monte Carlo,696,274,3.0
+IS,2/2 $4k,historia,1369,830,0.0
+IS,2/2 $4k,costo +1 tick,1158,646,0.0
+IS,2/2 $4k,Monte Carlo,991,362,2.0
+IS,2/2 $5k,historia,1246,689,0.0
+IS,2/2 $5k,costo +1 tick,1087,654,0.0
+IS,2/2 $5k,Monte Carlo,1024,397,2.3
+IS,2/1 $4k,historia,935,432,0.0
+IS,2/1 $4k,costo +1 tick,885,282,0.0
+IS,2/1 $4k,Monte Carlo,792,415,1.2
+IS,1/2 $4k,historia,1048,415,4.5
+IS,1/2 $4k,costo +1 tick,841,106,7.4
+IS,1/2 $4k,Monte Carlo,826,115,5.4
+IS,2/2 $4k colchón 1500/3000,historia,1112,565,0.0
+IS,2/2 $4k colchón 1500/3000,costo +1 tick,998,285,0.0
+IS,2/2 $4k colchón 1500/3000,Monte Carlo,920,380,2.6
+C24,EQ2 1/1 $4k,historia,1031,724,0.0
+C24,EQ2 1/1 $4k,costo +1 tick,967,715,0.0
+C24,EQ2 1/1 $4k,Monte Carlo,1061,565,0.8
+C24,2/2 $4k,historia,1282,912,0.0
+C24,2/2 $4k,costo +1 tick,1228,930,0.0
+C24,2/2 $4k,Monte Carlo,1276,592,1.4
+C24,2/2 $5k,historia,1399,1104,0.0
+C24,2/2 $5k,costo +1 tick,1068,630,0.0
+C24,2/2 $5k,Monte Carlo,1278,601,1.6
+C24,2/1 $4k,historia,1182,868,0.0
+C24,2/1 $4k,costo +1 tick,1054,697,0.0
+C24,2/1 $4k,Monte Carlo,1125,645,0.3
+C24,1/2 $4k,historia,1114,689,0.0
+C24,1/2 $4k,costo +1 tick,1173,715,0.0
+C24,1/2 $4k,Monte Carlo,1141,512,1.6
+C24,2/2 $4k colchón 1500/3000,historia,1421,954,0.0
+C24,2/2 $4k colchón 1500/3000,costo +1 tick,1345,856,0.0
+C24,2/2 $4k colchón 1500/3000,Monte Carlo,1232,600,1.6
+REAL,EQ2 1/1 $4k,historia,1293,935,0.0
+REAL,EQ2 1/1 $4k,costo +1 tick,1194,724,0.0
+REAL,EQ2 1/1 $4k,Monte Carlo,1113,671,0.5
+REAL,2/2 $4k,historia,1510,1162,0.0
+REAL,2/2 $4k,costo +1 tick,1249,746,0.0
+REAL,2/2 $4k,Monte Carlo,1436,733,0.7
+REAL,2/2 $5k,historia,1472,1098,0.0
+REAL,2/2 $5k,costo +1 tick,1235,742,0.0
+REAL,2/2 $5k,Monte Carlo,1421,654,0.8
+REAL,2/1 $4k,historia,1368,1139,0.0
+REAL,2/1 $4k,costo +1 tick,1325,992,0.0
+REAL,2/1 $4k,Monte Carlo,1198,662,0.2
+REAL,1/2 $4k,historia,1423,1015,0.0
+REAL,1/2 $4k,costo +1 tick,1161,697,0.0
+REAL,1/2 $4k,Monte Carlo,1281,662,1.0
+REAL,2/2 $4k colchón 1500/3000,historia,1618,1377,0.0
+REAL,2/2 $4k colchón 1500/3000,costo +1 tick,1498,1257,0.0
+REAL,2/2 $4k colchón 1500/3000,Monte Carlo,1397,645,0.2
