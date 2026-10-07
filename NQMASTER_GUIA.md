@@ -218,6 +218,27 @@ Resultado (2020-23 / 2024-26 CFD / 2024-26 real):
 ## Error corregido en la investigación de ICT
 La simulación cancelaba la orden límite si en la misma barra el precio también superaba el extremo del barrido. En la realidad se llena y pierde. Con la corrección (`research/ict_fix.py`), ICT da PF 1,23 / 1,39 / 1,37 en lugar de 1,53 / 1,56 / 1,53. El 1,23 coincide exacto con la validación en NinjaTrader. En el total de Ultra el efecto es chico: PF −0,01 y Sharpe −0,03 a −0,06. NQMaster no cambia: en NinjaTrader los llenados ya son reales.
 
+## Configuración para pasar rápido en 50K y por qué no usar tamaño adaptativo (2026-10-07, `research/mine/eval50_fede.py`)
+Federico probó en NinjaTrader WR70Plus con 4 contratos que bajan a 1 tras $800 de caída (AdaptiveSize) y stop diario de $500. Comparación en Lucid 50K, con los módulos nocturnos, 3 períodos:
+
+| Configuración | Pasa | Pasa en ≤ 22 días | Mediana | $/mes por cuenta | P(año en pérdida) |
+|---|---|---|---|---|---|
+| **WR70Plus 2 fijos** | **59%** | **47%** | 13 días | $1.208 | 1,0% |
+| **Ultra 2 fijos** | 48% | 45% | 10 días | **$1.393** | 1,6% |
+| Ultra 3 fijos | 40% | 39% | 6 días | $1.400 | 1,3% |
+| WR70Plus 4 fijos | 38% | 37% | 7 días | $1.250 | 1,1% |
+| WR70Plus 4→1 @$800 + stop diario $500 | 42% | 23% | 19 días | $611 | 21% |
+| Ultra 4→1 @$800 + stop diario $500 | 35% | 23% | 16 días | $581 | 27% |
+
+- **El tamaño adaptativo con stop diario de $500 es lo peor.** Después de caer $800 opera con 1 contrato y tarda mucho en recuperarse, y el stop de $500 corta días que terminaban bien.
+- **Para aprobar más seguido:** WR70Plus + `NightOnWr70` + GoldMaster WinRate, **2 contratos fijos**, AdaptiveSize false y DailyLossLimit 0. El resto, igual que el plan 50K: PropMode Eval, StartBalance 50000, PropTrailingDD 2000, EvalTarget 3000, ConsistencyPct 50, EvalProfitStop / AccountProfitStop 1400 y EvalStartDate = hoy.
+- **Para más dinero:** Ultra + GoldMaster Robust, 2 fijos.
+
+**Probar en NinjaTrader:**
+- Contracts 1, PropMode Off, AdaptiveSize false.
+- **Fecha de inicio 4-6 meses antes** del período que querés mirar. NQMaster calienta ~15-25 días de sesión regular y GoldMaster 60; una prueba de 31 días opera solo los últimos días.
+- **Un mes solo no decide:** en la investigación con futuros reales, agosto 2026 perdió con los dos perfiles (Ultra −$2.975, WR70Plus −$3.591). Septiembre, hasta el 25, ganó con los dos (+$5.833 y +$2.854).
+
 ## ★★ PLAN RECOMENDADO (2026-10-07): 5 cuentas LucidFlex 150K
 Lucid permite como máximo **5 cuentas fondeadas por hogar**, 10 cuentas en total y $750K combinados. Con ese límite manda el dinero **por cuenta**. Con tamaño proporcional al límite de pérdida, la 150K deja más que la 100K y la 50K (`research/mine/acct_bigger.py`, `acct_150k.py`, `multi150.py`).
 

@@ -1,0 +1,73 @@
+per,caso,test,mo,ploss
+IS,Ultra 2 fijo (recomendado 50K),historia,1557.3837465564739,0.0
+IS,Ultra 2 fijo (recomendado 50K),costo +1 tick,1462.6694214876036,0.0
+IS,Ultra 2 fijo (recomendado 50K),Monte Carlo,1276.0040999999999,0.7000000000000001
+IS,Ultra 3 fijo,historia,1581.3308539944903,0.0
+IS,Ultra 3 fijo,costo +1 tick,1433.588567493113,0.0
+IS,Ultra 3 fijo,Monte Carlo,1360.6400333333333,0.8
+IS,WR70Plus 2 fijo,historia,1316.6796143250688,0.0
+IS,WR70Plus 2 fijo,costo +1 tick,1182.203443526171,0.0
+IS,WR70Plus 2 fijo,Monte Carlo,1116.3401999999999,1.0
+IS,WR70Plus 3 fijo,historia,1326.4227272727271,0.0
+IS,WR70Plus 3 fijo,costo +1 tick,1208.452754820937,0.0
+IS,WR70Plus 3 fijo,Monte Carlo,1187.3692,0.6
+IS,WR70Plus 4 fijo,historia,1322.948760330579,0.0
+IS,WR70Plus 4 fijo,costo +1 tick,1175.0855371900827,0.0
+IS,WR70Plus 4 fijo,Monte Carlo,1207.2153333333333,0.6
+IS,WR70Plus 4->1 @$800 + stop diario $500 (tu config),historia,716.9371900826446,4.958677685950414
+IS,WR70Plus 4->1 @$800 + stop diario $500 (tu config),costo +1 tick,727.5830578512397,9.917355371900827
+IS,WR70Plus 4->1 @$800 + stop diario $500 (tu config),Monte Carlo,752.5546333333333,10.5
+IS,Ultra 4->1 @$800 + stop diario $500,historia,746.6801652892563,7.43801652892562
+IS,Ultra 4->1 @$800 + stop diario $500,costo +1 tick,600.1450413223141,27.27272727272727
+IS,Ultra 4->1 @$800 + stop diario $500,Monte Carlo,732.0278666666667,11.3
+IS,WR70Plus 3->1 @$800 + stop diario $500,historia,841.8702479338843,1.2396694214876034
+IS,WR70Plus 3->1 @$800 + stop diario $500,costo +1 tick,836.331955922865,12.396694214876034
+IS,WR70Plus 3->1 @$800 + stop diario $500,Monte Carlo,788.7135333333332,8.0
+C24,Ultra 2 fijo (recomendado 50K),historia,1368.9803240740741,0.0
+C24,Ultra 2 fijo (recomendado 50K),costo +1 tick,1267.7761574074073,0.0
+C24,Ultra 2 fijo (recomendado 50K),Monte Carlo,1395.8596333333335,1.6
+C24,Ultra 3 fijo,historia,1315.6363425925927,0.0
+C24,Ultra 3 fijo,costo +1 tick,1269.0787037037037,0.0
+C24,Ultra 3 fijo,Monte Carlo,1411.5885333333333,1.3
+C24,WR70Plus 2 fijo,historia,1091.4333333333334,0.0
+C24,WR70Plus 2 fijo,costo +1 tick,1115.688425925926,0.0
+C24,WR70Plus 2 fijo,Monte Carlo,1152.2224333333331,0.8
+C24,WR70Plus 3 fijo,historia,1018.662962962963,0.0
+C24,WR70Plus 3 fijo,costo +1 tick,1145.4011574074073,0.0
+C24,WR70Plus 3 fijo,Monte Carlo,1198.773233333333,1.2
+C24,WR70Plus 4 fijo,historia,1088.904398148148,0.0
+C24,WR70Plus 4 fijo,costo +1 tick,1121.1620370370372,0.0
+C24,WR70Plus 4 fijo,Monte Carlo,1202.1426666666666,1.0
+C24,WR70Plus 4->1 @$800 + stop diario $500 (tu config),historia,441.4597222222222,2.083333333333333
+C24,WR70Plus 4->1 @$800 + stop diario $500 (tu config),costo +1 tick,379.2972222222223,9.027777777777777
+C24,WR70Plus 4->1 @$800 + stop diario $500 (tu config),Monte Carlo,523.566,20.599999999999998
+C24,Ultra 4->1 @$800 + stop diario $500,historia,506.59629629629626,27.083333333333332
+C24,Ultra 4->1 @$800 + stop diario $500,costo +1 tick,492.6543981481482,27.083333333333332
+C24,Ultra 4->1 @$800 + stop diario $500,Monte Carlo,590.1034333333333,19.5
+C24,WR70Plus 3->1 @$800 + stop diario $500,historia,704.0685185185184,9.722222222222223
+C24,WR70Plus 3->1 @$800 + stop diario $500,costo +1 tick,403.90555555555557,9.722222222222223
+C24,WR70Plus 3->1 @$800 + stop diario $500,Monte Carlo,553.0851333333334,18.2
+REAL,Ultra 2 fijo (recomendado 50K),historia,1350.0232098765432,0.0
+REAL,Ultra 2 fijo (recomendado 50K),costo +1 tick,1305.239259259259,0.0
+REAL,Ultra 2 fijo (recomendado 50K),Monte Carlo,1552.8240333333333,0.6
+REAL,Ultra 3 fijo,historia,1293.3249382716047,0.0
+REAL,Ultra 3 fijo,costo +1 tick,1322.2353086419755,0.0
+REAL,Ultra 3 fijo,Monte Carlo,1614.5159999999998,0.7000000000000001
+REAL,WR70Plus 2 fijo,historia,1355.7827160493828,0.0
+REAL,WR70Plus 2 fijo,costo +1 tick,1240.7681481481482,0.0
+REAL,WR70Plus 2 fijo,Monte Carlo,1299.0248,0.6
+REAL,WR70Plus 3 fijo,historia,1470.2395061728394,0.0
+REAL,WR70Plus 3 fijo,costo +1 tick,1433.4935802469138,0.0
+REAL,WR70Plus 3 fijo,Monte Carlo,1365.1265999999998,0.7000000000000001
+REAL,WR70Plus 4 fijo,historia,1502.107407407408,0.0
+REAL,WR70Plus 4 fijo,costo +1 tick,1244.5745679012346,0.0
+REAL,WR70Plus 4 fijo,Monte Carlo,1389.6256,1.0999999999999999
+REAL,WR70Plus 4->1 @$800 + stop diario $500 (tu config),historia,637.6945679012346,19.25925925925926
+REAL,WR70Plus 4->1 @$800 + stop diario $500 (tu config),costo +1 tick,660.7614814814816,5.185185185185185
+REAL,WR70Plus 4->1 @$800 + stop diario $500 (tu config),Monte Carlo,657.2844666666667,13.700000000000001
+REAL,Ultra 4->1 @$800 + stop diario $500,historia,606.943950617284,0.0
+REAL,Ultra 4->1 @$800 + stop diario $500,costo +1 tick,215.46320987654317,12.592592592592592
+REAL,Ultra 4->1 @$800 + stop diario $500,Monte Carlo,734.4992333333334,11.200000000000001
+REAL,WR70Plus 3->1 @$800 + stop diario $500,historia,1000.5738271604936,0.0
+REAL,WR70Plus 3->1 @$800 + stop diario $500,costo +1 tick,529.3185185185185,8.148148148148149
+REAL,WR70Plus 3->1 @$800 + stop diario $500,Monte Carlo,702.9743333333332,11.200000000000001
