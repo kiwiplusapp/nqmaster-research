@@ -606,3 +606,26 @@ El informe muestra, módulo por módulo, los trades de la investigación y de Ni
 **Año por año** (Ultra ampliado + oro WinRate, 1 contrato, trading libre): todos los años ganan.
 - PF de 1,26 a 1,66, win rate de 62% a 68% y 64-100% de meses positivos (2020-2026).
 - En futuros reales: 2024 +$18.095, 2025 +$32.805, 2026 (hasta septiembre) +$34.972.
+
+## ¿75-80% de evaluaciones aprobadas en 20 días? (2026-10-07, `research/mine/eval20.py`, `eval20_life.py`)
+Medido con el sistema ya corregido (con cortos y módulos nocturnos) sobre Lucid Flex 50K: objetivo $3.000, MLL $2.000 EOD, consistencia 50% y stop de ganancia diario $1.400. Cada día hábil cuenta como un inicio posible. Promedio de IS, C24 y REAL:
+
+| Configuración | Aprueba en ≤20 días hábiles | Aprueba sin límite | Mediana de días | Quema |
+|---|---|---|---|---|
+| WR70Plus + noche + oro WinRate, **2 contratos** | 45% | 60% | 14 | 40% |
+| WR70Plus + noche, 2 contratos (tu prueba) | 43% | 60% | 14 | 40% |
+| Ultra + noche + oro Robust, 2 contratos | 44% | 49% | 10 | 51% |
+| WR70Plus + noche + oro WinRate, **1 contrato** | 20% | **84%** (70% en C24) | 32 | 16% |
+| 1 contrato, pasa a 2 en el día 15 si va < $2.100 | 26% | 71% | 23 | 29% |
+
+- **Ninguna configuración llega a 75-80% en ≤20 días.** Las más de 300 políticas de tamaño probadas (subir o bajar contratos según el día y el colchón) quedan en 41-46%.
+- **Por qué:** el porcentaje que aprueba en un plazo fijo depende de qué tan estable es la ganancia diaria (Sharpe). Haría falta un Sharpe anual de ~5 a 6, y el sistema tiene ~3,5 a 4.
+- **Qué forma de cuenta lo permitiría** (`eval20_map.csv`, k = contratos):
+  - sin regla de consistencia,
+  - objetivo de ≤ $750 × k,
+  - drawdown de ≥ $1.500 × k, es decir, el drawdown del doble del objetivo.
+
+  Con la consistencia del 50%, el techo es ~55%, aunque el objetivo sea chico.
+- **Lo que sí se puede elegir:**
+  - **Velocidad:** 2 contratos. ~45% aprueba en 20 días, mediana 14 días.
+  - **Probabilidad:** 1 contrato + oro WinRate. 84% aprueba, pero tarda ~6 semanas (Lucid no tiene límite de tiempo).
