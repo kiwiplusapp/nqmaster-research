@@ -495,6 +495,16 @@ Backups: `NQMaster_backup_pre_review3.cs`, `GoldMaster_backup_pre_review3.cs`. P
 
 Backups: `NQMaster_backup_pre_review4.cs`, `GoldMaster_backup_pre_review4.cs`. Parche: `research/mine/patch_review4.py`.
 
+## Quinta revisión de código (2026-10-07)
+No encontró problemas graves. Ajustes de tiempo aplicados:
+- ORB solo espera a un módulo diferido si ese módulo va en contra de ORB.
+- La espera dura 1 barra en la serie de 1 minuto, 2 para MSEQ y MSEQS, y 5 para ICT, y nunca se acorta.
+- El reintento de MSEQ o MSEQS se descarta si en la barra el precio tocó su stop.
+
+**PropPeakOverride:** dejalo en **0**, salvo que quieras corregir a propósito el pico guardado. Si queda puesto, se aplica una vez sobre archivos de versiones anteriores y puede bajar un pico real más alto.
+
+Backup: `NQMaster_backup_pre_review5.cs`. Parche: `research/mine/patch_review5.py`.
+
 ## Oro: reversiones de madrugada con 16 años (`research/mine/gold_new_port.py`, `lc150.py`)
 Las mismas 5.760 configuraciones de impulsos anclados, corridas en oro 2010-2026. Solo 4 ganan en los cinco tramos, cerca de lo que daría el azar con tantas pruebas:
 - GF07: a las 07:00, revertir el movimiento desde las 06:00. WR 76%.

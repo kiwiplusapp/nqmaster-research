@@ -316,7 +316,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			// MSEQ / MSEQS deferred by an opposite stop/limit order: one retry on the next 1-minute bars (research enters them at market)
 			if (pend5 != null)
 			{
-				if (pend5.InTrade || CurrentBars[0] > pend5Bar + 2 || (pend5Dir == 1 ? Low[0] <= pend5Stop : High[0] >= pend5Stop)) pend5 = null;
+				if (pend5.InTrade || CurrentBars[0] > pend5Bar + 2 || (pend5Dir == 1 ? Close[0] <= pend5Stop : Close[0] >= pend5Stop)) pend5 = null;
 				else if (CurrentBars[0] > pend5Bar && DirectionAllowed(pend5Dir))
 				{
 					ArmPriceBracket(pend5, pend5Dir, pend5Stop); Order po = pend5Dir == 1 ? EnterLong(0, pend5Qty, pend5.Sig) : EnterShort(0, pend5Qty, pend5.Sig);
@@ -404,7 +404,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!window) { if (Working(o.Entry)) CancelOrder(o.Entry); return; }
 			if (!o.Parked && !o.Armed && !o.InTrade && !Working(o.Entry) && o.Trades > 0 && o.Trades < 2 && Close[0] < o.OrH && Close[0] > o.OrL) o.Armed = true;
 			if (o.Parked || !o.Armed || o.InTrade || Working(o.Entry) || o.Trades >= 2) return;
-			if (CurrentBars[0] <= deferUntil && trendDir == -deferDir) return;	// an opposite deferred module enters first
+			if (CurrentBars[0] <= deferUntil) return;			// a deferred module enters first
 			int d = trendDir;
 			double entry = d == 1 ? o.OrH + TickSize : o.OrL - TickSize;
 			double opp = d == 1 ? o.OrL - TickSize : o.OrH + TickSize;
@@ -642,7 +642,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (ok && stopm < c0m)
 				{
 					int mq = CtxBoost(LateQty(1, closeMin), FeatPos(1, Closes[0][0]) >= 0.9686 || FeatM30(1) >= 0.1728 || FeatRet5(1) >= 2.0674, "MSEQ");
-					if (!DirectionAllowed(1, 2)) { if (lastDeferred) { pend5 = mseq; pend5Dir = 1; pend5Stop = stopm; pend5Qty = mq; pend5Bar = CurrentBars[0]; } }
+					if (!DirectionAllowed(1)) { if (lastDeferred) { pend5 = mseq; pend5Dir = 1; pend5Stop = stopm; pend5Qty = mq; pend5Bar = CurrentBars[0]; } }
 					else { ArmPriceBracket(mseq, 1, stopm); Order mo = EnterLong(0, mq, mseq.Sig); if (mo != null) mseq.Entry = mo; Log("MSEQ BUY | SL " + Fmt(stopm)); }
 				}
 			}
@@ -662,7 +662,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (ok && stops > c0s)
 				{
 					int sq = LateQty(-1, closeMin);
-					if (!DirectionAllowed(-1, 2)) { if (lastDeferred) { pend5 = mseqs; pend5Dir = -1; pend5Stop = stops; pend5Qty = sq; pend5Bar = CurrentBars[0]; } }
+					if (!DirectionAllowed(-1)) { if (lastDeferred) { pend5 = mseqs; pend5Dir = -1; pend5Stop = stops; pend5Qty = sq; pend5Bar = CurrentBars[0]; } }
 					else { ArmPriceBracket(mseqs, -1, stops); Order so = EnterShort(0, sq, mseqs.Sig); if (so != null) mseqs.Entry = so; Log("MSEQS SELL | SL " + Fmt(stops)); }
 				}
 			}
@@ -970,12 +970,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 			else if (EvalProfitStop > 0 && now - propDayStart >= EvalProfitStop) { propStopped = true; FlattenAll("eval daily profit stop"); Log(string.Format("EVAL DAILY PROFIT STOP: +{0:0} today (Lucid consistency)", now - propDayStart)); }
 		}
 
-		private bool lastDeferred; private int deferUntil = -1, deferDir;
+		private bool lastDeferred; private int deferUntil = -1;
 		private Mod pend5; private int pend5Dir, pend5Qty, pend5Bar; private double pend5Stop;
 		// Opposite open position -> skip. Opposite WORKING entry orders (e.g. an ORB stop order) -> cancel them and defer this entry
 		// one bar (NinjaTrader's managed rules ignore an entry while an opposite entry order is working).
-		private bool DirectionAllowed(int d) { return DirectionAllowed(d, BarsInProgress == 1 ? 5 : 1); }
-		private bool DirectionAllowed(int d, int deferBars)
+		private bool DirectionAllowed(int d)
 		{
 			lastDeferred = false;
 			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return false;
@@ -983,7 +982,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			foreach (Mod m in mods) if (Working(m.Entry) && m.Dir == -d && m.Entry.OrderType == OrderType.Market) return false;
 			bool blocked = false;
 			foreach (Mod m in mods) if (Working(m.Entry) && m.Dir == -d) { ParkOrder(m); blocked = true; }
-			if (blocked) { lastDeferred = true; deferUntil = Math.Max(deferUntil, CurrentBars[0] + deferBars); deferDir = d; return false; }
+			if (blocked) { lastDeferred = true; deferUntil = CurrentBars[0] + (BarsInProgress == 1 ? 5 : 1); return false; }
 			return true;
 		}
 
