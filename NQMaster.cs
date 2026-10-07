@@ -65,6 +65,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public bool PriceTarget;
 			public bool BaseOn; public bool FhCheck;
 			public bool Retry;
+			public int Anchor = -1; public double AnchorPx = double.NaN;	// Lookback -5: open of the bar at the anchor time (ET minutes)
 			public bool Parked, ParkLimit; public double ParkPx; public int ParkQty;	// entry cancelled for an opposite trade, re-placed when free
 		}
 		private List<Mod> mods;
@@ -137,7 +138,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseOrb = true; OrbRangeMin = 60; OrbTargetR = 0.6; OrbPullbackFilter = true; PullbackMaxRet = 0.44; StopCapAtr = 0.35;
 				UseMseq = true; UseCrt = true; UseMom11 = true; UseMom1130 = true; UseRsi2 = true; UseOrb90 = true; UseMseqShort = true; UseMom13 = true; UseMom1030 = true; UseOn07 = true; UseRev06 = true; UseLon = true; UseIct = true;
 				Contracts = 1; FlattenTime = 1556; SkipFomc = true;
-				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = true; UseLateFh = true; Vw13Wide = true;
+				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = true; UseLateFh = true; Vw13Wide = true; UseNf05 = true; UseLf0315 = false;
 				FomcDates = "2024-01-31,2024-03-20,2024-05-01,2024-06-12,2024-07-31,2024-09-18,2024-11-07,2024-12-18,2025-01-29,2025-03-19,2025-05-07,2025-06-18,2025-07-30,2025-09-17,2025-10-29,2025-12-10,2026-01-28,2026-03-18,2026-04-29,2026-06-17,2026-07-29,2026-09-16,2026-10-28,2026-12-09";
 				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250; DailyLossLimit = 0; MinAtrPoints = 150;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3; EvalLateMinCushion = 0;
@@ -208,6 +209,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Mod vw13 = AddTime("VW13", (custom ? UseVw13 : (mp2 || w7) && UseVw13), 1301, -3, false, 0.15, 0.5, 120, true, false); bool vwWide = w7 || (ul && Vw13Wide); vw13.MinDist = vwWide ? 0.15 : 0.30; vw13.DoubleDist = vwWide ? 0.30 : 0;
 			Mod late15 = AddTime("LATE15", (custom ? UseLate15 : (ul || w7 || core) && UseLate15), 1500, -4, false, 0.30, 0.5, 0, true, false); late15.MinDist = 0.5;
 			Mod latefh = AddTime("LATEFH", (custom ? UseLateFh : ul && UseLateFh), 1500, -4, false, 0.20, 0.5, 0, false, false); latefh.MinDist = 0.25; latefh.FhCheck = true;
+			Mod nf05 = AddTime("NF05", (custom ? UseNf05 : ul && UseNf05), 500, -5, true, 0.20, 2.0, 240, false, false); nf05.MinDist = 0.35; nf05.Anchor = 20 * 60;
+			Mod lf0315 = AddTime("LF0315", (custom ? UseLf0315 : ul && UseLf0315), 315, -5, true, 0.20, 2.0, 600, false, false); lf0315.MinDist = 0.10; lf0315.Anchor = 3 * 60;
 			eng10 = NewMod("ENG10", (custom ? UseEng10 : ul && UseEng10), 0.5); eng10.PriceTarget = true; eng10.MaxHold = 400;
 			volb = NewMod("VOLB", (custom ? UseVolBreak : (ul || w7 || core) && UseVolBreak), w7 ? 0.5 : 2.0); volb.PriceTarget = true; volb.MaxHold = 400; volbTrendOnly = w7;
 			rsi = NewMod("RSI2", (custom ? UseRsi2 : (mt) && UseRsi2), 0.3); rsi.StopAtr = 0.15; rsi.MaxHold = 120;
@@ -256,6 +259,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (openMin >= 120 && openMin < 360) { if (!e10aHas) { e10aO = Open[0]; e10aH = High[0]; e10aL = Low[0]; e10aHas = true; } e10aH = Math.Max(e10aH, High[0]); e10aL = Math.Min(e10aL, Low[0]); e10aC = Close[0]; }
 			else if (openMin >= 360 && openMin < 600) { if (!e10bHas) { e10bO = Open[0]; e10bH = High[0]; e10bL = Low[0]; e10bHas = true; } e10bH = Math.Max(e10bH, High[0]); e10bL = Math.Min(e10bL, Low[0]); e10bC = Close[0]; }
 			if (openMin == 599) close10 = Close[0];
+			foreach (Mod m in timeMods) if (m.Anchor >= 0 && double.IsNaN(m.AnchorPx) && openMin >= m.Anchor && openMin <= m.Anchor + 5) m.AnchorPx = Open[0];
 			bool inRth = openMin >= RthOpen && openMin < RthClose;
 			bool overnight = openMin < RthOpen || openMin >= 18 * 60;
 			if (overnight && openMin < RthOpen)
@@ -333,7 +337,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			orb.OrH = 0; orb.OrL = 0; orb.OrReady = false; orb.Armed = false; orb.Trades = 0;
 			orb2.OrH = 0; orb2.OrL = 0; orb2.OrReady = false; orb2.Armed = false; orb2.Trades = 0;
 			orbFirstDir = 0; orbFirstMin = 9999;
-			foreach (Mod m in timeMods) { m.Done = false; m.Retry = false; }
+			foreach (Mod m in timeMods) { m.Done = false; m.Retry = false; m.AnchorPx = double.NaN; }
 			crt.Done = false; crt.Retry = false;
 			rsiTrades = 0;
 			volbDone = false; volbUp = double.NaN; volbDn = double.NaN;
@@ -489,6 +493,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (m.Lookback == -1) reference = sessOpen;
 			else if (m.Lookback == -2) reference = rthOpenPx;
 			else if (m.Lookback == -4) { if (double.IsNaN(full1)) return; reference = rthFirstClose; }
+			else if (m.Lookback == -5) reference = m.AnchorPx;
 			else if (m.Lookback == -3) reference = vwV > 0 ? vwPv / vwV : double.NaN;
 			else if (m.Lookback > 0 && CurrentBars[0] > m.Lookback) reference = Close[m.Lookback - 1];
 			if (double.IsNaN(reference) || Close[0] == reference) return;
@@ -1165,6 +1170,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "ENG10 on (06-10 4H candle breakout with the trend; Ultra)", Order = 19, GroupName = "01. Module switches (any profile)")] public bool UseEng10 { get; set; }
 		[NinjaScriptProperty][Display(Name = "LATEFH on (15:00, first half hour + RTH move agree; Ultra)", Order = 20, GroupName = "01. Module switches (any profile)")] public bool UseLateFh { get; set; }
 		[NinjaScriptProperty][Display(Name = "VW13 wide on Ultra (0.15 ATR, x2 at 0.30)", Order = 21, GroupName = "01. Module switches (any profile)")] public bool Vw13Wide { get; set; }
+		[NinjaScriptProperty][Display(Name = "NF05 on (05:00 fade of the move since 20:00; Ultra)", Order = 22, GroupName = "01. Module switches (any profile)")] public bool UseNf05 { get; set; }
+		[NinjaScriptProperty][Display(Name = "LF0315 on (03:15 fade of the London first 15 min; Ultra, off by default)", Order = 23, GroupName = "01. Module switches (any profile)")] public bool UseLf0315 { get; set; }
 		[NinjaScriptProperty][Range(-5.0, 5.0)][Display(Name = "Pullback max prior-day move (x ATRd)", Order = 20, GroupName = "02. Edge")] public double PullbackMaxRet { get; set; }
 		[NinjaScriptProperty][Range(0.05, 1.0)][Display(Name = "ORB stop cap (x ATRd)", Order = 21, GroupName = "02. Edge")] public double StopCapAtr { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Contracts per module", Order = 30, GroupName = "03. Risk / account")] public int Contracts { get; set; }

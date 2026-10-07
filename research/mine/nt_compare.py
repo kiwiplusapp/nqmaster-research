@@ -14,6 +14,17 @@ sys.path.insert(0, "."); sys.path.insert(0, "..")
 from nt_trades import load_nt
 from gold_port import conflict_filter
 
+def nf05_real():
+    """NF05 (NQMaster since 2026-10-07): G_DRIVE 2836 on real MNQ, FOMC days excluded."""
+    from core import Data, run_events
+    from families_gold import gen_drive
+    from news import NEWS
+    D = Data("mnq_fut.npz"); p = dict(A=2000, T=540, x=0.35, mode=-1, tf=0, k=0.2, stop=0, R=2.0, hold=240)
+    df = run_events(D, gen_drive(D, p), flat=955, maxday=1, slip=0.25)
+    df = df[(df.date >= 20240201) & ~df.date.isin(NEWS["FOMC"])]
+    return pd.DataFrame(dict(date=df.date.to_numpy(), mod="NF05", tin=D.sm[df.fi.to_numpy().astype(int)], tout=D.sm[df.xi.to_numpy().astype(int)] + 1,
+                             d=df.d.to_numpy(), u=df.usd.to_numpy(), w=1.0))
+
 def research_set(name):
     if name in ("ultra", "wr70plus"):
         from ict_redo import ictf
@@ -22,7 +33,7 @@ def research_set(name):
         if name == "ultra":
             F = T["Ultra"]["REAL"][0]; W = T["WR70Plus"]["REAL"][0]
             parts = [F[(F["mod"] != "ICT") & (F["mod"] != "VW13")], ictf("REAL", 2.0), W[W["mod"] == "VW13b"].assign(mod="VW13"),
-                     mined(("LATE_MOM", 762), "REAL", "LATE15"), mined(("ENGULF_4H", 1172), "REAL", "ENG10"), mined(("LATE_MOM", 1107), "REAL", "LATEFH")]
+                     mined(("LATE_MOM", 762), "REAL", "LATE15"), mined(("ENGULF_4H", 1172), "REAL", "ENG10"), mined(("LATE_MOM", 1107), "REAL", "LATEFH"), nf05_real()]
         else:
             F = T["WR70Plus"]["REAL"][0]
             parts = [F[F["mod"] != "ICT"], ictf("REAL", 2.0), mined(("LATE_MOM", 762), "REAL", "LATE15")]
