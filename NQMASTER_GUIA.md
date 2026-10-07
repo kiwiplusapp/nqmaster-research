@@ -353,6 +353,11 @@ Salen de ampliar la búsqueda de impulsos anclados a 16 horas ancla (`research/m
 
 Backup: `NQMaster_backup_pre_lf06.cs`. Parche: `research/mine/patch_lf06.py`.
 
+**Robustez de parámetros:** los tres módulos están sobre una meseta, no sobre un pico aislado. Al variar el stop, el objetivo y el tiempo máximo, la mediana de PF de los vecinos (2020-23 / 2024-26 CFD / real) da:
+- **NF05:** 1,32 / 1,21 / 1,32 con umbral 0,35 ATR. Con 0,1 y 0,2 ATR no funciona: el efecto es revertir movimientos nocturnos **grandes**.
+- **LF06:** 1,30 / 1,24 / 1,31 con umbral 0,2 ATR.
+- **LF0430:** 1,48 / 1,13 / 1,20 con su umbral, a favor de la tendencia. Con el umbral contiguo (0,2 ATR, cualquier dirección) también funciona: 1,37 / 1,35 / 1,24.
+
 **Límites de contratos:** con 1 contrato por módulo hay como máximo 11 micros abiertos a la vez (p99: 7). Con 6 contratos el peor día llega a 66 micros, debajo de los 100 de la evaluación de 150K. Con 3 contratos llega a 33, debajo de los 40 con que arranca la fondeada de 150K. En 50K con 2 contratos el peor día llega a 22 micros contra 20 en el arranque de la fondeada: pasa muy rara vez, pero existe.
 
 **Configuración 150K:**
