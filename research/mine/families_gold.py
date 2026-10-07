@@ -73,4 +73,7 @@ def gen_orb(D, p):
 GRID_GORB = (grid(A=(1800, 2000), T=(60, 120, 240, 420), W=(120, 360), cap=(0.25, 0.4, 0.6), R=(0.5, 1.0, 2.0), tf=(0, 1), hold=(240, 600)) +
              grid(A=(300,), T=(15, 30, 60), W=(60, 180), cap=(0.25, 0.4, 0.6), R=(0.5, 1.0, 2.0), tf=(0, 1), hold=(240, 600)) +
              grid(A=(820, 930), T=(10, 15, 30, 60), W=(60, 180), cap=(0.25, 0.4, 0.6), R=(0.5, 1.0, 2.0), tf=(0, 1), hold=(240, 600)))
-FAMILIES_GOLD = {"G_DRIVE": (gen_drive, GRID_DRIVE, 1), "G_ORB": (gen_orb, GRID_GORB, 1)}
+# NQ_DRIVE (2026-10-07): the same anchored drive on NQ with anchors every hour of the Globex day not covered by GRID_DRIVE
+GRID_NQDRIVE = grid(A=(1900, 2100, 2200, 2300, 0, 100, 200, 400, 500, 600, 700, 1000, 1100, 1200, 1300, 1400), T=(15, 30, 60, 120, 240),
+                    x=(0.1, 0.2, 0.35), mode=(1, -1), tf=(0, 1), k=(0.2, 0.35), stop=(0,), R=(0.5, 1.0, 2.0), hold=(240,))
+FAMILIES_GOLD = {"G_DRIVE": (gen_drive, GRID_DRIVE, 1), "G_ORB": (gen_orb, GRID_GORB, 1), "NQ_DRIVE": (gen_drive, GRID_NQDRIVE, 1)}

@@ -240,14 +240,16 @@ En todas, la evaluación tiene regla de consistencia del 50%. El límite se fija
 | 150K 4 / 4 | $1.892 | $1.643 | 10,0 | 49% |
 | 100K 4 / 3 | $1.607 | $1.445 | 15,3 | 39% |
 | 50K 2 / 2 (perfil anterior) | $1.311 | $1.160 | 12,3 | 48% |
-| **150K 6 / 3 + NF05** (ver abajo) | **$2.069** | **$1.815** | | |
-| 50K 2 / 2 + NF05 | $1.362 | $1.234 | | |
+| 150K 6 / 3 + NF05 (ver abajo) | $2.069 | $1.815 | | |
+| **150K 6 / 3 + NF05 + LF06 + LF0430 (actual)** | **$2.168** | **$1.981** | | |
+| 50K 2 / 2 + NF05 + LF06 + LF0430 | $1.393 | $1.268 | | |
 
 **Con 5 cuentas** (mismos trades en todas, evaluaciones escalonadas cada 5 días; 1.500 años simulados por período; 2020-23 / 2024-26 CFD / 2024-26 real):
 
 | Plan | $/mes promedio | Año malo (10% peor) | P(año en pérdida) | Capital inicial para evaluaciones (90% de los casos) |
 |---|---|---|---|---|
-| **5 × 150K, 6 / 3, con NF05** | **$9.383 / $11.070 / $12.142** | $4.827 / $5.759 / $6.836 | ≤ 0,7% | ~$9.400-12.800 |
+| **5 × 150K, 6 / 3, con NF05 + LF06 + LF0430 (actual)** | **$9.787 / $11.497 / $12.462** | $5.253 / $6.114 / $7.144 | ≤ 0,7% | ~$8.300-12.300 |
+| 5 × 150K, 6 / 3, con NF05 | $9.383 / $11.070 / $12.142 | $4.827 / $5.759 / $6.836 | ≤ 0,7% | ~$9.400-12.800 |
 | 5 × 150K, 6 / 3, sin NF05 | $8.824 / $10.914 / $11.818 | $4.271 / $5.567 / $6.655 | ≤ 1,2% | ~$9.700-12.500 |
 | 5 × 50K, 2 / 2, con NF05 | $6.105 / $7.162 / $7.676 | $3.152 / $3.533 / $3.842 | ≤ 0,6% | ~$3.600-4.900 |
 
@@ -264,6 +266,25 @@ Sale de probar en el Nasdaq las familias descubiertas para el oro (`research/min
 - **Descartadas:** 18:00 → 19:00 (PF 0,62 en 2015-19) y 08:20 → 08:50 (PF 0,80 en 2015-19), que funcionaban solo en 2020-26. Las de impulso desde las 09:30 se descartan porque repiten MOM1030 y MOM11 (correlación 0,3-0,5) y bajan el Sharpe. G_ORB 08:20 se descarta porque depende del deslizamiento en la noticia (PF 1,04 con +4 ticks).
 
 Backup: `NQMaster_backup_pre_nf05.cs`. Parche: `research/mine/patch_nf05.py`.
+
+## Módulos LF06 y LF0430 (2026-10-07): revertir el arranque de Londres
+Salen de ampliar la búsqueda de impulsos anclados a 16 horas ancla (`research/mine/nqdrive_check.py`, `nqdrive_port.py`, `nqdrive_lc.py`; 5.760 configuraciones), con Ultra + NF05 como base. Las dos pasaron 2015-19 y +4 ticks, y suben el Sharpe del portafolio en los 3 períodos. Las dos están activadas en Ultra (`UseLf06`, `UseLf0430`).
+
+| Módulo | Regla | PF 2020-23 / 24-26 CFD / real | Win rate | 2015-19 | +4 ticks |
+|---|---|---|---|---|---|
+| **LF06** | A las 06:00, si el precio se movió ≥ 0,2 ATR desde las 04:00, operar en contra (cualquier dirección). Stop 0,2 ATR, objetivo 0,5R, máx. 240 min. | 1,49 / 1,40 / 1,45 | **~74%** | 1,20 | 1,32 |
+| **LF0430** | A las 04:30, si se movió ≥ 0,1 ATR desde las 04:00, operar en contra, solo a favor de la tendencia diaria. Stop 0,35 ATR, objetivo 0,5R, máx. 240 min. | 1,52 / 1,46 / 1,43 | ~61% | 1,10 | 1,36 |
+
+- **Portafolio, sumando las dos a Ultra + NF05:** Sharpe 3,21 / 3,38 / 3,62 → **3,31 / 3,47 / 3,71**, +3-4% de dinero, win rate igual (63-65%).
+- **Cuenta 150K 6 / 3:** $2.069 → **$2.168 por mes por cuenta**. Mejor en las 9 de 9 pruebas, y la peor pasa de $1.815 a $1.981.
+- **Cuenta 50K 2 / 2:** $1.362 → $1.393, mejor en 7 de 9.
+- **Descartadas en esta búsqueda:**
+  - 01:00 → 05:00: repite NF05.
+  - 05:00 → 09:00 y 07:00 → 09:00: pierden en 2015-19.
+  - 07:00 → 11:00 a favor: correlación 0,3-0,4 con Ultra.
+  - Las de 12:00 y 13:00: pierden en 2015-19.
+
+Backup: `NQMaster_backup_pre_lf06.cs`. Parche: `research/mine/patch_lf06.py`.
 
 **Límites de contratos:** con 1 contrato por módulo hay como máximo 11 micros abiertos a la vez (p99: 7). Con 6 contratos el peor día llega a 66 micros, debajo de los 100 de la evaluación de 150K. Con 3 contratos llega a 33, debajo de los 40 con que arranca la fondeada de 150K. En 50K con 2 contratos el peor día llega a 22 micros contra 20 en el arranque de la fondeada: pasa muy rara vez, pero existe.
 
