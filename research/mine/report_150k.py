@@ -120,7 +120,7 @@ code {{ font: 13px var(--mono); background: var(--hl); padding: 1px 5px; border-
   <h2>Escalar más allá de 5 cuentas: sumar Apex</h2>
   <p>Apex permite hasta 20 cuentas PA. Cada Apex 150K, con 5 contratos en evaluación y 2 en la PA, deja ~$1.953 por mes (peor prueba $1.719). Con todas las cuentas operando los mismos trades:</p>
   <div class="tw"><table><thead><tr><th>Plan</th><th>$/mes 2020-23</th><th>$/mes 24-26 CFD</th><th>$/mes real</th><th>Año malo real</th><th>P(año en pérdida)</th><th>Capital inicial (90%)</th></tr></thead><tbody>{crows}</tbody></table></div>
-  <p class="muted">Antes de escalar: todas las cuentas mandan las mismas órdenes al mismo tiempo. Con 25 cuentas, una señal suma 150-200 micros, y de madrugada eso puede costar varios ticks. Las reglas de Apex usadas (costo de evaluación $150, mínimo diario $250 para calificar) hay que confirmarlas, y también que ambas firmas permitan trading automático y copiar operaciones. Crecer de a poco y medir el deslizamiento real.</p>
+  <p class="muted">Antes de escalar: todas las cuentas mandan las mismas órdenes al mismo tiempo. Con el volumen real de MNQ y NQ, las órdenes de madrugada representan el 1-2% del volumen del minuto con 5 cuentas, el 2-4% con 10 y el 4-10% con 25 (hasta 20% en días tranquilos). Hasta unas 10 cuentas el impacto es chico. Las reglas de Apex usadas (costo de evaluación $150, mínimo diario $250 para calificar) hay que confirmarlas, y también que ambas firmas permitan trading automático y copiar operaciones. Crecer de a poco y medir el deslizamiento real.</p>
 </section>
 <section>
   <h2>Tres módulos nuevos: revertir la madrugada</h2>

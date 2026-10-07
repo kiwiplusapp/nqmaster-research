@@ -300,7 +300,15 @@ Lucid limita a 5 fondeadas. **Apex permite hasta 20 cuentas PA por hogar.**
 - **GoldMaster:** Robust con los mismos contratos, StartBalance 150000 y AccountDailyStop 2000.
 
 **Antes de escalar:**
-1. **Liquidez:** todas las cuentas mandan las mismas órdenes al mismo tiempo. Con 25 cuentas, una señal puede sumar 150-200 micros (15-20 NQ). En horario regular se absorbe, pero de madrugada (NF05, LF06, LF0430) puede costar varios ticks. Los módulos nocturnos aguantan +4 ticks (PF ≥ 1,29), no mucho más. **Crecer de a poco y medir el deslizamiento real** con `nt_compare.py`.
+1. **Liquidez** (`liquidity.py`, volumen real MNQ + NQ en el minuto de entrada, 2024-26): todas las cuentas mandan las mismas órdenes al mismo tiempo. La orden de una señal, sumando todas las cuentas, representa este porcentaje del volumen de ese minuto:
+
+   | Cuentas | Madrugada (LON, NF05, LF0430, LF06, REV06, ON07) | Horario regular |
+   |---|---|---|
+   | 5 | 1-2% (2-4% en días tranquilos) | < 0,5% |
+   | 10 | 2-4% (4-8%) | < 1% |
+   | 25 | 4-10% (8-20%) | < 3% |
+
+   Hasta ~10 cuentas el impacto es chico. Con 25, los módulos de madrugada pueden pagar varios ticks; aguantan +4 ticks (PF ≥ 1,29), no mucho más. Para pasar de ~10 cuentas, conviene apagar los módulos de madrugada en las cuentas extra. **Crecé de a poco y medí el deslizamiento real** con `nt_compare.py`.
 2. **Reglas de Apex:** el costo de la evaluación ($150 con descuento) y el mínimo diario para calificar ($250) son supuestos. Confirmarlos antes de comprar.
 3. **Términos de cada firma:** confirmar que permiten trading automático y copiar operaciones entre cuentas. No hay cobertura entre cuentas: todas operan en la misma dirección.
 
