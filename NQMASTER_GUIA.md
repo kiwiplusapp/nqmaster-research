@@ -253,6 +253,22 @@ En todas, la evaluación tiene regla de consistencia del 50%. El límite se fija
 | 5 × 150K, 6 / 3, sin NF05 | $8.824 / $10.914 / $11.818 | $4.271 / $5.567 / $6.655 | ≤ 1,2% | ~$9.700-12.500 |
 | 5 × 50K, 2 / 2, con NF05 | $6.105 / $7.162 / $7.676 | $3.152 / $3.533 / $3.842 | ≤ 0,6% | ~$3.600-4.900 |
 
+**Año por año** (`research/mine/year150.py`; una cuenta 150K 6 / 3 con los módulos nocturnos):
+
+| Año | Datos | $/mes arrancando en enero | Promedio de todos los arranques del año | Peor arranque |
+|---|---|---|---|---|
+| 2020 | CFD | $1.610 | $1.378 | $769 |
+| 2021 | CFD | $1.586 | $2.539 | $1.160 |
+| 2022 | CFD | $3.185 | $2.687 | $1.378 |
+| 2023 | CFD | $1.383 | $492 | −$306 |
+| 2024 | real | $1.989 | $2.349 | $1.491 |
+| 2025 | real | $1.491 | $2.335 | $1.242 |
+| 2026 (8,7 meses) | real | $3.311 | $3.222 | $2.806 |
+
+Todos los años son positivos arrancando en enero. Pero hay rachas flojas: una cuenta que empezó a mitad de 2023 pudo perder ~$300 por mes durante varios meses. Por eso conviene escalonar las 5 cuentas y no juzgar el sistema por un mes.
+
+**Stop diario propio en la fondeada (`fdll150.py`): no conviene.** Con $2.000 deja casi el mismo dinero y quema 20% menos fondeadas, pero empeora la peor prueba ($1.884 contra $1.981). Con valores más chicos pierde dinero.
+
 ## Módulo NF05 (2026-10-07): a las 05:00, revertir el movimiento nocturno
 Sale de probar en el Nasdaq las familias descubiertas para el oro (`research/mine/gnq_check.py`, `gnq_port.py`, `gnq_lc.py`; 8.568 configuraciones).
 - **Regla:** a las 05:00 ET, si el precio se movió ≥ 0,35 ATR diario desde la apertura de la barra de las 20:00, opera en contra de ese movimiento, a mercado y en cualquier dirección. Stop 0,2 ATR, objetivo 2R, máximo 240 minutos.

@@ -29,6 +29,8 @@ G = pd.read_csv("gnq_port.csv"); Q = pd.read_csv("nqdrive_port.csv")
 def g(df, s, per, k): return df[(df.set == s) & (df.per == per)][k].iat[0]
 port = (f"<tr><td>Ultra (antes)</td>" + "".join(f"<td>{f2(g(G, 'Ultra', p, 'sharpe'))}</td>" for p in ("IS", "C24", "REAL")) + "".join(f"<td>{f1(g(G, 'Ultra', p, 'wr'))}%</td>" for p in ("IS", "C24", "REAL")) + "".join(f"<td>{f2(g(G, 'Ultra', p, 'tpd'))}</td>" for p in ("IS", "C24", "REAL")) + "</tr>"
         + f"<tr class='hl'><td><b>Ultra + NF05 + LF06 + LF0430</b></td>" + "".join(f"<td><b>{f2(g(Q, '+LF06+LF0430', p, 'sharpe'))}</b></td>" for p in ("IS", "C24", "REAL")) + "".join(f"<td>{f1(g(Q, '+LF06+LF0430', p, 'wr'))}%</td>" for p in ("IS", "C24", "REAL")) + "".join(f"<td>{f2(g(Q, '+LF06+LF0430', p, 'tpd'))}</td>" for p in ("IS", "C24", "REAL")) + "</tr>")
+YR = pd.read_csv("year150.csv")
+yrows = "".join(f"<tr><td>{int(r.anio)}{' (' + f1(r.meses) + ' meses)' if r.meses < 11.5 else ''}</td><td>{r.datos}</td><td>${f0(r.mes_inicio_enero)}</td><td>${f0(r.mes_prom_todos_los_inicios)}</td><td>{'−' if r.peor_inicio < 0 else ''}${f0(abs(r.peor_inicio))}</td></tr>" for r in YR.itertuples())
 BUGS = json.load(open("morning_bugs.json", encoding="utf-8"))
 brows = "".join(f"<li><span class='tag {b['estado']}'>{b['estado_txt']}</span> <b>{b['titulo']}</b>: {b['detalle']}</li>" for b in BUGS)
 page = f"""<title>Perfil final NQ + Oro</title>
@@ -104,6 +106,9 @@ code {{ font: 13px var(--mono); background: var(--hl); padding: 1px 5px; border-
   <p>Las cuentas operan los mismos trades y las evaluaciones arrancan con 5 días de diferencia. Son 1.500 años simulados por período.</p>
   <div class="tw"><table><thead><tr><th>Plan</th><th>$/mes 2020-23</th><th>$/mes 2024-26 CFD</th><th>$/mes 2024-26 real</th><th>Año malo 2020-23</th><th>Año malo 24-26 CFD</th><th>Año malo real</th><th>P(año en pérdida)</th><th>Capital inicial (90%)</th></tr></thead><tbody>{mrows}</tbody></table></div>
   <p class="muted">"Año malo" es el 10% de años más flojos, en $ por mes. El capital inicial cubre las evaluaciones antes de los primeros cobros.</p>
+  <p>Año por año, una cuenta 150K que arranca en enero:</p>
+  <div class="tw"><table><thead><tr><th>Año</th><th>Datos</th><th>$/mes arrancando en enero</th><th>Promedio de todos los arranques del año</th><th>Peor arranque</th></tr></thead><tbody>{yrows}</tbody></table></div>
+  <p class="muted">Todos los años terminan positivos arrancando en enero. Pero hay rachas flojas: una cuenta que empezó a mitad de 2023 pudo perder ~$300 por mes durante varios meses. Por eso conviene escalonar las cuentas.</p>
 </section>
 <section>
   <h2>Tres módulos nuevos: revertir la madrugada</h2>
