@@ -267,6 +267,43 @@ En todas, la evaluación tiene regla de consistencia del 50%. El límite se fija
 
 Todos los años son positivos arrancando en enero. Pero hay rachas flojas: una cuenta que empezó a mitad de 2023 pudo perder ~$300 por mes durante varios meses. Por eso conviene escalonar las 5 cuentas y no juzgar el sistema por un mes.
 
+## Escalar más allá de 5 cuentas: sumar Apex 150K (`apex150.py`, `combo_sim.py`)
+Lucid limita a 5 fondeadas. **Apex permite hasta 20 cuentas PA por hogar.**
+
+**Reglas Apex 2026, versión EOD, 150K** (damnpropfirms / quantvps, octubre 2026):
+- **Evaluación:** objetivo $9.000, pérdida máxima $4.000 que sigue al cierre, stop diario blando de $2.000, sin consistencia.
+- **Cuenta PA:**
+  - activación de $119,
+  - cobro tras 5 días que califican,
+  - ningún día puede ser ≥ 50% de la ganancia del ciclo,
+  - se retira lo que esté por encima de inicial + $4.100,
+  - topes 2.500 / 3.000 / 3.000 / 3.000 / 4.000 / $5.000,
+  - 100% para vos,
+  - 6 cobros.
+
+**Por cuenta Apex 150K:**
+- Con 5 contratos en evaluación y **2 en la PA**: **$1.953 por mes**, peor prueba $1.719, 0,7 PA quemadas por año.
+- Con 3 contratos en la PA rinde menos, por la regla del 50% y el stop diario.
+
+**Plan combinado** (todas las cuentas operan los mismos trades; 1.500 años simulados por período; 2020-23 / 2024-26 CFD / real):
+
+| Plan | $/mes promedio | Año malo (10% peor) | P(año en pérdida) | Capital inicial (90%) |
+|---|---|---|---|---|
+| 5 Lucid 150K | $9.711 / $11.348 / $12.281 | $5.231 / $5.946 / $6.886 | ≤ 0,5% | ~$8.300-11.400 |
+| **5 Lucid + 5 Apex 150K** | **$18.167 / $21.252 / $22.962** | $10.135 / $11.938 / $13.495 | ≤ 0,3% | ~$12.400-17.700 |
+| 5 Lucid + 10 Apex 150K | $26.574 / $31.150 / $33.609 | $14.903 / $17.948 / $20.163 | ≤ 0,4% | ~$15.700-22.700 |
+| 5 Lucid + 20 Apex 150K | $43.451 / $50.863 / $54.977 | $25.326 / $30.847 / $34.226 | ≤ 0,5% | ~$22.400-31.800 |
+
+**Configuración Apex 150K:**
+- **NQMaster:** Ultra · Contracts 5 en la evaluación / 2 en la PA · StartBalance 150000 · PropTrailingDD 4000 · EvalTarget 9000 · ConsistencyPct 0 · EvalProfitStop 0 · EvalDailyStop 2000 en la evaluación. En la PA, el stop diario de $2.000 lo aplica Apex.
+- **Gating en la PA:** PropMode Funded, FundedCushionSafe 1500, FundedCushionFull 3000.
+- **GoldMaster:** Robust con los mismos contratos, StartBalance 150000 y AccountDailyStop 2000.
+
+**Antes de escalar:**
+1. **Liquidez:** todas las cuentas mandan las mismas órdenes al mismo tiempo. Con 25 cuentas, una señal puede sumar 150-200 micros (15-20 NQ). En horario regular se absorbe, pero de madrugada (NF05, LF06, LF0430) puede costar varios ticks. Los módulos nocturnos aguantan +4 ticks (PF ≥ 1,29), no mucho más. **Crecer de a poco y medir el deslizamiento real** con `nt_compare.py`.
+2. **Reglas de Apex:** el costo de la evaluación ($150 con descuento) y el mínimo diario para calificar ($250) son supuestos. Confirmarlos antes de comprar.
+3. **Términos de cada firma:** confirmar que permiten trading automático y copiar operaciones entre cuentas. No hay cobertura entre cuentas: todas operan en la misma dirección.
+
 **LucidDirect (fondeo directo, sin evaluación; `direct_sim.py`): no conviene.**
 - **Reglas en 150K:** $836, pérdida máxima $5.000 (EOD), stop diario blando de $3.000.
 - **Ciclo de cobro:** el ciclo necesita $9.000 de ganancia la primera vez y $4.500 después. Ningún día puede superar el 20% del ciclo. Se retira lo que esté por encima de inicial + $5.100, hasta $3.000-3.500.

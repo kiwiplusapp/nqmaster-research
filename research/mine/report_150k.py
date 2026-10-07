@@ -29,6 +29,12 @@ G = pd.read_csv("gnq_port.csv"); Q = pd.read_csv("nqdrive_port.csv")
 def g(df, s, per, k): return df[(df.set == s) & (df.per == per)][k].iat[0]
 port = (f"<tr><td>Ultra (antes)</td>" + "".join(f"<td>{f2(g(G, 'Ultra', p, 'sharpe'))}</td>" for p in ("IS", "C24", "REAL")) + "".join(f"<td>{f1(g(G, 'Ultra', p, 'wr'))}%</td>" for p in ("IS", "C24", "REAL")) + "".join(f"<td>{f2(g(G, 'Ultra', p, 'tpd'))}</td>" for p in ("IS", "C24", "REAL")) + "</tr>"
         + f"<tr class='hl'><td><b>Ultra + NF05 + LF06 + LF0430</b></td>" + "".join(f"<td><b>{f2(g(Q, '+LF06+LF0430', p, 'sharpe'))}</b></td>" for p in ("IS", "C24", "REAL")) + "".join(f"<td>{f1(g(Q, '+LF06+LF0430', p, 'wr'))}%</td>" for p in ("IS", "C24", "REAL")) + "".join(f"<td>{f2(g(Q, '+LF06+LF0430', p, 'tpd'))}</td>" for p in ("IS", "C24", "REAL")) + "</tr>")
+CB = pd.read_csv("combo_sim.csv")
+def crow(plan, hl=False):
+    x = CB[CB.plan == plan].set_index("per")
+    return (f"<tr{HL if hl else ''}><td><b>{plan}</b></td>" + "".join(f"<td>${f0(x.loc[p, 'mes_prom'])}</td>" for p in ("IS", "C24", "REAL"))
+            + f"<td>${f0(x.loc['REAL', 'mes_p10'])}</td><td>≤ {f1(x.P_anio_negativo.max())}%</td><td>${f0(x.capital_p90.min())}-{f0(x.capital_p90.max())}</td></tr>")
+crows = crow("5 Lucid 150K") + crow("5 Lucid + 5 Apex 150K", True) + crow("5 Lucid + 10 Apex 150K") + crow("5 Lucid + 20 Apex 150K")
 YR = pd.read_csv("year150.csv")
 yrows = "".join(f"<tr><td>{int(r.anio)}{' (' + f1(r.meses) + ' meses)' if r.meses < 11.5 else ''}</td><td>{r.datos}</td><td>${f0(r.mes_inicio_enero)}</td><td>${f0(r.mes_prom_todos_los_inicios)}</td><td>{'−' if r.peor_inicio < 0 else ''}${f0(abs(r.peor_inicio))}</td></tr>" for r in YR.itertuples())
 BUGS = json.load(open("morning_bugs.json", encoding="utf-8"))
@@ -109,6 +115,12 @@ code {{ font: 13px var(--mono); background: var(--hl); padding: 1px 5px; border-
   <p>Año por año, una cuenta 150K que arranca en enero:</p>
   <div class="tw"><table><thead><tr><th>Año</th><th>Datos</th><th>$/mes arrancando en enero</th><th>Promedio de todos los arranques del año</th><th>Peor arranque</th></tr></thead><tbody>{yrows}</tbody></table></div>
   <p class="muted">Todos los años terminan positivos arrancando en enero. Pero hay rachas flojas: una cuenta que empezó a mitad de 2023 pudo perder ~$300 por mes durante varios meses. Por eso conviene escalonar las cuentas.</p>
+</section>
+<section>
+  <h2>Escalar más allá de 5 cuentas: sumar Apex</h2>
+  <p>Apex permite hasta 20 cuentas PA. Cada Apex 150K, con 5 contratos en evaluación y 2 en la PA, deja ~$1.953 por mes (peor prueba $1.719). Con todas las cuentas operando los mismos trades:</p>
+  <div class="tw"><table><thead><tr><th>Plan</th><th>$/mes 2020-23</th><th>$/mes 24-26 CFD</th><th>$/mes real</th><th>Año malo real</th><th>P(año en pérdida)</th><th>Capital inicial (90%)</th></tr></thead><tbody>{crows}</tbody></table></div>
+  <p class="muted">Antes de escalar: todas las cuentas mandan las mismas órdenes al mismo tiempo. Con 25 cuentas, una señal suma 150-200 micros, y de madrugada eso puede costar varios ticks. Las reglas de Apex usadas (costo de evaluación $150, mínimo diario $250 para calificar) hay que confirmarlas, y también que ambas firmas permitan trading automático y copiar operaciones. Crecer de a poco y medir el deslizamiento real.</p>
 </section>
 <section>
   <h2>Tres módulos nuevos: revertir la madrugada</h2>

@@ -69,6 +69,8 @@ Guía práctica del plan recomendado (detalle y cifras en `NQMASTER_GUIA.md`, se
 
 Si tenés menos capital, la misma lógica funciona con 50K: 2 contratos en evaluación y en fondeada. Rinde unos $1.390 por mes por cuenta.
 
+**Más de 5 cuentas:** Lucid no permite más de 5 fondeadas, pero Apex permite hasta 20 PA. Cada Apex 150K deja ~$1.950 por mes con 5 contratos en evaluación y 2 en la PA. 5 Lucid + 5 Apex rinden ~$18.000-23.000 por mes. La configuración y las precauciones están en `NQMASTER_GUIA.md`, sección "Escalar más allá de 5 cuentas". Crecé de a poco y medí el deslizamiento real: todas las cuentas mandan las mismas órdenes al mismo tiempo.
+
 **Alternativa de win rate alto:** NQMaster con Profile = **WR70Plus** y **NightOnWr70 = true**, y GoldMaster con Profile = **WinRate**. Los demás parámetros son iguales.
 - Win rate 69,5% y PF 1,50 en futuros reales.
 - Cerca de la mitad de fondeadas quemadas.
