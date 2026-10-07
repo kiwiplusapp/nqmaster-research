@@ -267,6 +267,12 @@ En todas, la evaluación tiene regla de consistencia del 50%. El límite se fija
 
 Todos los años son positivos arrancando en enero. Pero hay rachas flojas: una cuenta que empezó a mitad de 2023 pudo perder ~$300 por mes durante varios meses. Por eso conviene escalonar las 5 cuentas y no juzgar el sistema por un mes.
 
+**LucidDirect (fondeo directo, sin evaluación; `direct_sim.py`): no conviene.**
+- **Reglas en 150K:** $836, pérdida máxima $5.000 (EOD), stop diario blando de $3.000.
+- **Ciclo de cobro:** el ciclo necesita $9.000 de ganancia la primera vez y $4.500 después. Ningún día puede superar el 20% del ciclo. Se retira lo que esté por encima de inicial + $5.100, hasta $3.000-3.500.
+- **Resultado:** como mucho **$909 por mes por lugar** contra $2.168 de LucidFlex, aun con un stop diario de ganancia. La regla del 20% frena los cobros (~4-5 por año).
+- **LucidFlex** es el mejor producto de Lucid para este sistema: la fondeada no tiene regla de consistencia y cobra el 50% de la ganancia.
+
 **Stop diario propio en la fondeada (`fdll150.py`): no conviene.** Con $2.000 deja casi el mismo dinero y quema 20% menos fondeadas, pero empeora la peor prueba ($1.884 contra $1.981). Con valores más chicos pierde dinero.
 
 ## Módulo NF05 (2026-10-07): a las 05:00, revertir el movimiento nocturno
