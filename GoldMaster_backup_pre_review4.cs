@@ -296,7 +296,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (a.Length >= 4)
 				{
 					int.TryParse(a[1], out date);
-					if (date < esd) { date = 0; peak = double.NaN; return true; }	// written before EvalStartDate: another eval, ignore its data
+					if (date < esd) { date = 0; return true; }			// written before EvalStartDate: another eval, ignore its day data
 					if (double.TryParse(a[2], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) dayStart = v;
 					if (double.TryParse(a[3], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) bestDay = v;
 				}
@@ -319,10 +319,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 			evalDayIndex++; evalEqDayStart = State == State.Realtime ? Account.Get(AccountItem.CashValue, Currency.UsDollar) - StartBalance : netPnl - evalPnlBase;
 			double pk = double.NaN;
 			if (State == State.Realtime)
-			{
-				double fpk, fds, fbd; int fdt;
-				if (ReadNqProp(out fpk, out fdt, out fds, out fbd) && !double.IsNaN(fpk)) pk = fpk - StartBalance;
-			}
+				try
+				{
+					string f = Path.Combine(Core.Globals.UserDataDir, "nqmaster_prop_" + Account.Name + ".txt"); double v;
+					if (File.Exists(f) && double.TryParse(File.ReadAllText(f).Trim().Split(';')[0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) pk = v - StartBalance;
+				}
+				catch { }
 			evalPeak = double.IsNaN(evalPeak) ? Math.Max(0, evalEqDayStart) : Math.Max(evalPeak, evalEqDayStart);
 			if (double.IsNaN(pk)) pk = evalPeak; else pk = Math.Max(pk, evalEqDayStart);
 			double thr = pk >= 2100 ? 100 : pk - 2000; evalCushion = evalEqDayStart - thr;

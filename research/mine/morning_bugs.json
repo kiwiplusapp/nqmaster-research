@@ -126,6 +126,18 @@
   "estado_txt": "corregido"
  },
  {
+  "titulo": "Cuarta revisión: entradas a mercado opuestas en la misma barra",
+  "detalle": "La segunda cancelaba a la primera, y el backtest y el vivo se comportaban distinto. Ahora gana la primera, como en la investigación. MSEQ y MSEQS reintentan si los frena una orden contraria.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Evaluación nueva con el mismo nombre de cuenta",
+  "detalle": "Heredaba el pico de la evaluación anterior y arrancaba en modo seguro. Ahora se ignora el pico de archivos anteriores a EvalStartDate, en NQMaster y GoldMaster.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
   "titulo": "Validación en NinjaTrader",
   "detalle": "Los cambios compilan sin errores, pero falta correr Strategy Analyzer y 2 semanas en Sim para confirmar que los resultados coinciden con la investigación.",
   "estado": "warn",

@@ -313,16 +313,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 			bool canTrade = CanTrade();
 			if (!canTrade) { CancelAllEntries(); UpdateDashboard(); return; }
-			// MSEQ / MSEQS deferred by an opposite stop/limit order: one retry on the next 1-minute bars (research enters them at market)
-			if (pend5 != null)
-			{
-				if (pend5.InTrade || CurrentBars[0] > pend5Bar + 2 || (pend5Dir == 1 ? Close[0] <= pend5Stop : Close[0] >= pend5Stop)) pend5 = null;
-				else if (CurrentBars[0] > pend5Bar && DirectionAllowed(pend5Dir))
-				{
-					ArmPriceBracket(pend5, pend5Dir, pend5Stop); Order po = pend5Dir == 1 ? EnterLong(0, pend5Qty, pend5.Sig) : EnterShort(0, pend5Qty, pend5.Sig);
-					if (po != null) pend5.Entry = po; Log(pend5.Sig + " entered after the deferral"); pend5 = null;
-				}
-			}
 			ManageParked(openMin, closeMin);
 
 			// ---- modules on the 1-minute series
@@ -357,7 +347,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			e10aHas = false; e10bHas = false; eng10Done = false; eng10Retry = false; close10 = double.NaN; rthFirstClose = double.NaN;
 			m11Dir = 0; onSum = 0; lonDir = 0;
 			foreach (Mod m in mods) m.Parked = false;
-			pend5 = null;
 		}
 
 		private void StartRthDay(int etDate)
@@ -404,7 +393,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!window) { if (Working(o.Entry)) CancelOrder(o.Entry); return; }
 			if (!o.Parked && !o.Armed && !o.InTrade && !Working(o.Entry) && o.Trades > 0 && o.Trades < 2 && Close[0] < o.OrH && Close[0] > o.OrL) o.Armed = true;
 			if (o.Parked || !o.Armed || o.InTrade || Working(o.Entry) || o.Trades >= 2) return;
-			if (CurrentBars[0] <= deferUntil) return;			// a deferred module enters first
 			int d = trendDir;
 			double entry = d == 1 ? o.OrH + TickSize : o.OrL - TickSize;
 			double opp = d == 1 ? o.OrL - TickSize : o.OrH + TickSize;
@@ -447,7 +435,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double mk = double.NaN;
 				if (State == State.Realtime) try { mk = d == 1 ? GetCurrentAsk() : GetCurrentBid(); } catch { }
 				if (!double.IsNaN(mk) && (mk - lvl) * d <= TickSize && !OppBusy(d, volb))
-				{ ArmPriceBracket(volb, d, Instrument.MasterInstrument.RoundToTickSize(rthOpenPx)); Order vm = d == 1 ? EnterLong(0, Qty(), volb.Sig) : EnterShort(0, Qty(), volb.Sig); if (vm != null) volb.Entry = vm; }
+				{ ArmPriceBracket(volb, d, Instrument.MasterInstrument.RoundToTickSize(rthOpenPx)); if (d == 1) EnterLong(0, Qty(), volb.Sig); else EnterShort(0, Qty(), volb.Sig); }
 				volbDone = true; return;
 			}
 			// never cancel other modules' working entries for VOLB: wait while the position or a working order points the other way
@@ -493,8 +481,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (PastLevel(e10d, e10px))
 			{
 				if ((Close[0] - e10px) * e10d > 0.5 * Math.Abs(e10px - e10sl)) { Log("ENG10 skipped (price ran > 0.5R past the level)"); return; }
-				Order em = e10d == 1 ? EnterLong(0, Qty(), eng10.Sig) : EnterShort(0, Qty(), eng10.Sig);
-				if (em != null) eng10.Entry = em;
+				if (e10d == 1) EnterLong(0, Qty(), eng10.Sig); else EnterShort(0, Qty(), eng10.Sig);
 			}
 			else { Order er = e10d == 1 ? EnterLongStopMarket(0, true, Qty(), e10px, eng10.Sig) : EnterShortStopMarket(0, true, Qty(), e10px, eng10.Sig); if (er != null) eng10.Entry = er; }
 			Log(string.Format("ENG10 {0} @ {1} | SL {2}", e10d == 1 ? "BUY" : "SELL", Fmt(e10px), Fmt(e10sl)));
@@ -544,8 +531,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			m.Dir = d; m.EntryBar = CurrentBars[0] + 1;
 			int tq = m.Sig == "MOM13" ? LateQty(d, Hm(m.Time)) : Qty();
 			if (m.DoubleDist > 0 && !noBoost && Math.Abs(Close[0] - reference) >= m.DoubleDist * atrDaily) tq = 2 * Qty();
-			Order tr = d == 1 ? EnterLong(0, tq, m.Sig) : EnterShort(0, tq, m.Sig);
-			if (tr != null) m.Entry = tr;
+			if (d == 1) EnterLong(0, tq, m.Sig); else EnterShort(0, tq, m.Sig);
 			Log(string.Format("{0} {1} | ref {2} | SL {3}t", m.Sig, d == 1 ? "BUY" : "SELL", Fmt(reference), st));
 		}
 
@@ -564,8 +550,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (risk <= 0 || risk > 0.5 * todayAtr || !DirectionAllowed(d)) return;
 			ArmPriceBracket(crt, d, stop);
 			int cq = CtxBoost(LateQty(d, 720), FeatTrend(d) >= 1.7456 || FeatGap(d) >= 0.1048 || FeatPdRet(d) >= 0.6155, "CRT11");
-			Order cr = d == 1 ? EnterLong(0, cq, crt.Sig) : EnterShort(0, cq, crt.Sig);
-			if (cr != null) crt.Entry = cr;
+			if (d == 1) EnterLong(0, cq, crt.Sig); else EnterShort(0, cq, crt.Sig);
 			Log(string.Format("CRT11 {0} | SL {1}", d == 1 ? "BUY" : "SELL", Fmt(stop)));
 		}
 
@@ -638,12 +623,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (Closes[1][j] <= Opens[1][j] || Lows[1][j] <= mainLow) ok = false;
 					if (j < n - 1 && Closes[1][j] <= Closes[1][j + 1]) ok = false;
 				}
-				double c0m = Closes[1][0]; double stopm = Instrument.MasterInstrument.RoundDownToTickSize(c0m - (c0m - mainLow) * 1.75);
-				if (ok && stopm < c0m)
+				if (ok && DirectionAllowed(1))
 				{
-					int mq = CtxBoost(LateQty(1, closeMin), FeatPos(1, Closes[0][0]) >= 0.9686 || FeatM30(1) >= 0.1728 || FeatRet5(1) >= 2.0674, "MSEQ");
-					if (!DirectionAllowed(1)) { if (lastDeferred) { pend5 = mseq; pend5Dir = 1; pend5Stop = stopm; pend5Qty = mq; pend5Bar = CurrentBars[0]; } }
-					else { ArmPriceBracket(mseq, 1, stopm); Order mo = EnterLong(0, mq, mseq.Sig); if (mo != null) mseq.Entry = mo; Log("MSEQ BUY | SL " + Fmt(stopm)); }
+					double c0 = Closes[1][0]; double stop = Instrument.MasterInstrument.RoundDownToTickSize(c0 - (c0 - mainLow) * 1.75);
+					if (stop < c0) { ArmPriceBracket(mseq, 1, stop); EnterLong(0, CtxBoost(LateQty(1, closeMin), FeatPos(1, Closes[0][0]) >= 0.9686 || FeatM30(1) >= 0.1728 || FeatRet5(1) >= 2.0674, "MSEQ"), mseq.Sig); Log("MSEQ BUY | SL " + Fmt(stop)); }
 				}
 			}
 
@@ -658,12 +641,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (Closes[1][j] >= Opens[1][j] || Highs[1][j] >= mainHigh) ok = false;
 					if (j < n - 1 && Closes[1][j] >= Closes[1][j + 1]) ok = false;
 				}
-				double c0s = Closes[1][0]; double stops = Instrument.MasterInstrument.RoundToTickSize(c0s + (mainHigh - c0s) * 1.75);
-				if (ok && stops > c0s)
+				if (ok && DirectionAllowed(-1))
 				{
-					int sq = LateQty(-1, closeMin);
-					if (!DirectionAllowed(-1)) { if (lastDeferred) { pend5 = mseqs; pend5Dir = -1; pend5Stop = stops; pend5Qty = sq; pend5Bar = CurrentBars[0]; } }
-					else { ArmPriceBracket(mseqs, -1, stops); Order so = EnterShort(0, sq, mseqs.Sig); if (so != null) mseqs.Entry = so; Log("MSEQS SELL | SL " + Fmt(stops)); }
+					double c0 = Closes[1][0]; double stop = Instrument.MasterInstrument.RoundToTickSize(c0 + (mainHigh - c0) * 1.75);
+					if (stop > c0) { ArmPriceBracket(mseqs, -1, stop); EnterShort(0, LateQty(-1, closeMin), mseqs.Sig); Log("MSEQS SELL | SL " + Fmt(stop)); }
 				}
 			}
 
@@ -682,8 +663,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					SetStopLoss(rsi.Sig, CalculationMode.Ticks, st, false);
 					SetProfitTarget(rsi.Sig, CalculationMode.Ticks, Math.Max(1, (int)Math.Round(rsi.R * st)));
 					rsi.Dir = d; rsiTrades++;
-					Order rr = d == 1 ? EnterLong(0, Qty(), rsi.Sig) : EnterShort(0, Qty(), rsi.Sig);
-					if (rr != null) rsi.Entry = rr;
+					if (d == 1) EnterLong(0, Qty(), rsi.Sig); else EnterShort(0, Qty(), rsi.Sig);
 					Log(string.Format("RSI2 {0} | RSI {1:0.0} | SL {2}t", d == 1 ? "BUY" : "SELL", rsiVal, st));
 				}
 			}
@@ -909,10 +889,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (f != null && File.Exists(f))
 				{
 					string[] a = File.ReadAllText(f).Trim().Split(';'); double v;
+					if (a.Length > 0 && double.TryParse(a[0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) propPeak = Math.Max(propPeak, v);
 					int fd = 0; double ds, bd, ov;
 					bool fresh = a.Length >= 4 && int.TryParse(a[1], out fd) && fd >= EvalStartInt();	// older than EvalStartDate = another eval
-					bool stalePeak = PropMode == NQMasterPropMode.Eval && a.Length >= 4 && !fresh;				// a new eval does not inherit an old peak
-					if (!stalePeak && a.Length > 0 && double.TryParse(a[0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) propPeak = Math.Max(propPeak, v);
 					if (fresh && double.TryParse(a[2], NumberStyles.Any, CultureInfo.InvariantCulture, out ds))
 					{ if (fd == today) propDayStart = ds; else if (fd == prevSessDay) savedPrevDayStart = ds; }
 					if (fresh && double.TryParse(a[3], NumberStyles.Any, CultureInfo.InvariantCulture, out bd)) propBestDay = Math.Max(propBestDay, bd);
@@ -921,8 +900,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			catch { }
 			// manual correction (e.g. a stale file after an account reset): applied once; later restarts keep the higher saved peak
-			bool newOverride = double.IsNaN(storedOverride) || Math.Abs(PropPeakOverride - storedOverride) > 0.01;
-			if (PropPeakOverride > 0) propPeak = newOverride ? PropPeakOverride : Math.Max(propPeak, PropPeakOverride);
+			if (PropPeakOverride > 0) propPeak = Math.Abs(PropPeakOverride - storedOverride) > 0.01 ? PropPeakOverride : Math.Max(propPeak, PropPeakOverride);
 			// first start of the day (no saved state): the day started at equity now minus what the account already realized today
 			if (double.IsNaN(propDayStart)) { try { propDayStart = PropEquity() - Account.Get(AccountItem.RealizedProfitLoss, Currency.UsDollar); } catch { } }
 			// the last session NinjaTrader saw start was not closed by it (shut down before 18:00): its P&L = today's start - its start
@@ -971,15 +949,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 
 		private bool lastDeferred; private int deferUntil = -1;
-		private Mod pend5; private int pend5Dir, pend5Qty, pend5Bar; private double pend5Stop;
 		// Opposite open position -> skip. Opposite WORKING entry orders (e.g. an ORB stop order) -> cancel them and defer this entry
 		// one bar (NinjaTrader's managed rules ignore an entry while an opposite entry order is working).
 		private bool DirectionAllowed(int d)
 		{
 			lastDeferred = false;
 			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return false;
-			// an opposite MARKET entry already sent (fills at the next open) counts as an open position: research keeps the first trade
-			foreach (Mod m in mods) if (Working(m.Entry) && m.Dir == -d && m.Entry.OrderType == OrderType.Market) return false;
 			bool blocked = false;
 			foreach (Mod m in mods) if (Working(m.Entry) && m.Dir == -d) { ParkOrder(m); blocked = true; }
 			if (blocked) { lastDeferred = true; deferUntil = CurrentBars[0] + (BarsInProgress == 1 ? 5 : 1); return false; }

@@ -75,7 +75,7 @@ code {{ font: 13px var(--mono); background: var(--hl); padding: 1px 5px; border-
 <header style="display:grid;gap:10px">
   <div class="eyebrow">NQMaster + GoldMaster · LucidFlex · actualizado 7-oct-2026</div>
   <h1>Perfil final NQ + Oro</h1>
-  <p>Lucid permite como máximo 5 cuentas fondeadas por hogar. Con ese límite, la cuenta de 150K deja más dinero que la de 50K. Además se sumaron tres módulos nocturnos nuevos, robustos desde 2015, y se corrigieron los errores de tres revisiones de código.</p>
+  <p>Lucid permite como máximo 5 cuentas fondeadas por hogar. Con ese límite, la cuenta de 150K deja más dinero que la de 50K. Además se sumaron tres módulos nocturnos nuevos, robustos desde 2015, y se corrigieron los errores de cuatro revisiones de código.</p>
 </header>
 <div class="kpis">
   <div class="kpi"><b>${f0(top_mean)}</b><span>por mes por cuenta 150K, promedio de 9 pruebas (peor ${f0(top_min)})</span></div>

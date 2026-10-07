@@ -480,6 +480,16 @@ Backups: `NQMaster_backup_pre_review2.cs`, `GoldMaster_backup_pre_review2.cs`. P
 
 Backups: `NQMaster_backup_pre_review3.cs`, `GoldMaster_backup_pre_review3.cs`. Parche: `research/mine/patch_review3.py`.
 
+## Cuarta revisión de código (2026-10-07)
+- **Dos entradas a mercado opuestas en la misma barra** (por ejemplo REV06 y LF06 a las 06:00, o MOM11 y MSEQ a las 11:00): gana la primera, como en la investigación. Antes la segunda cancelaba a la primera, y el backtest y el vivo se comportaban distinto. Las entradas a mercado ahora quedan registradas al enviarlas.
+- **MSEQ y MSEQS:** si los frena una orden stop o límite contraria, reintentan en la barra de 1 minuto siguiente en vez de perder el trade.
+- **ORB** espera a que entre el módulo diferido.
+- **Archivo de estado:**
+  - Una evaluación nueva no hereda el pico de un archivo anterior a `EvalStartDate`. GoldMaster hace lo mismo.
+  - `PropPeakOverride` se aplica también sobre archivos viejos.
+
+Backups: `NQMaster_backup_pre_review4.cs`, `GoldMaster_backup_pre_review4.cs`. Parche: `research/mine/patch_review4.py`.
+
 ## Oro: reversiones de madrugada con 16 años (`research/mine/gold_new_port.py`, `lc150.py`)
 Las mismas 5.760 configuraciones de impulsos anclados, corridas en oro 2010-2026. Solo 4 ganan en los cinco tramos, cerca de lo que daría el azar con tantas pruebas:
 - GF07: a las 07:00, revertir el movimiento desde las 06:00. WR 76%.
