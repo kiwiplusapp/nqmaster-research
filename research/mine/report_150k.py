@@ -75,7 +75,7 @@ code {{ font: 13px var(--mono); background: var(--hl); padding: 1px 5px; border-
 <header style="display:grid;gap:10px">
   <div class="eyebrow">NQMaster + GoldMaster · LucidFlex · actualizado 7-oct-2026</div>
   <h1>Perfil final NQ + Oro</h1>
-  <p>Lucid permite como máximo 5 cuentas fondeadas por hogar. Con ese límite, la cuenta de 150K deja más dinero que la de 50K. Además se sumaron tres módulos nocturnos nuevos, robustos desde 2015, y se corrigieron los errores de cuatro revisiones de código.</p>
+  <p>Lucid permite como máximo 5 cuentas fondeadas por hogar. Con ese límite, la cuenta de 150K deja más dinero que la de 50K. Además se sumaron tres módulos nocturnos nuevos, robustos desde 2015, y se corrigieron los errores de cinco revisiones de código.</p>
 </header>
 <div class="kpis">
   <div class="kpi"><b>${f0(top_mean)}</b><span>por mes por cuenta 150K, promedio de 9 pruebas (peor ${f0(top_min)})</span></div>
@@ -106,6 +106,11 @@ code {{ font: 13px var(--mono); background: var(--hl); padding: 1px 5px; border-
   <p>Con tamaño proporcional al límite de pérdida, esto deja cada cuenta:</p>
   <div class="tw"><table><thead><tr><th>Cuenta</th><th>Contratos eval / fondeada</th><th>Módulos</th><th>$ / mes promedio</th><th>Peor de 9 pruebas</th></tr></thead><tbody>{srows}</tbody></table></div>
   <p class="muted">Con 150K y 6 contratos, la evaluación pasa el 40% de las veces, en unos 9 días hábiles, con unas 13 evaluaciones por año y por cuenta (~$285 cada una, ya descontadas). Si vas a tener menos de 5 cuentas y el capital es la restricción, la 50K rinde más por dólar invertido en evaluaciones.</p>
+  <div class="tw"><table><thead><tr><th>Contratos en la evaluación 150K</th><th>Pasa</th><th>Mediana</th><th>Evals por año</th><th>$ / mes por cuenta</th></tr></thead><tbody>
+  <tr class="hl"><td><b>6 (recomendado)</b></td><td>41%</td><td>9 días</td><td>12,2</td><td>$2.168</td></tr>
+  <tr><td>5</td><td>45%</td><td>10 días</td><td>11,1</td><td>$2.104</td></tr>
+  <tr><td>4 (pasar más fácil)</td><td><b>50%</b></td><td>13 días</td><td>8,7</td><td>$2.051</td></tr>
+  </tbody></table></div>
 </section>
 <section>
   <h2>Con 5 cuentas</h2>
