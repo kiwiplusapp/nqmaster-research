@@ -44,3 +44,4 @@
 
 ## Perfil final (6-oct-2026)
 - [[Perfil final 6-oct (50K, 2 contratos)]]: Lucid 50K, NQMaster Ultra ampliado + GoldMaster Robust, 2 contratos. ~$1.314/mes por cuenta (promedio de 9 pruebas), evaluación 48% en ~9 días o modo pasar fácil 62% en ~15 días.
+- [[Plan 150K y modulos nocturnos (7-oct)]]: con el límite de 5 fondeadas de Lucid, la 150K (6 / 3 contratos) deja ~$2.168/mes por cuenta. Además, NF05, LF06 y LF0430 revierten la madrugada. 5 × 150K: ~$9.800-12.500/mes.

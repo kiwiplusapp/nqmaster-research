@@ -1,14 +1,134 @@
 [
-  {"titulo": "Datos de cuenta borrados al importar el constructor", "detalle": "Cada script que importaba dense_build.py o ict_redo.py reconstruía los datos base y borraba ICT corregido, WR70Plus, Core, ENG10 y LATEFH. Ahora solo construyen al ejecutarlos directamente; todo se reconstruyó y se verificó (76 módulos). Grilla, verificación final y velocidad de evaluación se recalcularon.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "ENG10 y LATEFH ausentes en las simulaciones de cuenta", "detalle": "Sus datos nunca se habían generado y la simulación los salteaba sin avisar. Ahora están y la simulación avisa si falta un módulo.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "NQMaster: señales perdidas al chocar con una orden opuesta", "detalle": "ORB, ICT y ENG10 descartaban su señal cuando había que cancelar una orden opuesta pendiente. Ahora reintentan; VOLB espera para no rebotar.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "Órdenes stop rechazadas en vivo", "detalle": "Si el precio ya pasó el nivel, el broker rechaza la orden y la estrategia se apagaba. Ahora entra a mercado, ignora el rechazo y, si se rechaza un stop de protección, cierra la posición. En NQMaster y GoldMaster.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "Objetivo de la evaluación", "detalle": "Se medía solo con lo realizado y podía quedar trabado sin cumplirse. Ahora cuenta la ganancia abierta y, si al cerrar no se cumple, sigue operando. En las dos estrategias.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "LATE15 y LATEFH", "detalle": "Medían desde la apertura en vez del cierre de la primera barra, como la investigación, y LATE15 no salteaba días sin cierre previo completo.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "Reinicio de NinjaTrader", "detalle": "Se perdían el pico de la cuenta, el inicio del día y el mejor día. Ahora se guardan en un archivo. Si se activa a mitad del día, descuenta lo ya ganado o perdido.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "Llenados parciales", "detalle": "Una orden llenada en partes no se registraba bien. Ahora se cuenta una vez y el objetivo usa el precio promedio. En las dos estrategias.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "GoldMaster: bloqueos más estrictos que la investigación", "detalle": "Una orden opuesta pendiente bloqueaba señales que la investigación sí toma (−4-5% de ganancia). Ahora solo bloquea una posición abierta, y las órdenes bloqueadas quedan en espera.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "GoldMaster: ASIA y calentamiento", "detalle": "La regla de la primera ruptura ahora se respeta aunque la orden no estuviera puesta. Antes de operar espera 60 días de sesión regular (cargar 120 días).", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "GoldMaster: stop diario el primer día en vivo", "detalle": "Comparaba la cuenta real contra la ganancia del backtest y no funcionaba hasta las 18:00. Corregido.", "estado": "ok", "estado_txt": "corregido"},
-  {"titulo": "Validación en NinjaTrader", "detalle": "Los cambios compilan sin errores, pero falta correr Strategy Analyzer y 2 semanas en Sim para confirmar que los resultados coinciden con la investigación.", "estado": "warn", "estado_txt": "pendiente"}
+ {
+  "titulo": "Datos de cuenta borrados al importar el constructor",
+  "detalle": "Cada script que importaba dense_build.py o ict_redo.py reconstruía los datos base y borraba ICT corregido, WR70Plus, Core, ENG10 y LATEFH. Ahora solo construyen al ejecutarlos directamente; todo se reconstruyó y se verificó (76 módulos). Grilla, verificación final y velocidad de evaluación se recalcularon.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "ENG10 y LATEFH ausentes en las simulaciones de cuenta",
+  "detalle": "Sus datos nunca se habían generado y la simulación los salteaba sin avisar. Ahora están y la simulación avisa si falta un módulo.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "NQMaster: señales perdidas al chocar con una orden opuesta",
+  "detalle": "ORB, ICT y ENG10 descartaban su señal cuando había que cancelar una orden opuesta pendiente. Ahora reintentan; VOLB espera para no rebotar.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Órdenes stop rechazadas en vivo",
+  "detalle": "Si el precio ya pasó el nivel, el broker rechaza la orden y la estrategia se apagaba. Ahora entra a mercado, ignora el rechazo y, si se rechaza un stop de protección, cierra la posición. En NQMaster y GoldMaster.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Objetivo de la evaluación",
+  "detalle": "Se medía solo con lo realizado y podía quedar trabado sin cumplirse. Ahora cuenta la ganancia abierta y, si al cerrar no se cumple, sigue operando. En las dos estrategias.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "LATE15 y LATEFH",
+  "detalle": "Medían desde la apertura en vez del cierre de la primera barra, como la investigación, y LATE15 no salteaba días sin cierre previo completo.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Reinicio de NinjaTrader",
+  "detalle": "Se perdían el pico de la cuenta, el inicio del día y el mejor día. Ahora se guardan en un archivo. Si se activa a mitad del día, descuenta lo ya ganado o perdido.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Llenados parciales",
+  "detalle": "Una orden llenada en partes no se registraba bien. Ahora se cuenta una vez y el objetivo usa el precio promedio. En las dos estrategias.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "GoldMaster: bloqueos más estrictos que la investigación",
+  "detalle": "Una orden opuesta pendiente bloqueaba señales que la investigación sí toma (−4-5% de ganancia). Ahora solo bloquea una posición abierta, y las órdenes bloqueadas quedan en espera.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "GoldMaster: ASIA y calentamiento",
+  "detalle": "La regla de la primera ruptura ahora se respeta aunque la orden no estuviera puesta. Antes de operar espera 60 días de sesión regular (cargar 120 días).",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "GoldMaster: stop diario el primer día en vivo",
+  "detalle": "Comparaba la cuenta real contra la ganancia del backtest y no funcionaba hasta las 18:00. Corregido.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Segunda revisión: el reintento de ENG10 nunca se ejecutaba",
+  "detalle": "Quedaba bloqueado al marcar ENG10 como hecho antes de intentar la orden. Ahora reintenta hasta las 11:29.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Órdenes canceladas por un trade opuesto no volvían",
+  "detalle": "NQMaster ahora las deja en espera y las repone al liberarse el lado contrario. Se descartan si el precio pasa por su nivel o termina su horario, como en la investigación.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Regla de consistencia con NinjaTrader cerrado a las 18:00",
+  "detalle": "El resultado de ese día no entraba como mejor día y el objetivo podía calcularse corto. Ahora se recupera al volver a abrir. GoldMaster lee el mismo dato.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "GoldMaster al pasar a vivo",
+  "detalle": "No actualizaba sus órdenes y arrastraba la ganancia abierta y los stops de trades simulados. Corregido.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Objetivo de la evaluación con la otra estrategia abierta",
+  "detalle": "Se prendía y apagaba con el resultado abierto de la otra estrategia. Ahora solo se desactiva con la cuenta sin posiciones.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Detalles menores",
+  "detalle": "PropPeakOverride vuelve a reemplazar el pico. VOLB entra a mercado en el nivel. Un stop rechazado cierra solo su módulo. Un aviso tardío ya no pisa la referencia de una orden nueva. El monitor del oro divide por el tamaño operado.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Scripts de investigación que se re-ejecutaban al importarlos",
+  "detalle": "Cuatro scripts más quedaron protegidos para que importarlos no repita sus cálculos ni lea datos viejos.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Tercera revisión: órdenes en espera que volvían demasiado pronto",
+  "detalle": "Podían hacer perder la entrada de MOM11, MOM1130 o LATEFH contra la tendencia. Ahora esperan a que entre el módulo que las desplazó.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Setups bloqueados por una posición opuesta",
+  "detalle": "ORB, ENG10, LON e ICT se perdían si había una posición opuesta abierta al colocarse. Ahora quedan en espera y se ponen al cerrarse esa posición, como en la investigación.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Archivo de estado de la cuenta",
+  "detalle": "PropPeakOverride se aplica una sola vez. El mejor día se recupera solo de la sesión anterior, y se ignoran archivos anteriores a EvalStartDate.",
+  "estado": "ok",
+  "estado_txt": "corregido"
+ },
+ {
+  "titulo": "Validación en NinjaTrader",
+  "detalle": "Los cambios compilan sin errores, pero falta correr Strategy Analyzer y 2 semanas en Sim para confirmar que los resultados coinciden con la investigación.",
+  "estado": "warn",
+  "estado_txt": "pendiente"
+ }
 ]

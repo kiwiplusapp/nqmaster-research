@@ -390,6 +390,21 @@ Backups: `NQMaster_backup_pre_fixes.cs`, `NQMaster_backup_pre_evalcushion.cs`, `
 
 Backups: `NQMaster_backup_pre_review2.cs`, `GoldMaster_backup_pre_review2.cs`. Parche: `research/mine/patch_review2.py`.
 
+## Tercera revisión de código (2026-10-07)
+- **Orden en espera que vuelve antes de tiempo:** una orden puesta en espera ya no vuelve antes de que entre el módulo que la desplazó. Antes podía hacer perder la entrada de MOM11, MOM1130 o LATEFH cuando iban contra la tendencia.
+- **Setups con una posición opuesta abierta:** si al colocarse un ORB, ENG10, LON o ICT hay una posición opuesta abierta, el setup queda en espera en vez de perderse. Se pone cuando se cierra esa posición, salvo que el precio haya pasado por su nivel mientras tanto. Es lo que hace la investigación.
+- **PropPeakOverride:** se aplica una sola vez; el archivo lo recuerda en un 5° campo. En reinicios posteriores se usa el pico más alto guardado.
+- **Mejor día:** se recupera solo de la sesión inmediatamente anterior. Si el archivo es anterior a `EvalStartDate`, se ignoran su inicio de día y su mejor día; GoldMaster hace lo mismo. **Al empezar una evaluación nueva, poné `EvalStartDate` = fecha de inicio** en las dos estrategias.
+- **Detalles:**
+  - ORB no se rearma mientras su orden está en espera.
+  - Las órdenes quedan registradas al enviarlas.
+  - Si el precio toca el nivel mientras se cancela la orden, queda anotado y la orden se descarta.
+
+Backups: `NQMaster_backup_pre_review3.cs`, `GoldMaster_backup_pre_review3.cs`. Parche: `research/mine/patch_review3.py`.
+
+## Evaluaciones de repuesto en paralelo: no conviene (`research/mine/seats_sim.py`)
+Lucid permite 10 cuentas en total, pero solo 5 fondeadas. Simulé, día por día, tener 2 o 3 evaluaciones escalonadas por cada lugar libre para reponerlo más rápido. No conviene: todas operan los mismos trades, así que pasan o fallan juntas. Las que pasan sin lugar libre se pierden y se pagan evaluaciones de más. La política actual, una evaluación por lugar libre, rinde 3-25% más que cualquier variante en paralelo.
+
 ## Validar NinjaTrader contra la investigación (`research/mine/nt_compare.py`)
 1. En Strategy Analyzer, corré NQMaster Ultra en MNQ de 1 minuto del 01/02/2024 a hoy, con **Contracts 1**, PropMode Off y comisión $1,90. Cargá al menos 120 días antes.
 2. En la pestaña Trades, hacé clic derecho, elegí **Export** y guardá el CSV.

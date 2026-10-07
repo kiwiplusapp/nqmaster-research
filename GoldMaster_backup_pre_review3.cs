@@ -286,7 +286,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private bool ReadNqProp(out double peak, out int date, out double dayStart, out double bestDay)
 		{
 			peak = dayStart = bestDay = double.NaN; date = 0;
-			DateTime es; int esd = DateTime.TryParseExact(EvalStartDate ?? "", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out es) ? es.Year * 10000 + es.Month * 100 + es.Day : 0;
 			try
 			{
 				string f = Path.Combine(Core.Globals.UserDataDir, "nqmaster_prop_" + Account.Name + ".txt");
@@ -296,7 +295,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (a.Length >= 4)
 				{
 					int.TryParse(a[1], out date);
-					if (date < esd) { date = 0; return true; }			// written before EvalStartDate: another eval, ignore its day data
 					if (double.TryParse(a[2], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) dayStart = v;
 					if (double.TryParse(a[3], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) bestDay = v;
 				}

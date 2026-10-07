@@ -66,7 +66,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public bool BaseOn; public bool FhCheck;
 			public bool Retry;
 			public int Anchor = -1; public double AnchorPx = double.NaN;	// Lookback -5: open of the bar at the anchor time (ET minutes)
-			public bool Parked, ParkLimit, ParkHit; public double ParkPx; public int ParkQty;	// entry cancelled for an opposite trade, re-placed when free
+			public bool Parked, ParkLimit; public double ParkPx; public int ParkQty;	// entry cancelled for an opposite trade, re-placed when free
 		}
 		private List<Mod> mods;
 		private Mod orb, orb2, mseq, mseqs, crt, lon, ict, rsi, volb, eng10;
@@ -250,7 +250,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (dayHasBars) FinalizeRthDay();
 				else if (rthDaysSeen > 0) { full2 = full1; full1 = double.NaN; }
 				DateTime tradeDay = etOpen.Hour >= 18 ? etOpen.Date.AddDays(1) : etOpen.Date;
-				prevSessDay = curSessDay; curSessDay = tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day;
 				fomcToday = SkipFomc && fomc.Contains(tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day);
 				EvalSessionStart(tradeDay);
 				edgeDayQty = Qty(); edgeDayTradable = !fomcToday; edgeDayDate = tradeDay;
@@ -391,22 +390,22 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (trendDir == 0 || atrCount < 14 || double.IsNaN(todayAtr)) return;
 			bool window = closeMin < 780;
 			if (!window) { if (Working(o.Entry)) CancelOrder(o.Entry); return; }
-			if (!o.Parked && !o.Armed && !o.InTrade && !Working(o.Entry) && o.Trades > 0 && o.Trades < 2 && Close[0] < o.OrH && Close[0] > o.OrL) o.Armed = true;
+			if (!o.Armed && !o.InTrade && !Working(o.Entry) && o.Trades > 0 && o.Trades < 2 && Close[0] < o.OrH && Close[0] > o.OrL) o.Armed = true;
 			if (o.Parked || !o.Armed || o.InTrade || Working(o.Entry) || o.Trades >= 2) return;
 			int d = trendDir;
 			double entry = d == 1 ? o.OrH + TickSize : o.OrL - TickSize;
 			double opp = d == 1 ? o.OrL - TickSize : o.OrH + TickSize;
 			int st = Math.Max(8, (int)Math.Round(Math.Min(Math.Abs(entry - opp), StopCapAtr * todayAtr) / TickSize));
 			o.Armed = false;
+			if (!DirectionAllowed(d)) { if (lastDeferred) o.Armed = true; return; }
 			SetStopLoss(o.Sig, CalculationMode.Ticks, st, false);
 			SetProfitTarget(o.Sig, CalculationMode.Ticks, Math.Max(1, (int)Math.Round(st * o.R)));
-			bool oc = o == orb ? (FeatGap(d) >= 0.3311 || FeatRet5(d) >= 1.8118 || atrRatio >= 1.2615) : (FeatVw(d, entry) < 0.1231 || FeatOpen(d, entry) >= 0.5458);
-			int oq = CtxBoost(Qty(), oc, o.Sig);
-			if (!DirectionAllowed(d)) { if (lastDeferred) o.Armed = true; else if (!PastLevel(d, entry)) { o.Dir = d; ParkSetup(o, false, Instrument.MasterInstrument.RoundToTickSize(entry), oq); } return; }
 			bool through = PastLevel(d, entry);
 			o.Dir = d;
-			Order r = d == 1 ? (through ? EnterLong(0, oq, o.Sig) : EnterLongStopMarket(0, true, oq, entry, o.Sig)) : (through ? EnterShort(0, oq, o.Sig) : EnterShortStopMarket(0, true, oq, entry, o.Sig));
-			if (r != null) o.Entry = r;
+			bool oc = o == orb ? (FeatGap(d) >= 0.3311 || FeatRet5(d) >= 1.8118 || atrRatio >= 1.2615) : (FeatVw(d, entry) < 0.1231 || FeatOpen(d, entry) >= 0.5458);
+			int oq = CtxBoost(Qty(), oc, o.Sig);
+			if (d == 1) { if (through) EnterLong(0, oq, o.Sig); else EnterLongStopMarket(0, true, oq, entry, o.Sig); }
+			else { if (through) EnterShort(0, oq, o.Sig); else EnterShortStopMarket(0, true, oq, entry, o.Sig); }
 			Log(string.Format("{0} {1} @ {2} | SL {3}t | TP {4:0.##}R", o.Sig, d == 1 ? "BUY" : "SELL", Fmt(entry), st, o.R));
 		}
 
@@ -442,8 +441,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return;
 			foreach (Mod o in mods) if (o != volb && Working(o.Entry) && o.Dir == -d) return;
 			ArmPriceBracket(volb, d, Instrument.MasterInstrument.RoundToTickSize(rthOpenPx));
-			Order vr = d == 1 ? EnterLongStopMarket(0, true, Qty(), lvl, volb.Sig) : EnterShortStopMarket(0, true, Qty(), lvl, volb.Sig);
-			if (vr != null) volb.Entry = vr;
+			if (d == 1) EnterLongStopMarket(0, true, Qty(), lvl, volb.Sig); else EnterShortStopMarket(0, true, Qty(), lvl, volb.Sig);
 		}
 
 
@@ -471,11 +469,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private int e10d; private double e10px, e10sl; private bool eng10Retry;
 		private void Eng10Place()
 		{
-			if (!DirectionAllowed(e10d))
-			{
-				if (!lastDeferred) { eng10Retry = false; if (!PastLevel(e10d, e10px)) { ArmPriceBracket(eng10, e10d, e10sl); ParkSetup(eng10, false, e10px, Qty()); } }
-				return;
-			}
+			if (!DirectionAllowed(e10d)) { if (!lastDeferred) eng10Retry = false; return; }
 			eng10Retry = false;
 			ArmPriceBracket(eng10, e10d, e10sl);
 			if (PastLevel(e10d, e10px))
@@ -483,7 +477,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if ((Close[0] - e10px) * e10d > 0.5 * Math.Abs(e10px - e10sl)) { Log("ENG10 skipped (price ran > 0.5R past the level)"); return; }
 				if (e10d == 1) EnterLong(0, Qty(), eng10.Sig); else EnterShort(0, Qty(), eng10.Sig);
 			}
-			else { Order er = e10d == 1 ? EnterLongStopMarket(0, true, Qty(), e10px, eng10.Sig) : EnterShortStopMarket(0, true, Qty(), e10px, eng10.Sig); if (er != null) eng10.Entry = er; }
+			else if (e10d == 1) EnterLongStopMarket(0, true, Qty(), e10px, eng10.Sig); else EnterShortStopMarket(0, true, Qty(), e10px, eng10.Sig);
 			Log(string.Format("ENG10 {0} @ {1} | SL {2}", e10d == 1 ? "BUY" : "SELL", Fmt(e10px), Fmt(e10sl)));
 		}
 		// price already at/through a stop-entry level? historical: bar close; realtime: current ask / bid (a stop there would be rejected)
@@ -578,11 +572,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double stop = lon.Dir == 1 ? rL : rH;
 				double risk = (lim - stop) * lon.Dir;
 				lonStage = 2;
-				if (risk <= 0 || risk > 0.25 * atrDaily) { lonStage = 3; return; }
-				if (!DirectionAllowed(lon.Dir)) { lonStage = 3; ArmPriceBracket(lon, lon.Dir, stop); ParkSetup(lon, true, lim, Qty()); return; }
+				if (risk <= 0 || risk > 0.25 * atrDaily || !DirectionAllowed(lon.Dir)) { lonStage = 3; return; }
 				ArmPriceBracket(lon, lon.Dir, stop);
-				Order lr = lon.Dir == 1 ? EnterLongLimit(0, true, Qty(), lim, lon.Sig) : EnterShortLimit(0, true, Qty(), lim, lon.Sig);
-				if (lr != null) lon.Entry = lr;
+				if (lon.Dir == 1) EnterLongLimit(0, true, Qty(), lim, lon.Sig); else EnterShortLimit(0, true, Qty(), lim, lon.Sig);
 				Log(string.Format("LON {0} LIMIT @ {1} | SL {2}", lon.Dir == 1 ? "BUY" : "SELL", Fmt(lim), Fmt(stop)));
 			}
 		}
@@ -709,17 +701,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if ((d == -1 && lim <= Closes[1][0]) || (d == 1 && lim >= Closes[1][0])) continue;
 				double risk = (stop - lim) * (-d);
 				if (risk <= 0 || risk > 0.25 * todayAtr) continue;
-				int iq = Qty() * ((Profile == NQMasterProfile.MaxPlus || Profile == NQMasterProfile.MaxPlus2 || Profile == NQMasterProfile.Ultra || Profile == NQMasterProfile.WR70Plus || Profile == NQMasterProfile.Core || Profile == NQMasterProfile.Custom) ? (noBoost ? 1 : IctMultiplier) : 1);
-				if (!DirectionAllowed(d))
-				{
-					if (lastDeferred) ictAct[s] = true;
-					else { ict.Dir = d; ictExtPend = ictExt[s]; ictExpiry = CurrentBars[1] + 20; ArmPriceBracket(ict, d, stop); ParkSetup(ict, true, lim, iq); }
-					continue;
-				}
+				if (!DirectionAllowed(d)) { if (lastDeferred) ictAct[s] = true; continue; }
 				ict.Dir = d; ictExtPend = ictExt[s]; ictExpiry = CurrentBars[1] + 20;
 				ArmPriceBracket(ict, d, stop);
-				Order ir = d == 1 ? EnterLongLimit(0, true, iq, lim, ict.Sig) : EnterShortLimit(0, true, iq, lim, ict.Sig);
-				if (ir != null) ict.Entry = ir;
+				int iq = Qty() * ((Profile == NQMasterProfile.MaxPlus || Profile == NQMasterProfile.MaxPlus2 || Profile == NQMasterProfile.Ultra || Profile == NQMasterProfile.WR70Plus || Profile == NQMasterProfile.Core || Profile == NQMasterProfile.Custom) ? (noBoost ? 1 : IctMultiplier) : 1);
+				if (d == 1) EnterLongLimit(0, true, iq, lim, ict.Sig); else EnterShortLimit(0, true, iq, lim, ict.Sig);
 				Log(string.Format("ICT {0} LIMIT @ {1} | SL {2}", d == 1 ? "BUY" : "SELL", Fmt(lim), Fmt(stop)));
 			}
 		}
@@ -865,12 +851,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private enum GateMode { Full, NoBoost, Safe }
 		private GateMode gate = GateMode.Full; private bool noBoost, propStopped;
 		private double propPeak = double.NaN, propThr = double.NaN, propCushion = double.NaN, propDayStart = double.NaN, atrStartRatio = double.NaN;
-		private bool propLive; private double propBestDay = 0, savedPrevDayStart = double.NaN, storedOverride = double.NaN; private int propRestoredDay = -1, prevSessDay, curSessDay;
-		private int EvalStartInt() { DateTime st; return DateTime.TryParseExact(EvalStartDate ?? "", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out st) ? st.Year * 10000 + st.Month * 100 + st.Day : 0; }
+		private bool propLive; private double propBestDay = 0, savedPrevDayStart = double.NaN; private int propRestoredDay = -1;
 		private void PropSave(int tradeDay)
 		{
 			if (!propLive) return;
-			try { File.WriteAllText(PropFile, string.Format(CultureInfo.InvariantCulture, "{0:0.00};{1};{2:0.00};{3:0.00};{4:0.00}", propPeak, tradeDay, propDayStart, propBestDay, PropPeakOverride)); } catch { }
+			try { File.WriteAllText(PropFile, string.Format(CultureInfo.InvariantCulture, "{0:0.00};{1};{2:0.00};{3:0.00}", propPeak, tradeDay, propDayStart, propBestDay)); } catch { }
 		}
 		private string PropFile { get { try { return Path.Combine(Core.Globals.UserDataDir, "nqmaster_prop_" + (Account != null ? Account.Name : "acct") + ".txt"); } catch { return null; } } }
 		private double PropEquity()
@@ -890,17 +875,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 					string[] a = File.ReadAllText(f).Trim().Split(';'); double v;
 					if (a.Length > 0 && double.TryParse(a[0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) propPeak = Math.Max(propPeak, v);
-					int fd = 0; double ds, bd, ov;
-					bool fresh = a.Length >= 4 && int.TryParse(a[1], out fd) && fd >= EvalStartInt();	// older than EvalStartDate = another eval
-					if (fresh && double.TryParse(a[2], NumberStyles.Any, CultureInfo.InvariantCulture, out ds))
-					{ if (fd == today) propDayStart = ds; else if (fd == prevSessDay) savedPrevDayStart = ds; }
-					if (fresh && double.TryParse(a[3], NumberStyles.Any, CultureInfo.InvariantCulture, out bd)) propBestDay = Math.Max(propBestDay, bd);
-					if (a.Length >= 5 && double.TryParse(a[4], NumberStyles.Any, CultureInfo.InvariantCulture, out ov)) storedOverride = ov;
+					int fd; double ds, bd;
+					if (a.Length >= 4 && int.TryParse(a[1], out fd) && double.TryParse(a[2], NumberStyles.Any, CultureInfo.InvariantCulture, out ds))
+					{ if (fd == today) propDayStart = ds; else if (fd < today) savedPrevDayStart = ds; }
+					if (a.Length >= 4 && double.TryParse(a[3], NumberStyles.Any, CultureInfo.InvariantCulture, out bd)) propBestDay = Math.Max(propBestDay, bd);
 				}
 			}
 			catch { }
-			// manual correction (e.g. a stale file after an account reset): applied once; later restarts keep the higher saved peak
-			if (PropPeakOverride > 0) propPeak = Math.Abs(PropPeakOverride - storedOverride) > 0.01 ? PropPeakOverride : Math.Max(propPeak, PropPeakOverride);
+			if (PropPeakOverride > 0) propPeak = PropPeakOverride;		// manual correction (e.g. a stale file after an account reset)
 			// first start of the day (no saved state): the day started at equity now minus what the account already realized today
 			if (double.IsNaN(propDayStart)) { try { propDayStart = PropEquity() - Account.Get(AccountItem.RealizedProfitLoss, Currency.UsDollar); } catch { } }
 			// the last session NinjaTrader saw start was not closed by it (shut down before 18:00): its P&L = today's start - its start
@@ -1023,14 +1005,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Order e = o.Entry;
 			if (e == null || !Working(e)) return;
 			if (o != volb && (e.OrderType == OrderType.StopMarket || e.OrderType == OrderType.Limit))
-			{ o.Parked = true; o.ParkHit = false; o.ParkLimit = e.OrderType == OrderType.Limit; o.ParkPx = o.ParkLimit ? e.LimitPrice : e.StopPrice; o.ParkQty = Math.Max(1, e.Quantity); Log(o.Sig + " order parked (opposite trade)"); }
+			{ o.Parked = true; o.ParkLimit = e.OrderType == OrderType.Limit; o.ParkPx = o.ParkLimit ? e.LimitPrice : e.StopPrice; o.ParkQty = Math.Max(1, e.Quantity); Log(o.Sig + " order parked (opposite trade)"); }
 			CancelOrder(e);
-		}
-		// a setup blocked by an opposite POSITION at placement time: kept and placed when free (research drops only a fill against it)
-		private void ParkSetup(Mod o, bool limit, double px, int qty)
-		{
-			o.Parked = true; o.ParkHit = false; o.ParkLimit = limit; o.ParkPx = px; o.ParkQty = Math.Max(1, qty);
-			Log(string.Format("{0} setup parked @ {1} (opposite position open)", o.Sig, Fmt(px)));
 		}
 		private bool OppBusy(int d, Mod self)
 		{
@@ -1050,18 +1026,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			foreach (Mod o in mods)
 			{
-				if (!o.Parked) continue;
-				if (o.ParkLimit ? (o.Dir == 1 ? Low[0] <= o.ParkPx : High[0] >= o.ParkPx) : (o.Dir == 1 ? High[0] >= o.ParkPx : Low[0] <= o.ParkPx)) o.ParkHit = true;	// latched
-				if (Working(o.Entry)) continue;									// the cancel is still pending
-				if (o.InTrade || o.ParkHit || ParkExpired(o, openMin, closeMin)) { o.Parked = false; Log(o.Sig + " parked order dropped" + (o.ParkHit ? " (level traded while blocked)" : "")); continue; }
-				if (CurrentBars[0] <= deferUntil) continue;						// the module that parked it enters first
+				if (!o.Parked || Working(o.Entry)) continue;					// the cancel is still pending
+				bool hit = o.ParkLimit ? (o.Dir == 1 ? Low[0] <= o.ParkPx : High[0] >= o.ParkPx) : (o.Dir == 1 ? High[0] >= o.ParkPx : Low[0] <= o.ParkPx);
+				if (o.InTrade || hit || ParkExpired(o, openMin, closeMin)) { o.Parked = false; Log(o.Sig + " parked order dropped" + (hit ? " (level traded while blocked)" : "")); continue; }
 				if (OppBusy(o.Dir, o)) continue;
 				o.Parked = false;
-				Order r = null;
-				if (o.ParkLimit) r = o.Dir == 1 ? EnterLongLimit(0, true, o.ParkQty, o.ParkPx, o.Sig) : EnterShortLimit(0, true, o.ParkQty, o.ParkPx, o.Sig);
+				if (o.ParkLimit) { if (o.Dir == 1) EnterLongLimit(0, true, o.ParkQty, o.ParkPx, o.Sig); else EnterShortLimit(0, true, o.ParkQty, o.ParkPx, o.Sig); }
 				else if (PastLevel(o.Dir, o.ParkPx)) { Log(o.Sig + " parked order dropped (level passed)"); continue; }
-				else r = o.Dir == 1 ? EnterLongStopMarket(0, true, o.ParkQty, o.ParkPx, o.Sig) : EnterShortStopMarket(0, true, o.ParkQty, o.ParkPx, o.Sig);
-				if (r != null) o.Entry = r;
+				else if (o.Dir == 1) EnterLongStopMarket(0, true, o.ParkQty, o.ParkPx, o.Sig); else EnterShortStopMarket(0, true, o.ParkQty, o.ParkPx, o.Sig);
 				Log(o.Sig + " parked order re-placed @ " + Fmt(o.ParkPx));
 			}
 		}
