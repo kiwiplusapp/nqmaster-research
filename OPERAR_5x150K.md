@@ -68,3 +68,8 @@ Guía práctica del plan recomendado (detalle y cifras en `NQMASTER_GUIA.md`, se
 - **Por cuenta y por año:** ~13 evaluaciones compradas y ~3 fondeadas quemadas. Ya está descontado.
 
 Si tenés menos capital, la misma lógica funciona con 50K: 2 contratos en evaluación y en fondeada. Rinde unos $1.390 por mes por cuenta.
+
+**Alternativa de win rate alto:** NQMaster con Profile = **WR70Plus** y **NightOnWr70 = true**, y GoldMaster con Profile = **WinRate**. Los demás parámetros son iguales.
+- Win rate 69,5% y PF 1,50 en futuros reales.
+- Cerca de la mitad de fondeadas quemadas.
+- Unos $1.900 por mes por cuenta: 12% menos.

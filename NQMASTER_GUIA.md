@@ -296,6 +296,17 @@ Backup: `NQMaster_backup_pre_lf06.cs`. Parche: `research/mine/patch_lf06.py`.
 | **Fondeada** | **Contracts 3** · PropMode Funded · StartBalance 150000 · PropTrailingDD 4500 · FundedCushionSafe **1700** · FundedCushionFull **3400** · FundedPayoutAt **6000** | Robust · **Contracts 3** · StartBalance 150000 · EvalTarget 0 · AccountProfitStop 0 |
 
 - El modo pasar fácil (EvalMode) de GoldMaster está calibrado para 50K; no usarlo con 150K.
+
+**Alternativa de win rate alto (150K, 6 / 3; `research/mine/wr150.py`):** NQMaster **WR70Plus** + GoldMaster **WinRate**, con los módulos nocturnos sumados en la investigación.
+
+| Perfil | Win rate real | PF real | $/mes por cuenta | Peor prueba | Fondeadas quemadas por año |
+|---|---|---|---|---|---|
+| **Ultra + noche + oro Robust (recomendado)** | 63,6% | 1,43 | **$2.168** | $1.981 | 2,8 |
+| WR70Plus + noche + oro WinRate | **69,5%** | **1,50** | $1.903 | $1.739 | **1,3** |
+
+Gana 6 puntos de win rate y quema la mitad de fondeadas, a cambio de un 12% menos de dinero.
+
+**Configuración:** Profile = **WR70Plus** y **NightOnWr70 = true**, que agrega NF05, LF06 y LF0430. GoldMaster en Profile = **WinRate**. Los contratos y los parámetros de prop son los mismos del plan 150K.
 - Si vas a tener menos de 5 cuentas y el capital es la restricción, la 50K rinde más por dólar de evaluación. Con 5 cuentas, la 150K deja más dinero total.
 
 ## ★ PERFIL FINAL (actualizado 2026-10-06 noche): 50K Lucid, 2 contratos, oro Robust en las dos fases

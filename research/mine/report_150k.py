@@ -81,7 +81,11 @@ code {{ font: 13px var(--mono); background: var(--hl); padding: 1px 5px; border-
   <tr><td>Evaluación</td><td>Ultra · Contracts 6 · PropMode Eval · StartBalance 150000 · PropTrailingDD 4500 · EvalTarget 9000 · ConsistencyPct 50 · EvalProfitStop 4200</td><td>Robust · Contracts 6 · StartBalance 150000 · EvalTarget 9000 · AccountProfitStop 4200</td></tr>
   <tr><td>Fondeada</td><td>Contracts 3 · PropMode Funded · StartBalance 150000 · PropTrailingDD 4500 · FundedCushionSafe 1700 · FundedCushionFull 3400 · FundedPayoutAt 6000</td><td>Robust · Contracts 3 · StartBalance 150000 · EvalTarget 0 · AccountProfitStop 0</td></tr>
   </tbody></table></div>
-  <p class="muted">NF05, LF06 y LF0430 ya vienen activados en Ultra. Cargar al menos 120 días en los gráficos de 1 minuto. Con 6 contratos, el peor día llega a 66 micros, debajo del límite de 100 de la evaluación. Con 3 contratos llega a 33, debajo de los 40 con que arranca la fondeada.</p>
+  <p class="muted">NF05, LF06 y LF0430 ya vienen activados en Ultra. Cargar al menos 120 días en los gráficos de 1 minuto. Con 6 contratos, el peor día llega a 66 micros, debajo del límite de 100 de la evaluación. Con 3 contratos llega a 33, debajo de los 40 con que arranca la fondeada. Paso a paso: <code>OPERAR_5x150K.md</code>.</p>
+  <div class="tw"><table><thead><tr><th>Perfil (150K, 6 / 3)</th><th>Win rate real</th><th>PF real</th><th>$ / mes por cuenta</th><th>Peor prueba</th><th>Fondeadas quemadas por año</th></tr></thead><tbody>
+  <tr class="hl"><td><b>Ultra + noche + oro Robust (recomendado)</b></td><td>63,6%</td><td>1,43</td><td><b>$2.168</b></td><td>$1.981</td><td>2,8</td></tr>
+  <tr><td><b>Win rate alto:</b> WR70Plus con NightOnWr70 + oro WinRate</td><td><b>69,5%</b></td><td><b>1,50</b></td><td>$1.903</td><td>$1.739</td><td><b>1,3</b></td></tr>
+  </tbody></table></div>
 </section>
 <section>
   <h2>Por qué 150K</h2>
