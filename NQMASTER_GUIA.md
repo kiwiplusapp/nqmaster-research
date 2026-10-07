@@ -218,6 +218,48 @@ Resultado (2020-23 / 2024-26 CFD / 2024-26 real):
 ## Error corregido en la investigación de ICT
 La simulación cancelaba la orden límite si en la misma barra el precio también superaba el extremo del barrido. En la realidad se llena y pierde. Con la corrección (`research/ict_fix.py`), ICT da PF 1,23 / 1,39 / 1,37 en lugar de 1,53 / 1,56 / 1,53. El 1,23 coincide exacto con la validación en NinjaTrader. En el total de Ultra el efecto es chico: PF −0,01 y Sharpe −0,03 a −0,06. NQMaster no cambia: en NinjaTrader los llenados ya son reales.
 
+## ★★ PLAN RECOMENDADO (2026-10-07): 5 cuentas LucidFlex 150K
+Lucid permite como máximo **5 cuentas fondeadas por hogar**, 10 cuentas en total y $750K combinados. Con ese límite manda el dinero **por cuenta**. Con tamaño proporcional al límite de pérdida, la 150K deja más que la 100K y la 50K (`research/mine/acct_bigger.py`, `acct_150k.py`, `multi150.py`).
+
+Reglas LucidFlex usadas (octubre 2026):
+
+| Cuenta | Objetivo | Pérdida máx. (EOD) | Día de cobro | Tope por cobro | Costo eval |
+|---|---|---|---|---|---|
+| 50K | $3.000 | $2.000 | ≥ $150 | $2.000 | ~$105 |
+| 100K | $6.000 | $3.000 | ≥ $200 | $2.500 | ~$215 |
+| 150K | $9.000 | $4.500 | ≥ $250 | $3.000 | ~$285 |
+
+En todas, la evaluación tiene regla de consistencia del 50%. El límite se fija en saldo inicial + $100. Cada cobro es el 50% de la ganancia, hasta el tope, al 90%, con 5 cobros.
+
+**$ por mes por cuenta** (promedio de 9 pruebas y la peor):
+
+| Cuenta y contratos (eval / fondeada) | Promedio | Peor | Evals por año | Pasa |
+|---|---|---|---|---|
+| 150K 7 / 3 | $1.997 | $1.817 | 13,8 | 37% |
+| **150K 6 / 3** | **$1.984** | **$1.723** | 12,7 | 40% |
+| 150K 4 / 4 | $1.892 | $1.643 | 10,0 | 49% |
+| 100K 4 / 3 | $1.607 | $1.445 | 15,3 | 39% |
+| 50K 2 / 2 (perfil anterior) | $1.311 | $1.160 | 12,3 | 48% |
+
+**Con 5 cuentas** (mismos trades en todas, evaluaciones escalonadas cada 5 días; 1.500 años simulados por período):
+
+| Plan | $/mes promedio | Año malo (10% peor) | P(año en pérdida) | Capital inicial para evaluaciones (90% de los casos) |
+|---|---|---|---|---|
+| **5 × 150K, 6 / 3** | **$8.800-11.800** | $4.300-6.700 | ≤ 1,2% | ~$9.700-12.500 |
+| 5 × 50K, 2 / 2 | $5.700-7.500 | $2.600-3.800 | ≤ 1,1% | ~$3.900-5.200 |
+
+**Límites de contratos:** con 1 contrato por módulo hay como máximo 11 micros abiertos a la vez (p99: 7). Con 6 contratos el peor día llega a 66 micros, debajo de los 100 de la evaluación de 150K. Con 3 contratos llega a 33, debajo de los 40 con que arranca la fondeada de 150K. En 50K con 2 contratos el peor día llega a 22 micros contra 20 en el arranque de la fondeada: pasa muy rara vez, pero existe.
+
+**Configuración 150K:**
+
+| Fase | NQMaster (MNQ) | GoldMaster (MGC) |
+|---|---|---|
+| **Evaluación** | Ultra · **Contracts 6** · PropMode Eval · StartBalance **150000** · PropTrailingDD **4500** · EvalTarget **9000** · ConsistencyPct 50 · EvalProfitStop **4200** | Robust · **Contracts 6** · StartBalance **150000** · EvalTarget **9000** · AccountProfitStop **4200** |
+| **Fondeada** | **Contracts 3** · PropMode Funded · StartBalance 150000 · PropTrailingDD 4500 · FundedCushionSafe **1700** · FundedCushionFull **3400** · FundedPayoutAt **6000** | Robust · **Contracts 3** · StartBalance 150000 · EvalTarget 0 · AccountProfitStop 0 |
+
+- El modo pasar fácil (EvalMode) de GoldMaster está calibrado para 50K; no usarlo con 150K.
+- Si vas a tener menos de 5 cuentas y el capital es la restricción, la 50K rinde más por dólar de evaluación. Con 5 cuentas, la 150K deja más dinero total.
+
 ## ★ PERFIL FINAL (actualizado 2026-10-06 noche): 50K Lucid, 2 contratos, oro Robust en las dos fases
 Recalculado con los datos corregidos esta noche (ver "Errores de la investigación corregidos" más abajo). Sale de 168 combinaciones de perfil de evaluación, perfil de fondeada, contratos y cobro, con ICT corregido. Cada una se probó con historia, costos +1 tick y Monte Carlo en 3 períodos (`research/mine/prof_grid.py`, `final_verify2.py`).
 
@@ -287,6 +329,44 @@ Recalculado con los datos corregidos esta noche (ver "Errores de la investigaci�
 - ENG0610 viene apagado por defecto.
 
 Backups: `NQMaster_backup_pre_fixes.cs`, `NQMaster_backup_pre_evalcushion.cs`, `GoldMaster_backup_pre_fixes.cs`, `GoldMaster_backup_pre_evalmode.cs`.
+
+## Segunda revisión de código (2026-10-07)
+**NQMaster:**
+- **El reintento de ENG10 ahora sí se ejecuta.** Antes quedaba bloqueado y ENG10 perdía el trade cuando chocaba con otra orden.
+- **Órdenes en espera:** si una orden stop o límite (ORB, ENG10, ICT, LON) se cancela por un trade opuesto, queda en espera. Se vuelve a poner cuando no hay posición ni orden contraria. Se descarta si el precio pasa por su nivel mientras espera o si termina su horario, igual que en la investigación. Mientras espera, ese módulo no toma señales nuevas.
+- **Mejor día:** si NinjaTrader se cerró antes de las 18:00, el resultado de ese día se recupera al volver a abrir. La regla de consistencia ya no se calcula corta.
+- **PropPeakOverride** vuelve a reemplazar el pico guardado (para corregir un archivo viejo).
+- **VOLB en vivo:** si el precio está justo en el nivel, entra a mercado en vez de descartar el trade.
+- **Objetivo de la evaluación:** solo se desactiva si toda la cuenta está sin posiciones. El resultado abierto de GoldMaster ya no lo prende y apaga.
+- **Stops rechazados:** un stop o objetivo rechazado cierra solo su módulo.
+- **VOLB tendencia (WR70Plus):** controla su invalidación también mientras espera.
+- **Referencias de órdenes:** un aviso tardío de una orden vieja ya no pisa la nueva.
+
+**GoldMaster:**
+- Actualiza sus órdenes al pasar a vivo.
+- El inicio del día en vivo no cuenta la ganancia abierta del momento. Usa el inicio del día y el mejor día que guarda NQMaster para esa cuenta. No arrastra stops calculados con trades simulados.
+- Las órdenes se registran al enviarlas. Una orden en espera se vuelve a poner solo cuando la anterior terminó.
+- Solo pone en espera órdenes stop.
+- El objetivo de la evaluación se desactiva solo con la cuenta sin posiciones.
+- El monitor de ventaja divide por el tamaño realmente operado ese día.
+
+Backups: `NQMaster_backup_pre_review2.cs`, `GoldMaster_backup_pre_review2.cs`. Parche: `research/mine/patch_review2.py`.
+
+## Validar NinjaTrader contra la investigación (`research/mine/nt_compare.py`)
+1. En Strategy Analyzer, corré NQMaster Ultra en MNQ de 1 minuto del 01/02/2024 a hoy, con **Contracts 1**, PropMode Off y comisión $1,90. Cargá al menos 120 días antes.
+2. En la pestaña Trades, hacé clic derecho, elegí **Export** y guardá el CSV.
+3. En `research/mine`, corré:
+   `python nt_compare.py "ruta\al\archivo.csv" --set ultra`
+4. Para GoldMaster Robust en MGC, usá `--set gold_robust`.
+
+El informe muestra, módulo por módulo, los trades de la investigación y de NinjaTrader, cuántos coinciden en día, dirección y minuto de entrada (±3 min), y el win rate, PF y $ por contrato de cada lado. Los trades sin pareja quedan en `nt_compare_<set>_mismatch.csv`.
+
+**Prueba con la exportación vieja de MaxPlus (septiembre):** en los trades que coinciden, investigación $34.315 y NinjaTrader $33.452 (−2,5%). LON coincide 194 de 194, con el mismo resultado. Las diferencias de cantidad vienen de módulos que esa versión no tenía.
+
+## Probado el 2026-10-07 y descartado
+- **Filtrar un lado (solo largos o solo cortos) por módulo:** elegido con 2020-23, se equivoca en 3 de 5 casos fuera de muestra.
+- **Más módulos de oro (LATE1430, DRIVE11, ASIA05):** ±$10 por mes, ruido.
+- **3 contratos en la fondeada con colchón grande:** +$5 en el mejor caso, ruido.
 
 **Año por año** (Ultra ampliado + oro WinRate, 1 contrato, trading libre): todos los años ganan.
 - PF de 1,26 a 1,66, win rate de 62% a 68% y 64-100% de meses positivos (2020-2026).

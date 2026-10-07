@@ -1,0 +1,10 @@
+per,plan,mes_prom,mes_p10,mes_p90,P_anio_negativo,capital_p50,capital_p90
+IS,150K eval 7c / fondeada 3c,8946,4186,13639,1.5,3705,10830
+IS,150K eval 6c / fondeada 3c,8824,4271,13594,1.2,3420,9690
+IS,50K eval 2c / fondeada 2c (final),5727,2606,8914,1.1,1368,3903
+C24,150K eval 7c / fondeada 3c,10732,5380,15816,0.6,5130,13982
+C24,150K eval 6c / fondeada 3c,10914,5567,15938,0.4,4560,12540
+C24,50K eval 2c / fondeada 2c (final),6908,3365,10672,0.7,1788,5155
+REAL,150K eval 7c / fondeada 3c,11770,6432,16709,0.4,4560,12825
+REAL,150K eval 6c / fondeada 3c,11818,6655,16660,0.3,4275,11400
+REAL,50K eval 2c / fondeada 2c (final),7508,3824,10945,0.5,1683,4629

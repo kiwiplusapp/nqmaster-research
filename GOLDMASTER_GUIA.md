@@ -69,6 +69,19 @@ Investigación: `research/mine/gold_*.py`, `families_gold.py`, `results_gold*.cs
 - **Cuenta:** el stop diario y el inicio del día de la evaluación descuentan lo ya ganado o perdido ese día si se activa a mitad de sesión. El objetivo de la evaluación cuenta la ganancia abierta, y si al cerrar no se cumple, sigue operando.
 - Llenados parciales contados una vez. Días FOMC cuentan como 0 en el monitor de ventaja. ENG0610 apagado por defecto.
 
+## Plan 150K (2026-10-07)
+Con 5 cuentas LucidFlex de 150K (ver NQMASTER_GUIA, PLAN RECOMENDADO):
+- **Evaluación:** Robust · Contracts 6 · StartBalance 150000 · EvalTarget 9000 · AccountProfitStop 4200.
+- **Fondeada:** Robust · Contracts 3 · StartBalance 150000 · EvalTarget 0.
+- No usar EvalMode con 150K: está calibrado para 50K.
+
+Segunda revisión de código (2026-10-07):
+- Actualiza sus órdenes al pasar a vivo.
+- El inicio del día en vivo toma el que guardó NQMaster para la cuenta, o el efectivo menos lo ya realizado. No cuenta la ganancia abierta ni arrastra stops de trades simulados.
+- El mejor día también sale del archivo de NQMaster.
+- Solo pone en espera órdenes stop.
+- El monitor de ventaja divide por el tamaño operado ese día.
+
 ## Monitor de ventaja (grupo "04. Edge monitor")
 Es un CUSUM del resultado diario por contrato dividido por 10 × ATR.
 - Falsas alarmas: ~1,5-2% por año, y ninguna en 2020-26 ni en MGC real.
