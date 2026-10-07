@@ -33,7 +33,7 @@ Guía práctica del plan recomendado (detalle y cifras en `NQMASTER_GUIA.md`, se
 - **Escalonar:** arrancá una evaluación nueva **cada 5 días hábiles**, no las 5 el mismo día. Así no se queman todas en la misma mala racha.
 - **Archivo de estado:** si reusás un nombre de cuenta, borrá `Documents\NinjaTrader 8\nqmaster_prop_<cuenta>.txt` o poné `EvalStartDate` en la fecha de hoy.
 - **PropPeakOverride:** dejalo en **0**. Usalo solo para corregir a propósito el pico guardado.
-- **Qué esperar:** pasa ~40% de las veces, en ~9 días hábiles. Cuando se quema, comprá otra (~$285) y empezá de nuevo.
+- **Qué esperar:** pasa ~40% de las veces, en ~9 días hábiles. Con **Contracts 4** en la evaluación pasa ~50% en ~13 días, a cambio de un 5% menos de dinero. Cuando se quema, comprá otra (~$285) y empezá de nuevo.
 - **Al llegar al objetivo**, la estrategia cierra todo y deja de operar sola.
 
 ## Fase 2: fondeada (cuando Lucid aprueba la cuenta)

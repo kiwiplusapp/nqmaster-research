@@ -369,6 +369,16 @@ Backup: `NQMaster_backup_pre_lf06.cs`. Parche: `research/mine/patch_lf06.py`.
 
 - El modo pasar fácil (EvalMode) de GoldMaster está calibrado para 50K; no usarlo con 150K.
 
+**Pasar la evaluación más fácil (`eval150_easy.py`, con los módulos nocturnos, fondeada 3 contratos):**
+
+| Contratos en la evaluación | Pasa | Mediana | Evals por año | $/mes por cuenta | Peor prueba |
+|---|---|---|---|---|---|
+| **6 (recomendado)** | 41% | 9 días | 12,2 | **$2.168** | $1.981 |
+| 5 | 45% | 10 días | 11,1 | $2.104 | $1.797 |
+| 4 | **50%** | 13 días | 8,7 | $2.051 | $1.755 |
+
+Con 4 contratos pasa la mitad de las veces y se compran un 30% menos de evaluaciones, a cambio de un 5% menos de dinero. Para usarlo: Contracts 4 en la evaluación, en NQMaster y en GoldMaster; el resto igual.
+
 **Alternativa de win rate alto (150K, 6 / 3; `research/mine/wr150.py`):** NQMaster **WR70Plus** + GoldMaster **WinRate**, con los módulos nocturnos sumados en la investigación.
 
 | Perfil | Win rate real | PF real | $/mes por cuenta | Peor prueba | Fondeadas quemadas por año |
