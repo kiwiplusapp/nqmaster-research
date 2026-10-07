@@ -402,6 +402,15 @@ Backups: `NQMaster_backup_pre_review2.cs`, `GoldMaster_backup_pre_review2.cs`. P
 
 Backups: `NQMaster_backup_pre_review3.cs`, `GoldMaster_backup_pre_review3.cs`. Parche: `research/mine/patch_review3.py`.
 
+## Oro: reversiones de madrugada con 16 años (`research/mine/gold_new_port.py`, `lc150.py`)
+Las mismas 5.760 configuraciones de impulsos anclados, corridas en oro 2010-2026. Solo 4 ganan en los cinco tramos, cerca de lo que daría el azar con tantas pruebas:
+- GF07: a las 07:00, revertir el movimiento desde las 06:00. WR 76%.
+- GD11: a las 11:00, seguir el impulso desde las 10:00.
+
+En la cuenta 150K suman +1% de promedio, pero la peor prueba no mejora y por separado ganan en 3-4 de 9 pruebas. **No entran.**
+
+Guía operativa paso a paso: `OPERAR_5x150K.md`.
+
 ## Evaluaciones de repuesto en paralelo: no conviene (`research/mine/seats_sim.py`)
 Lucid permite 10 cuentas en total, pero solo 5 fondeadas. Simulé, día por día, tener 2 o 3 evaluaciones escalonadas por cada lugar libre para reponerlo más rápido. No conviene: todas operan los mismos trades, así que pasan o fallan juntas. Las que pasan sin lugar libre se pierden y se pagan evaluaciones de más. La política actual, una evaluación por lugar libre, rinde 3-25% más que cualquier variante en paralelo.
 
