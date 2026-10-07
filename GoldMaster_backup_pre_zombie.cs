@@ -56,11 +56,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public bool Done, InTrade; public Order Entry; public int Dir; public int EntryBar = -1; public int ExpireMin = -1;
 			public double Sl, Tp;
 			public bool Def; public double DPx; public int Q = 1;		// parked stop setup (blocked by an opposite position / order)
-			public Order SeenOrd, CancelOrd; public int SeenBar = -1, CancelBar = -1;	// stale-order watchdog (PurgeStaleEntries)
 		}
 		private Mod od, e0408, svw, e0610, asia, e0206, late;
 		private List<Mod> mods;
-		private List<Order> zombies = new List<Order>(); private int zombieCount;	// entry orders NinjaTrader never processed (PurgeStaleEntries)
 
 		#region Fields
 		private TimeZoneInfo etZone; private SimpleFont dashFont; private bool badTimeframe; private HashSet<int> fomc;
@@ -126,14 +124,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			else if (State == State.Realtime)
 			{
-				// an entry still Initialized at the switch was never processed on history (NinjaTrader would send it live now): drop it
-				foreach (Mod m in mods)
-				{
-					if (m.Entry == null) continue;
-					if (m.Entry.OrderState == OrderState.Initialized) DropStale(m, "not processed on history", false);
-					else m.Entry = GetRealtimeOrder(m.Entry);
-				}
-				foreach (Order z in zombies) { try { Order r = GetRealtimeOrder(z); if (r != null && Working(r)) CancelOrder(r); } catch { } }
+				foreach (Mod m in mods) if (m.Entry != null) m.Entry = GetRealtimeOrder(m.Entry);
 				// enabled mid-day: the day started at cash now minus what the account already realized today (NQMaster's saved day start
 				// for this account wins when it is from today); stops computed on the simulated history earlier today do not carry over
 				try
@@ -148,11 +139,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				catch { }
 				acctStopped = false; dayStopped = false; dayStartPnl = netPnl;
 				if (rthDays < 60) Print("GoldMaster | WARNING: only " + rthDays + " RTH days loaded - set Days to load >= 120 (ATR / trend warm-up).");
-			}
-			else if (State == State.Terminated)
-			{
-				if (zombieCount > 0)
-					Print(string.Format("GoldMaster | {0} stale entry order(s) were dropped during this run (Output lines 'STALE ORDER'). Before this fix each one blocked a module and the opposite direction for good.", zombieCount));
 			}
 		}
 
@@ -184,7 +170,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (openMin >= 17 * 60 && openMin < 18 * 60) return;	// CME maintenance hour
 
 			ProcessClosedTrades();
-			PurgeStaleEntries();
 			if (prevSm < 0 || sm < prevSm) NewSession(etOpen);
 			prevSm = sm;
 
@@ -230,10 +215,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			foreach (Mod m in mods)
 			{
 				if (m.InTrade && m.EntryBar >= 0 && CurrentBar - m.EntryBar >= m.MaxHold) ExitModule(m, "time exit");
-				if (Working(m.Entry) && m.ExpireMin >= 0 && sm >= m.ExpireMin - 1) { CancelEntry(m); Log(m.Sig + " entry expired"); }
+				if (Working(m.Entry) && m.ExpireMin >= 0 && sm >= m.ExpireMin - 1) { CancelOrder(m.Entry); Log(m.Sig + " entry expired"); }
 			}
 			// the opposite side broke first -> no trade today
-			if (asia.On && Working(asia.Entry) && asia.Dir != 0 && asFirst != 0 && asFirst != asia.Dir) { CancelEntry(asia); asBroken = true; }
+			if (asia.On && Working(asia.Entry) && asia.Dir != 0 && asFirst != 0 && asFirst != asia.Dir) { CancelOrder(asia.Entry); asBroken = true; }
 			if (!CanTrade()) { CancelAllEntries(); UpdateDashboard(); return; }
 			if (pendMod != null)
 			{
@@ -444,7 +429,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void Park(Mod o)
 		{
 			if (o.Entry.OrderType == OrderType.StopMarket) { o.Def = true; o.DPx = o.Entry.StopPrice; Log(o.Sig + " stop order parked (opposite trade)"); }
-			CancelEntry(o);
+			CancelOrder(o.Entry);
 		}
 		private void MarketEntry(Mod m, int d, double sl, double tp)
 		{
@@ -502,52 +487,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (Position.MarketPosition == MarketPosition.Long) ExitLong(); else ExitShort();
 			Log("FLATTEN: " + why);
 		}
-		private void CancelAllEntries() { pendMod = null; foreach (Mod m in mods) { m.Def = false; CancelEntry(m); } }
+		private void CancelAllEntries() { pendMod = null; foreach (Mod m in mods) { m.Def = false; if (Working(m.Entry)) CancelOrder(m.Entry); } }
 		private static bool Working(Order o)
 		{
 			if (o == null) return false;
 			OrderState s = o.OrderState;
 			return s != OrderState.Filled && s != OrderState.Cancelled && s != OrderState.Rejected && s != OrderState.Unknown;
-		}
-		// every cancel of a module entry goes through here so the watchdog knows when it was asked for
-		private void CancelEntry(Mod m)
-		{
-			Order e = m.Entry;
-			if (!Working(e)) return;
-			if (m.CancelOrd != e) { m.CancelOrd = e; m.CancelBar = CurrentBar; }
-			CancelOrder(e);
-		}
-		// ---- stale-order watchdog (same as NQMaster): NinjaTrader can hand back an entry order it never processes (stays Initialized)
-		// or whose cancel never completes; Working() then reports it as live forever and blocks the module and the opposite direction.
-		// NQMaster MNQ 2024-26 backtest: one such VOLB order blocked every short for 14 months. An entry not accepted 2 bars later, a market
-		// entry unfilled 2 bars later or a cancel unconfirmed 2 bars after it was asked is dropped and a STALE ORDER line is printed.
-		private void PurgeStaleEntries()
-		{
-			foreach (Mod m in mods)
-			{
-				Order e = m.Entry;
-				if (!Working(e)) continue;
-				if (e != m.SeenOrd) { m.SeenOrd = e; m.SeenBar = CurrentBar; }
-				int age = CurrentBar - m.SeenBar;
-				OrderState s = e.OrderState;
-				string why = null;
-				if (m.CancelOrd == e && CurrentBar - m.CancelBar >= 2) why = "cancel never confirmed";
-				else if (age >= 2 && (s == OrderState.Initialized || s == OrderState.Submitted)) why = "never accepted";
-				else if (age >= 2 && e.OrderType == OrderType.Market && s != OrderState.PartFilled) why = "market entry never filled";
-				if (why == null) continue;
-				DropStale(m, why, true);
-			}
-		}
-		private void DropStale(Mod m, string why, bool cancel)
-		{
-			Order e = m.Entry;
-			OrderState s = e.OrderState;
-			if (cancel) { try { CancelOrder(e); } catch { } }
-			zombies.Add(e); zombieCount++;
-			m.Entry = null; m.SeenOrd = null; m.CancelOrd = null;
-			Print(string.Format("{0} | GoldMaster | STALE ORDER dropped ({1}): {2} {3} {4} x{5} @ {6}, state {7} - the module and the opposite direction trade again",
-				Time[0].ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), why, m.Sig, e.OrderAction, e.OrderType, e.Quantity,
-				e.OrderType == OrderType.Market ? "market" : Fmt(e.OrderType == OrderType.Limit ? e.LimitPrice : e.StopPrice), s));
 		}
 		private Mod BySig(string sig) { if (mods == null || string.IsNullOrEmpty(sig)) return null; foreach (Mod m in mods) if (m.Sig == sig) return m; return null; }
 
@@ -555,7 +500,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			OrderState orderState, DateTime time, ErrorCode error, string nativeError)
 		{
 			Mod m = BySig(order.Name);
-			if (m != null && !zombies.Contains(order) && (m.Entry == null || m.Entry == order || !Working(m.Entry))) m.Entry = order;
+			if (m != null && (m.Entry == null || m.Entry == order || !Working(m.Entry))) m.Entry = order;
 			if (orderState == OrderState.Rejected)
 			{
 				Print(string.Format("GoldMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
@@ -669,7 +614,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			string txt = string.Format("GOLD MASTER ({0}) | {1}\ntrend {2} | ATRd {3:0.0}\n{4}\nTotal {5} tr | WR {6:0.0}% | PF {7:0.00} | ${8:0.00}",
 				Profile, status, trendDir == 1 ? "UP" : trendDir == -1 ? "DOWN" : "-", atr, mm.ToString(), totalTrades,
 				totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
-			if (zombieCount > 0) txt += string.Format("\nStale orders dropped: {0} (see Output)", zombieCount);
 			if (EdgeMonitor && edgeDays > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / (Profile == GoldMasterProfile.Robust ? 8.992 : 3.861), edgeDays, edgeAlarm ? " | ALARM" : "");
 			Draw.TextFixed(this, "GM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
 		}

@@ -67,14 +67,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public bool Retry;
 			public int Anchor = -1; public double AnchorPx = double.NaN;	// Lookback -5: open of the bar at the anchor time (ET minutes)
 			public bool Parked, ParkLimit, ParkHit; public double ParkPx; public int ParkQty;	// entry cancelled for an opposite trade, re-placed when free
-			public Order SeenOrd, CancelOrd; public int SeenBar = -1, CancelBar = -1;	// stale-order watchdog (PurgeStaleEntries)
 		}
 		private List<Mod> mods;
 		private Mod orb, orb2, mseq, mseqs, crt, lon, ict, rsi, volb, eng10;
 		private double rthFirstClose = double.NaN;
 		private double e10aO, e10aH, e10aL, e10aC, e10bO, e10bH, e10bL, e10bC, close10 = double.NaN; private bool e10aHas, e10bHas, eng10Done;
 		private double volbUp = double.NaN, volbDn = double.NaN; private bool volbDone, volbTrendOnly;
-		private List<Order> zombies = new List<Order>(); private int zombieCount;	// entry orders NinjaTrader never processed (PurgeStaleEntries)
 		private int orbFirstDir, orbFirstMin = 9999;
 		private int m11Dir, onSum, lonDir;	// confluence state (MOM11 direction, overnight modules ON07/REV06/LON)
 		private List<Mod> timeMods;
@@ -172,21 +170,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			else if (State == State.Realtime)
 			{
-				// an entry still Initialized at the switch was never processed on history (NinjaTrader would send it live now): drop it
-				foreach (Mod m in mods)
-				{
-					if (m.Entry == null) continue;
-					if (m.Entry.OrderState == OrderState.Initialized) DropStale(m, "not processed on history", false);
-					else m.Entry = GetRealtimeOrder(m.Entry);
-				}
-				foreach (Order z in zombies) { try { Order r = GetRealtimeOrder(z); if (r != null && Working(r)) CancelOrder(r); } catch { } }
+				foreach (Mod m in mods) if (m.Entry != null) m.Entry = GetRealtimeOrder(m.Entry);
 				eqPeak = netPnl;	// adaptive size measures the drawdown from the moment the strategy goes live
 				PropGoLive();
 			}
 			else if (State == State.Terminated)
 			{
-				if (zombieCount > 0)
-					Print(string.Format("NQMaster | {0} stale entry order(s) were dropped during this run (Output lines 'STALE ORDER'). Before this fix each one blocked a module and the opposite direction for good.", zombieCount));
 				if (mods != null && totalTrades == 0 && rthDaysSeen < 25)
 					Print(string.Format("NQMaster | 0 trades: only {0} RTH days loaded; needs ~25 days of warm-up. Start the test 2+ months earlier.", rthDaysSeen));
 			}
@@ -252,7 +241,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			int etDate = etOpen.Year * 10000 + etOpen.Month * 100 + etOpen.Day;
 
 			ProcessClosedTrades();
-			PurgeStaleEntries();
 
 			if (Bars.IsFirstBarOfSession)
 			{
@@ -321,7 +309,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (volb.InTrade && CurrentBars[0] - volb.EntryBar >= volb.MaxHold) ExitModule(volb, "time exit");
 			if (eng10.InTrade && CurrentBars[0] - eng10.EntryBar >= eng10.MaxHold) ExitModule(eng10, "time exit");
 			if (lon.InTrade && openMin >= 570 && openMin < 18 * 60) ExitModule(lon, "London exit 09:30");
-			if (Working(lon.Entry) && (openMin >= 480 && openMin < 18 * 60)) CancelEntry(lon);
+			if (Working(lon.Entry) && (openMin >= 480 && openMin < 18 * 60)) CancelOrder(lon.Entry);
 
 			bool canTrade = CanTrade();
 			if (!canTrade) { CancelAllEntries(); UpdateDashboard(); return; }
@@ -413,7 +401,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (o.UsePullback && !pullbackDay) return;
 			if (trendDir == 0 || atrCount < 14 || double.IsNaN(todayAtr)) return;
 			bool window = closeMin < 780;
-			if (!window) { CancelEntry(o); return; }
+			if (!window) { if (Working(o.Entry)) CancelOrder(o.Entry); return; }
 			if (!o.Parked && !o.Armed && !o.InTrade && !Working(o.Entry) && o.Trades > 0 && o.Trades < 2 && Close[0] < o.OrH && Close[0] > o.OrL) o.Armed = true;
 			if (o.Parked || !o.Armed || o.InTrade || Working(o.Entry) || o.Trades >= 2) return;
 			if (CurrentBars[0] <= deferUntil && trendDir == -deferDir) return;	// an opposite deferred module enters first
@@ -439,18 +427,18 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void ManageVolb(int openMin)
 		{
 			if (volbDone || volb.InTrade || double.IsNaN(volbUp) || double.IsNaN(rthOpenPx) || atrCount < 14) return;
-			if (openMin >= 899) { CancelEntry(volb); volbDone = true; return; }
+			if (openMin >= 899) { if (Working(volb.Entry)) CancelOrder(volb.Entry); volbDone = true; return; }
 			int d = (volbUp - Close[0]) <= (Close[0] - volbDn) ? 1 : -1;
 			if (volbTrendOnly)
 			{
-				if (trendDir == 0 || (trendDir == 1 && Low[0] <= volbDn) || (trendDir == -1 && High[0] >= volbUp)) { CancelEntry(volb); volbDone = true; return; }
+				if (trendDir == 0 || (trendDir == 1 && Low[0] <= volbDn) || (trendDir == -1 && High[0] >= volbUp)) { if (Working(volb.Entry)) CancelOrder(volb.Entry); volbDone = true; return; }
 				d = trendDir;
 			}
 			if (CurrentBars[0] <= deferUntil) return;      // another module is waiting for VOLB's order to be cancelled
 			if (Working(volb.Entry))
 			{
 				if (volb.Dir == d) return;
-				CancelEntry(volb); return;                    // switch side on the next bar
+				CancelOrder(volb.Entry); return;                    // switch side on the next bar
 			}
 			double lvl = d == 1 ? Instrument.MasterInstrument.RoundToTickSize(volbUp) : Instrument.MasterInstrument.RoundToTickSize(volbDn);
 			if (PastLevel(d, lvl))
@@ -477,7 +465,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (eng10Retry && !eng10.InTrade && !eng10.Parked) { if (openMin >= 600 && openMin < 689) Eng10Place(); else eng10Retry = false; return; }
 			if (eng10Done || eng10.InTrade)
 			{
-				if (Working(eng10.Entry) && openMin >= 689 && openMin < 18 * 60) { CancelEntry(eng10); Log("ENG10 entry expired"); }
+				if (Working(eng10.Entry) && openMin >= 689 && openMin < 18 * 60) { CancelOrder(eng10.Entry); Log("ENG10 entry expired"); }
 				return;
 			}
 			if (openMin != 599) return;
@@ -705,7 +693,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (Working(ict.Entry))
 			{
 				bool invalid = (ict.Dir == -1 && Highs[1][0] > ictExtPend) || (ict.Dir == 1 && Lows[1][0] < ictExtPend);
-				if (CurrentBars[1] >= ictExpiry || invalid) CancelEntry(ict);
+				if (CurrentBars[1] >= ictExpiry || invalid) CancelOrder(ict.Entry);
 			}
 			bool inWin = openMin >= 570 && openMin < 630;
 			for (int q = 0; q < 6; q++)
@@ -1052,7 +1040,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Log("FLATTEN: " + why);
 		}
 
-		private void CancelAllEntries() { foreach (Mod m in mods) { m.Parked = false; CancelEntry(m); } }
+		private void CancelAllEntries() { foreach (Mod m in mods) { m.Parked = false; if (Working(m.Entry)) CancelOrder(m.Entry); } }
 		// ---- parking (research/mine/patch_review2.py): research keeps every module's order working and only drops a fill against an open
 		// opposite position. NinjaTrader's managed rules cannot hold opposite entry orders at once, so the cancelled one is kept here and
 		// re-placed as soon as no opposite position / working order remains. Dropped if its level trades while blocked or its window ends.
@@ -1062,7 +1050,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (e == null || !Working(e)) return;
 			if (o != volb && (e.OrderType == OrderType.StopMarket || e.OrderType == OrderType.Limit))
 			{ o.Parked = true; o.ParkHit = false; o.ParkLimit = e.OrderType == OrderType.Limit; o.ParkPx = o.ParkLimit ? e.LimitPrice : e.StopPrice; o.ParkQty = Math.Max(1, e.Quantity); Log(o.Sig + " order parked (opposite trade)"); }
-			CancelEntry(o);
+			CancelOrder(e);
 		}
 		// a setup blocked by an opposite POSITION at placement time: kept and placed when free (research drops only a fill against it)
 		private void ParkSetup(Mod o, bool limit, double px, int qty)
@@ -1110,57 +1098,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 			OrderState s = o.OrderState;
 			return s != OrderState.Filled && s != OrderState.Cancelled && s != OrderState.Rejected && s != OrderState.Unknown;
 		}
-		// every cancel of a module entry goes through here so the watchdog knows when it was asked for
-		private void CancelEntry(Mod m)
-		{
-			Order e = m.Entry;
-			if (!Working(e)) return;
-			if (m.CancelOrd != e) { m.CancelOrd = e; m.CancelBar = CurrentBars[0]; }
-			CancelOrder(e);
-		}
-		// ---- stale-order watchdog. NinjaTrader can hand back an entry order that it never processes (it stays Initialized) or whose
-		// cancel never completes; Working() then reports it as live forever and every opposite entry is deferred. Strategy Analyzer
-		// MNQ 2024-26 (Ultra): a VOLB buy stop placed 2025-08-13 09:32 ET never reached the market (price crossed it on 2025-09-15 without
-		// a fill) and could not be cancelled -> VOLB never traded again and 0 shorts were taken for 14 months (research: 577 shorts,
-		// WR 65.7%, PF 1.53, +$17.6k per contract). Historical orders are processed at once and live ones within seconds, so an entry
-		// that is still not accepted 2 bars later, a market entry still unfilled 2 bars later, or a cancel not confirmed 2 bars after it
-		// was requested is dead: it is dropped (cancel attempted, reference cleared) and a STALE ORDER line is printed. Every entry is
-		// cancelled at FlattenTime, so a dead order is found the same day at the latest.
-		private void PurgeStaleEntries()
-		{
-			foreach (Mod m in mods)
-			{
-				Order e = m.Entry;
-				if (!Working(e)) continue;
-				if (e != m.SeenOrd) { m.SeenOrd = e; m.SeenBar = CurrentBars[0]; }
-				int age = CurrentBars[0] - m.SeenBar;
-				OrderState s = e.OrderState;
-				string why = null;
-				if (m.CancelOrd == e && CurrentBars[0] - m.CancelBar >= 2) why = "cancel never confirmed";
-				else if (age >= 2 && (s == OrderState.Initialized || s == OrderState.Submitted)) why = "never accepted";
-				else if (age >= 2 && e.OrderType == OrderType.Market && s != OrderState.PartFilled) why = "market entry never filled";
-				if (why == null) continue;
-				DropStale(m, why, true);
-			}
-		}
-		private void DropStale(Mod m, string why, bool cancel)
-		{
-			Order e = m.Entry;
-			OrderState s = e.OrderState;
-			if (cancel) { try { CancelOrder(e); } catch { } }
-			zombies.Add(e); zombieCount++;
-			m.Entry = null; m.SeenOrd = null; m.CancelOrd = null;
-			Print(string.Format("{0} | NQMaster | STALE ORDER dropped ({1}): {2} {3} {4} x{5} @ {6}, state {7} - the module and the opposite direction trade again",
-				Times[0][0].ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), why, m.Sig, e.OrderAction, e.OrderType, e.Quantity,
-				e.OrderType == OrderType.Market ? "market" : Fmt(e.OrderType == OrderType.Limit ? e.LimitPrice : e.StopPrice), s));
-		}
 		private Mod BySig(string sig) { if (mods == null || string.IsNullOrEmpty(sig)) return null; foreach (Mod m in mods) if (m.Sig == sig) return m; return null; }
 
 		protected override void OnOrderUpdate(Order order, double limitPrice, double stopPrice, int quantity, int filled, double averageFillPrice,
 			OrderState orderState, DateTime time, ErrorCode error, string nativeError)
 		{
 			Mod m = BySig(order.Name);
-			if (m != null && !zombies.Contains(order) && (m.Entry == null || m.Entry == order || !Working(m.Entry))) m.Entry = order;
+			if (m != null && (m.Entry == null || m.Entry == order || !Working(m.Entry))) m.Entry = order;
 			if (orderState == OrderState.Rejected)
 			{
 				Print(string.Format("NQMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
@@ -1251,7 +1195,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			string txt = string.Format("NQ MASTER ({0}) | {1}\ntrend {2} | ATRd {3:0.0} | pullback day {4}\n{5}\nTotal {6} tr | WR {7:0.0}% | PF {8:0.00} | ${9:0.00}",
 				Profile, status, trendDir == 1 ? "UP" : trendDir == -1 ? "DOWN" : "-", todayAtr, pullbackDay ? "yes" : "no", mm.ToString(),
 				totalTrades, totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
-			if (zombieCount > 0) txt += string.Format("\nStale orders dropped: {0} (see Output)", zombieCount);
 			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / edgeH, edgeDays, edgeAlarm ? " | ALARM" : "");
 			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1} | cushion ${2:0} (threshold ${3:0})", PropMode, gate, propCushion, propThr);
 			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += string.Format("\nPAYOUT: profit >= ${0:0} -> request it", FundedPayoutAt);
