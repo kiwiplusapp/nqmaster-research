@@ -750,3 +750,15 @@ Ultra + noche + oro Robust; evaluación nueva al día siguiente de cada quema. S
 - La configuración en NinjaTrader es la de la tabla "Configuración LucidPro 50K" de arriba. Cuando una evaluación se quema: comprá otra, cargá NQMaster y GoldMaster en la cuenta nueva con los mismos ajustes y arrancá la sesión siguiente. El archivo del grupo 07 es por nombre de cuenta, así que la nueva arranca limpia.
 
 Scripts: `research/mine/funded22.py` (`funded22.csv`) y `funded22_boot.py` (`funded22_boot.csv`).
+
+### ¿WR70Plus con 1 contrato en la fondeada?
+La evaluación es la misma (LucidPro 50K, 4 contratos, Ultra) y solo cambia la fondeada. Ingreso por cuenta, promedio y peor de 9 pruebas (`research/mine/funded_wr.py`, `funded_wr.csv`):
+
+| Fondeada | $/mes | Peor | Fondeadas quemadas/año | Retiros/año |
+|---|---|---|---|---|
+| **Ultra 2c, tope de ganancia diaria $400-500 (recomendado)** | **$1.578-1.605** | $1.238-1.331 | 5,1-5,2 | 11,7-12,5 |
+| WR70Plus 2c, tope $400 | $1.291 | $1.130 | 3,0 | 9,6 |
+| Ultra 1c, tope $700 | $1.217 | $963 | 1,3 | 8,7 |
+| WR70Plus 1c, sin tope | $990 | $813 | 0,7 | 7,5 |
+
+WR70Plus con 1 contrato quema muy pocas fondeadas, pero deja ~38% menos plata: cada retiro tarda más en juntarse. Si lo que importa es el ingreso, va Ultra con 2 contratos y tope de $400-500. Si importa quemar poco, va WR70Plus con 1 contrato (Profile WR70Plus + NightOnWr70, Contracts 1, FundedProfitStop 0; GoldMaster WinRate 1).
