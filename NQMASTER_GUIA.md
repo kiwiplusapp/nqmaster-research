@@ -629,3 +629,18 @@ Medido con el sistema ya corregido (con cortos y módulos nocturnos) sobre Lucid
 - **Lo que sí se puede elegir:**
   - **Velocidad:** 2 contratos. ~45% aprueba en 20 días, mediana 14 días.
   - **Probabilidad:** 1 contrato + oro WinRate. 84% aprueba, pero tarda ~6 semanas (Lucid no tiene límite de tiempo).
+
+## Subir el win rate por trade: ¿ayuda a aprobar? (2026-10-08, `research/mine/pass20_search.py`)
+Todas las mezclas se miden igual: Lucid 50K, aprobar en ≤20 días, simulación diaria. Los contratos se eligen en IS (2020-23) y se aplican en C24 y en MNQ real.
+
+| Mezcla | Win rate (MNQ real) | Profit factor (real) | Trades/día | Aprueba ≤20 días (IS / C24 / real) |
+|---|---|---|---|---|
+| WR70Plus + noche (tu perfil) | 68,9% | 1,37 | 3,5 | 42 / 40 / 44% |
+| Ultra + noche | 63,8% | 1,38 | 6,0 | 38 / 40 / 44% |
+| Win rate 75%, 4 trades/día | 72,7% | 1,33 | 4,0 | 43 / 30 / 35% |
+| Win rate 80%, 4 trades/día | 77,7% | 1,19 | 3,9 | 38 / 41 / 41% |
+| Win rate 80%, 1 trade/día | 80,6% | 1,36 | 1,2 | 25 / 34 / 36% |
+| Mejor de la búsqueda directa (elegida en IS) | 70,2% | 1,31 | 4,4 | **55** / 39 / 45% |
+
+- **El win rate sí se puede subir a 75-80%,** achicando los objetivos de ganancia. Pero cada ganancia es más chica y el profit factor baja, así que se aprueba igual o menos.
+- **La búsqueda directa** probó 30 arranques sobre 23 módulos, cada uno con sus objetivos y tamaños. En 2020-23 llega a 55%, pero fuera de muestra vuelve a 39-45%, lo mismo que tu perfil: es sobreajuste. No se cambia el perfil.
