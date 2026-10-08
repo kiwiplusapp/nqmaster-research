@@ -728,3 +728,25 @@ Con 1 contrato la regla del 50% casi nunca frena: un día rara vez supera $1.500
 Pedí el retiro apenas el saldo pase el inicio + $2.600 y el mejor día del ciclo sea ≤ 40% de la ganancia del ciclo. Con el tope de $500 esto se cumple casi siempre.
 
 Script: `research/mine/lucidpro.py` (`lucidpro_eval.csv`, `lucidpro_life.csv`, `lucidpro_life_fg.csv`, `lucidpro_life_fg2.csv`). Código nuevo: `FundedProfitStop` en NQMaster. Backup: `NQMaster_backup_pre_lucidpro.cs`.
+
+## ★ Cuenta fondeada en 22 días o menos (2026-10-08)
+Pedido: aprobar en un porcentaje muy alto y en no más de 22 días hábiles.
+
+**Una sola evaluación de 50K no llega:** con la ganancia diaria del sistema, ninguna configuración aprueba una evaluación de 50K más de ~50-55% de las veces en 22 días. Lo que sí llega es esto: **si una evaluación se quema, comprás otra y arrancás la sesión siguiente**. Cada evaluación con 4 contratos se define en ~3 días (aprueba o se quema), así que en 22 días entran varias.
+
+### % de veces con cuenta fondeada dentro de 22 días hábiles
+Ultra + noche + oro Robust; evaluación nueva al día siguiente de cada quema. Simulación minuto a minuto, todos los días de inicio.
+
+| Plan | Historia (CFD 24-26 / CFD 20-23 / MNQ real) | Con +1 tick de costo | Remuestreo: mediana / peor 10% | Mediana de días | Evaluaciones usadas | Costo |
+|---|---|---|---|---|---|---|
+| **LucidPro 50K, 4 contratos** | **97 / 94 / 97%** | 97 / 93 / 97% | 94-98% / 89-95% | **5** | 2,4 | ~$370 |
+| LucidPro 50K, 3 contratos | 93 / 86 / 92% | 93 / 85 / 92% | 88-95% / 81-89% | 6 | 2,1 | ~$320 |
+| LucidPro 25K, 2 contratos | 98 / 96 / 98% | 97 / 96 / 98% | 96-99% / 93-96% | 4 | 2,3 | ~$200 |
+| LucidFlex 50K, 2 contratos | 73 / 63 / 74% | 72 / 61 / 72% | 64-77% / 52-68% | 11 | 1,9 | ~$195 |
+| LucidFlex 50K, 1 contrato | 47 / 33 / 54% | 45 / 30 / 52% | 32-57% / 21-44% | 13 | 1,2 | ~$130 |
+
+- Cada evaluación sola aprueba ~40%. El 94-97% sale de reintentar rápido. El costo de las evaluaciones extra está incluido arriba, y también en el ingreso mensual de la sección LucidPro ($1.578 por cuenta con evaluación 4c y fondeada 2c con tope de $500).
+- La 25K es igual de segura y más barata, pero la fondeada paga topes más chicos ($1.000 / $1.500). Con el límite de 5 fondeadas por hogar, la 50K deja más plata por cuenta.
+- La configuración en NinjaTrader es la de la tabla "Configuración LucidPro 50K" de arriba. Cuando una evaluación se quema: comprá otra, cargá NQMaster y GoldMaster en la cuenta nueva con los mismos ajustes y arrancá la sesión siguiente. El archivo del grupo 07 es por nombre de cuenta, así que la nueva arranca limpia.
+
+Scripts: `research/mine/funded22.py` (`funded22.csv`) y `funded22_boot.py` (`funded22_boot.csv`).
