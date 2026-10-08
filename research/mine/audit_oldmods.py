@@ -41,8 +41,13 @@ def degrade(stats, chosen_key):
         c = stats.loc[chosen_key]; r["chosen"] = dict(IS=round(float(c.IS_pf), 3), C24=round(float(c.C24_pf), 3), REAL=round(float(c.REAL_pf), 3))
         r["chosen_IS_pct"] = round(float((ok.IS_pf < c.IS_pf).mean()), 3); r["chosen_REAL_pct"] = round(float((ok.REAL_pf < c.REAL_pf).mean()), 3)
     return r
+CACHE = os.path.join(os.environ.get("AUDIT_TMP", "/tmp"), "audit_oldmods_cache.pkl")
 def family(name, configs, runner, chosen=None):
     """configs: list of param tuples; runner(key, cfg) -> df(date, usd). PBO on CFD 2020-26 daily ($1.90), IS->OOS stats."""
+    import pickle
+    cache = pickle.load(open(CACHE, "rb")) if os.path.exists(CACHE) else {}
+    if name in cache:
+        r, S = cache[name]; print(name, "(cached)", r, flush=True); return r, S
     cols = {}; st = []
     alld = np.array(sorted(set(D["cfd"]["date"][D["cfd"]["date"] >= 20200201]) - FOMC))
     for c in configs:
@@ -50,7 +55,8 @@ def family(name, configs, runner, chosen=None):
         st.append(dict(key=str(c), IS_n=int((a.date < 20240101).sum()), IS_pf=pfu(ua[a.date < 20240101]), C24_pf=pfu(ua[a.date >= 20240101]), REAL_pf=pfu(b.usd - 0.9)))
         if len(a) >= 100: cols[str(c)] = (a.assign(u=ua)).groupby("date").u.sum()
     S = pd.DataFrame(st).set_index("key"); M = pd.DataFrame(cols).reindex(alld, fill_value=0.0).fillna(0.0)
-    r = dict(configs=len(configs), pbo=pbo(M.to_numpy()), **degrade(S, None if chosen is None else str(chosen))); print(name, r, flush=True); return r, S
+    r = dict(configs=len(configs), pbo=pbo(M.to_numpy()), **degrade(S, None if chosen is None else str(chosen))); print(name, r, flush=True)
+    cache[name] = (r, S); pickle.dump(cache, open(CACHE, "wb")); return r, S
 J = {}; NB = []
 if __name__ == "__main__":
     # ---------------------------------------------------------------- clock modules (tmom)
@@ -87,7 +93,7 @@ if __name__ == "__main__":
     chosen = (0, 360, 480, 1, 2, 2.0, 0.25, 570, 1)
     r, S = family("LON grid", lgrid, lo, chosen); J["LON"] = dict(family="London grid", **r)
     ch = three(lambda k: lo(k, chosen)); J["LON"]["chosen_check"] = ch
-    names = ("rs", "we/ee", "em", "sm", "R", "mx", "exit", "bias")
+    names = {0: "rs", 1: "we/ee", 3: "em", 4: "sm", 5: "R", 6: "mx", 7: "exit", 8: "bias"}
     alts = {0: (1200, 120), 1: ((300, 360), (480, 540)), 3: (0,), 4: (0, 1), 5: (1.5, 3.0), 6: (0.1, 0.5), 7: (480, 660), 8: (0,)}
     for i, vs in alts.items():
         for v in vs:

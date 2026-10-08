@@ -86,10 +86,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private SimpleFont dashFont;
 		private bool badTimeframe;
 		private HashSet<int> fomc;
-		// Tier-1 news (MyFundedFutures: CPI, Employment Report 08:30 ET, FOMC minutes 14:00 ET; FOMC days are skipped anyway).
-		// CPI / NFP from the BLS schedules (2024 - Dec 2026; 2027 not published yet: add them in NewsTimes), minutes = decision + 21 days.
-		private const string BuiltinNews = "2024-01-03 14:00,2024-01-05 08:30,2024-01-11 08:30,2024-02-02 08:30,2024-02-13 08:30,2024-02-21 14:00,2024-03-08 08:30,2024-03-12 08:30,2024-04-05 08:30,2024-04-10 08:30,2024-04-10 14:00,2024-05-03 08:30,2024-05-15 08:30,2024-05-22 14:00,2024-06-07 08:30,2024-06-12 08:30,2024-07-03 14:00,2024-07-05 08:30,2024-07-11 08:30,2024-08-02 08:30,2024-08-14 08:30,2024-08-21 14:00,2024-09-06 08:30,2024-09-11 08:30,2024-10-04 08:30,2024-10-09 14:00,2024-10-10 08:30,2024-11-01 08:30,2024-11-13 08:30,2024-11-28 14:00,2024-12-06 08:30,2024-12-11 08:30,2025-01-08 14:00,2025-01-10 08:30,2025-01-15 08:30,2025-02-07 08:30,2025-02-12 08:30,2025-02-19 14:00,2025-03-07 08:30,2025-03-12 08:30,2025-04-04 08:30,2025-04-09 14:00,2025-04-10 08:30,2025-05-02 08:30,2025-05-13 08:30,2025-05-28 14:00,2025-06-06 08:30,2025-06-11 08:30,2025-07-03 08:30,2025-07-09 14:00,2025-07-15 08:30,2025-08-01 08:30,2025-08-12 08:30,2025-08-20 14:00,2025-09-05 08:30,2025-09-11 08:30,2025-10-03 08:30,2025-10-08 14:00,2025-10-24 08:30,2025-11-19 14:00,2025-11-20 08:30,2025-12-16 08:30,2025-12-18 08:30,2025-12-31 14:00,2026-01-09 08:30,2026-01-13 08:30,2026-02-11 08:30,2026-02-13 08:30,2026-02-18 14:00,2026-03-06 08:30,2026-03-11 08:30,2026-04-03 08:30,2026-04-08 14:00,2026-04-10 08:30,2026-05-08 08:30,2026-05-12 08:30,2026-05-20 14:00,2026-06-05 08:30,2026-06-10 08:30,2026-07-02 08:30,2026-07-08 14:00,2026-07-14 08:30,2026-08-07 08:30,2026-08-12 08:30,2026-08-19 14:00,2026-09-04 08:30,2026-09-11 08:30,2026-10-07 14:00,2026-10-14 08:30,2026-11-06 08:30,2026-11-10 08:30,2026-11-18 14:00,2026-12-04 08:30,2026-12-10 08:30,2026-12-30 14:00,2027-02-17 14:00,2027-04-07 14:00,2027-05-19 14:00,2027-06-30 14:00,2027-08-18 14:00,2027-10-06 14:00,2027-11-17 14:00,2027-12-29 14:00";
-		private List<DateTime> newsEt; private bool profUltra, volbBeSet;
 
 		// completed RTH days
 		private int rthDay = -1, rthDaysSeen, atrCount;
@@ -153,7 +149,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0;
 				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 0; EvalDailyStop = 0; FundedCushionSafe = 750; FundedPayoutAt = 5000; FundedHighFull = true; FundedCushionFull = 0;
 				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400; EvalSafeSet = NQMasterSafeSet.Estable; FundedProfitStop = 0;
-				OrbPriorCloseAtr = 0.10; VolbBreakEven = true; MomAgreement = true; VolbTrendLastEntry = 1047; NewsBlackout = false; NewsTimes = "";
 			}
 			else if (State == State.Configure)
 			{
@@ -171,12 +166,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 					DateTime d;
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
-				}
-				newsEt = new List<DateTime>();
-				foreach (string raw in (BuiltinNews + "," + (NewsTimes ?? "")).Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
-				{
-					DateTime nt;
-					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out nt)) newsEt.Add(nt);
 				}
 				BuildModules();
 				foreach (Mod m in mods) m.BaseOn = m.On;
@@ -209,7 +198,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void BuildModules()
 		{
 			bool w7 = Profile == NQMasterProfile.WR70Plus, mt = Profile == NQMasterProfile.MaxTrades, ul = Profile == NQMasterProfile.Ultra, mp2 = Profile == NQMasterProfile.MaxPlus2 || ul, mp = Profile == NQMasterProfile.MaxPlus || mp2, ms = Profile == NQMasterProfile.MaxSharpe || mt || mp, wr = Profile == NQMasterProfile.WinRate70, gold = Profile == NQMasterProfile.Gold, custom = Profile == NQMasterProfile.Custom, core = Profile == NQMasterProfile.Core;
-			profUltra = ul;
 			mods = new List<Mod>(); timeMods = new List<Mod>();
 			orb = new Mod(); orb.Sig = gold ? "GC_ORB30" : "ORB60"; orb.Kind = 0;
 			orb.On = (custom ? UseOrb : (true) && UseOrb);
@@ -325,7 +313,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			AccountGuard();
 			DailyLossCheck();
 			PropDailyCheck();
-			if (NewsBlackout && InNews(etClose, 3)) { FlattenAll("news blackout (Tier-1 release)"); status = "NEWS BLACKOUT"; UpdateDashboard(); return; }
 
 			// exits: module time exits, London exit, flatten
 			if (FlattenTime > 0 && closeMin >= Hm(FlattenTime) && closeMin < 18 * 60) { FlattenAll("end of day"); UpdateDashboard(); return; }
@@ -333,18 +320,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (m.InTrade && m.MaxHold > 0 && CurrentBars[0] - m.EntryBar >= m.MaxHold) ExitModule(m, "time exit");
 			if (rsi.InTrade && CurrentBars[0] - rsi.EntryBar >= rsi.MaxHold) ExitModule(rsi, "time exit");
 			if (volb.InTrade && CurrentBars[0] - volb.EntryBar >= volb.MaxHold) ExitModule(volb, "time exit");
-			// research/mine/wrq_exits.py: VOLB 2R (Ultra) stop to entry + 0.10R once the bar reaches +0.75R, from the next bar
-			// (VOLB WR 52/51/50% -> 61/62/61%, PF 1.25/1.52/1.50 -> 1.30/1.66/1.57; plateau 0.4-1.0R x 0-0.2R)
-			if (VolbBreakEven && volb.InTrade && !volbTrendOnly && !volbBeSet && volb.R >= 1.5)
-			{
-				double vr = (volb.EntryPx - volb.StopPx) * volb.Dir;
-				if (vr > 0 && (volb.Dir == 1 ? High[0] >= volb.EntryPx + 0.75 * vr : Low[0] <= volb.EntryPx - 0.75 * vr))
-				{
-					double be = Instrument.MasterInstrument.RoundToTickSize(volb.EntryPx + volb.Dir * 0.10 * vr); volbBeSet = true;
-					if ((Close[0] - be) * volb.Dir > TickSize) { SetStopLoss(volb.Sig, CalculationMode.Price, be, false); Log("VOLB stop -> entry + 0.1R @ " + Fmt(be)); }
-					else ExitModule(volb, "break-even level already crossed");
-				}
-			}
 			if (eng10.InTrade && CurrentBars[0] - eng10.EntryBar >= eng10.MaxHold) ExitModule(eng10, "time exit");
 			if (lon.InTrade && openMin >= 570 && openMin < 18 * 60) ExitModule(lon, "London exit 09:30");
 			if (Working(lon.Entry) && (openMin >= 480 && openMin < 18 * 60)) CancelEntry(lon);
@@ -445,10 +420,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (CurrentBars[0] <= deferUntil && trendDir == -deferDir) return;	// an opposite deferred module enters first
 			int d = trendDir;
 			double entry = d == 1 ? o.OrH + TickSize : o.OrL - TickSize;
-			// research/mine/wrq_combo.py (ORBt): the breakout trigger must clear the prior RTH close by >= 0.10 ATR in the trade direction
-			// (ORB60 0.6R PF 1.62/1.60/1.56 -> 1.92/1.81/2.05, ORB90 1.43/1.31/1.38 -> 1.87/1.48/1.75, IS / CFD 24-26 / MNQ 24-26)
-			if (OrbPriorCloseAtr > -1 && !double.IsNaN(atrPrevClose) && (entry - atrPrevClose) * d < OrbPriorCloseAtr * todayAtr)
-			{ o.Armed = false; o.Trades = 2; Log(o.Sig + " skipped today: breakout level not beyond the prior close by " + OrbPriorCloseAtr.ToString("0.00") + " ATR"); return; }
 			double opp = d == 1 ? o.OrL - TickSize : o.OrH + TickSize;
 			int st = Math.Max(8, (int)Math.Round(Math.Min(Math.Abs(entry - opp), StopCapAtr * todayAtr) / TickSize));
 			o.Armed = false;
@@ -470,8 +441,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			if (volbDone || volb.InTrade || double.IsNaN(volbUp) || double.IsNaN(rthOpenPx) || atrCount < 14) return;
 			if (openMin >= 899) { CancelEntry(volb); volbDone = true; return; }
-			// research/mine/wrq_combo.py (VTSO): trend-only VOLB (WR70Plus / Estable) fills after 10:47 ET lose their edge
-			if (volbTrendOnly && VolbTrendLastEntry > 0 && openMin >= Hm(VolbTrendLastEntry)) { CancelEntry(volb); volbDone = true; return; }
 			int d = (volbUp - Close[0]) <= (Close[0] - volbDn) ? 1 : -1;
 			if (volbTrendOnly)
 			{
@@ -581,14 +550,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				int vd = Close[0] > vw ? 1 : (Close[0] < vw ? -1 : 0);
 				if (vd != (Close[0] > reference ? 1 : -1)) return;
 			}
-			// research/mine/wrq_agree.py: MOM1030 / MOM13 alone lose (IS PF < 1); with another module already open the same way
-			// MOM1030 PF 1.08/1.13/1.17 -> 1.34/1.46/1.71, MOM13 1.31/1.17/1.19 -> 1.54/1.45/1.51 (Ultra)
-			if (MomAgreement && profUltra && (m.Sig == "MOM1030" || m.Sig == "MOM13"))
-			{
-				bool agree = false;
-				foreach (Mod x in mods) if (x != m && x.InTrade && x.Dir == d) { agree = true; break; }
-				if (!agree) { Log(m.Sig + " skipped: no other module open the same way"); return; }
-			}
 			if (!DirectionAllowed(d)) return;
 			int st = Math.Max(4, (int)Math.Round(m.StopAtr * atrDaily / TickSize));
 			SetStopLoss(m.Sig, CalculationMode.Ticks, st, false);
@@ -667,7 +628,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void OnFiveMinute()
 		{
 			if (CurrentBars[1] < 8) return;
-			newsBlock5 = NewsBlackout && InNews(ToEt(Times[1][0]), 8);	// a 5-minute entry would still be open at the news window
 			// RSI(2) on the 5-minute closes (Wilder, alpha 0.5), updated on every 5m bar
 			double chg = Closes[1][0] - Closes[1][1];
 			if (double.IsNaN(rsiUp)) { rsiUp = Math.Max(chg, 0); rsiDn = Math.Max(-chg, 0); }
@@ -1054,18 +1014,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			return true;
 		}
 
-		// true from `before` minutes before a Tier-1 release (bar close times) until 2 minutes after it: with before = 3 the bar closing
-		// at 08:27 flattens (flat before 08:28:00) and entries resume with the bar closing at 08:32.
-		private bool InNews(DateTime etClose, int before)
-		{
-			if (newsEt == null) return false;
-			foreach (DateTime e in newsEt) { double m = (etClose - e).TotalMinutes; if (m >= -before && m < 2) return true; }
-			return false;
-		}
-		private bool newsBlock5;
 		private bool CanTrade()
 		{
-			if (newsBlock5 && BarsInProgress == 1) { status = "NEWS BLACKOUT"; return false; }
 			if (fomcToday) { status = "FOMC day: no trading"; return false; }
 			if (targetHit) { status = "eval target reached"; return false; }
 			if (ddTripped) { status = "drawdown guard"; return false; }
@@ -1253,7 +1203,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(Times[0][0]).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
 				if (m == orb2) orb2.Trades++;
-				if (m == volb) { volbDone = true; volb.EntryBar = CurrentBars[0]; volbBeSet = false; }
+				if (m == volb) { volbDone = true; volb.EntryBar = CurrentBars[0]; }
 				if (m == eng10) eng10.EntryBar = CurrentBars[0];
 				if (m.Sig == "MOM11" && m11Dir == 0) m11Dir = m.Dir;
 				if (m == lon || m.Sig == "ON07" || m.Sig == "REV06") onSum += m.Dir;
@@ -1356,12 +1306,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Night modules also in WR70Plus (NF05 / LF06 / LF0430)", Order = 26, GroupName = "01. Module switches (any profile)")] public bool NightOnWr70 { get; set; }
 		[NinjaScriptProperty][Range(-5.0, 5.0)][Display(Name = "Pullback max prior-day move (x ATRd)", Order = 20, GroupName = "02. Edge")] public double PullbackMaxRet { get; set; }
 		[NinjaScriptProperty][Range(0.05, 1.0)][Display(Name = "ORB stop cap (x ATRd)", Order = 21, GroupName = "02. Edge")] public double StopCapAtr { get; set; }
-		[NinjaScriptProperty][Range(-1.0, 2.0)][Display(Name = "ORB: breakout must clear the prior close by x ATR (0.10; -1 = off)", Order = 22, GroupName = "02. Edge")] public double OrbPriorCloseAtr { get; set; }
-		[NinjaScriptProperty][Display(Name = "VOLB 2R (Ultra): stop to entry + 0.1R after +0.75R", Order = 23, GroupName = "02. Edge")] public bool VolbBreakEven { get; set; }
-		[NinjaScriptProperty][Display(Name = "MOM1030 / MOM13 (Ultra): only with another module open the same way", Order = 24, GroupName = "02. Edge")] public bool MomAgreement { get; set; }
-		[NinjaScriptProperty][Range(0, 2359)][Display(Name = "VOLB trend-only (WR70Plus / Estable): last entry HHMM ET (1047; 0 = off)", Order = 25, GroupName = "02. Edge")] public int VolbTrendLastEntry { get; set; }
-		[NinjaScriptProperty][Display(Name = "News blackout: flat, no orders 2 min around CPI / NFP / FOMC minutes (MFFU funded)", Order = 1, GroupName = "08. News blackout")] public bool NewsBlackout { get; set; }
-		[NinjaScriptProperty][Display(Name = "Extra Tier-1 times ET (yyyy-MM-dd HH:mm, comma list; 2027 CPI / NFP)", Order = 2, GroupName = "08. News blackout")] public string NewsTimes { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Contracts per module", Order = 30, GroupName = "03. Risk / account")] public int Contracts { get; set; }
 		[NinjaScriptProperty][Range(1000, 1659)][Display(Name = "Flatten time (ET HHmm)", Order = 31, GroupName = "03. Risk / account")] public int FlattenTime { get; set; }
 		[NinjaScriptProperty][Display(Name = "Skip FOMC days", Order = 32, GroupName = "03. Risk / account")] public bool SkipFomc { get; set; }

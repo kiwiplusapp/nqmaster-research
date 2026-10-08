@@ -64,9 +64,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 		#region Fields
 		private TimeZoneInfo etZone; private SimpleFont dashFont; private bool badTimeframe; private HashSet<int> fomc;
-		// Tier-1 news for MyFundedFutures Rapid funded accounts (same list as NQMaster): flat and no orders 2 min around the release
-		private const string BuiltinNews = "2024-01-03 14:00,2024-01-05 08:30,2024-01-11 08:30,2024-02-02 08:30,2024-02-13 08:30,2024-02-21 14:00,2024-03-08 08:30,2024-03-12 08:30,2024-04-05 08:30,2024-04-10 08:30,2024-04-10 14:00,2024-05-03 08:30,2024-05-15 08:30,2024-05-22 14:00,2024-06-07 08:30,2024-06-12 08:30,2024-07-03 14:00,2024-07-05 08:30,2024-07-11 08:30,2024-08-02 08:30,2024-08-14 08:30,2024-08-21 14:00,2024-09-06 08:30,2024-09-11 08:30,2024-10-04 08:30,2024-10-09 14:00,2024-10-10 08:30,2024-11-01 08:30,2024-11-13 08:30,2024-11-28 14:00,2024-12-06 08:30,2024-12-11 08:30,2025-01-08 14:00,2025-01-10 08:30,2025-01-15 08:30,2025-02-07 08:30,2025-02-12 08:30,2025-02-19 14:00,2025-03-07 08:30,2025-03-12 08:30,2025-04-04 08:30,2025-04-09 14:00,2025-04-10 08:30,2025-05-02 08:30,2025-05-13 08:30,2025-05-28 14:00,2025-06-06 08:30,2025-06-11 08:30,2025-07-03 08:30,2025-07-09 14:00,2025-07-15 08:30,2025-08-01 08:30,2025-08-12 08:30,2025-08-20 14:00,2025-09-05 08:30,2025-09-11 08:30,2025-10-03 08:30,2025-10-08 14:00,2025-10-24 08:30,2025-11-19 14:00,2025-11-20 08:30,2025-12-16 08:30,2025-12-18 08:30,2025-12-31 14:00,2026-01-09 08:30,2026-01-13 08:30,2026-02-11 08:30,2026-02-13 08:30,2026-02-18 14:00,2026-03-06 08:30,2026-03-11 08:30,2026-04-03 08:30,2026-04-08 14:00,2026-04-10 08:30,2026-05-08 08:30,2026-05-12 08:30,2026-05-20 14:00,2026-06-05 08:30,2026-06-10 08:30,2026-07-02 08:30,2026-07-08 14:00,2026-07-14 08:30,2026-08-07 08:30,2026-08-12 08:30,2026-08-19 14:00,2026-09-04 08:30,2026-09-11 08:30,2026-10-07 14:00,2026-10-14 08:30,2026-11-06 08:30,2026-11-10 08:30,2026-11-18 14:00,2026-12-04 08:30,2026-12-10 08:30,2026-12-30 14:00,2027-02-17 14:00,2027-04-07 14:00,2027-05-19 14:00,2027-06-30 14:00,2027-08-18 14:00,2027-10-06 14:00,2027-11-17 14:00,2027-12-29 14:00";
-		private List<DateTime> newsEt;
 		private int prevSm = -1; private bool fomcToday; private int sessionDate;
 		// RTH statistics
 		private bool rthHas; private double rthO, rthH, rthL, rthC; private int rthLastOpen;
@@ -109,7 +106,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseOd = true; UseEng0408 = true; UseSvwap = true; UseEng0610 = true; UseAsia = true; UseEng0206 = true; UseLate = false;
 				UseEng0610 = false;
 				Contracts = 1; FlattenTime = 1651; SkipFomc = true; FomcDates = "";
-				DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; NewsBlackout = false; NewsTimes = ""; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0;
+				DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 8; EvalLateGoal = 2100; EvalLateContracts = 2; EvalLateMinCushion = 1000;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
 			}
@@ -124,12 +121,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 					DateTime d;
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
-				}
-				newsEt = new List<DateTime>();
-				foreach (string raw in (BuiltinNews + "," + (NewsTimes ?? "")).Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
-				{
-					DateTime nt;
-					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out nt)) newsEt.Add(nt);
 				}
 				BuildModules();
 			}
@@ -234,7 +225,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 
 			DailyLossCheck();
-			if (NewsBlackout && InNews(etClose)) { FlattenAll("news blackout (Tier-1 release)"); UpdateDashboard(); return; }
 			// ---- exits: flatten, time exits, expiries
 			if (FlattenTime > 0 && closeMin >= Hm(FlattenTime) && closeMin < 18 * 60) { FlattenAll("end of day"); UpdateDashboard(); return; }
 			foreach (Mod m in mods)
@@ -631,13 +621,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (DailyLossLimit <= 0 || dayStopped) return;
 			if (netPnl - dayStartPnl <= -DailyLossLimit) { dayStopped = true; FlattenAll("daily loss limit"); Log("DAILY LOSS LIMIT reached"); }
 		}
-		// bar closing 3 min before the release flattens (flat before T-2:00); entries resume with the bar closing at T+2
-		private bool InNews(DateTime etClose)
-		{
-			if (newsEt == null) return false;
-			foreach (DateTime e in newsEt) { double m = (etClose - e).TotalMinutes; if (m >= -3 && m < 2) return true; }
-			return false;
-		}
 		private bool CanTrade()
 		{
 			if (fomcToday) { status = "FOMC day: no trading"; return false; }
@@ -711,8 +694,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval target $ (realtime, whole account; 0 = off)", Order = 8, GroupName = "02. Risk / account")] public double EvalTarget { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Account daily profit stop $ (eval: 1400 with 2 contracts; 0 = off)", Order = 12, GroupName = "02. Risk / account")] public double AccountProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Start balance $", Order = 9, GroupName = "02. Risk / account")] public double StartBalance { get; set; }
-		[NinjaScriptProperty][Display(Name = "News blackout: flat, no orders 2 min around CPI / NFP / FOMC minutes (MFFU funded)", Order = 13, GroupName = "02. Risk / account")] public bool NewsBlackout { get; set; }
-		[NinjaScriptProperty][Display(Name = "Extra Tier-1 times ET (yyyy-MM-dd HH:mm, comma list)", Order = 14, GroupName = "02. Risk / account")] public string NewsTimes { get; set; }
 		[NinjaScriptProperty][Range(0, 100)][Display(Name = "Eval consistency % (Lucid 50, 0 = off)", Order = 10, GroupName = "02. Risk / account")] public double ConsistencyPct { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: best day so far $ (after a restart)", Order = 11, GroupName = "02. Risk / account")] public double EvalBestDaySoFar { get; set; }
 		[Display(Name = "Show dashboard", Order = 1, GroupName = "03. Display")] public bool ShowDashboard { get; set; }

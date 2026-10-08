@@ -37,9 +37,9 @@ def days_of(per):
     return np.array(sorted(set(dd)))
 
 def module_trades(per, mod, p=None, slip=SLIP, keep=None):
-    """Trades of one module in one period with exit params p; keep: optional boolean function(DataFrame of entries) -> mask."""
+    """Trades of one module in one period with exit params p; keep: optional boolean function(entries DataFrame, dataset name) -> mask."""
     name, lo, hi = PER[per]; D = getD(name); E = entries()[name]; E = E[E["mod"] == mod].sort_values("fi", kind="stable")
-    if keep is not None: E = E[keep(E)]
+    if keep is not None: E = E[keep(E, name)]
     A = arrays(E); norm = per == "L15"
     u, ok, out = sim(A, D, 0.0 if norm else slip, p or {}, norm)
     m = ok & (A["date"] >= lo) & (A["date"] < hi) & (~A["fomc"] if per != "L15" else True)

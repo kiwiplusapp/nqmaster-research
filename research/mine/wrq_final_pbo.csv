@@ -1,0 +1,5 @@
+PBO,median_logit,N,combos,IS_best_sharpe_ann,OOS_sharpe_of_IS_best_ann,prof,sample,cands
+0.162,2.08,9,12870,3.67,3.59,Ultra,CFD 2020-26,"AGR (MOM1030, MOM13), AGR3 (+LATE15), BE, BE + ORBt, BE + ORBt + AGR, ORB0, ORBc, ORBt, base"
+0.795,-0.96,9,12870,4.06,3.68,Ultra,REAL 2024-26,"AGR (MOM1030, MOM13), AGR3 (+LATE15), BE, BE + ORBt, BE + ORBt + AGR, ORB0, ORBc, ORBt, base"
+0.177,1.1,6,12870,3.47,3.36,WR70Plus,CFD 2020-26,"ORB0, ORBc, ORBt, ORBt + VTSO, VTSO, base"
+0.507,-0.34,6,12870,3.57,3.3,WR70Plus,REAL 2024-26,"ORB0, ORBc, ORBt, ORBt + VTSO, VTSO, base"
