@@ -1,0 +1,352 @@
+data loaded 12 s
+REBAL48
+   2015 (15-19 norm) [27, np.float64(40.7), np.float64(0.833)]
+   2016 (15-19 norm) [31, np.float64(41.9), np.float64(1.63)]
+   2017 (15-19 norm) [34, np.float64(44.1), np.float64(1.878)]
+   2018 (15-19 norm) [26, np.float64(38.5), np.float64(1.36)]
+   2019 (15-19 norm) [28, np.float64(35.7), np.float64(1.072)]
+   2020 CFD [30, np.float64(40.0), np.float64(1.429), 827]
+   2021 CFD [30, np.float64(26.7), np.float64(0.382), -1440]
+   2022 CFD [33, np.float64(45.5), np.float64(2.045), 3437]
+   2023 CFD [32, np.float64(43.8), np.float64(1.212), 504]
+   2024 CFD [33, np.float64(51.5), np.float64(1.866), 1946]
+   2025 CFD [32, np.float64(40.6), np.float64(1.255), 865]
+   2026 CFD [26, np.float64(42.3), np.float64(1.291), 1128]
+   2024 REAL [29, np.float64(51.7), np.float64(1.824), 1666]
+   2025 REAL [31, np.float64(35.5), np.float64(0.973), -96]
+   2026 REAL [27, np.float64(40.7), np.float64(1.201), 832]
+  side {'IS': {'short': [74, np.float64(39.2), np.float64(0.91)], 'long': [51, np.float64(39.2), np.float64(1.883)]}, 'C24': {'short': [65, np.float64(47.7), np.float64(1.506)], 'long': [26, np.float64(38.5), np.float64(1.28)]}, 'REAL': {'short': [61, np.float64(44.3), np.float64(1.235)], 'long': [26, np.float64(38.5), np.float64(1.263)]}, '2015-19': {'short': [97, np.float64(42.3), np.float64(1.531)], 'long': [49, np.float64(36.7), np.float64(1.074)]}}
+REBAL49
+   2015 (15-19 norm) [27, np.float64(59.3), np.float64(1.427)]
+   2016 (15-19 norm) [31, np.float64(54.8), np.float64(1.34)]
+   2017 (15-19 norm) [34, np.float64(50.0), np.float64(1.006)]
+   2018 (15-19 norm) [26, np.float64(42.3), np.float64(0.72)]
+   2019 (15-19 norm) [28, np.float64(42.9), np.float64(0.799)]
+   2020 CFD [30, np.float64(63.3), np.float64(1.925), 1234]
+   2021 CFD [30, np.float64(40.0), np.float64(0.711), -535]
+   2022 CFD [33, np.float64(66.7), np.float64(1.969), 2122]
+   2023 CFD [32, np.float64(53.1), np.float64(1.06), 119]
+   2024 CFD [33, np.float64(66.7), np.float64(2.386), 2002]
+   2025 CFD [32, np.float64(56.2), np.float64(1.183), 495]
+   2026 CFD [26, np.float64(57.7), np.float64(1.446), 1239]
+   2024 REAL [29, np.float64(65.5), np.float64(2.259), 1680]
+   2025 REAL [31, np.float64(51.6), np.float64(1.005), 14]
+   2026 REAL [27, np.float64(55.6), np.float64(1.339), 1032]
+  side {'IS': {'short': [74, np.float64(51.4), np.float64(1.061)], 'long': [51, np.float64(62.7), np.float64(1.975)]}, 'C24': {'short': [65, np.float64(63.1), np.float64(1.821)], 'long': [26, np.float64(53.8), np.float64(1.174)]}, 'REAL': {'short': [61, np.float64(59.0), np.float64(1.516)], 'long': [26, np.float64(53.8), np.float64(1.176)]}, '2015-19': {'short': [97, np.float64(52.6), np.float64(1.174)], 'long': [49, np.float64(44.9), np.float64(0.794)]}}
+VR394
+   2015 (15-19 norm) [14, np.float64(57.1), nan]
+   2016 (15-19 norm) [13, np.float64(38.5), nan]
+   2017 (15-19 norm) [29, np.float64(55.2), np.float64(1.42)]
+   2018 (15-19 norm) [18, np.float64(50.0), nan]
+   2019 (15-19 norm) [33, np.float64(48.5), np.float64(1.029)]
+   2020 CFD [34, np.float64(41.2), np.float64(0.782), -447]
+   2021 CFD [35, np.float64(54.3), np.float64(0.845), -220]
+   2022 CFD [27, np.float64(66.7), np.float64(2.562), 2385]
+   2023 CFD [26, np.float64(53.8), np.float64(1.523), 614]
+   2024 CFD [34, np.float64(47.1), np.float64(1.097), 197]
+   2025 CFD [30, np.float64(63.3), np.float64(1.715), 1396]
+   2026 CFD [13, np.float64(46.2), nan, 905]
+   2024 REAL [29, np.float64(48.3), np.float64(1.15), 256]
+   2025 REAL [27, np.float64(59.3), np.float64(1.592), 1267]
+   2026 REAL [10, np.float64(60.0), nan, 766]
+  side {'IS': {'short': [59, np.float64(52.5), np.float64(1.393)], 'long': [63, np.float64(54.0), np.float64(1.363)]}, 'C24': {'short': [37, np.float64(45.9), np.float64(1.188)], 'long': [40, np.float64(60.0), np.float64(2.254)]}, 'REAL': {'short': [32, np.float64(43.8), np.float64(1.029)], 'long': [34, np.float64(64.7), np.float64(2.606)]}, '2015-19': {'short': [53, np.float64(43.4), np.float64(1.104)], 'long': [54, np.float64(57.4), np.float64(1.063)]}}
+XLEAD_ISbest
+   2015 (15-19 norm) [9, np.float64(44.4), nan]
+   2016 (15-19 norm) [8, np.float64(50.0), nan]
+   2017 (15-19 norm) [23, np.float64(47.8), np.float64(0.718)]
+   2018 (15-19 norm) [14, np.float64(57.1), nan]
+   2019 (15-19 norm) [3, np.float64(66.7), nan]
+   2020 CFD [43, np.float64(69.8), np.float64(3.682), 5184]
+   2021 CFD [23, np.float64(60.9), np.float64(2.834), 1558]
+   2022 CFD [10, np.float64(80.0), nan, 1917]
+   2023 CFD [8, np.float64(75.0), nan, 387]
+   2024 CFD [15, np.float64(60.0), nan, 86]
+   2025 CFD [9, np.float64(88.9), nan, 2266]
+   2026 CFD [12, np.float64(83.3), nan, 1480]
+   2024 REAL [14, np.float64(57.1), nan, 111]
+   2025 REAL [8, np.float64(87.5), nan, 1676]
+   2026 REAL [13, np.float64(84.6), nan, 1702]
+  side {'IS': {'short': [44, np.float64(59.1), np.float64(2.475)], 'long': [40, np.float64(80.0), np.float64(6.601)]}, 'C24': {'short': [15, np.float64(73.3), nan], 'long': [21, np.float64(76.2), np.float64(3.34)]}, 'REAL': {'short': [15, np.float64(80.0), nan], 'long': [20, np.float64(70.0), np.float64(2.464)]}, '2015-19': {'short': [29, np.float64(48.3), np.float64(0.709)], 'long': [28, np.float64(53.6), np.float64(0.99)]}}
+{
+"REBAL48": {
+"Ultra_IS": {
+"dsh": 0.053,
+"ci90": [
+-0.098,
+0.202
+],
+"P_gt0": 0.717,
+"add_mo": 85
+},
+"WR70Plus_IS": {
+"dsh": 0.107,
+"ci90": [
+-0.109,
+0.329
+],
+"P_gt0": 0.796,
+"add_mo": 85
+},
+"Ultra_C24": {
+"dsh": 0.119,
+"ci90": [
+-0.058,
+0.308
+],
+"P_gt0": 0.871,
+"add_mo": 130
+},
+"WR70Plus_C24": {
+"dsh": 0.196,
+"ci90": [
+-0.023,
+0.451
+],
+"P_gt0": 0.927,
+"add_mo": 129
+},
+"Ultra_REAL": {
+"dsh": 0.039,
+"ci90": [
+-0.142,
+0.239
+],
+"P_gt0": 0.664,
+"add_mo": 82
+},
+"WR70Plus_REAL": {
+"dsh": 0.105,
+"ci90": [
+-0.135,
+0.373
+],
+"P_gt0": 0.774,
+"add_mo": 82
+}
+},
+"VR394": {
+"Ultra_IS": {
+"dsh": 0.023,
+"ci90": [
+-0.071,
+0.115
+],
+"P_gt0": 0.658,
+"add_mo": 54
+},
+"WR70Plus_IS": {
+"dsh": 0.062,
+"ci90": [
+-0.07,
+0.204
+],
+"P_gt0": 0.789,
+"add_mo": 54
+},
+"Ultra_C24": {
+"dsh": 0.052,
+"ci90": [
+-0.053,
+0.157
+],
+"P_gt0": 0.788,
+"add_mo": 76
+},
+"WR70Plus_C24": {
+"dsh": 0.081,
+"ci90": [
+-0.056,
+0.219
+],
+"P_gt0": 0.834,
+"add_mo": 76
+},
+"Ultra_REAL": {
+"dsh": 0.05,
+"ci90": [
+-0.066,
+0.159
+],
+"P_gt0": 0.747,
+"add_mo": 77
+},
+"WR70Plus_REAL": {
+"dsh": 0.08,
+"ci90": [
+-0.074,
+0.238
+],
+"P_gt0": 0.803,
+"add_mo": 72
+}
+},
+"REBAL48+VR394": {
+"Ultra_IS": {
+"dsh": 0.047,
+"ci90": [
+-0.127,
+0.215
+],
+"P_gt0": 0.654,
+"add_mo": 139
+},
+"WR70Plus_IS": {
+"dsh": 0.115,
+"ci90": [
+-0.116,
+0.346
+],
+"P_gt0": 0.78,
+"add_mo": 138
+},
+"Ultra_C24": {
+"dsh": 0.175,
+"ci90": [
+-0.018,
+0.375
+],
+"P_gt0": 0.934,
+"add_mo": 206
+},
+"WR70Plus_C24": {
+"dsh": 0.28,
+"ci90": [
+0.024,
+0.562
+],
+"P_gt0": 0.965,
+"add_mo": 205
+},
+"Ultra_REAL": {
+"dsh": 0.094,
+"ci90": [
+-0.111,
+0.308
+],
+"P_gt0": 0.779,
+"add_mo": 159
+},
+"WR70Plus_REAL": {
+"dsh": 0.191,
+"ci90": [
+-0.076,
+0.482
+],
+"P_gt0": 0.877,
+"add_mo": 154
+}
+},
+"REBAL49+VR394": {
+"Ultra_IS": {
+"dsh": 0.141,
+"ci90": [
+-0.005,
+0.296
+],
+"P_gt0": 0.946,
+"add_mo": 121
+},
+"WR70Plus_IS": {
+"dsh": 0.2,
+"ci90": [
+-0.003,
+0.417
+],
+"P_gt0": 0.948,
+"add_mo": 121
+},
+"Ultra_C24": {
+"dsh": 0.191,
+"ci90": [
+0.017,
+0.385
+],
+"P_gt0": 0.968,
+"add_mo": 185
+},
+"WR70Plus_C24": {
+"dsh": 0.257,
+"ci90": [
+0.049,
+0.454
+],
+"P_gt0": 0.978,
+"add_mo": 185
+},
+"Ultra_REAL": {
+"dsh": 0.152,
+"ci90": [
+-0.021,
+0.347
+],
+"P_gt0": 0.922,
+"add_mo": 161
+},
+"WR70Plus_REAL": {
+"dsh": 0.215,
+"ci90": [
+-0.009,
+0.447
+],
+"P_gt0": 0.94,
+"add_mo": 156
+}
+},
+"NOISE259": {
+"Ultra_IS": {
+"dsh": -0.001,
+"ci90": [
+-0.117,
+0.113
+],
+"P_gt0": 0.495,
+"add_mo": 136
+},
+"WR70Plus_IS": {
+"dsh": 0.022,
+"ci90": [
+-0.134,
+0.184
+],
+"P_gt0": 0.593,
+"add_mo": 136
+},
+"Ultra_C24": {
+"dsh": -0.005,
+"ci90": [
+-0.126,
+0.121
+],
+"P_gt0": 0.49,
+"add_mo": 160
+},
+"WR70Plus_C24": {
+"dsh": 0.059,
+"ci90": [
+-0.096,
+0.211
+],
+"P_gt0": 0.722,
+"add_mo": 159
+},
+"Ultra_REAL": {
+"dsh": 0.003,
+"ci90": [
+-0.118,
+0.121
+],
+"P_gt0": 0.511,
+"add_mo": 172
+},
+"WR70Plus_REAL": {
+"dsh": 0.072,
+"ci90": [
+-0.085,
+0.226
+],
+"P_gt0": 0.781,
+"add_mo": 171
+}
+}
+}
+{'CRT11': -0.06, 'ICT': 0.161, 'LON': 0.049, 'MOM1030': 0.096, 'MOM11': 0.116, 'MOM13': -0.014, 'MSEQ': -0.007, 'MSEQS': 0.108, 'ON07': 0.001, 'ORB60': 0.089, 'ORB90': 0.096, 'REV06': -0.052, 'VOLB': 0.547, 'VW13': -0.0}

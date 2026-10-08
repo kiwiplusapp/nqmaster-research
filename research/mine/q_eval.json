@@ -1,0 +1,354 @@
+{
+ "tested": {
+  "Q_CAL": 396,
+  "Q_GAPVOL": 108,
+  "Q_NOISE": 288,
+  "Q_REBAL": 144,
+  "Q_RELSTR": 576,
+  "Q_SEASON": 192,
+  "Q_TSMOM": 288,
+  "Q_VR": 576,
+  "Q_XLEAD": 216
+ },
+ "total_configs": 2784,
+ "funnel": {
+  "Q_CAL": {
+   "configs": 396,
+   "robust": 2,
+   "plus4ticks": 2,
+   "plateau": 0
+  },
+  "Q_GAPVOL": {
+   "configs": 108,
+   "robust": 0,
+   "plus4ticks": 0,
+   "plateau": 0
+  },
+  "Q_NOISE": {
+   "configs": 288,
+   "robust": 87,
+   "plus4ticks": 87,
+   "plateau": 87
+  },
+  "Q_REBAL": {
+   "configs": 144,
+   "robust": 2,
+   "plus4ticks": 2,
+   "plateau": 1
+  },
+  "Q_RELSTR": {
+   "configs": 576,
+   "robust": 2,
+   "plus4ticks": 2,
+   "plateau": 0
+  },
+  "Q_SEASON": {
+   "configs": 192,
+   "robust": 0,
+   "plus4ticks": 0,
+   "plateau": 0
+  },
+  "Q_TSMOM": {
+   "configs": 288,
+   "robust": 6,
+   "plus4ticks": 6,
+   "plateau": 6
+  },
+  "Q_VR": {
+   "configs": 576,
+   "robust": 2,
+   "plus4ticks": 2,
+   "plateau": 2
+  },
+  "Q_XLEAD": {
+   "configs": 216,
+   "robust": 2,
+   "plus4ticks": 2,
+   "plateau": 0
+  }
+ },
+ "median_pf": {
+  "Q_CAL": {
+   "IS_pf": 0.966,
+   "C24_pf": 0.992,
+   "REAL_pf": 1.04,
+   "TR_pf": 0.97
+  },
+  "Q_GAPVOL": {
+   "IS_pf": 0.943,
+   "C24_pf": 0.961,
+   "REAL_pf": 0.962,
+   "TR_pf": 0.991
+  },
+  "Q_NOISE": {
+   "IS_pf": 1.312,
+   "C24_pf": 1.24,
+   "REAL_pf": 1.296,
+   "TR_pf": 1.239
+  },
+  "Q_REBAL": {
+   "IS_pf": 0.957,
+   "C24_pf": 0.943,
+   "REAL_pf": 0.917,
+   "TR_pf": 1.023
+  },
+  "Q_RELSTR": {
+   "IS_pf": 0.964,
+   "C24_pf": 0.942,
+   "REAL_pf": 0.97,
+   "TR_pf": 0.974
+  },
+  "Q_SEASON": {
+   "IS_pf": 0.913,
+   "C24_pf": 0.96,
+   "REAL_pf": 0.948,
+   "TR_pf": 0.962
+  },
+  "Q_TSMOM": {
+   "IS_pf": 1.084,
+   "C24_pf": 1.024,
+   "REAL_pf": 1.046,
+   "TR_pf": 1.078
+  },
+  "Q_VR": {
+   "IS_pf": 1.088,
+   "C24_pf": 0.976,
+   "REAL_pf": 0.96,
+   "TR_pf": 0.833
+  },
+  "Q_XLEAD": {
+   "IS_pf": 0.989,
+   "C24_pf": 0.943,
+   "REAL_pf": 0.936,
+   "TR_pf": 1.069
+  }
+ },
+ "is_selected": {
+  "Q_CAL": {
+   "params": "{'ev': 'TOMFIRST', 'A': 1801, 'X': 1555, 'k': 1.0, 'R': 99.0}",
+   "IS_n": 94.0,
+   "IS_wr": 58.5,
+   "IS_pf": 1.714,
+   "C24_n": 52.0,
+   "C24_wr": 57.7,
+   "C24_pf": 1.017,
+   "REAL_n": 64.0,
+   "REAL_wr": 59.4,
+   "REAL_pf": 1.109,
+   "TR_n": 117.0,
+   "TR_wr": 47.9,
+   "TR_pf": 0.908,
+   "IS_sharpe": 1.01
+  },
+  "Q_GAPVOL": {
+   "params": "{'x': 0.2, 'reg': 1, 'mode': 'CONT2', 'k': 0.2, 'tf': 1}",
+   "IS_n": 117.0,
+   "IS_wr": 41.9,
+   "IS_pf": 1.456,
+   "C24_n": 87.0,
+   "C24_wr": 33.3,
+   "C24_pf": 0.973,
+   "REAL_n": 54.0,
+   "REAL_wr": 31.5,
+   "REAL_pf": 0.858,
+   "TR_n": 117.0,
+   "TR_wr": 37.6,
+   "TR_pf": 0.959,
+   "IS_sharpe": 0.9
+  },
+  "Q_NOISE": {
+   "params": "{'L': 10, 'm': 1.0, 'f': 60, 'trail': 1, 'hs': 99.0, 'tf': 0, 'maxday': 3, 'side': 0}",
+   "IS_n": 706.0,
+   "IS_wr": 47.6,
+   "IS_pf": 1.386,
+   "C24_n": 485.0,
+   "C24_wr": 43.9,
+   "C24_pf": 1.171,
+   "REAL_n": 453.0,
+   "REAL_wr": 45.0,
+   "REAL_pf": 1.202,
+   "TR_n": 914.0,
+   "TR_wr": 42.8,
+   "TR_pf": 1.241,
+   "IS_sharpe": 1.58
+  },
+  "Q_REBAL": {
+   "params": "{'K': 3, 'x': 0.5, 'A': 931, 'mode': -1, 'k': 0.3, 'R': 1.0}",
+   "IS_n": 125.0,
+   "IS_wr": 56.0,
+   "IS_pf": 1.401,
+   "C24_n": 91.0,
+   "C24_wr": 60.4,
+   "C24_pf": 1.539,
+   "REAL_n": 87.0,
+   "REAL_wr": 57.5,
+   "REAL_pf": 1.374,
+   "TR_n": 146.0,
+   "TR_wr": 50.0,
+   "TR_pf": 1.026,
+   "IS_sharpe": 0.88
+  },
+  "Q_RELSTR": {
+   "params": "{'T': 1200, 'sig': 'RS', 'x': 0.2, 'mode': -1, 'k': 0.2, 'R': 0.5, 'tf': 1}",
+   "IS_n": 138.0,
+   "IS_wr": 78.3,
+   "IS_pf": 1.889,
+   "C24_n": 94.0,
+   "C24_wr": 60.6,
+   "C24_pf": 0.773,
+   "REAL_n": 80.0,
+   "REAL_wr": 65.0,
+   "REAL_pf": 0.989,
+   "TR_n": 177.0,
+   "TR_wr": 67.2,
+   "TR_pf": 0.998,
+   "IS_sharpe": 1.65
+  },
+  "Q_SEASON": {
+   "params": "{'Ls': 30, 'N': 60, 'wd': 0, 'th': 2.0, 'mode': -1, 'k': 0.3}",
+   "IS_n": 589.0,
+   "IS_wr": 48.4,
+   "IS_pf": 1.152,
+   "C24_n": 412.0,
+   "C24_wr": 47.8,
+   "C24_pf": 0.88,
+   "REAL_n": 420.0,
+   "REAL_wr": 46.2,
+   "REAL_pf": 0.85,
+   "TR_n": 485.0,
+   "TR_wr": 49.1,
+   "TR_pf": 1.107,
+   "IS_sharpe": 0.58
+  },
+  "Q_TSMOM": {
+   "params": "{'L': 20, 'A': 1801, 'v': 1.0, 'k': 0.3, 'R': 99.0, 'side': 1}",
+   "IS_n": 376.0,
+   "IS_wr": 37.8,
+   "IS_pf": 1.371,
+   "C24_n": 162.0,
+   "C24_wr": 34.6,
+   "C24_pf": 1.194,
+   "REAL_n": 222.0,
+   "REAL_wr": 38.7,
+   "REAL_pf": 1.336,
+   "TR_n": 485.0,
+   "TR_wr": 36.5,
+   "TR_pf": 1.107,
+   "IS_sharpe": 1.21
+  },
+  "Q_VR": {
+   "params": "{'T': 1100, 'q': 15, 'reg': 'MOM', 'thr': 0, 'x': 0.1, 'k': 0.35, 'R': 1.0, 'tf': 0}",
+   "IS_n": 155.0,
+   "IS_wr": 62.6,
+   "IS_pf": 1.654,
+   "C24_n": 116.0,
+   "C24_wr": 49.1,
+   "C24_pf": 1.038,
+   "REAL_n": 108.0,
+   "REAL_wr": 49.1,
+   "REAL_pf": 1.164,
+   "TR_n": 173.0,
+   "TR_wr": 46.8,
+   "TR_pf": 0.844,
+   "IS_sharpe": 1.39
+  },
+  "Q_XLEAD": {
+   "params": "{'asset': 'ES', 'W': 30, 'th': 2.0, 'mode': 1, 'H': 60, 'k': 0.3}",
+   "IS_n": 83.0,
+   "IS_wr": 69.9,
+   "IS_pf": 3.61,
+   "C24_n": 36.0,
+   "C24_wr": 75.0,
+   "C24_pf": 3.18,
+   "REAL_n": 35.0,
+   "REAL_wr": 74.3,
+   "REAL_pf": 3.071,
+   "TR_n": 57.0,
+   "TR_wr": 50.9,
+   "TR_pf": 0.835,
+   "IS_sharpe": 2.03
+  }
+ },
+ "pbo": {
+  "Q_CAL": {
+   "PBO": 0.209,
+   "median_logit": 1.81,
+   "N": 396,
+   "combos": 12870,
+   "IS_sharpe_best": 1.36,
+   "OOS_sharpe_of_best": 0.44
+  },
+  "Q_GAPVOL": {
+   "PBO": 0.637,
+   "median_logit": -0.36,
+   "N": 108,
+   "combos": 12870,
+   "IS_sharpe_best": 0.97,
+   "OOS_sharpe_of_best": -0.28
+  },
+  "Q_NOISE": {
+   "PBO": 0.592,
+   "median_logit": -0.24,
+   "N": 288,
+   "combos": 12870,
+   "IS_sharpe_best": 1.53,
+   "OOS_sharpe_of_best": 0.79
+  },
+  "Q_REBAL": {
+   "PBO": 0.211,
+   "median_logit": 1.4,
+   "N": 144,
+   "combos": 12870,
+   "IS_sharpe_best": 1.2,
+   "OOS_sharpe_of_best": 0.3
+  },
+  "Q_RELSTR": {
+   "PBO": 0.533,
+   "median_logit": -0.12,
+   "N": 576,
+   "combos": 12870,
+   "IS_sharpe_best": 1.49,
+   "OOS_sharpe_of_best": -0.15
+  },
+  "Q_SEASON": {
+   "PBO": 0.469,
+   "median_logit": 0.11,
+   "N": 192,
+   "combos": 12870,
+   "IS_sharpe_best": 0.98,
+   "OOS_sharpe_of_best": -0.39
+  },
+  "Q_TSMOM": {
+   "PBO": 0.329,
+   "median_logit": 0.83,
+   "N": 288,
+   "combos": 12870,
+   "IS_sharpe_best": 1.25,
+   "OOS_sharpe_of_best": 0.38
+  },
+  "Q_VR": {
+   "PBO": 0.427,
+   "median_logit": 0.27,
+   "N": 576,
+   "combos": 12870,
+   "IS_sharpe_best": 1.63,
+   "OOS_sharpe_of_best": 0.1
+  },
+  "Q_XLEAD": {
+   "PBO": 0.022,
+   "median_logit": 5.37,
+   "N": 216,
+   "combos": 12870,
+   "IS_sharpe_best": 1.75,
+   "OOS_sharpe_of_best": 1.45
+  },
+  "ALL": {
+   "PBO": 0.147,
+   "median_logit": 1.96,
+   "N": 2784,
+   "combos": 12870,
+   "IS_sharpe_best": 1.94,
+   "OOS_sharpe_of_best": 0.78
+  }
+ }
+}
