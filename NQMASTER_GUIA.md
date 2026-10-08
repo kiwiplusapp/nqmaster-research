@@ -644,3 +644,43 @@ Todas las mezclas se miden igual: Lucid 50K, aprobar en ≤20 días, simulación
 
 - **El win rate sí se puede subir a 75-80%,** achicando los objetivos de ganancia. Pero cada ganancia es más chica y el profit factor baja, así que se aprueba igual o menos.
 - **La búsqueda directa** probó 30 arranques sobre 23 módulos, cada uno con sus objetivos y tamaños. En 2020-23 llega a 55%, pero fuera de muestra vuelve a 39-45%, lo mismo que tu perfil: es sobreajuste. No se cambia el perfil.
+
+## ★ Evaluación con 1 contrato: modo Estable (2026-10-08)
+Pedido: aprobar ~84% de las evaluaciones con 1 contrato y tardar menos de ~6 semanas.
+
+**Qué hace.** Mientras la cuenta tiene colchón (≥ $1.200 sobre el umbral de pérdida), opera Ultra completo con los módulos nocturnos. Si el colchón baja de $1.200, ese día opera solo los módulos más estables, sin multiplicador x2:
+- CRT11, ORB90, MSEQ, ON07, REV06, VW13, ENG10 y LATEFH;
+- VOLB, solo a favor de la tendencia y con objetivo 0,5R.
+
+El oro sigue operando todo el tiempo.
+
+### Configuración
+| Dónde | Ajuste |
+|---|---|
+| NQMaster (MNQ 1 min) | Profile **Ultra**, Contracts **1**, AdaptiveSize **false**, DailyLossLimit **0** |
+| NQMaster, grupo 07 | PropMode **Eval**, EvalTarget **3000**, Trailing drawdown **2000**, Eval: full mode when cushion ≥ **1200**, Eval: modules below the cushion **Estable**, EvalProfitStop **1400**, ConsistencyPct **50**, AtrStartMax **1.15** |
+| GoldMaster (MGC 1 min) | Profile **WinRate**, Contracts **2** |
+| Arranque | Comprá o empezá la evaluación **solo el día en que el panel diga "OK to start a new eval"**: el ATR del día es menor a 1,15 veces su mediana de 60 días, y pasa en ~7 de cada 10 días. |
+
+### Resultado (simulación exacta minuto a minuto, Lucid Flex 50K, cada día posible de inicio)
+| Plan | Aprueba CFD 2024-26 | Aprueba MNQ real 2024-26 | Aprueba CFD 2020-23 | Mediana de días hábiles |
+|---|---|---|---|---|
+| Hoy (WR70Plus + noche + oro WinRate, 1 contrato) | 57-65% | 75-76% | 95% | 25-35 |
+| **Modo Estable, cambio a $1.200 (recomendado)** | **92%** | **83%** | **96%** | **28-32** |
+| Modo Estable, cambio a $1.500 (más seguro, más lento) | 93% | 91% | 96% | 34-36 |
+| 2 contratos con modo Estable | 47-58% | 55-61% | 62-74% | 10-14 |
+
+- **Prueba de remuestreo** (2.000 historias armadas con bloques de 20 días): el plan aprueba con una mediana de ~73-78%, en un rango de 55-90%, y le gana al de hoy en ~2 de cada 3 historias. El 84% no está garantizado: depende del mercado de esas semanas.
+- **El cambio está en cuántas se aprueban, no en la velocidad.** Con 1 contrato la ganancia es de ~$100-150 por día, así que llegar a $3.000 lleva ~4-6 semanas igual. Con 2 contratos se tarda la mitad, pero se aprueba ~55%.
+
+### Probado y descartado
+- **Buscar en 2020-23 qué módulos usar en cada modo y con qué peso:** 97-98% en esos años, 56-81% fuera de muestra. Es sobreajuste.
+- **2 contratos desde el arranque o después del bloqueo:** quema más evaluaciones.
+- **Minería completa sobre el S&P (MES, 45.278 configuraciones, `results_es.csv`, `es_check.py`):** ningún candidato sobrevive a 2015-19 más 4 ticks de costo. En MES el costo es 1,27% del rango diario, contra 0,41% en MNQ.
+
+### Para probarlo en Strategy Analyzer
+- El cambio de modo usa la ganancia de NQMaster desde su primer trade.
+- Para ver una evaluación, empezá la prueba ~2 meses antes del día de inicio (NQMaster necesita ~25 días de mercado de arranque).
+- En una prueba de años, una vez que la ganancia pasa $2.100 el umbral queda fijo y la estrategia opera siempre en modo completo.
+
+Scripts: `research/mine/fast1c.py`, `gate84.py`, `gate84b.py`, `gate84c.py`, `gate_joint.py`, `gate_start.py`, `gate_impl.py`, `gate_struct.py`, `gate_final.py` (con remuestreo), `gate_lo.py`, `gate_g.py`, `gate_k2.py`. Backup: `NQMaster_backup_pre_estable.cs`.

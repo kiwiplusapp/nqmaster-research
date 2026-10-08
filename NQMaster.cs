@@ -45,6 +45,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 {
 	public enum NQMasterProfile { MaxSharpe, WinRate70, Gold, Custom, MaxTrades, MaxPlus, MaxPlus2, Ultra, WR70Plus, Core }
 	public enum NQMasterPropMode { Off, Eval, Funded }
+	public enum NQMasterSafeSet { Classic, Estable }
 
 	public class NQMaster : Strategy
 	{
@@ -73,7 +74,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private Mod orb, orb2, mseq, mseqs, crt, lon, ict, rsi, volb, eng10;
 		private double rthFirstClose = double.NaN;
 		private double e10aO, e10aH, e10aL, e10aC, e10bO, e10bH, e10bL, e10bC, close10 = double.NaN; private bool e10aHas, e10bHas, eng10Done;
-		private double volbUp = double.NaN, volbDn = double.NaN; private bool volbDone, volbTrendOnly;
+		private double volbUp = double.NaN, volbDn = double.NaN; private bool volbDone, volbTrendOnly, volbTrendBase; private double volbRBase = 2.0;
 		private List<Order> zombies = new List<Order>(); private int zombieCount;	// entry orders NinjaTrader never processed (PurgeStaleEntries)
 		private int orbFirstDir, orbFirstMin = 9999;
 		private int m11Dir, onSum, lonDir;	// confluence state (MOM11 direction, overnight modules ON07/REV06/LON)
@@ -147,7 +148,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				PauseFile = "pause_trading.txt"; ShowDashboard = true; PrintLog = true;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0;
 				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 0; EvalDailyStop = 0; FundedCushionSafe = 750; FundedPayoutAt = 5000; FundedHighFull = true; FundedCushionFull = 0;
-				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400;
+				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400; EvalSafeSet = NQMasterSafeSet.Estable;
 			}
 			else if (State == State.Configure)
 			{
@@ -225,7 +226,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Mod lf06 = AddTime("LF06", (custom ? UseLf06 : (ul || (w7 && NightOnWr70)) && UseLf06), 600, -5, true, 0.20, 0.5, 240, false, false); lf06.MinDist = 0.20; lf06.Anchor = 4 * 60;
 			Mod lf0430 = AddTime("LF0430", (custom ? UseLf0430 : (ul || (w7 && NightOnWr70)) && UseLf0430), 430, -5, true, 0.35, 0.5, 240, true, false); lf0430.MinDist = 0.10; lf0430.Anchor = 4 * 60;
 			eng10 = NewMod("ENG10", (custom ? UseEng10 : ul && UseEng10), 0.5); eng10.PriceTarget = true; eng10.MaxHold = 400;
-			volb = NewMod("VOLB", (custom ? UseVolBreak : (ul || w7 || core) && UseVolBreak), w7 ? 0.5 : 2.0); volb.PriceTarget = true; volb.MaxHold = 400; volbTrendOnly = w7;
+			volb = NewMod("VOLB", (custom ? UseVolBreak : (ul || w7 || core) && UseVolBreak), w7 ? 0.5 : 2.0); volb.PriceTarget = true; volb.MaxHold = 400; volbTrendOnly = w7; volbTrendBase = volbTrendOnly; volbRBase = volb.R;
 			rsi = NewMod("RSI2", (custom ? UseRsi2 : (mt) && UseRsi2), 0.3); rsi.StopAtr = 0.15; rsi.MaxHold = 120;
 			StringBuilder sb = new StringBuilder();
 			foreach (Mod m in mods) if (m.On) sb.Append(m.Sig + " ");
@@ -963,8 +964,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 				else gate = propCushion >= FundedCushionSafe ? (FundedHighFull ? GateMode.Full : GateMode.NoBoost) : GateMode.Safe;
 				noBoost = gate != GateMode.Full;
 			}
+			// Eval SAFE gear "Estable" (research/mine/gate84.py -> gate_lo.py, gate_final.py): below the cushion only the stable modules trade,
+			// no x2, VOLB trend-only at 0.5R. Lucid 50K, 1 contract, Ultra above $1,200 cushion, gold WinRate x2, eval started on an
+			// ATR < 1.15 day: pass 92% / 83% / 96% (CFD 2024-26 / MNQ 2024-26 / CFD 2020-23) vs 57-65% / 75-76% / 95% without gating.
+			bool estable = PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable;
 			foreach (Mod m in mods)
-				m.On = m.BaseOn && !(gate == GateMode.Safe && (m.Sig == "VOLB" || m.Sig == "LON" || m.Sig == "MOM1030" || m.Sig == "MOM11"));
+				m.On = m.BaseOn && (estable ? EstableSig(m.Sig)
+					: !(gate == GateMode.Safe && (m.Sig == "VOLB" || m.Sig == "LON" || m.Sig == "MOM1030" || m.Sig == "MOM11")));
+			if (volb != null) { volbTrendOnly = estable || volbTrendBase; volb.R = estable ? 0.5 : volbRBase; }
 			atrStartRatio = double.NaN;
 			if (atrHist != null && atrHist.Count >= 20 && !double.IsNaN(todayAtr) && todayAtr > 0)
 			{
@@ -972,6 +979,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double med = nn % 2 == 1 ? srt[nn / 2] : 0.5 * (srt[nn / 2 - 1] + srt[nn / 2]); atrStartRatio = med > 0 ? todayAtr / med : double.NaN;
 			}
 			if (PropMode != NQMasterPropMode.Off) Log(string.Format("PROP {0}: equity {1:0} | threshold {2:0} | cushion {3:0} -> {4}", PropMode, PropEquity(), propThr, propCushion, gate));
+		}
+		private static bool EstableSig(string s)
+		{
+			return s == "CRT11" || s == "ORB90" || s == "MSEQ" || s == "ON07" || s == "REV06" || s == "VOLB" || s == "VW13" || s == "ENG10" || s == "LATEFH";
 		}
 		private void PropDailyCheck()
 		{
@@ -1253,7 +1264,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				totalTrades, totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
 			if (zombieCount > 0) txt += string.Format("\nStale orders dropped: {0} (see Output)", zombieCount);
 			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / edgeH, edgeDays, edgeAlarm ? " | ALARM" : "");
-			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1} | cushion ${2:0} (threshold ${3:0})", PropMode, gate, propCushion, propThr);
+			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1}{4} | cushion ${2:0} (threshold ${3:0})", PropMode, gate, propCushion, propThr,
+				PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable ? " (Estable)" : "");
 			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += string.Format("\nPAYOUT: profit >= ${0:0} -> request it", FundedPayoutAt);
 			if (AtrStartMax > 0 && !double.IsNaN(atrStartRatio)) txt += string.Format("\nATR ratio {0:0.00}: {1}", atrStartRatio, atrStartRatio < AtrStartMax ? "OK to start a new eval" : "do NOT start a new eval today");
 			Draw.TextFixed(this, "NQM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
@@ -1326,6 +1338,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Prop mode (Off / Eval / Funded)", Order = 1, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropMode PropMode { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Trailing drawdown $ (EOD, locks at start+100)", Order = 2, GroupName = "07. Prop account (cushion gating)")] public double PropTrailingDD { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: full mode when cushion >= $", Order = 3, GroupName = "07. Prop account (cushion gating)")] public double EvalCushionFull { get; set; }
+		[NinjaScriptProperty][Display(Name = "Eval: modules below the cushion (Estable = stable set, recommended; Classic = old SAFE)", Order = 3, GroupName = "07. Prop account (cushion gating)")] public NQMasterSafeSet EvalSafeSet { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: account daily stop $ (0 = off)", Order = 4, GroupName = "07. Prop account (cushion gating)")] public double EvalDailyStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: safe mode when cushion < $", Order = 5, GroupName = "07. Prop account (cushion gating)")] public double FundedCushionSafe { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: request payout at profit >= $", Order = 6, GroupName = "07. Prop account (cushion gating)")] public double FundedPayoutAt { get; set; }

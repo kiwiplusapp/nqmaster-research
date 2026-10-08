@@ -100,3 +100,8 @@ El vigilante descarta una entrada en estos casos:
 Cuando descarta una, imprime `STALE ORDER dropped (...)` en Output. Al pasar a tiempo real, una entrada que siga Initialized se cancela y no se envía.
 
 Backup: `GoldMaster_backup_pre_zombie.cs`.
+
+## Evaluación con 1 contrato en NQ (2026-10-08)
+En el plan con modo Estable de NQMaster (ver `NQMASTER_GUIA.md`), GoldMaster va con Profile **WinRate** y **Contracts 2** durante toda la evaluación.
+
+Sus módulos OD1030 y ENG0408 tienen la mejor relación entre ganancia y riesgo en los tres períodos, y casi no se mueven junto con NQ (correlación 0,0-0,1). Por eso suman velocidad sin bajar el porcentaje de aprobación.

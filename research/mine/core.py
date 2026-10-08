@@ -19,7 +19,7 @@ def S(hhmm):                      # ET HHMM -> session minute
 class Data:
     def __init__(self, name):
         D = load(name); self.name = name
-        self.pv = 4.0 if name.startswith(("xau", "mgc", "wti", "mcl")) else 2.0; self.comm = 1.9      # $ per research point (gold x2.5: tick 0.25 = $1 MGC)
+        self.pv = 4.0 if name.startswith(("xau", "mgc", "wti", "mcl")) else (5.0 if name.startswith(("es_", "mes", "spx")) else 2.0); self.comm = 1.9      # $ per research point (gold x2.5: tick 0.25 = $1 MGC; MES $5)
         self.o, self.h, self.l, self.c = [np.ascontiguousarray(D[k], dtype=np.float64) for k in "ohlc"]
         self.v = np.maximum(np.asarray(D["v"], np.float64), 1e-9)
         self.om = D["om"].astype(np.int64); self.day = D["dayid"].astype(np.int64); self.date = D["date"].astype(np.int64)
@@ -162,7 +162,7 @@ def split_stats(name, df):
         parts = (("G1", (df.date >= 20100201) & (df.date < 20150101)), ("G2", (df.date >= 20150101) & (df.date < 20200101)), ("T1", (df.date >= 20200101) & (df.date < 20240101)), ("T2", df.date >= 20240101))
     elif name.startswith("nqhd_long"):
         parts = (("TR", (df.date >= 20150201) & (df.date < 20200101)), ("T1", (df.date >= 20200101) & (df.date < 20240101)), ("T2", df.date >= 20240101))
-    elif name.startswith(("nq_1m", "xau", "wti")):
+    elif name.startswith(("nq_1m", "xau", "wti", "es_hd")):
         parts = (("IS", (df.date >= 20200201) & (df.date < 20240101)), ("C24", df.date >= 20240101))
     else:
         parts = (("REAL", df.date >= 20240201),)
