@@ -762,3 +762,81 @@ La evaluación es la misma (LucidPro 50K, 4 contratos, Ultra) y solo cambia la f
 | WR70Plus 1c, sin tope | $990 | $813 | 0,7 | 7,5 |
 
 WR70Plus con 1 contrato quema muy pocas fondeadas, pero deja ~38% menos plata: cada retiro tarda más en juntarse. Si lo que importa es el ingreso, va Ultra con 2 contratos y tope de $400-500. Si importa quemar poco, va WR70Plus con 1 contrato (Profile WR70Plus + NightOnWr70, Contracts 1, FundedProfitStop 0; GoldMaster WinRate 1).
+
+## ★ 2026-10-08 research round (English): trade quality, quant strategies, overfitting audit, prop firms
+Five parallel studies. Files: `research/mine/wrq_*` (trade quality), `q_*` (quant literature), `audit_*` (overfitting audit),
+`acct1c_*` (1-contract account economics), `mffu_*` and `news_cost*` (MyFundedFutures), prop-firm survey notes in
+`research/mine/propfirms_2026.md`.
+
+### 1. New rules in NQMaster (group 02, all ON by default)
+| Property | Rule | Effect (IS / CFD 2024-26 / MNQ 2024-26) |
+|---|---|---|
+| `OrbPriorCloseAtr` = 0.10 | ORB60 / ORB90 only trade when the breakout level is >= 0.10 x daily ATR beyond the prior RTH close in the trade direction (-1 = off) | ORB60 PF 1.62/1.60/1.56 -> 1.92/1.81/2.05; ORB90 1.43/1.31/1.38 -> 1.87/1.48/1.75 |
+| `VolbBreakEven` = true | VOLB 2R (Ultra): stop to entry + 0.10R once price reaches +0.75R | VOLB WR 52/51/50% -> 61/62/61%, PF 1.25/1.52/1.50 -> 1.30/1.66/1.57 |
+| `MomAgreement` = true | MOM1030 / MOM13 (Ultra) only enter when another module already holds a filled position the same way | MOM1030 PF 1.08/1.13/1.17 -> 1.34/1.46/1.71 (2015-19 0.89 -> 1.21); MOM13 1.31/1.17/1.19 -> 1.54/1.45/1.51 |
+| `VolbTrendLastEntry` = 1047 | trend-only VOLB (WR70Plus, Estable gear): no entry after 10:47 ET (0 = off) | VOLB_tf1 PF 1.47/1.24/1.20 -> 1.72/1.34/1.31 |
+
+Portfolio (1 base contract, $1.90 + 1 tick, FOMC skipped):
+| | WR IS / C24 / REAL | PF IS / C24 / REAL | Sharpe | $/month REAL |
+|---|---|---|---|---|
+| Ultra before | 65.0 / 63.3 / 63.8 | 1.42 / 1.42 / 1.45 | 3.31 / 3.49 / 3.70 | 2,711 |
+| **Ultra now** | **66.6 / 64.9 / 65.8** | **1.50 / 1.50 / 1.54** | 3.71 / 3.70 / 3.95 | 2,707 |
+| Ultra now, lean (`UseOn07`, `UseLateFh`, `UseEng10` = false) | 67.5 / 65.8 / 66.8 | 1.52 / 1.53 / 1.57 | 3.60 / 3.69 / 3.92 | 2,534 (max DD -11%) |
+| WR70Plus before | 70.6 / 68.0 / 68.8 | 1.52 / 1.41 / 1.46 | 3.36 / 2.88 / 3.15 | 1,769 |
+| **WR70Plus now** | **71.3 / 68.8 / 69.8** | **1.61 / 1.45 / 1.53** | 3.86 / 3.08 / 3.50 | 1,751 |
+Only these 4 of ~2,550 tested exit / filter changes survived (IS -> OOS correlation of PF gains ~0.0-0.1; PBO ~0.56 for
+'pick the best exit / filter'): smaller targets raise WR mechanically but not PF. Lean Ultra: the audit rates ON07, LATEFH and
+ENG10 as chance-level evidence (isolated parameter cells, profit concentrated in one year); dropping them costs 6-8% of $ but
+raises WR and PF and lowers drawdown.
+
+### 2. Quant strategies from the literature (q_*): nothing to add
+9 new families (2,784 configs): noise-area intraday momentum (Zarattini 2024; real on NQ but it duplicates VOLB), pre-FOMC drift,
+turn of month, pre-holiday, rebalancing flows, same-half-hour persistence, time-series momentum, variance-ratio regimes, NQ-vs-ES
+relative strength, cross-asset lead-lag (1-minute lagged correlation 0.005-0.01). Two thin survivors (month-end rebalancing fade,
+afternoon variance-ratio momentum) add +0.02..+0.2 Sharpe with confidence intervals including 0 and WR 40-55% -> not added.
+"Quantum" trading: no demonstrated, implementable edge (best-known claim: HSBC + IBM 2025 on bond quote fill rates).
+
+### 3. Overfitting audit (audit_*)
+- Profiles pass the deflated Sharpe test at 300k trials (Ultra 1.00 CFD / 0.93 REAL); every year 2020-26 positive.
+- Modules are weaker than their backtests: in most mined families the IS-best config has ~0 out-of-sample Sharpe.
+  Strong: CRT11, MSEQ, ORB60, VOLB, LON, NF05, LF06. Watch: ICT x2 (2026 PF 0.73), MOM11, ORB90, VW13, REV06, LATE15, LF0430.
+  Chance-level: MOM1030 / MOM13 without the agreement rule, ON07, LATEFH, ENG10; gold ENG0408, SVWAP22, ENG0206 (gold is a
+  diversifier with low proven edge: DSR 0.03-0.26).
+- Realistic forward expectation (+1 tick, 35% of the edge removed): Ultra WR ~63%, PF ~1.26, ~$1,700/month per base contract;
+  WR70Plus WR ~69%, PF ~1.27, ~$1,100/month (2024-26 volatility). Range days remain the main risk (PF 0.76-0.84).
+
+### 4. Prop firms (survey verified Oct 2026, sources in propfirms_2026.md)
+- **Apex bans automation since 2026-03-01 (Apex 4.0)** -> the Apex scaling plan in OPERAR_5x150K.md is no longer valid.
+- Topstep: NinjaTrader closed to new accounts (TopstepX only). Take Profit Trader, Alpha Futures, Phidias, Earn2Trade: no bots.
+- Bot-friendly: Lucid, MyFundedFutures (MFFU), Bulenox, FundedNext, (FTMO Futures beta), Tradeify (exclusive use only).
+- Going live closes the sim accounts at Lucid / Topstep / MFFU.
+
+### 5. Best 1-contract plan: MyFundedFutures Rapid EOD 50K (mffu_rapid*.py, exact dense grids, 9 tests)
+Rules (help.myfundedfutures.com, Aug 2026): eval $157 one-time, target $3,000, $2,000 EOD trailing (locks at +$100), no DLL,
+30% consistency, min 4 days, 30 micros; funded: EOD trailing $2,000 locking at +$100, no consistency, no DLL, **daily payouts with
+no cap** once $2,100 buffer is cleared (min $500), 90/10, max 3 Rapid accounts, **Tier-1 news: flat and no orders 2 min around
+CPI / Employment Report / FOMC minutes** (bots allowed; no HFT, no hedging, no copy trading between traders).
+| | Eval pass (hist / +1 tick / bootstrap) | Median days | $/month per account slot (mean / worst of 9) | Cash per funded month |
+|---|---|---|---|---|
+| Eval Estable 1c -> funded **1c**, keep $4,100 | 99/86/82 · 97/80/77 · 92/70/69 | 28-36 | **1,647 / 1,113** | ~2,360 |
+| Eval Estable 1c -> funded 1c, 2c from $3,000 cushion (manual), keep $6,100 | same | same | 2,780 / 1,927 | ~4,100 |
+| Lucid Flex 50K, eval Estable 1c -> funded 1c (acct1c_) | 99/87/85 | 26-31 | 1,033 / 840 | ~1,850 |
+- News blackout cost (news_cost.py): Ultra -2.4/-4.0/-5.7% of P&L, WR70Plus -4.2/-1.3/-2.8% (IS/C24/REAL). Not in the table.
+- Assumes the account keeps running (MFFU moves accounts to live at its discretion or after a $10k day; live = $0 start,
+  $2,000 EOD, 90/10 daily, up to $5k of sim profit into a reserve). If it were moved to live after 12 payouts with no income
+  afterwards: ~$960/month.
+- Under the realistic forward haircut (35% of the edge removed, mffu_haircut.py): 1c/1c $712/month per slot (eval pass ~59%),
+  1c -> 2c $1,171; cash per funded month still $1,690 (1c) / $2,800 (2c).
+
+**NinjaTrader settings, MFFU Rapid EOD 50K**
+- Eval: NQMaster Profile Ultra, Contracts 1, AdaptiveSize false, PropMode Eval, EvalTarget 3000, PropTrailingDD 2000,
+  EvalCushionFull 1200, EvalSafeSet Estable, EvalProfitStop 800, ConsistencyPct 30, AtrStartMax 0, NewsBlackout false.
+  GoldMaster Profile WinRate, Contracts 2, EvalTarget 3000, ConsistencyPct 30, AccountProfitStop 800, NewsBlackout false.
+- Funded: NQMaster Profile Ultra, Contracts 1, PropMode Funded, FundedCushionSafe 0, FundedCushionFull 0, FundedProfitStop 0,
+  FundedPayoutAt 4600, **NewsBlackout true**. GoldMaster Profile Robust, Contracts 1, AccountProfitStop 0, **NewsBlackout true**.
+  Request a payout whenever the balance is >= start + $4,600 and withdraw down to start + $4,100.
+- 2027 CPI / Employment Report dates are not published yet: add them to `NewsTimes` ("yyyy-MM-dd 08:30", comma list) when BLS
+  publishes the 2027 schedule. FOMC minutes (decision + 21 days, 14:00) are built in through 2027.
+- Ask MFFU support in writing to confirm that (a) a NinjaTrader bot is fine on Rapid EOD, and (b) holding positions through
+  non-Tier-1 releases (e.g. 08:30 jobless claims, 10:00 ISM) is allowed on Rapid EOD sim funded; their policy text has one line
+  that reads as 'no positions 2 min around any data release' (if so: -15-18% of Ultra P&L, news_cost.py scenario ALL).
