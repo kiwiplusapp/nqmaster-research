@@ -840,3 +840,23 @@ CPI / Employment Report / FOMC minutes** (bots allowed; no HFT, no hedging, no c
 - Ask MFFU support in writing to confirm that (a) a NinjaTrader bot is fine on Rapid EOD, and (b) holding positions through
   non-Tier-1 releases (e.g. 08:30 jobless claims, 10:00 ISM) is allowed on Rapid EOD sim funded; their policy text has one line
   that reads as 'no positions 2 min around any data release' (if so: -15-18% of Ultra P&L, news_cost.py scenario ALL).
+
+## ★ 2026-10-09 MFFU vs Lucid playbook (English) — report: https://claude.ai/artifact/16gzpcEvJBHeKWkqTUuoFZ
+
+Current NQMaster logic (2026-10-08 rules) + GoldMaster on REAL MNQ/MGC futures, 2024-02-01..2026-09-25 (657 days), 1 contract, $1.90 + 1 tick per side. Scripts `research/mine/final3y.py`, `final3y_acct.py`, `final3y_haircut.py`; page copy `research/mine/final3y_report.html`.
+
+| Profile (with gold) | WR | PF | Trades/day | $/month | Max DD | Worst month |
+|---|---|---|---|---|---|---|
+| Ultra + gold Robust | 65.2% | 1.50 | 5.93 | $3,143 | $6,097 | -$3,132 |
+| Ultra lean + gold Robust | 65.8% | 1.53 | 5.10 | $2,968 | $5,467 | -$2,897 |
+| WR70Plus + gold WinRate | 69.8% | 1.56 | 3.52 | $1,967 | $3,784 | -$2,306 |
+
+Eval at 1 contract (pass % history, median trading days): MFFU Ultra fixed 77% / 21 d, Estable 88% / 27.5 d, WR70Plus 83% / 29 d; Lucid Ultra fixed 78% / 18 d, Estable 89% / 23 d, WR70Plus 83% / 28 d.
+
+Money per account per month (history / +1 tick / resampled; realistic = 35% less edge, resampled):
+- **MFFU Rapid EOD 50K, Ultra eval -> Ultra 1c funded, keep $4,100: $2,137 / $1,984 / $2,012; realistic ~$1,050 (recommended).**
+- MFFU with step-up (2 contracts from balance $53,100, withdraw above $56,100): $3,888 / $3,592 / $3,336; realistic ~$1,580.
+- Lucid Flex 50K, Ultra eval -> Ultra 1c funded: $1,458 / $1,382 / $1,341; realistic ~$780.
+- WR70Plus funded earns ~40% less (MFFU ~$1,100-1,240, Lucid ~$800-940).
+
+Settings — MFFU eval: NQMaster Ultra, Contracts 1, PropMode Eval, EvalTarget 3000, PropTrailingDD 2000, EvalCushionFull 0 (or 1200 + EvalSafeSet Estable for max pass), ConsistencyPct 30, EvalProfitStop 800, AtrStartMax 0; GoldMaster Robust 1 (WinRate 2 with Estable), EvalTarget 3000, ConsistencyPct 30, AccountProfitStop 800. MFFU funded: NQMaster PropMode Funded, FundedCushionSafe 0, FundedCushionFull 0, FundedHighFull true, FundedPayoutAt 4600, NewsBlackout true; GoldMaster Robust 1, NewsBlackout true; withdraw down to $54,100. Lucid: same with ConsistencyPct 50, EvalProfitStop / AccountProfitStop 1400, FundedPayoutAt 4000, NewsBlackout false.
