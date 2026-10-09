@@ -1,0 +1,3591 @@
+{
+ "days": 4068,
+ "atr_days_ge_150_pct_by_year": {
+  "2010": 0.0,
+  "2011": 0.0,
+  "2012": 0.0,
+  "2013": 0.0,
+  "2014": 0.0,
+  "2015": 0.0,
+  "2016": 0.0,
+  "2017": 0.0,
+  "2018": 21.7,
+  "2019": 5.2,
+  "2020": 84.9,
+  "2021": 93.2,
+  "2022": 100.0,
+  "2023": 100.0,
+  "2024": 100.0,
+  "2025": 100.0,
+  "2026": 100.0
+ },
+ "profiles": {
+  "Ultra": {
+   "years": {
+    "2010": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 689,
+      "tpd": 4.78,
+      "wr": 52.7,
+      "pf": 0.64,
+      "sharpe": -4.58,
+      "per_month": -241,
+      "net": -1652,
+      "max_dd": 1698,
+      "days_traded_pct": 97.9
+     },
+     "norm": {
+      "trades": 689,
+      "tpd": 4.78,
+      "wr": 58.2,
+      "pf": 1.04,
+      "sharpe": 0.39,
+      "mean_trade_pct_atr": 0.321
+     }
+    },
+    "2011": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1304,
+      "tpd": 5.22,
+      "wr": 56.2,
+      "pf": 0.72,
+      "sharpe": -3.18,
+      "per_month": -243,
+      "net": -2891,
+      "max_dd": 3022,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1303,
+      "tpd": 5.21,
+      "wr": 60.2,
+      "pf": 1.08,
+      "sharpe": 0.84,
+      "mean_trade_pct_atr": 0.675
+     }
+    },
+    "2012": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1227,
+      "tpd": 4.97,
+      "wr": 54.0,
+      "pf": 0.64,
+      "sharpe": -4.75,
+      "per_month": -302,
+      "net": -3545,
+      "max_dd": 3655,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1227,
+      "tpd": 4.97,
+      "wr": 57.9,
+      "pf": 0.96,
+      "sharpe": -0.42,
+      "mean_trade_pct_atr": -0.368
+     }
+    },
+    "2013": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1252,
+      "tpd": 5.13,
+      "wr": 51.5,
+      "pf": 0.53,
+      "sharpe": -6.74,
+      "per_month": -365,
+      "net": -4239,
+      "max_dd": 4274,
+      "days_traded_pct": 99.2
+     },
+     "norm": {
+      "trades": 1252,
+      "tpd": 5.13,
+      "wr": 57.3,
+      "pf": 0.87,
+      "sharpe": -1.5,
+      "mean_trade_pct_atr": -1.123
+     }
+    },
+    "2014": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1294,
+      "tpd": 5.35,
+      "wr": 57.7,
+      "pf": 0.85,
+      "sharpe": -1.56,
+      "per_month": -139,
+      "net": -1602,
+      "max_dd": 2155,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1296,
+      "tpd": 5.36,
+      "wr": 61.8,
+      "pf": 1.12,
+      "sharpe": 1.09,
+      "mean_trade_pct_atr": 1.035
+     }
+    },
+    "2015": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1248,
+      "tpd": 4.99,
+      "wr": 56.6,
+      "pf": 0.76,
+      "sharpe": -2.61,
+      "per_month": -308,
+      "net": -3666,
+      "max_dd": 3747,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1249,
+      "tpd": 5.0,
+      "wr": 59.3,
+      "pf": 0.95,
+      "sharpe": -0.51,
+      "mean_trade_pct_atr": -0.458
+     }
+    },
+    "2016": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1301,
+      "tpd": 5.2,
+      "wr": 59.6,
+      "pf": 0.98,
+      "sharpe": -0.21,
+      "per_month": -26,
+      "net": -315,
+      "max_dd": 1806,
+      "days_traded_pct": 100.0
+     },
+     "norm": {
+      "trades": 1301,
+      "tpd": 5.2,
+      "wr": 61.9,
+      "pf": 1.21,
+      "sharpe": 1.8,
+      "mean_trade_pct_atr": 1.663
+     }
+    },
+    "2017": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1249,
+      "tpd": 5.02,
+      "wr": 57.3,
+      "pf": 0.89,
+      "sharpe": -1.16,
+      "per_month": -108,
+      "net": -1282,
+      "max_dd": 1363,
+      "days_traded_pct": 98.8
+     },
+     "norm": {
+      "trades": 1246,
+      "tpd": 5.0,
+      "wr": 61.4,
+      "pf": 1.17,
+      "sharpe": 1.55,
+      "mean_trade_pct_atr": 1.362
+     }
+    },
+    "2018": {
+     "real_min_atr": {
+      "trades": 210,
+      "tpd": 0.84,
+      "wr": 67.6,
+      "pf": 1.49,
+      "sharpe": 1.49,
+      "per_month": 226,
+      "net": 2692,
+      "max_dd": 837,
+      "days_traded_pct": 21.7
+     },
+     "real_no_filter": {
+      "trades": 1292,
+      "tpd": 5.19,
+      "wr": 62.1,
+      "pf": 1.08,
+      "sharpe": 0.65,
+      "per_month": 175,
+      "net": 2096,
+      "max_dd": 3054,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1294,
+      "tpd": 5.2,
+      "wr": 63.3,
+      "pf": 1.21,
+      "sharpe": 1.61,
+      "mean_trade_pct_atr": 1.689
+     }
+    },
+    "2019": {
+     "real_min_atr": {
+      "trades": 70,
+      "tpd": 0.28,
+      "wr": 60.0,
+      "pf": 0.97,
+      "sharpe": -0.06,
+      "per_month": -4,
+      "net": -53,
+      "max_dd": 727,
+      "days_traded_pct": 5.2
+     },
+     "real_no_filter": {
+      "trades": 1269,
+      "tpd": 5.08,
+      "wr": 59.3,
+      "pf": 0.92,
+      "sharpe": -0.89,
+      "per_month": -155,
+      "net": -1848,
+      "max_dd": 2942,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1269,
+      "tpd": 5.08,
+      "wr": 60.6,
+      "pf": 1.09,
+      "sharpe": 0.87,
+      "mean_trade_pct_atr": 0.702
+     }
+    },
+    "2020": {
+     "real_min_atr": {
+      "trades": 1140,
+      "tpd": 4.54,
+      "wr": 66.5,
+      "pf": 1.39,
+      "sharpe": 2.81,
+      "per_month": 1362,
+      "net": 16283,
+      "max_dd": 3122,
+      "days_traded_pct": 84.5
+     },
+     "real_no_filter": {
+      "trades": 1374,
+      "tpd": 5.47,
+      "wr": 65.1,
+      "pf": 1.35,
+      "sharpe": 2.73,
+      "per_month": 1353,
+      "net": 16169,
+      "max_dd": 3122,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1372,
+      "tpd": 5.47,
+      "wr": 65.6,
+      "pf": 1.37,
+      "sharpe": 3.04,
+      "mean_trade_pct_atr": 2.787
+     }
+    },
+    "2021": {
+     "real_min_atr": {
+      "trades": 1246,
+      "tpd": 4.98,
+      "wr": 65.5,
+      "pf": 1.41,
+      "sharpe": 2.93,
+      "per_month": 1254,
+      "net": 14885,
+      "max_dd": 1511,
+      "days_traded_pct": 93.6
+     },
+     "real_no_filter": {
+      "trades": 1338,
+      "tpd": 5.35,
+      "wr": 65.0,
+      "pf": 1.39,
+      "sharpe": 2.96,
+      "per_month": 1274,
+      "net": 15127,
+      "max_dd": 1511,
+      "days_traded_pct": 100.4
+     },
+     "norm": {
+      "trades": 1338,
+      "tpd": 5.35,
+      "wr": 65.4,
+      "pf": 1.43,
+      "sharpe": 3.39,
+      "mean_trade_pct_atr": 2.993
+     }
+    },
+    "2022": {
+     "real_min_atr": {
+      "trades": 1330,
+      "tpd": 5.32,
+      "wr": 69.5,
+      "pf": 1.71,
+      "sharpe": 4.92,
+      "per_month": 3386,
+      "net": 40315,
+      "max_dd": 1847,
+      "days_traded_pct": 100.0
+     },
+     "real_no_filter": {
+      "trades": 1330,
+      "tpd": 5.32,
+      "wr": 69.5,
+      "pf": 1.71,
+      "sharpe": 4.92,
+      "per_month": 3386,
+      "net": 40315,
+      "max_dd": 1847,
+      "days_traded_pct": 100.0
+     },
+     "norm": {
+      "trades": 1330,
+      "tpd": 5.32,
+      "wr": 69.5,
+      "pf": 1.69,
+      "sharpe": 4.98,
+      "mean_trade_pct_atr": 4.346
+     }
+    },
+    "2023": {
+     "real_min_atr": {
+      "trades": 1335,
+      "tpd": 5.36,
+      "wr": 64.8,
+      "pf": 1.32,
+      "sharpe": 2.66,
+      "per_month": 1223,
+      "net": 14452,
+      "max_dd": 2765,
+      "days_traded_pct": 99.2
+     },
+     "real_no_filter": {
+      "trades": 1335,
+      "tpd": 5.36,
+      "wr": 64.8,
+      "pf": 1.32,
+      "sharpe": 2.66,
+      "per_month": 1223,
+      "net": 14452,
+      "max_dd": 2765,
+      "days_traded_pct": 99.2
+     },
+     "norm": {
+      "trades": 1336,
+      "tpd": 5.37,
+      "wr": 65.0,
+      "pf": 1.33,
+      "sharpe": 2.75,
+      "mean_trade_pct_atr": 2.506
+     }
+    },
+    "2024": {
+     "real_min_atr": {
+      "trades": 1337,
+      "tpd": 5.33,
+      "wr": 62.9,
+      "pf": 1.33,
+      "sharpe": 2.9,
+      "per_month": 1523,
+      "net": 18198,
+      "max_dd": 5871,
+      "days_traded_pct": 99.6
+     },
+     "real_no_filter": {
+      "trades": 1337,
+      "tpd": 5.33,
+      "wr": 62.9,
+      "pf": 1.33,
+      "sharpe": 2.9,
+      "per_month": 1523,
+      "net": 18198,
+      "max_dd": 5871,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1337,
+      "tpd": 5.33,
+      "wr": 63.2,
+      "pf": 1.41,
+      "sharpe": 3.44,
+      "mean_trade_pct_atr": 3.093
+     }
+    },
+    "2025": {
+     "real_min_atr": {
+      "trades": 1292,
+      "tpd": 5.19,
+      "wr": 67.2,
+      "pf": 1.51,
+      "sharpe": 3.68,
+      "per_month": 2596,
+      "net": 30808,
+      "max_dd": 2154,
+      "days_traded_pct": 100.4
+     },
+     "real_no_filter": {
+      "trades": 1292,
+      "tpd": 5.19,
+      "wr": 67.2,
+      "pf": 1.51,
+      "sharpe": 3.68,
+      "per_month": 2596,
+      "net": 30808,
+      "max_dd": 2154,
+      "days_traded_pct": 100.4
+     },
+     "norm": {
+      "trades": 1292,
+      "tpd": 5.19,
+      "wr": 67.2,
+      "pf": 1.45,
+      "sharpe": 3.64,
+      "mean_trade_pct_atr": 2.934
+     }
+    },
+    "2026": {
+     "real_min_atr": {
+      "trades": 970,
+      "tpd": 5.03,
+      "wr": 64.7,
+      "pf": 1.52,
+      "sharpe": 4.01,
+      "per_month": 3270,
+      "net": 29941,
+      "max_dd": 4154,
+      "days_traded_pct": 100.5
+     },
+     "real_no_filter": {
+      "trades": 970,
+      "tpd": 5.03,
+      "wr": 64.7,
+      "pf": 1.52,
+      "sharpe": 4.01,
+      "per_month": 3270,
+      "net": 29941,
+      "max_dd": 4154,
+      "days_traded_pct": 100.5
+     },
+     "norm": {
+      "trades": 970,
+      "tpd": 5.03,
+      "wr": 64.7,
+      "pf": 1.54,
+      "sharpe": 4.15,
+      "mean_trade_pct_atr": 3.589
+     }
+    }
+   },
+   "2010-2014": {
+    "real_min_atr": {
+     "trades": 0,
+     "tpd": 0.0,
+     "wr": null,
+     "pf": null,
+     "sharpe": null,
+     "per_month": 0,
+     "net": 0,
+     "max_dd": 0,
+     "days_traded_pct": 0.0
+    },
+    "real_no_filter": {
+     "trades": 5766,
+     "tpd": 5.12,
+     "wr": 54.6,
+     "pf": 0.69,
+     "sharpe": -3.71,
+     "per_month": -260,
+     "net": -13929,
+     "max_dd": 14337,
+     "days_traded_pct": 99.3
+    },
+    "norm": {
+     "trades": 5767,
+     "tpd": 5.12,
+     "wr": 59.2,
+     "pf": 1.01,
+     "sharpe": 0.12,
+     "mean_trade_pct_atr": 0.101
+    }
+   },
+   "2015-2019": {
+    "real_min_atr": {
+     "trades": 280,
+     "tpd": 0.22,
+     "wr": 65.7,
+     "pf": 1.36,
+     "sharpe": 0.59,
+     "per_month": 44,
+     "net": 2638,
+     "max_dd": 1230,
+     "days_traded_pct": 5.4
+    },
+    "real_no_filter": {
+     "trades": 6359,
+     "tpd": 5.1,
+     "wr": 59.0,
+     "pf": 0.94,
+     "sharpe": -0.5,
+     "per_month": -85,
+     "net": -5015,
+     "max_dd": 5971,
+     "days_traded_pct": 99.5
+    },
+    "norm": {
+     "trades": 6359,
+     "tpd": 5.1,
+     "wr": 61.3,
+     "pf": 1.12,
+     "sharpe": 1.09,
+     "mean_trade_pct_atr": 1.001
+    }
+   },
+   "2020-2023": {
+    "real_min_atr": {
+     "trades": 5051,
+     "tpd": 5.05,
+     "wr": 66.6,
+     "pf": 1.48,
+     "sharpe": 3.43,
+     "per_month": 1807,
+     "net": 85935,
+     "max_dd": 3122,
+     "days_traded_pct": 94.3
+    },
+    "real_no_filter": {
+     "trades": 5377,
+     "tpd": 5.38,
+     "wr": 66.1,
+     "pf": 1.46,
+     "sharpe": 3.41,
+     "per_month": 1809,
+     "net": 86062,
+     "max_dd": 3122,
+     "days_traded_pct": 99.8
+    },
+    "norm": {
+     "trades": 5376,
+     "tpd": 5.38,
+     "wr": 66.4,
+     "pf": 1.44,
+     "sharpe": 3.52,
+     "mean_trade_pct_atr": 3.154
+    }
+   },
+   "2024-2026": {
+    "real_min_atr": {
+     "trades": 3599,
+     "tpd": 5.19,
+     "wr": 64.9,
+     "pf": 1.46,
+     "sharpe": 3.52,
+     "per_month": 2395,
+     "net": 78947,
+     "max_dd": 5871,
+     "days_traded_pct": 100.1
+    },
+    "real_no_filter": {
+     "trades": 3599,
+     "tpd": 5.19,
+     "wr": 64.9,
+     "pf": 1.46,
+     "sharpe": 3.52,
+     "per_month": 2395,
+     "net": 78947,
+     "max_dd": 5871,
+     "days_traded_pct": 100.1
+    },
+    "norm": {
+     "trades": 3599,
+     "tpd": 5.19,
+     "wr": 65.0,
+     "pf": 1.46,
+     "sharpe": 3.7,
+     "mean_trade_pct_atr": 3.17
+    }
+   },
+   "2010-2026": {
+    "real_min_atr": {
+     "trades": 8930,
+     "tpd": 2.2,
+     "wr": 65.9,
+     "pf": 1.47,
+     "sharpe": 2.21,
+     "per_month": 866,
+     "net": 167521,
+     "max_dd": 5871,
+     "days_traded_pct": 41.9
+    },
+    "real_no_filter": {
+     "trades": 21101,
+     "tpd": 5.19,
+     "wr": 60.6,
+     "pf": 1.3,
+     "sharpe": 1.87,
+     "per_month": 755,
+     "net": 146066,
+     "max_dd": 21295,
+     "days_traded_pct": 99.6
+    },
+    "norm": {
+     "trades": 21101,
+     "tpd": 5.19,
+     "wr": 62.7,
+     "pf": 1.21,
+     "sharpe": 1.89,
+     "mean_trade_pct_atr": 1.674
+    }
+   },
+   "check_vs_mnq_fut_2024_02_2026_09": {
+    "trades": 3432,
+    "tpd": 5.18,
+    "wr": 65.4,
+    "pf": 1.49,
+    "sharpe": 3.69,
+    "per_month": 2532,
+    "net": 79852,
+    "max_dd": 5871,
+    "days_traded_pct": 100.2
+   },
+   "modules": {
+    "CRT11": {
+     "2010-2014": {
+      "n": 93,
+      "norm_pf": 1.37,
+      "real_pf": 0.99,
+      "real_net": -15
+     },
+     "2015-2019": {
+      "n": 146,
+      "norm_pf": 1.36,
+      "real_pf": 1.14,
+      "real_net": 556
+     },
+     "2020-2023": {
+      "n": 107,
+      "norm_pf": 1.7,
+      "real_pf": 1.72,
+      "real_net": 5345
+     },
+     "2024-2026": {
+      "n": 93,
+      "norm_pf": 2.31,
+      "real_pf": 2.34,
+      "real_net": 8922
+     }
+    },
+    "ENG10": {
+     "2010-2014": {
+      "n": 232,
+      "norm_pf": 0.87,
+      "real_pf": 0.59,
+      "real_net": -786
+     },
+     "2015-2019": {
+      "n": 263,
+      "norm_pf": 1.2,
+      "real_pf": 0.96,
+      "real_net": -120
+     },
+     "2020-2023": {
+      "n": 231,
+      "norm_pf": 1.39,
+      "real_pf": 1.44,
+      "real_net": 3345
+     },
+     "2024-2026": {
+      "n": 142,
+      "norm_pf": 1.12,
+      "real_pf": 1.11,
+      "real_net": 882
+     }
+    },
+    "ICT": {
+     "2010-2014": {
+      "n": 107,
+      "norm_pf": 0.69,
+      "real_pf": 0.54,
+      "real_net": -806
+     },
+     "2015-2019": {
+      "n": 108,
+      "norm_pf": 1.23,
+      "real_pf": 1.11,
+      "real_net": 264
+     },
+     "2020-2023": {
+      "n": 88,
+      "norm_pf": 1.17,
+      "real_pf": 1.23,
+      "real_net": 1446
+     },
+     "2024-2026": {
+      "n": 68,
+      "norm_pf": 1.41,
+      "real_pf": 1.2,
+      "real_net": 1284
+     }
+    },
+    "LATE15": {
+     "2010-2014": {
+      "n": 155,
+      "norm_pf": 0.93,
+      "real_pf": 0.57,
+      "real_net": -415
+     },
+     "2015-2019": {
+      "n": 155,
+      "norm_pf": 1.59,
+      "real_pf": 1.4,
+      "real_net": 473
+     },
+     "2020-2023": {
+      "n": 172,
+      "norm_pf": 1.4,
+      "real_pf": 1.46,
+      "real_net": 2026
+     },
+     "2024-2026": {
+      "n": 99,
+      "norm_pf": 1.39,
+      "real_pf": 1.28,
+      "real_net": 1104
+     }
+    },
+    "LATEFH": {
+     "2010-2014": {
+      "n": 250,
+      "norm_pf": 0.81,
+      "real_pf": 0.46,
+      "real_net": -786
+     },
+     "2015-2019": {
+      "n": 304,
+      "norm_pf": 1.11,
+      "real_pf": 0.89,
+      "real_net": -292
+     },
+     "2020-2023": {
+      "n": 229,
+      "norm_pf": 1.33,
+      "real_pf": 1.3,
+      "real_net": 1516
+     },
+     "2024-2026": {
+      "n": 165,
+      "norm_pf": 1.43,
+      "real_pf": 1.47,
+      "real_net": 2186
+     }
+    },
+    "LF0430": {
+     "2010-2014": {
+      "n": 123,
+      "norm_pf": 0.71,
+      "real_pf": 0.48,
+      "real_net": -627
+     },
+     "2015-2019": {
+      "n": 108,
+      "norm_pf": 0.88,
+      "real_pf": 0.76,
+      "real_net": -358
+     },
+     "2020-2023": {
+      "n": 113,
+      "norm_pf": 1.27,
+      "real_pf": 1.43,
+      "real_net": 1478
+     },
+     "2024-2026": {
+      "n": 90,
+      "norm_pf": 1.3,
+      "real_pf": 1.36,
+      "real_net": 1678
+     }
+    },
+    "LF06": {
+     "2010-2014": {
+      "n": 183,
+      "norm_pf": 1.09,
+      "real_pf": 0.61,
+      "real_net": -396
+     },
+     "2015-2019": {
+      "n": 176,
+      "norm_pf": 1.02,
+      "real_pf": 0.72,
+      "real_net": -551
+     },
+     "2020-2023": {
+      "n": 124,
+      "norm_pf": 1.23,
+      "real_pf": 1.32,
+      "real_net": 1006
+     },
+     "2024-2026": {
+      "n": 75,
+      "norm_pf": 1.4,
+      "real_pf": 1.4,
+      "real_net": 1096
+     }
+    },
+    "LON": {
+     "2010-2014": {
+      "n": 401,
+      "norm_pf": 0.88,
+      "real_pf": 0.61,
+      "real_net": -1158
+     },
+     "2015-2019": {
+      "n": 414,
+      "norm_pf": 1.12,
+      "real_pf": 0.99,
+      "real_net": -33
+     },
+     "2020-2023": {
+      "n": 329,
+      "norm_pf": 1.17,
+      "real_pf": 1.13,
+      "real_net": 1759
+     },
+     "2024-2026": {
+      "n": 227,
+      "norm_pf": 1.35,
+      "real_pf": 1.41,
+      "real_net": 4370
+     }
+    },
+    "MOM1030": {
+     "2010-2014": {
+      "n": 233,
+      "norm_pf": 1.04,
+      "real_pf": 0.49,
+      "real_net": -467
+     },
+     "2015-2019": {
+      "n": 268,
+      "norm_pf": 1.18,
+      "real_pf": 0.87,
+      "real_net": -219
+     },
+     "2020-2023": {
+      "n": 234,
+      "norm_pf": 1.43,
+      "real_pf": 1.44,
+      "real_net": 1660
+     },
+     "2024-2026": {
+      "n": 138,
+      "norm_pf": 1.41,
+      "real_pf": 1.46,
+      "real_net": 1490
+     }
+    },
+    "MOM11": {
+     "2010-2014": {
+      "n": 902,
+      "norm_pf": 0.97,
+      "real_pf": 0.56,
+      "real_net": -2045
+     },
+     "2015-2019": {
+      "n": 963,
+      "norm_pf": 0.96,
+      "real_pf": 0.74,
+      "real_net": -2438
+     },
+     "2020-2023": {
+      "n": 782,
+      "norm_pf": 1.15,
+      "real_pf": 1.15,
+      "real_net": 2898
+     },
+     "2024-2026": {
+      "n": 551,
+      "norm_pf": 1.23,
+      "real_pf": 1.3,
+      "real_net": 5365
+     }
+    },
+    "MOM13": {
+     "2010-2014": {
+      "n": 339,
+      "norm_pf": 0.95,
+      "real_pf": 0.73,
+      "real_net": -717
+     },
+     "2015-2019": {
+      "n": 375,
+      "norm_pf": 0.89,
+      "real_pf": 0.7,
+      "real_net": -1901
+     },
+     "2020-2023": {
+      "n": 335,
+      "norm_pf": 1.52,
+      "real_pf": 1.54,
+      "real_net": 6492
+     },
+     "2024-2026": {
+      "n": 188,
+      "norm_pf": 1.53,
+      "real_pf": 1.56,
+      "real_net": 4444
+     }
+    },
+    "MSEQ": {
+     "2010-2014": {
+      "n": 155,
+      "norm_pf": 0.98,
+      "real_pf": 0.7,
+      "real_net": -640
+     },
+     "2015-2019": {
+      "n": 192,
+      "norm_pf": 1.07,
+      "real_pf": 0.87,
+      "real_net": -560
+     },
+     "2020-2023": {
+      "n": 257,
+      "norm_pf": 1.73,
+      "real_pf": 1.71,
+      "real_net": 8995
+     },
+     "2024-2026": {
+      "n": 169,
+      "norm_pf": 1.33,
+      "real_pf": 1.29,
+      "real_net": 4000
+     }
+    },
+    "MSEQS": {
+     "2010-2014": {
+      "n": 23,
+      "norm_pf": 1.35,
+      "real_pf": 1.34,
+      "real_net": 78
+     },
+     "2015-2019": {
+      "n": 29,
+      "norm_pf": 1.24,
+      "real_pf": 1.53,
+      "real_net": 382
+     },
+     "2020-2023": {
+      "n": 31,
+      "norm_pf": 3.57,
+      "real_pf": 3.52,
+      "real_net": 2872
+     },
+     "2024-2026": {
+      "n": 27,
+      "norm_pf": 1.88,
+      "real_pf": 1.82,
+      "real_net": 1863
+     }
+    },
+    "NF05": {
+     "2010-2014": {
+      "n": 154,
+      "norm_pf": 1.18,
+      "real_pf": 0.78,
+      "real_net": -275
+     },
+     "2015-2019": {
+      "n": 214,
+      "norm_pf": 1.7,
+      "real_pf": 1.48,
+      "real_net": 1265
+     },
+     "2020-2023": {
+      "n": 162,
+      "norm_pf": 1.38,
+      "real_pf": 1.54,
+      "real_net": 3219
+     },
+     "2024-2026": {
+      "n": 123,
+      "norm_pf": 1.43,
+      "real_pf": 1.41,
+      "real_net": 2956
+     }
+    },
+    "ON07": {
+     "2010-2014": {
+      "n": 406,
+      "norm_pf": 1.08,
+      "real_pf": 0.48,
+      "real_net": -951
+     },
+     "2015-2019": {
+      "n": 460,
+      "norm_pf": 0.89,
+      "real_pf": 0.6,
+      "real_net": -1300
+     },
+     "2020-2023": {
+      "n": 397,
+      "norm_pf": 1.14,
+      "real_pf": 1.17,
+      "real_net": 1218
+     },
+     "2024-2026": {
+      "n": 266,
+      "norm_pf": 1.32,
+      "real_pf": 1.23,
+      "real_net": 1453
+     }
+    },
+    "ORB60": {
+     "2010-2014": {
+      "n": 238,
+      "norm_pf": 1.02,
+      "real_pf": 0.73,
+      "real_net": -898
+     },
+     "2015-2019": {
+      "n": 271,
+      "norm_pf": 1.02,
+      "real_pf": 0.9,
+      "real_net": -742
+     },
+     "2020-2023": {
+      "n": 218,
+      "norm_pf": 2.13,
+      "real_pf": 2.31,
+      "real_net": 14204
+     },
+     "2024-2026": {
+      "n": 136,
+      "norm_pf": 1.8,
+      "real_pf": 1.88,
+      "real_net": 9773
+     }
+    },
+    "ORB90": {
+     "2010-2014": {
+      "n": 202,
+      "norm_pf": 1.12,
+      "real_pf": 0.84,
+      "real_net": -360
+     },
+     "2015-2019": {
+      "n": 229,
+      "norm_pf": 1.01,
+      "real_pf": 1.04,
+      "real_net": 209
+     },
+     "2020-2023": {
+      "n": 187,
+      "norm_pf": 2.14,
+      "real_pf": 2.19,
+      "real_net": 9515
+     },
+     "2024-2026": {
+      "n": 113,
+      "norm_pf": 1.76,
+      "real_pf": 1.81,
+      "real_net": 5430
+     }
+    },
+    "REV06": {
+     "2010-2014": {
+      "n": 310,
+      "norm_pf": 0.92,
+      "real_pf": 0.42,
+      "real_net": -829
+     },
+     "2015-2019": {
+      "n": 353,
+      "norm_pf": 0.97,
+      "real_pf": 0.75,
+      "real_net": -680
+     },
+     "2020-2023": {
+      "n": 265,
+      "norm_pf": 1.43,
+      "real_pf": 1.46,
+      "real_net": 1982
+     },
+     "2024-2026": {
+      "n": 186,
+      "norm_pf": 1.02,
+      "real_pf": 1.03,
+      "real_net": 203
+     }
+    },
+    "VOLB": {
+     "2010-2014": {
+      "n": 868,
+      "norm_pf": 1.22,
+      "real_pf": 0.95,
+      "real_net": -454
+     },
+     "2015-2019": {
+      "n": 915,
+      "norm_pf": 1.32,
+      "real_pf": 1.16,
+      "real_net": 2849
+     },
+     "2020-2023": {
+      "n": 740,
+      "norm_pf": 1.32,
+      "real_pf": 1.29,
+      "real_net": 12614
+     },
+     "2024-2026": {
+      "n": 525,
+      "norm_pf": 1.55,
+      "real_pf": 1.53,
+      "real_net": 18997
+     }
+    },
+    "VW13": {
+     "2010-2014": {
+      "n": 116,
+      "norm_pf": 0.7,
+      "real_pf": 0.33,
+      "real_net": -413
+     },
+     "2015-2019": {
+      "n": 109,
+      "norm_pf": 0.84,
+      "real_pf": 0.54,
+      "real_net": -490
+     },
+     "2020-2023": {
+      "n": 101,
+      "norm_pf": 1.28,
+      "real_pf": 1.44,
+      "real_net": 798
+     },
+     "2024-2026": {
+      "n": 61,
+      "norm_pf": 1.56,
+      "real_pf": 1.53,
+      "real_net": 733
+     }
+    },
+    "VW13b": {
+     "2010-2014": {
+      "n": 277,
+      "norm_pf": 0.7,
+      "real_pf": 0.34,
+      "real_net": -967
+     },
+     "2015-2019": {
+      "n": 307,
+      "norm_pf": 0.81,
+      "real_pf": 0.53,
+      "real_net": -1328
+     },
+     "2020-2023": {
+      "n": 274,
+      "norm_pf": 1.29,
+      "real_pf": 1.32,
+      "real_net": 1675
+     },
+     "2024-2026": {
+      "n": 157,
+      "norm_pf": 1.18,
+      "real_pf": 1.16,
+      "real_net": 722
+     }
+    }
+   }
+  },
+  "UltraLean": {
+   "years": {
+    "2010": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 593,
+      "tpd": 4.12,
+      "wr": 54.3,
+      "pf": 0.67,
+      "sharpe": -3.87,
+      "per_month": -195,
+      "net": -1337,
+      "max_dd": 1371,
+      "days_traded_pct": 97.2
+     },
+     "norm": {
+      "trades": 592,
+      "tpd": 4.11,
+      "wr": 59.6,
+      "pf": 1.07,
+      "sharpe": 0.65,
+      "mean_trade_pct_atr": 0.599
+     }
+    },
+    "2011": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1075,
+      "tpd": 4.3,
+      "wr": 58.1,
+      "pf": 0.75,
+      "sharpe": -2.55,
+      "per_month": -185,
+      "net": -2207,
+      "max_dd": 2488,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1074,
+      "tpd": 4.3,
+      "wr": 61.5,
+      "pf": 1.1,
+      "sharpe": 0.91,
+      "mean_trade_pct_atr": 0.852
+     }
+    },
+    "2012": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1053,
+      "tpd": 4.26,
+      "wr": 54.5,
+      "pf": 0.65,
+      "sharpe": -4.34,
+      "per_month": -270,
+      "net": -3168,
+      "max_dd": 3269,
+      "days_traded_pct": 99.2
+     },
+     "norm": {
+      "trades": 1054,
+      "tpd": 4.27,
+      "wr": 57.9,
+      "pf": 0.96,
+      "sharpe": -0.48,
+      "mean_trade_pct_atr": -0.47
+     }
+    },
+    "2013": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1026,
+      "tpd": 4.2,
+      "wr": 51.7,
+      "pf": 0.54,
+      "sharpe": -6.01,
+      "per_month": -311,
+      "net": -3617,
+      "max_dd": 3654,
+      "days_traded_pct": 98.4
+     },
+     "norm": {
+      "trades": 1025,
+      "tpd": 4.2,
+      "wr": 58.0,
+      "pf": 0.87,
+      "sharpe": -1.5,
+      "mean_trade_pct_atr": -1.295
+     }
+    },
+    "2014": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1077,
+      "tpd": 4.45,
+      "wr": 59.6,
+      "pf": 0.89,
+      "sharpe": -0.97,
+      "per_month": -82,
+      "net": -947,
+      "max_dd": 1731,
+      "days_traded_pct": 99.2
+     },
+     "norm": {
+      "trades": 1079,
+      "tpd": 4.46,
+      "wr": 63.4,
+      "pf": 1.16,
+      "sharpe": 1.35,
+      "mean_trade_pct_atr": 1.44
+     }
+    },
+    "2015": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1038,
+      "tpd": 4.15,
+      "wr": 57.2,
+      "pf": 0.77,
+      "sharpe": -2.42,
+      "per_month": -271,
+      "net": -3220,
+      "max_dd": 3366,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1039,
+      "tpd": 4.16,
+      "wr": 59.5,
+      "pf": 0.94,
+      "sharpe": -0.56,
+      "mean_trade_pct_atr": -0.569
+     }
+    },
+    "2016": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1090,
+      "tpd": 4.36,
+      "wr": 60.6,
+      "pf": 1.0,
+      "sharpe": -0.04,
+      "per_month": -4,
+      "net": -52,
+      "max_dd": 1612,
+      "days_traded_pct": 100.0
+     },
+     "norm": {
+      "trades": 1090,
+      "tpd": 4.36,
+      "wr": 62.8,
+      "pf": 1.21,
+      "sharpe": 1.75,
+      "mean_trade_pct_atr": 1.843
+     }
+    },
+    "2017": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 1015,
+      "tpd": 4.08,
+      "wr": 58.7,
+      "pf": 0.92,
+      "sharpe": -0.77,
+      "per_month": -70,
+      "net": -826,
+      "max_dd": 984,
+      "days_traded_pct": 98.8
+     },
+     "norm": {
+      "trades": 1012,
+      "tpd": 4.06,
+      "wr": 62.5,
+      "pf": 1.19,
+      "sharpe": 1.62,
+      "mean_trade_pct_atr": 1.675
+     }
+    },
+    "2018": {
+     "real_min_atr": {
+      "trades": 179,
+      "tpd": 0.72,
+      "wr": 68.2,
+      "pf": 1.53,
+      "sharpe": 1.53,
+      "per_month": 220,
+      "net": 2620,
+      "max_dd": 793,
+      "days_traded_pct": 21.7
+     },
+     "real_no_filter": {
+      "trades": 1078,
+      "tpd": 4.33,
+      "wr": 63.1,
+      "pf": 1.11,
+      "sharpe": 0.79,
+      "per_month": 202,
+      "net": 2413,
+      "max_dd": 2786,
+      "days_traded_pct": 99.6
+     },
+     "norm": {
+      "trades": 1080,
+      "tpd": 4.34,
+      "wr": 64.4,
+      "pf": 1.22,
+      "sharpe": 1.62,
+      "mean_trade_pct_atr": 1.924
+     }
+    },
+    "2019": {
+     "real_min_atr": {
+      "trades": 56,
+      "tpd": 0.22,
+      "wr": 57.1,
+      "pf": 0.93,
+      "sharpe": -0.16,
+      "per_month": -11,
+      "net": -129,
+      "max_dd": 684,
+      "days_traded_pct": 5.2
+     },
+     "real_no_filter": {
+      "trades": 1037,
+      "tpd": 4.15,
+      "wr": 59.3,
+      "pf": 0.91,
+      "sharpe": -0.92,
+      "per_month": -149,
+      "net": -1771,
+      "max_dd": 2841,
+      "days_traded_pct": 99.2
+     },
+     "norm": {
+      "trades": 1037,
+      "tpd": 4.15,
+      "wr": 60.4,
+      "pf": 1.07,
+      "sharpe": 0.66,
+      "mean_trade_pct_atr": 0.599
+     }
+    },
+    "2020": {
+     "real_min_atr": {
+      "trades": 949,
+      "tpd": 3.78,
+      "wr": 68.0,
+      "pf": 1.43,
+      "sharpe": 3.0,
+      "per_month": 1312,
+      "net": 15677,
+      "max_dd": 2661,
+      "days_traded_pct": 84.1
+     },
+     "real_no_filter": {
+      "trades": 1144,
+      "tpd": 4.56,
+      "wr": 66.2,
+      "pf": 1.39,
+      "sharpe": 2.91,
+      "per_month": 1302,
+      "net": 15566,
+      "max_dd": 2661,
+      "days_traded_pct": 99.2
+     },
+     "norm": {
+      "trades": 1142,
+      "tpd": 4.55,
+      "wr": 66.6,
+      "pf": 1.4,
+      "sharpe": 3.13,
+      "mean_trade_pct_atr": 3.18
+     }
+    },
+    "2021": {
+     "real_min_atr": {
+      "trades": 1033,
+      "tpd": 4.13,
+      "wr": 67.7,
+      "pf": 1.44,
+      "sharpe": 2.98,
+      "per_month": 1186,
+      "net": 14069,
+      "max_dd": 1524,
+      "days_traded_pct": 92.4
+     },
+     "real_no_filter": {
+      "trades": 1113,
+      "tpd": 4.45,
+      "wr": 67.3,
+      "pf": 1.43,
+      "sharpe": 3.09,
+      "per_month": 1235,
+      "net": 14653,
+      "max_dd": 1524,
+      "days_traded_pct": 99.2
+     },
+     "norm": {
+      "trades": 1113,
+      "tpd": 4.45,
+      "wr": 67.7,
+      "pf": 1.48,
+      "sharpe": 3.56,
+      "mean_trade_pct_atr": 3.496
+     }
+    },
+    "2022": {
+     "real_min_atr": {
+      "trades": 1108,
+      "tpd": 4.43,
+      "wr": 69.9,
+      "pf": 1.72,
+      "sharpe": 4.63,
+      "per_month": 3041,
+      "net": 36205,
+      "max_dd": 1772,
+      "days_traded_pct": 98.8
+     },
+     "real_no_filter": {
+      "trades": 1108,
+      "tpd": 4.43,
+      "wr": 69.9,
+      "pf": 1.72,
+      "sharpe": 4.63,
+      "per_month": 3041,
+      "net": 36205,
+      "max_dd": 1772,
+      "days_traded_pct": 98.8
+     },
+     "norm": {
+      "trades": 1108,
+      "tpd": 4.43,
+      "wr": 69.9,
+      "pf": 1.68,
+      "sharpe": 4.66,
+      "mean_trade_pct_atr": 4.637
+     }
+    },
+    "2023": {
+     "real_min_atr": {
+      "trades": 1110,
+      "tpd": 4.46,
+      "wr": 64.1,
+      "pf": 1.28,
+      "sharpe": 2.22,
+      "per_month": 990,
+      "net": 11738,
+      "max_dd": 3296,
+      "days_traded_pct": 98.4
+     },
+     "real_no_filter": {
+      "trades": 1110,
+      "tpd": 4.46,
+      "wr": 64.1,
+      "pf": 1.28,
+      "sharpe": 2.22,
+      "per_month": 990,
+      "net": 11738,
+      "max_dd": 3296,
+      "days_traded_pct": 98.4
+     },
+     "norm": {
+      "trades": 1111,
+      "tpd": 4.46,
+      "wr": 64.2,
+      "pf": 1.29,
+      "sharpe": 2.3,
+      "mean_trade_pct_atr": 2.441
+     }
+    },
+    "2024": {
+     "real_min_atr": {
+      "trades": 1113,
+      "tpd": 4.43,
+      "wr": 64.1,
+      "pf": 1.38,
+      "sharpe": 3.09,
+      "per_month": 1548,
+      "net": 18503,
+      "max_dd": 5199,
+      "days_traded_pct": 96.8
+     },
+     "real_no_filter": {
+      "trades": 1113,
+      "tpd": 4.43,
+      "wr": 64.1,
+      "pf": 1.38,
+      "sharpe": 3.09,
+      "per_month": 1548,
+      "net": 18503,
+      "max_dd": 5199,
+      "days_traded_pct": 96.8
+     },
+     "norm": {
+      "trades": 1113,
+      "tpd": 4.43,
+      "wr": 64.2,
+      "pf": 1.46,
+      "sharpe": 3.54,
+      "mean_trade_pct_atr": 3.684
+     }
+    },
+    "2025": {
+     "real_min_atr": {
+      "trades": 1069,
+      "tpd": 4.29,
+      "wr": 67.1,
+      "pf": 1.49,
+      "sharpe": 3.33,
+      "per_month": 2203,
+      "net": 26158,
+      "max_dd": 2132,
+      "days_traded_pct": 100.0
+     },
+     "real_no_filter": {
+      "trades": 1069,
+      "tpd": 4.29,
+      "wr": 67.1,
+      "pf": 1.49,
+      "sharpe": 3.33,
+      "per_month": 2203,
+      "net": 26158,
+      "max_dd": 2132,
+      "days_traded_pct": 100.0
+     },
+     "norm": {
+      "trades": 1069,
+      "tpd": 4.29,
+      "wr": 67.1,
+      "pf": 1.43,
+      "sharpe": 3.3,
+      "mean_trade_pct_atr": 3.023
+     }
+    },
+    "2026": {
+     "real_min_atr": {
+      "trades": 806,
+      "tpd": 4.18,
+      "wr": 65.8,
+      "pf": 1.59,
+      "sharpe": 4.21,
+      "per_month": 3183,
+      "net": 29141,
+      "max_dd": 3729,
+      "days_traded_pct": 100.0
+     },
+     "real_no_filter": {
+      "trades": 806,
+      "tpd": 4.18,
+      "wr": 65.8,
+      "pf": 1.59,
+      "sharpe": 4.21,
+      "per_month": 3183,
+      "net": 29141,
+      "max_dd": 3729,
+      "days_traded_pct": 100.0
+     },
+     "norm": {
+      "trades": 806,
+      "tpd": 4.18,
+      "wr": 65.8,
+      "pf": 1.61,
+      "sharpe": 4.32,
+      "mean_trade_pct_atr": 4.199
+     }
+    }
+   },
+   "2010-2014": {
+    "real_min_atr": {
+     "trades": 0,
+     "tpd": 0.0,
+     "wr": null,
+     "pf": null,
+     "sharpe": null,
+     "per_month": 0,
+     "net": 0,
+     "max_dd": 0,
+     "days_traded_pct": 0.0
+    },
+    "real_no_filter": {
+     "trades": 4824,
+     "tpd": 4.28,
+     "wr": 55.8,
+     "pf": 0.71,
+     "sharpe": -3.15,
+     "per_month": -210,
+     "net": -11275,
+     "max_dd": 11814,
+     "days_traded_pct": 98.8
+    },
+    "norm": {
+     "trades": 4824,
+     "tpd": 4.28,
+     "wr": 60.1,
+     "pf": 1.02,
+     "sharpe": 0.21,
+     "mean_trade_pct_atr": 0.207
+    }
+   },
+   "2015-2019": {
+    "real_min_atr": {
+     "trades": 235,
+     "tpd": 0.19,
+     "wr": 65.5,
+     "pf": 1.37,
+     "sharpe": 0.59,
+     "per_month": 42,
+     "net": 2491,
+     "max_dd": 1187,
+     "days_traded_pct": 5.4
+    },
+    "real_no_filter": {
+     "trades": 5258,
+     "tpd": 4.21,
+     "wr": 59.8,
+     "pf": 0.96,
+     "sharpe": -0.37,
+     "per_month": -58,
+     "net": -3456,
+     "max_dd": 4531,
+     "days_traded_pct": 99.4
+    },
+    "norm": {
+     "trades": 5258,
+     "tpd": 4.21,
+     "wr": 61.9,
+     "pf": 1.12,
+     "sharpe": 1.06,
+     "mean_trade_pct_atr": 1.105
+    }
+   },
+   "2020-2023": {
+    "real_min_atr": {
+     "trades": 4200,
+     "tpd": 4.2,
+     "wr": 67.4,
+     "pf": 1.48,
+     "sharpe": 3.29,
+     "per_month": 1632,
+     "net": 77688,
+     "max_dd": 3296,
+     "days_traded_pct": 93.4
+    },
+    "real_no_filter": {
+     "trades": 4475,
+     "tpd": 4.47,
+     "wr": 66.8,
+     "pf": 1.47,
+     "sharpe": 3.29,
+     "per_month": 1642,
+     "net": 78161,
+     "max_dd": 3296,
+     "days_traded_pct": 98.9
+    },
+    "norm": {
+     "trades": 4474,
+     "tpd": 4.47,
+     "wr": 67.1,
+     "pf": 1.45,
+     "sharpe": 3.39,
+     "mean_trade_pct_atr": 3.436
+    }
+   },
+   "2024-2026": {
+    "real_min_atr": {
+     "trades": 2988,
+     "tpd": 4.31,
+     "wr": 65.6,
+     "pf": 1.49,
+     "sharpe": 3.51,
+     "per_month": 2239,
+     "net": 73802,
+     "max_dd": 5199,
+     "days_traded_pct": 98.8
+    },
+    "real_no_filter": {
+     "trades": 2988,
+     "tpd": 4.31,
+     "wr": 65.6,
+     "pf": 1.49,
+     "sharpe": 3.51,
+     "per_month": 2239,
+     "net": 73802,
+     "max_dd": 5199,
+     "days_traded_pct": 98.8
+    },
+    "norm": {
+     "trades": 2988,
+     "tpd": 4.31,
+     "wr": 65.7,
+     "pf": 1.49,
+     "sharpe": 3.67,
+     "mean_trade_pct_atr": 3.586
+    }
+   },
+   "2010-2026": {
+    "real_min_atr": {
+     "trades": 7423,
+     "tpd": 1.82,
+     "wr": 66.6,
+     "pf": 1.48,
+     "sharpe": 2.17,
+     "per_month": 795,
+     "net": 153982,
+     "max_dd": 5199,
+     "days_traded_pct": 41.4
+    },
+    "real_no_filter": {
+     "trades": 17545,
+     "tpd": 4.31,
+     "wr": 61.5,
+     "pf": 1.32,
+     "sharpe": 1.87,
+     "per_month": 709,
+     "net": 137232,
+     "max_dd": 16993,
+     "days_traded_pct": 99.0
+    },
+    "norm": {
+     "trades": 17544,
+     "tpd": 4.31,
+     "wr": 63.4,
+     "pf": 1.22,
+     "sharpe": 1.86,
+     "mean_trade_pct_atr": 1.875
+    }
+   },
+   "check_vs_mnq_fut_2024_02_2026_09": {
+    "trades": 2849,
+    "tpd": 4.3,
+    "wr": 66.1,
+    "pf": 1.51,
+    "sharpe": 3.64,
+    "per_month": 2344,
+    "net": 73928,
+    "max_dd": 5199,
+    "days_traded_pct": 98.9
+   },
+   "modules": {
+    "CRT11": {
+     "2010-2014": {
+      "n": 93,
+      "norm_pf": 1.36,
+      "real_pf": 0.99,
+      "real_net": -11
+     },
+     "2015-2019": {
+      "n": 146,
+      "norm_pf": 1.31,
+      "real_pf": 1.09,
+      "real_net": 377
+     },
+     "2020-2023": {
+      "n": 107,
+      "norm_pf": 1.67,
+      "real_pf": 1.7,
+      "real_net": 5135
+     },
+     "2024-2026": {
+      "n": 93,
+      "norm_pf": 2.35,
+      "real_pf": 2.36,
+      "real_net": 8987
+     }
+    },
+    "ICT": {
+     "2010-2014": {
+      "n": 107,
+      "norm_pf": 0.69,
+      "real_pf": 0.54,
+      "real_net": -806
+     },
+     "2015-2019": {
+      "n": 108,
+      "norm_pf": 1.23,
+      "real_pf": 1.11,
+      "real_net": 264
+     },
+     "2020-2023": {
+      "n": 88,
+      "norm_pf": 1.17,
+      "real_pf": 1.23,
+      "real_net": 1446
+     },
+     "2024-2026": {
+      "n": 68,
+      "norm_pf": 1.41,
+      "real_pf": 1.2,
+      "real_net": 1284
+     }
+    },
+    "LATE15": {
+     "2010-2014": {
+      "n": 155,
+      "norm_pf": 0.93,
+      "real_pf": 0.57,
+      "real_net": -415
+     },
+     "2015-2019": {
+      "n": 155,
+      "norm_pf": 1.59,
+      "real_pf": 1.4,
+      "real_net": 473
+     },
+     "2020-2023": {
+      "n": 172,
+      "norm_pf": 1.4,
+      "real_pf": 1.46,
+      "real_net": 2026
+     },
+     "2024-2026": {
+      "n": 99,
+      "norm_pf": 1.39,
+      "real_pf": 1.28,
+      "real_net": 1104
+     }
+    },
+    "LF0430": {
+     "2010-2014": {
+      "n": 123,
+      "norm_pf": 0.71,
+      "real_pf": 0.48,
+      "real_net": -627
+     },
+     "2015-2019": {
+      "n": 108,
+      "norm_pf": 0.88,
+      "real_pf": 0.76,
+      "real_net": -358
+     },
+     "2020-2023": {
+      "n": 113,
+      "norm_pf": 1.27,
+      "real_pf": 1.43,
+      "real_net": 1478
+     },
+     "2024-2026": {
+      "n": 90,
+      "norm_pf": 1.3,
+      "real_pf": 1.36,
+      "real_net": 1678
+     }
+    },
+    "LF06": {
+     "2010-2014": {
+      "n": 183,
+      "norm_pf": 1.09,
+      "real_pf": 0.61,
+      "real_net": -396
+     },
+     "2015-2019": {
+      "n": 176,
+      "norm_pf": 1.02,
+      "real_pf": 0.72,
+      "real_net": -551
+     },
+     "2020-2023": {
+      "n": 124,
+      "norm_pf": 1.23,
+      "real_pf": 1.32,
+      "real_net": 1006
+     },
+     "2024-2026": {
+      "n": 75,
+      "norm_pf": 1.4,
+      "real_pf": 1.4,
+      "real_net": 1096
+     }
+    },
+    "LON": {
+     "2010-2014": {
+      "n": 401,
+      "norm_pf": 0.88,
+      "real_pf": 0.61,
+      "real_net": -1158
+     },
+     "2015-2019": {
+      "n": 414,
+      "norm_pf": 1.12,
+      "real_pf": 0.99,
+      "real_net": -33
+     },
+     "2020-2023": {
+      "n": 329,
+      "norm_pf": 1.17,
+      "real_pf": 1.13,
+      "real_net": 1759
+     },
+     "2024-2026": {
+      "n": 227,
+      "norm_pf": 1.35,
+      "real_pf": 1.41,
+      "real_net": 4370
+     }
+    },
+    "MOM1030": {
+     "2010-2014": {
+      "n": 181,
+      "norm_pf": 1.17,
+      "real_pf": 0.57,
+      "real_net": -280
+     },
+     "2015-2019": {
+      "n": 200,
+      "norm_pf": 1.25,
+      "real_pf": 0.93,
+      "real_net": -95
+     },
+     "2020-2023": {
+      "n": 190,
+      "norm_pf": 1.32,
+      "real_pf": 1.4,
+      "real_net": 1282
+     },
+     "2024-2026": {
+      "n": 101,
+      "norm_pf": 1.65,
+      "real_pf": 1.58,
+      "real_net": 1342
+     }
+    },
+    "MOM11": {
+     "2010-2014": {
+      "n": 903,
+      "norm_pf": 0.98,
+      "real_pf": 0.56,
+      "real_net": -2038
+     },
+     "2015-2019": {
+      "n": 964,
+      "norm_pf": 0.96,
+      "real_pf": 0.74,
+      "real_net": -2476
+     },
+     "2020-2023": {
+      "n": 783,
+      "norm_pf": 1.14,
+      "real_pf": 1.14,
+      "real_net": 2772
+     },
+     "2024-2026": {
+      "n": 552,
+      "norm_pf": 1.22,
+      "real_pf": 1.29,
+      "real_net": 5223
+     }
+    },
+    "MOM13": {
+     "2010-2014": {
+      "n": 334,
+      "norm_pf": 0.93,
+      "real_pf": 0.72,
+      "real_net": -759
+     },
+     "2015-2019": {
+      "n": 370,
+      "norm_pf": 0.91,
+      "real_pf": 0.7,
+      "real_net": -1823
+     },
+     "2020-2023": {
+      "n": 333,
+      "norm_pf": 1.5,
+      "real_pf": 1.52,
+      "real_net": 6226
+     },
+     "2024-2026": {
+      "n": 188,
+      "norm_pf": 1.5,
+      "real_pf": 1.48,
+      "real_net": 3788
+     }
+    },
+    "MSEQ": {
+     "2010-2014": {
+      "n": 156,
+      "norm_pf": 0.97,
+      "real_pf": 0.69,
+      "real_net": -666
+     },
+     "2015-2019": {
+      "n": 192,
+      "norm_pf": 1.06,
+      "real_pf": 0.86,
+      "real_net": -603
+     },
+     "2020-2023": {
+      "n": 257,
+      "norm_pf": 1.71,
+      "real_pf": 1.7,
+      "real_net": 8786
+     },
+     "2024-2026": {
+      "n": 169,
+      "norm_pf": 1.33,
+      "real_pf": 1.29,
+      "real_net": 3985
+     }
+    },
+    "MSEQS": {
+     "2010-2014": {
+      "n": 23,
+      "norm_pf": 1.35,
+      "real_pf": 1.34,
+      "real_net": 78
+     },
+     "2015-2019": {
+      "n": 29,
+      "norm_pf": 1.24,
+      "real_pf": 1.53,
+      "real_net": 382
+     },
+     "2020-2023": {
+      "n": 31,
+      "norm_pf": 2.92,
+      "real_pf": 2.97,
+      "real_net": 2239
+     },
+     "2024-2026": {
+      "n": 27,
+      "norm_pf": 1.88,
+      "real_pf": 1.82,
+      "real_net": 1863
+     }
+    },
+    "NF05": {
+     "2010-2014": {
+      "n": 154,
+      "norm_pf": 1.18,
+      "real_pf": 0.78,
+      "real_net": -275
+     },
+     "2015-2019": {
+      "n": 214,
+      "norm_pf": 1.7,
+      "real_pf": 1.48,
+      "real_net": 1265
+     },
+     "2020-2023": {
+      "n": 162,
+      "norm_pf": 1.38,
+      "real_pf": 1.54,
+      "real_net": 3219
+     },
+     "2024-2026": {
+      "n": 123,
+      "norm_pf": 1.43,
+      "real_pf": 1.41,
+      "real_net": 2956
+     }
+    },
+    "ORB60": {
+     "2010-2014": {
+      "n": 238,
+      "norm_pf": 1.02,
+      "real_pf": 0.73,
+      "real_net": -898
+     },
+     "2015-2019": {
+      "n": 270,
+      "norm_pf": 1.02,
+      "real_pf": 0.89,
+      "real_net": -789
+     },
+     "2020-2023": {
+      "n": 218,
+      "norm_pf": 2.13,
+      "real_pf": 2.31,
+      "real_net": 14204
+     },
+     "2024-2026": {
+      "n": 135,
+      "norm_pf": 1.84,
+      "real_pf": 1.91,
+      "real_net": 9954
+     }
+    },
+    "ORB90": {
+     "2010-2014": {
+      "n": 202,
+      "norm_pf": 1.12,
+      "real_pf": 0.84,
+      "real_net": -360
+     },
+     "2015-2019": {
+      "n": 228,
+      "norm_pf": 1.0,
+      "real_pf": 1.03,
+      "real_net": 162
+     },
+     "2020-2023": {
+      "n": 187,
+      "norm_pf": 2.14,
+      "real_pf": 2.19,
+      "real_net": 9515
+     },
+     "2024-2026": {
+      "n": 112,
+      "norm_pf": 1.79,
+      "real_pf": 1.83,
+      "real_net": 5520
+     }
+    },
+    "REV06": {
+     "2010-2014": {
+      "n": 310,
+      "norm_pf": 0.92,
+      "real_pf": 0.42,
+      "real_net": -829
+     },
+     "2015-2019": {
+      "n": 353,
+      "norm_pf": 0.97,
+      "real_pf": 0.75,
+      "real_net": -680
+     },
+     "2020-2023": {
+      "n": 265,
+      "norm_pf": 1.43,
+      "real_pf": 1.46,
+      "real_net": 1982
+     },
+     "2024-2026": {
+      "n": 186,
+      "norm_pf": 1.02,
+      "real_pf": 1.03,
+      "real_net": 203
+     }
+    },
+    "VOLB": {
+     "2010-2014": {
+      "n": 868,
+      "norm_pf": 1.22,
+      "real_pf": 0.95,
+      "real_net": -454
+     },
+     "2015-2019": {
+      "n": 915,
+      "norm_pf": 1.32,
+      "real_pf": 1.16,
+      "real_net": 2849
+     },
+     "2020-2023": {
+      "n": 740,
+      "norm_pf": 1.32,
+      "real_pf": 1.29,
+      "real_net": 12614
+     },
+     "2024-2026": {
+      "n": 525,
+      "norm_pf": 1.55,
+      "real_pf": 1.53,
+      "real_net": 18997
+     }
+    },
+    "VW13": {
+     "2010-2014": {
+      "n": 116,
+      "norm_pf": 0.7,
+      "real_pf": 0.33,
+      "real_net": -413
+     },
+     "2015-2019": {
+      "n": 109,
+      "norm_pf": 0.84,
+      "real_pf": 0.54,
+      "real_net": -490
+     },
+     "2020-2023": {
+      "n": 101,
+      "norm_pf": 1.28,
+      "real_pf": 1.44,
+      "real_net": 798
+     },
+     "2024-2026": {
+      "n": 61,
+      "norm_pf": 1.56,
+      "real_pf": 1.53,
+      "real_net": 733
+     }
+    },
+    "VW13b": {
+     "2010-2014": {
+      "n": 277,
+      "norm_pf": 0.7,
+      "real_pf": 0.34,
+      "real_net": -967
+     },
+     "2015-2019": {
+      "n": 307,
+      "norm_pf": 0.81,
+      "real_pf": 0.53,
+      "real_net": -1328
+     },
+     "2020-2023": {
+      "n": 274,
+      "norm_pf": 1.29,
+      "real_pf": 1.32,
+      "real_net": 1675
+     },
+     "2024-2026": {
+      "n": 157,
+      "norm_pf": 1.18,
+      "real_pf": 1.16,
+      "real_net": 722
+     }
+    }
+   }
+  },
+  "WR70Plus": {
+   "years": {
+    "2010": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 437,
+      "tpd": 3.03,
+      "wr": 61.3,
+      "pf": 0.63,
+      "sharpe": -3.9,
+      "per_month": -152,
+      "net": -1045,
+      "max_dd": 1080,
+      "days_traded_pct": 93.8
+     },
+     "norm": {
+      "trades": 437,
+      "tpd": 3.03,
+      "wr": 63.8,
+      "pf": 1.08,
+      "sharpe": 0.67,
+      "mean_trade_pct_atr": 0.647
+     }
+    },
+    "2011": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 791,
+      "tpd": 3.16,
+      "wr": 63.8,
+      "pf": 0.69,
+      "sharpe": -2.96,
+      "per_month": -167,
+      "net": -1987,
+      "max_dd": 2134,
+      "days_traded_pct": 98.4
+     },
+     "norm": {
+      "trades": 791,
+      "tpd": 3.16,
+      "wr": 64.7,
+      "pf": 1.06,
+      "sharpe": 0.53,
+      "mean_trade_pct_atr": 0.544
+     }
+    },
+    "2012": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 798,
+      "tpd": 3.23,
+      "wr": 60.3,
+      "pf": 0.55,
+      "sharpe": -5.28,
+      "per_month": -251,
+      "net": -2966,
+      "max_dd": 2971,
+      "days_traded_pct": 97.6
+     },
+     "norm": {
+      "trades": 798,
+      "tpd": 3.23,
+      "wr": 61.8,
+      "pf": 0.87,
+      "sharpe": -1.31,
+      "mean_trade_pct_atr": -1.335
+     }
+    },
+    "2013": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 746,
+      "tpd": 3.06,
+      "wr": 61.4,
+      "pf": 0.53,
+      "sharpe": -5.48,
+      "per_month": -217,
+      "net": -2516,
+      "max_dd": 2634,
+      "days_traded_pct": 97.1
+     },
+     "norm": {
+      "trades": 746,
+      "tpd": 3.06,
+      "wr": 63.9,
+      "pf": 0.89,
+      "sharpe": -1.05,
+      "mean_trade_pct_atr": -0.957
+     }
+    },
+    "2014": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 797,
+      "tpd": 3.29,
+      "wr": 64.6,
+      "pf": 0.78,
+      "sharpe": -1.96,
+      "per_month": -133,
+      "net": -1527,
+      "max_dd": 1736,
+      "days_traded_pct": 97.5
+     },
+     "norm": {
+      "trades": 797,
+      "tpd": 3.29,
+      "wr": 66.8,
+      "pf": 1.06,
+      "sharpe": 0.47,
+      "mean_trade_pct_atr": 0.558
+     }
+    },
+    "2015": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 785,
+      "tpd": 3.14,
+      "wr": 59.6,
+      "pf": 0.65,
+      "sharpe": -3.75,
+      "per_month": -332,
+      "net": -3954,
+      "max_dd": 4011,
+      "days_traded_pct": 98.0
+     },
+     "norm": {
+      "trades": 785,
+      "tpd": 3.14,
+      "wr": 60.6,
+      "pf": 0.81,
+      "sharpe": -1.85,
+      "mean_trade_pct_atr": -1.99
+     }
+    },
+    "2016": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 841,
+      "tpd": 3.36,
+      "wr": 64.4,
+      "pf": 0.93,
+      "sharpe": -0.58,
+      "per_month": -56,
+      "net": -662,
+      "max_dd": 1575,
+      "days_traded_pct": 98.8
+     },
+     "norm": {
+      "trades": 841,
+      "tpd": 3.36,
+      "wr": 65.2,
+      "pf": 1.15,
+      "sharpe": 1.23,
+      "mean_trade_pct_atr": 1.305
+     }
+    },
+    "2017": {
+     "real_min_atr": {
+      "trades": 0,
+      "tpd": 0.0,
+      "wr": null,
+      "pf": null,
+      "sharpe": null,
+      "per_month": 0,
+      "net": 0,
+      "max_dd": 0,
+      "days_traded_pct": 0.0
+     },
+     "real_no_filter": {
+      "trades": 735,
+      "tpd": 2.95,
+      "wr": 64.1,
+      "pf": 0.91,
+      "sharpe": -0.72,
+      "per_month": -55,
+      "net": -658,
+      "max_dd": 924,
+      "days_traded_pct": 96.4
+     },
+     "norm": {
+      "trades": 735,
+      "tpd": 2.95,
+      "wr": 65.9,
+      "pf": 1.21,
+      "sharpe": 1.53,
+      "mean_trade_pct_atr": 1.776
+     }
+    },
+    "2018": {
+     "real_min_atr": {
+      "trades": 131,
+      "tpd": 0.53,
+      "wr": 71.0,
+      "pf": 1.52,
+      "sharpe": 1.24,
+      "per_month": 142,
+      "net": 1696,
+      "max_dd": 834,
+      "days_traded_pct": 20.5
+     },
+     "real_no_filter": {
+      "trades": 811,
+      "tpd": 3.26,
+      "wr": 68.2,
+      "pf": 1.12,
+      "sharpe": 0.77,
+      "per_month": 144,
+      "net": 1722,
+      "max_dd": 1482,
+      "days_traded_pct": 98.4
+     },
+     "norm": {
+      "trades": 811,
+      "tpd": 3.26,
+      "wr": 69.1,
+      "pf": 1.25,
+      "sharpe": 1.7,
+      "mean_trade_pct_atr": 1.966
+     }
+    },
+    "2019": {
+     "real_min_atr": {
+      "trades": 39,
+      "tpd": 0.16,
+      "wr": 64.1,
+      "pf": 0.76,
+      "sharpe": -0.52,
+      "per_month": -24,
+      "net": -289,
+      "max_dd": 622,
+      "days_traded_pct": 5.2
+     },
+     "real_no_filter": {
+      "trades": 759,
+      "tpd": 3.04,
+      "wr": 61.3,
+      "pf": 0.86,
+      "sharpe": -1.38,
+      "per_month": -166,
+      "net": -1982,
+      "max_dd": 2093,
+      "days_traded_pct": 96.0
+     },
+     "norm": {
+      "trades": 759,
+      "tpd": 3.04,
+      "wr": 62.2,
+      "pf": 1.01,
+      "sharpe": 0.07,
+      "mean_trade_pct_atr": 0.063
+     }
+    },
+    "2020": {
+     "real_min_atr": {
+      "trades": 722,
+      "tpd": 2.88,
+      "wr": 72.0,
+      "pf": 1.53,
+      "sharpe": 3.24,
+      "per_month": 1151,
+      "net": 13751,
+      "max_dd": 1708,
+      "days_traded_pct": 82.9
+     },
+     "real_no_filter": {
+      "trades": 877,
+      "tpd": 3.49,
+      "wr": 69.6,
+      "pf": 1.45,
+      "sharpe": 3.09,
+      "per_month": 1119,
+      "net": 13371,
+      "max_dd": 1708,
+      "days_traded_pct": 98.0
+     },
+     "norm": {
+      "trades": 877,
+      "tpd": 3.49,
+      "wr": 69.8,
+      "pf": 1.44,
+      "sharpe": 3.27,
+      "mean_trade_pct_atr": 3.467
+     }
+    },
+    "2021": {
+     "real_min_atr": {
+      "trades": 773,
+      "tpd": 3.09,
+      "wr": 71.4,
+      "pf": 1.48,
+      "sharpe": 2.93,
+      "per_month": 897,
+      "net": 10713,
+      "max_dd": 1368,
+      "days_traded_pct": 91.2
+     },
+     "real_no_filter": {
+      "trades": 836,
+      "tpd": 3.34,
+      "wr": 69.9,
+      "pf": 1.4,
+      "sharpe": 2.66,
+      "per_month": 829,
+      "net": 9906,
+      "max_dd": 1368,
+      "days_traded_pct": 98.0
+     },
+     "norm": {
+      "trades": 836,
+      "tpd": 3.34,
+      "wr": 70.1,
+      "pf": 1.43,
+      "sharpe": 2.87,
+      "mean_trade_pct_atr": 3.027
+     }
+    },
+    "2022": {
+     "real_min_atr": {
+      "trades": 836,
+      "tpd": 3.34,
+      "wr": 73.3,
+      "pf": 1.81,
+      "sharpe": 4.79,
+      "per_month": 2290,
+      "net": 27267,
+      "max_dd": 1835,
+      "days_traded_pct": 98.0
+     },
+     "real_no_filter": {
+      "trades": 836,
+      "tpd": 3.34,
+      "wr": 73.3,
+      "pf": 1.81,
+      "sharpe": 4.79,
+      "per_month": 2290,
+      "net": 27267,
+      "max_dd": 1835,
+      "days_traded_pct": 98.0
+     },
+     "norm": {
+      "trades": 836,
+      "tpd": 3.34,
+      "wr": 73.6,
+      "pf": 1.79,
+      "sharpe": 4.89,
+      "mean_trade_pct_atr": 4.763
+     }
+    },
+    "2023": {
+     "real_min_atr": {
+      "trades": 828,
+      "tpd": 3.33,
+      "wr": 70.4,
+      "pf": 1.47,
+      "sharpe": 3.08,
+      "per_month": 1105,
+      "net": 13100,
+      "max_dd": 2315,
+      "days_traded_pct": 97.2
+     },
+     "real_no_filter": {
+      "trades": 828,
+      "tpd": 3.33,
+      "wr": 70.4,
+      "pf": 1.47,
+      "sharpe": 3.08,
+      "per_month": 1105,
+      "net": 13100,
+      "max_dd": 2315,
+      "days_traded_pct": 97.2
+     },
+     "norm": {
+      "trades": 828,
+      "tpd": 3.33,
+      "wr": 70.5,
+      "pf": 1.48,
+      "sharpe": 3.2,
+      "mean_trade_pct_atr": 3.673
+     }
+    },
+    "2024": {
+     "real_min_atr": {
+      "trades": 849,
+      "tpd": 3.38,
+      "wr": 67.8,
+      "pf": 1.41,
+      "sharpe": 3.02,
+      "per_month": 1196,
+      "net": 14290,
+      "max_dd": 4059,
+      "days_traded_pct": 95.2
+     },
+     "real_no_filter": {
+      "trades": 849,
+      "tpd": 3.38,
+      "wr": 67.8,
+      "pf": 1.41,
+      "sharpe": 3.02,
+      "per_month": 1196,
+      "net": 14290,
+      "max_dd": 4059,
+      "days_traded_pct": 95.2
+     },
+     "norm": {
+      "trades": 849,
+      "tpd": 3.38,
+      "wr": 68.1,
+      "pf": 1.49,
+      "sharpe": 3.51,
+      "mean_trade_pct_atr": 3.705
+     }
+    },
+    "2025": {
+     "real_min_atr": {
+      "trades": 817,
+      "tpd": 3.28,
+      "wr": 71.4,
+      "pf": 1.5,
+      "sharpe": 3.41,
+      "per_month": 1692,
+      "net": 20100,
+      "max_dd": 2005,
+      "days_traded_pct": 98.4
+     },
+     "real_no_filter": {
+      "trades": 817,
+      "tpd": 3.28,
+      "wr": 71.4,
+      "pf": 1.5,
+      "sharpe": 3.41,
+      "per_month": 1692,
+      "net": 20100,
+      "max_dd": 2005,
+      "days_traded_pct": 98.4
+     },
+     "norm": {
+      "trades": 816,
+      "tpd": 3.28,
+      "wr": 71.4,
+      "pf": 1.43,
+      "sharpe": 3.05,
+      "mean_trade_pct_atr": 2.924
+     }
+    },
+    "2026": {
+     "real_min_atr": {
+      "trades": 632,
+      "tpd": 3.27,
+      "wr": 66.8,
+      "pf": 1.46,
+      "sharpe": 3.18,
+      "per_month": 1938,
+      "net": 17808,
+      "max_dd": 3959,
+      "days_traded_pct": 98.4
+     },
+     "real_no_filter": {
+      "trades": 632,
+      "tpd": 3.27,
+      "wr": 66.8,
+      "pf": 1.46,
+      "sharpe": 3.18,
+      "per_month": 1938,
+      "net": 17808,
+      "max_dd": 3959,
+      "days_traded_pct": 98.4
+     },
+     "norm": {
+      "trades": 632,
+      "tpd": 3.27,
+      "wr": 66.8,
+      "pf": 1.47,
+      "sharpe": 3.23,
+      "mean_trade_pct_atr": 3.214
+     }
+    }
+   },
+   "2010-2014": {
+    "real_min_atr": {
+     "trades": 0,
+     "tpd": 0.0,
+     "wr": null,
+     "pf": null,
+     "sharpe": null,
+     "per_month": 0,
+     "net": 0,
+     "max_dd": 0,
+     "days_traded_pct": 0.0
+    },
+    "real_no_filter": {
+     "trades": 3569,
+     "tpd": 3.17,
+     "wr": 62.4,
+     "pf": 0.64,
+     "sharpe": -3.59,
+     "per_month": -187,
+     "net": -10042,
+     "max_dd": 10225,
+     "days_traded_pct": 97.2
+    },
+    "norm": {
+     "trades": 3569,
+     "tpd": 3.17,
+     "wr": 64.2,
+     "pf": 0.98,
+     "sharpe": -0.17,
+     "mean_trade_pct_atr": -0.174
+    }
+   },
+   "2015-2019": {
+    "real_min_atr": {
+     "trades": 170,
+     "tpd": 0.14,
+     "wr": 69.4,
+     "pf": 1.31,
+     "sharpe": 0.42,
+     "per_month": 23,
+     "net": 1407,
+     "max_dd": 1145,
+     "days_traded_pct": 5.1
+    },
+    "real_no_filter": {
+     "trades": 3931,
+     "tpd": 3.15,
+     "wr": 63.6,
+     "pf": 0.9,
+     "sharpe": -0.78,
+     "per_month": -93,
+     "net": -5534,
+     "max_dd": 5741,
+     "days_traded_pct": 97.5
+    },
+    "norm": {
+     "trades": 3931,
+     "tpd": 3.15,
+     "wr": 64.6,
+     "pf": 1.07,
+     "sharpe": 0.58,
+     "mean_trade_pct_atr": 0.632
+    }
+   },
+   "2020-2023": {
+    "real_min_atr": {
+     "trades": 3159,
+     "tpd": 3.16,
+     "wr": 71.8,
+     "pf": 1.59,
+     "sharpe": 3.58,
+     "per_month": 1361,
+     "net": 64831,
+     "max_dd": 2315,
+     "days_traded_pct": 92.3
+    },
+    "real_no_filter": {
+     "trades": 3377,
+     "tpd": 3.38,
+     "wr": 70.8,
+     "pf": 1.55,
+     "sharpe": 3.48,
+     "per_month": 1336,
+     "net": 63643,
+     "max_dd": 2315,
+     "days_traded_pct": 97.8
+    },
+    "norm": {
+     "trades": 3377,
+     "tpd": 3.38,
+     "wr": 71.0,
+     "pf": 1.52,
+     "sharpe": 3.52,
+     "mean_trade_pct_atr": 3.73
+    }
+   },
+   "2024-2026": {
+    "real_min_atr": {
+     "trades": 2298,
+     "tpd": 3.32,
+     "wr": 68.8,
+     "pf": 1.46,
+     "sharpe": 3.17,
+     "per_month": 1581,
+     "net": 52197,
+     "max_dd": 4059,
+     "days_traded_pct": 97.3
+    },
+    "real_no_filter": {
+     "trades": 2298,
+     "tpd": 3.32,
+     "wr": 68.8,
+     "pf": 1.46,
+     "sharpe": 3.17,
+     "per_month": 1581,
+     "net": 52197,
+     "max_dd": 4059,
+     "days_traded_pct": 97.3
+    },
+    "norm": {
+     "trades": 2297,
+     "tpd": 3.31,
+     "wr": 68.9,
+     "pf": 1.46,
+     "sharpe": 3.28,
+     "mean_trade_pct_atr": 3.292
+    }
+   },
+   "2010-2026": {
+    "real_min_atr": {
+     "trades": 5627,
+     "tpd": 1.38,
+     "wr": 70.5,
+     "pf": 1.52,
+     "sharpe": 2.15,
+     "per_month": 611,
+     "net": 118435,
+     "max_dd": 4059,
+     "days_traded_pct": 40.8
+    },
+    "real_no_filter": {
+     "trades": 13175,
+     "tpd": 3.24,
+     "wr": 66.0,
+     "pf": 1.32,
+     "sharpe": 1.76,
+     "per_month": 517,
+     "net": 100265,
+     "max_dd": 16059,
+     "days_traded_pct": 97.4
+    },
+    "norm": {
+     "trades": 13174,
+     "tpd": 3.24,
+     "wr": 66.9,
+     "pf": 1.2,
+     "sharpe": 1.58,
+     "mean_trade_pct_atr": 1.671
+    }
+   },
+   "check_vs_mnq_fut_2024_02_2026_09": {
+    "trades": 2191,
+    "tpd": 3.3,
+    "wr": 69.4,
+    "pf": 1.48,
+    "sharpe": 3.28,
+    "per_month": 1645,
+    "net": 51977,
+    "max_dd": 4059,
+    "days_traded_pct": 97.6
+   },
+   "modules": {
+    "CRT11": {
+     "2010-2014": {
+      "n": 133,
+      "norm_pf": 1.19,
+      "real_pf": 0.82,
+      "real_net": -348
+     },
+     "2015-2019": {
+      "n": 192,
+      "norm_pf": 1.24,
+      "real_pf": 1.0,
+      "real_net": -2
+     },
+     "2020-2023": {
+      "n": 136,
+      "norm_pf": 1.77,
+      "real_pf": 1.71,
+      "real_net": 7106
+     },
+     "2024-2026": {
+      "n": 121,
+      "norm_pf": 2.04,
+      "real_pf": 2.09,
+      "real_net": 9718
+     }
+    },
+    "ICT": {
+     "2010-2014": {
+      "n": 126,
+      "norm_pf": 0.75,
+      "real_pf": 0.57,
+      "real_net": -858
+     },
+     "2015-2019": {
+      "n": 128,
+      "norm_pf": 1.12,
+      "real_pf": 0.99,
+      "real_net": -16
+     },
+     "2020-2023": {
+      "n": 110,
+      "norm_pf": 1.12,
+      "real_pf": 1.18,
+      "real_net": 1411
+     },
+     "2024-2026": {
+      "n": 79,
+      "norm_pf": 1.49,
+      "real_pf": 1.27,
+      "real_net": 1942
+     }
+    },
+    "LATE15": {
+     "2010-2014": {
+      "n": 155,
+      "norm_pf": 0.93,
+      "real_pf": 0.57,
+      "real_net": -415
+     },
+     "2015-2019": {
+      "n": 155,
+      "norm_pf": 1.59,
+      "real_pf": 1.4,
+      "real_net": 473
+     },
+     "2020-2023": {
+      "n": 172,
+      "norm_pf": 1.4,
+      "real_pf": 1.46,
+      "real_net": 2026
+     },
+     "2024-2026": {
+      "n": 99,
+      "norm_pf": 1.39,
+      "real_pf": 1.28,
+      "real_net": 1104
+     }
+    },
+    "LF0430": {
+     "2010-2014": {
+      "n": 123,
+      "norm_pf": 0.71,
+      "real_pf": 0.48,
+      "real_net": -627
+     },
+     "2015-2019": {
+      "n": 108,
+      "norm_pf": 0.88,
+      "real_pf": 0.76,
+      "real_net": -358
+     },
+     "2020-2023": {
+      "n": 113,
+      "norm_pf": 1.27,
+      "real_pf": 1.43,
+      "real_net": 1478
+     },
+     "2024-2026": {
+      "n": 90,
+      "norm_pf": 1.3,
+      "real_pf": 1.36,
+      "real_net": 1678
+     }
+    },
+    "LF06": {
+     "2010-2014": {
+      "n": 192,
+      "norm_pf": 1.08,
+      "real_pf": 0.62,
+      "real_net": -412
+     },
+     "2015-2019": {
+      "n": 182,
+      "norm_pf": 1.04,
+      "real_pf": 0.74,
+      "real_net": -528
+     },
+     "2020-2023": {
+      "n": 129,
+      "norm_pf": 1.2,
+      "real_pf": 1.29,
+      "real_net": 979
+     },
+     "2024-2026": {
+      "n": 82,
+      "norm_pf": 1.38,
+      "real_pf": 1.35,
+      "real_net": 1064
+     }
+    },
+    "MOM11": {
+     "2010-2014": {
+      "n": 899,
+      "norm_pf": 0.98,
+      "real_pf": 0.56,
+      "real_net": -2032
+     },
+     "2015-2019": {
+      "n": 963,
+      "norm_pf": 0.95,
+      "real_pf": 0.74,
+      "real_net": -2494
+     },
+     "2020-2023": {
+      "n": 778,
+      "norm_pf": 1.14,
+      "real_pf": 1.14,
+      "real_net": 2740
+     },
+     "2024-2026": {
+      "n": 550,
+      "norm_pf": 1.21,
+      "real_pf": 1.29,
+      "real_net": 5155
+     }
+    },
+    "MSEQ": {
+     "2010-2014": {
+      "n": 170,
+      "norm_pf": 0.96,
+      "real_pf": 0.69,
+      "real_net": -745
+     },
+     "2015-2019": {
+      "n": 213,
+      "norm_pf": 1.15,
+      "real_pf": 0.92,
+      "real_net": -360
+     },
+     "2020-2023": {
+      "n": 281,
+      "norm_pf": 1.59,
+      "real_pf": 1.55,
+      "real_net": 8165
+     },
+     "2024-2026": {
+      "n": 183,
+      "norm_pf": 1.37,
+      "real_pf": 1.31,
+      "real_net": 4466
+     }
+    },
+    "MSEQS": {
+     "2010-2014": {
+      "n": 23,
+      "norm_pf": 1.31,
+      "real_pf": 1.32,
+      "real_net": 73
+     },
+     "2015-2019": {
+      "n": 29,
+      "norm_pf": 1.24,
+      "real_pf": 1.53,
+      "real_net": 382
+     },
+     "2020-2023": {
+      "n": 31,
+      "norm_pf": 2.92,
+      "real_pf": 2.97,
+      "real_net": 2239
+     },
+     "2024-2026": {
+      "n": 27,
+      "norm_pf": 1.88,
+      "real_pf": 1.82,
+      "real_net": 1863
+     }
+    },
+    "NF05": {
+     "2010-2014": {
+      "n": 175,
+      "norm_pf": 1.18,
+      "real_pf": 0.75,
+      "real_net": -338
+     },
+     "2015-2019": {
+      "n": 239,
+      "norm_pf": 1.62,
+      "real_pf": 1.4,
+      "real_net": 1197
+     },
+     "2020-2023": {
+      "n": 179,
+      "norm_pf": 1.35,
+      "real_pf": 1.51,
+      "real_net": 3236
+     },
+     "2024-2026": {
+      "n": 137,
+      "norm_pf": 1.28,
+      "real_pf": 1.28,
+      "real_net": 2346
+     }
+    },
+    "ORB60": {
+     "2010-2014": {
+      "n": 234,
+      "norm_pf": 1.03,
+      "real_pf": 0.75,
+      "real_net": -929
+     },
+     "2015-2019": {
+      "n": 269,
+      "norm_pf": 1.13,
+      "real_pf": 1.02,
+      "real_net": 143
+     },
+     "2020-2023": {
+      "n": 206,
+      "norm_pf": 2.17,
+      "real_pf": 2.32,
+      "real_net": 15179
+     },
+     "2024-2026": {
+      "n": 132,
+      "norm_pf": 2.06,
+      "real_pf": 2.16,
+      "real_net": 12779
+     }
+    },
+    "ORB90": {
+     "2010-2014": {
+      "n": 202,
+      "norm_pf": 1.12,
+      "real_pf": 0.84,
+      "real_net": -360
+     },
+     "2015-2019": {
+      "n": 228,
+      "norm_pf": 1.0,
+      "real_pf": 1.03,
+      "real_net": 162
+     },
+     "2020-2023": {
+      "n": 188,
+      "norm_pf": 2.09,
+      "real_pf": 2.14,
+      "real_net": 9343
+     },
+     "2024-2026": {
+      "n": 114,
+      "norm_pf": 1.83,
+      "real_pf": 1.86,
+      "real_net": 5698
+     }
+    },
+    "REV06": {
+     "2010-2014": {
+      "n": 496,
+      "norm_pf": 0.93,
+      "real_pf": 0.42,
+      "real_net": -1324
+     },
+     "2015-2019": {
+      "n": 514,
+      "norm_pf": 0.9,
+      "real_pf": 0.68,
+      "real_net": -1364
+     },
+     "2020-2023": {
+      "n": 417,
+      "norm_pf": 1.27,
+      "real_pf": 1.24,
+      "real_net": 1863
+     },
+     "2024-2026": {
+      "n": 299,
+      "norm_pf": 0.97,
+      "real_pf": 0.99,
+      "real_net": -79
+     }
+    },
+    "VOLB_tf1": {
+     "2010-2014": {
+      "n": 246,
+      "norm_pf": 1.1,
+      "real_pf": 0.83,
+      "real_net": -351
+     },
+     "2015-2019": {
+      "n": 289,
+      "norm_pf": 0.93,
+      "real_pf": 0.79,
+      "real_net": -1021
+     },
+     "2020-2023": {
+      "n": 260,
+      "norm_pf": 1.56,
+      "real_pf": 1.54,
+      "real_net": 5423
+     },
+     "2024-2026": {
+      "n": 164,
+      "norm_pf": 1.29,
+      "real_pf": 1.3,
+      "real_net": 2914
+     }
+    },
+    "VW13": {
+     "2010-2014": {
+      "n": 116,
+      "norm_pf": 0.7,
+      "real_pf": 0.33,
+      "real_net": -413
+     },
+     "2015-2019": {
+      "n": 109,
+      "norm_pf": 0.84,
+      "real_pf": 0.55,
+      "real_net": -481
+     },
+     "2020-2023": {
+      "n": 101,
+      "norm_pf": 1.28,
+      "real_pf": 1.44,
+      "real_net": 798
+     },
+     "2024-2026": {
+      "n": 61,
+      "norm_pf": 1.56,
+      "real_pf": 1.53,
+      "real_net": 733
+     }
+    },
+    "VW13b": {
+     "2010-2014": {
+      "n": 279,
+      "norm_pf": 0.71,
+      "real_pf": 0.34,
+      "real_net": -963
+     },
+     "2015-2019": {
+      "n": 313,
+      "norm_pf": 0.84,
+      "real_pf": 0.55,
+      "real_net": -1268
+     },
+     "2020-2023": {
+      "n": 276,
+      "norm_pf": 1.28,
+      "real_pf": 1.31,
+      "real_net": 1654
+     },
+     "2024-2026": {
+      "n": 159,
+      "norm_pf": 1.2,
+      "real_pf": 1.18,
+      "real_net": 819
+     }
+    }
+   }
+  }
+ }
+}

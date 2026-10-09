@@ -12,6 +12,7 @@ research/tmp/
 /research/data/eurusd_hd_utc.pkl
 /research/data/mgc_fut.npz
 /research/data/mgc_fut_raw.npz
+/research/data/mgcdb.npz
 /research/data/mnq_fut.npz
 /research/data/nq_1m.npz
 /research/data/nq_1m_utc.pkl
@@ -19,6 +20,7 @@ research/tmp/
 /research/data/nq_fut.npz
 /research/data/nq_hd.npz
 /research/data/nq_hd_utc.pkl
+/research/data/nqdb.npz
 /research/data/nqhd_long.npz
 /research/data/nqhd_long_utc.pkl
 /research/data/nsx_1519_utc.pkl

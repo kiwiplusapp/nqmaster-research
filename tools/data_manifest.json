@@ -35,6 +35,10 @@
   "sha256": "eed79ef78a2d9843cff20aaa5e9df3fb32768f15bcd5ec9944093bf6218a3e69",
   "size": 61868052
  },
+ "research/data/mgcdb.npz": {
+  "sha256": "3ef55bc9475ae713d36d037a6e27d842f8a18f73ba3e61a968b56b22682d1d65",
+  "size": 361544444
+ },
  "research/data/mnq_fut.npz": {
   "sha256": "1d536284481fde08afcd974357d06080e9bbeb0b93512aab3b800762c0eb8240",
   "size": 61610068
@@ -62,6 +66,10 @@
  "research/data/nq_hd_utc.pkl": {
   "sha256": "1f97fd20617a7767180bde807cc1e328da5bd01db3bb1f4506095473afcc8c8c",
   "size": 108344843
+ },
+ "research/data/nqdb.npz": {
+  "sha256": "e5524ed072bbdfdc878d32740dc133422b242a4c7e109e77ddaee3801d786b5b",
+  "size": 353221068
  },
  "research/data/nqhd_long.npz": {
   "sha256": "f992a4d7210cf8761be7fbbbbebddf4f81a39200e10ea7d373618826482d0977",
