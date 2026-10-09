@@ -1,0 +1,131 @@
+{
+ "params": {
+  "A": 820,
+  "T": 10,
+  "W": 60,
+  "cap": 0.25,
+  "R": 0.5,
+  "tf": 0,
+  "hold": 240
+ },
+ "2010-14": {
+  "trades": 1116,
+  "wr": 49.6,
+  "pf": 0.392,
+  "per_trade": -2.05,
+  "fills_in_0830_minute_pct": 62.2,
+  "whipsaw_days_skipped": 45,
+  "with_whipsaw_losses": {
+   "wr": 47.6,
+   "pf": 0.356,
+   "per_trade": -2.3
+  },
+  "whipsaw_plus_2ticks_news_fills": {
+   "wr": 28.9,
+   "pf": 0.197
+  },
+  "whipsaw_plus_4ticks_news_fills": {
+   "wr": 23.1,
+   "pf": 0.125
+  },
+  "whipsaw_plus_8ticks_news_fills": {
+   "wr": 19.6,
+   "pf": 0.064
+  },
+  "no_0830_minute_fills": {
+   "trades": 422,
+   "wr": 44.5,
+   "pf": 0.176
+  }
+ },
+ "2015-19": {
+  "trades": 1255,
+  "wr": 61.2,
+  "pf": 0.634,
+  "per_trade": -1.76,
+  "fills_in_0830_minute_pct": 56.2,
+  "whipsaw_days_skipped": 31,
+  "with_whipsaw_losses": {
+   "wr": 59.7,
+   "pf": 0.591,
+   "per_trade": -2.07
+  },
+  "whipsaw_plus_2ticks_news_fills": {
+   "wr": 46.3,
+   "pf": 0.431
+  },
+  "whipsaw_plus_4ticks_news_fills": {
+   "wr": 39.0,
+   "pf": 0.324
+  },
+  "whipsaw_plus_8ticks_news_fills": {
+   "wr": 31.3,
+   "pf": 0.205
+  },
+  "no_0830_minute_fills": {
+   "trades": 550,
+   "wr": 58.5,
+   "pf": 0.46
+  }
+ },
+ "2020-23": {
+  "trades": 938,
+  "wr": 70.0,
+  "pf": 1.664,
+  "per_trade": 7.6,
+  "fills_in_0830_minute_pct": 66.0,
+  "whipsaw_days_skipped": 89,
+  "with_whipsaw_losses": {
+   "wr": 64.0,
+   "pf": 1.279,
+   "per_trade": 3.8
+  },
+  "whipsaw_plus_2ticks_news_fills": {
+   "wr": 63.5,
+   "pf": 1.171
+  },
+  "whipsaw_plus_4ticks_news_fills": {
+   "wr": 62.0,
+   "pf": 1.071
+  },
+  "whipsaw_plus_8ticks_news_fills": {
+   "wr": 55.8,
+   "pf": 0.892
+  },
+  "no_0830_minute_fills": {
+   "trades": 319,
+   "wr": 68.0,
+   "pf": 0.986
+  }
+ },
+ "2024-26": {
+  "trades": 641,
+  "wr": 71.3,
+  "pf": 1.619,
+  "per_trade": 10.5,
+  "fills_in_0830_minute_pct": 70.4,
+  "whipsaw_days_skipped": 74,
+  "with_whipsaw_losses": {
+   "wr": 63.9,
+   "pf": 1.23,
+   "per_trade": 4.61
+  },
+  "whipsaw_plus_2ticks_news_fills": {
+   "wr": 63.8,
+   "pf": 1.153
+  },
+  "whipsaw_plus_4ticks_news_fills": {
+   "wr": 63.8,
+   "pf": 1.079
+  },
+  "whipsaw_plus_8ticks_news_fills": {
+   "wr": 61.8,
+   "pf": 0.943
+  },
+  "no_0830_minute_fills": {
+   "trades": 190,
+   "wr": 68.4,
+   "pf": 0.91
+  }
+ }
+}
