@@ -109,7 +109,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseOd = true; UseEng0408 = true; UseSvwap = true; UseEng0610 = true; UseAsia = true; UseEng0206 = true; UseLate = false;
 				UseEng0610 = false;
 				Contracts = 1; FlattenTime = 1651; SkipFomc = true; FomcDates = "";
-				DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; NewsBlackout = false; NewsTimes = ""; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
+				DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; NewsBlackout = false; NewsTimes = ""; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 8; EvalLateGoal = 2100; EvalLateContracts = 2; EvalLateMinCushion = 1000;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
 			}
@@ -292,7 +292,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			sessionDate = tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day;
 			fomcToday = SkipFomc && fomc.Contains(sessionDate);
 			EvalSessionStart();
-			StepUpSessionStart();
 			svPv = 0; svV = 0; odHas = false; asHas = false; asBroken = false; asFirst = 0; pendMod = null;
 			for (int k = 0; k < 6; k++) cHas[k] = false;
 			foreach (Mod m in mods) { m.Done = false; m.ExpireMin = -1; m.Dir = 0; m.Def = false; }
@@ -354,30 +353,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 			double thr = pk >= 2100 ? 100 : pk - 2000; evalCushion = evalEqDayStart - thr;
 			if (PrintLog) Print(string.Format("{0} | GOLD | EVAL day {1}: profit {2:0}, cushion {3:0} -> {4} contracts", sessionDate, evalDayIndex, evalEqDayStart, evalCushion, Qty()));
 		}
-		// ---- funded step-up (same rule as NQMaster, research/mine/final3y_acct.py): FundedStepUpContracts while the account cushion over the
-		// EOD-trailing threshold ($2,000, locks at start + $100) is >= FundedStepUpCushion at the session start. Realtime: account cash and the
-		// higher of this strategy's realtime peak and NQMaster's prop-file peak; historical: this strategy's own P&L.
-		private double stepHistPeak = double.NaN, stepRtPeak = double.NaN, stepCushion = double.NaN;
-		private void StepUpSessionStart()
-		{
-			stepCushion = double.NaN;
-			if (FundedStepUpCushion <= 0 || EvalMode) return;
-			bool rt = State == State.Realtime; double eq, pk;
-			if (rt)
-			{
-				eq = Account.Get(AccountItem.CashValue, Currency.UsDollar) - StartBalance;
-				stepRtPeak = double.IsNaN(stepRtPeak) ? Math.Max(0, eq) : Math.Max(stepRtPeak, eq); pk = stepRtPeak;
-				double fpk, fds, fbd; int fdt;
-				if (ReadNqProp(out fpk, out fdt, out fds, out fbd) && !double.IsNaN(fpk)) pk = Math.Max(pk, fpk - StartBalance);
-			}
-			else { eq = netPnl; stepHistPeak = double.IsNaN(stepHistPeak) ? Math.Max(0, eq) : Math.Max(stepHistPeak, eq); pk = stepHistPeak; }
-			double thr = pk >= 2100 ? 100 : pk - 2000; stepCushion = eq - thr;
-			if (PrintLog && stepCushion >= FundedStepUpCushion) Print(string.Format("{0} | GOLD | STEP-UP: cushion {1:0} -> {2} contracts", sessionDate, stepCushion, FundedStepUpContracts));
-		}
 		private int Qty()
 		{
 			if (EvalMode && evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal && (EvalLateMinCushion <= 0 || double.IsNaN(evalCushion) || evalCushion >= EvalLateMinCushion)) return EvalLateContracts;
-			if (!EvalMode && FundedStepUpCushion > 0 && !double.IsNaN(stepCushion) && stepCushion >= FundedStepUpCushion) return FundedStepUpContracts;
 			return Contracts;
 		}
 
@@ -732,8 +710,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Account daily stop $ (whole account in realtime; 0 = off)", Order = 7, GroupName = "02. Risk / account")] public double AccountDailyStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval target $ (realtime, whole account; 0 = off)", Order = 8, GroupName = "02. Risk / account")] public double EvalTarget { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Account daily profit stop $ (eval: 1400 with 2 contracts; 0 = off)", Order = 12, GroupName = "02. Risk / account")] public double AccountProfitStop { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when account cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 15, GroupName = "02. Risk / account")] public double FundedStepUpCushion { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 16, GroupName = "02. Risk / account")] public int FundedStepUpContracts { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Start balance $", Order = 9, GroupName = "02. Risk / account")] public double StartBalance { get; set; }
 		[NinjaScriptProperty][Display(Name = "News blackout: flat, no orders 2 min around CPI / NFP / FOMC minutes (MFFU funded)", Order = 13, GroupName = "02. Risk / account")] public bool NewsBlackout { get; set; }
 		[NinjaScriptProperty][Display(Name = "Extra Tier-1 times ET (yyyy-MM-dd HH:mm, comma list)", Order = 14, GroupName = "02. Risk / account")] public string NewsTimes { get; set; }
