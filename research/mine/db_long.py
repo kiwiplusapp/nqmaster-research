@@ -75,6 +75,8 @@ def stats(X, days, norm=False):
 
 if __name__ == "__main__":
     E = entries_db(); wrq_port.entries()[NAME] = E
+    from wrq_lib import S
+    D0 = getD(NAME); wrq_combo.FT[NAME] = pd.DataFrame({"tso": (D0.sm[E.fi.to_numpy()] - S(930)).astype(float)}, index=E.index)   # VTSO filter
     print("entries", len(E), E.groupby("mod").size().to_dict(), flush=True)
     D = getD(NAME)
     alld = np.array(sorted(set(D.daydate[(D.ro >= 0)])))
@@ -100,6 +102,15 @@ if __name__ == "__main__":
             rec[lab] = dict(real_min_atr=stats(k(Xg), dd), real_no_filter=stats(k(Xr), dd), norm=stats(k(Xn), dd, True))
         dd = alld[alld >= 20240201]; k = Xr[(Xr.date >= 20240201) & (Xr.date <= 20260925)]
         rec["check_vs_mnq_fut_2024_02_2026_09"] = stats(k, dd[dd <= 20260925])
+        mods = {}
+        for md in sorted(set(Xn["mod"])):
+            mods[md] = {}
+            for lab, lo, hi in (("2010-2014", 2010, 2014), ("2015-2019", 2015, 2019), ("2020-2023", 2020, 2023), ("2024-2026", 2024, 2026)):
+                kn = Xn[(Xn["mod"] == md) & (Xn.date // 10000 >= lo) & (Xn.date // 10000 <= hi)]; xn = (kn.u * kn.w).to_numpy()
+                kr = Xr[(Xr["mod"] == md) & (Xr.date // 10000 >= lo) & (Xr.date // 10000 <= hi)]; xr = (kr.u * kr.w).to_numpy()
+                pf = lambda x: round(float(x[x > 0].sum() / -x[x <= 0].sum()), 2) if (x <= 0).any() and len(x) else None
+                mods[md][lab] = dict(n=int(len(xn)), norm_pf=pf(xn), real_pf=pf(xr), real_net=round(float(xr.sum())))
+        rec["modules"] = mods
         OUT["profiles"][prof] = rec
         print(prof, json.dumps({k: rec[k] for k in ("2010-2014", "2015-2019", "2020-2023", "2024-2026", "check_vs_mnq_fut_2024_02_2026_09")}), flush=True)
     pickle.dump(TR, open("db_long_trades.pkl", "wb"))
