@@ -870,6 +870,14 @@ Settings — MFFU eval: NQMaster Ultra, Contracts 1, PropMode Eval, EvalTarget 3
 
 ## ★ 2026-10-09 Order-flow boost (EXPERIMENTAL, group 09 "Order flow", default OFF)
 
+> **RESULT (same day): FAILED the out-of-sample test -> keep `UseOrderFlowBoost` OFF; the Tick Replay backtest below is not needed.**
+> Second free Databento credit ($116.61 of $125): NQ aggressor trades for 11 NEW months (2025-05..2026-03) + MNQ for Sep 2025, rule unchanged
+> (`research/mine/of_validate.py` -> `of_validate.json`). On 1,207 new Ultra trades the boosted 19% averaged $19.0 (PF 1.49, WR 64.8%) vs
+> $19.4 (PF 1.42, WR 66.8%) for the rest; rank correlation -0.02; better in only 6 of 11 months; the top fifth of the delta was one of the
+> WORST groups (PF 1.28). Boost ON made more $ (+18%) only because the size was bigger: PF 1.43 -> 1.45, max DD +9% = plain leverage.
+> The Apr-Oct 2026 result was luck. Delta over the last 5 / 15 / 30 minutes: orderings flip between the samples too (`of_validate_other.py`).
+> MNQ's own flow vs NQ's (Sep 2025): correlation 0.67-0.72, same boost decision 70% of the time.
+
 What it does: NQMaster reads every trade from the tick stream (`OnMarketData`), splits volume into aggressive buys (trade at/above the ask) and aggressive sells (at/below the bid; tick rule in between, same as `OrderFlowRecorder.cs`), and keeps the **session cumulative delta** = (buys - sells) / (buys + sells) since 18:00 ET. When an entry goes the same way as the delta by >= `OrderFlowCvdMin` (0.015), its size is multiplied by `OrderFlowBoost` (2).
 - `OrderFlowStack` off (default): never above 2x the base size (a trade already at x2 from context / confluence / ICT stays x2). On: x2 on top (up to 4x).
 - Market entries use the delta at the bar close before the fill (= research). Resting stop / limit entries (ORB60, ORB90, VOLB, ENG10, LON, ICT) are re-sized every 1-minute bar until they fill (`ChangeOrder`; if NinjaTrader ignores a change, that order keeps its size and the Output says so).

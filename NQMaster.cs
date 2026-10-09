@@ -1359,6 +1359,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// / session volume, oriented with the trade, measured when the entry fills. Top 20% (>= 0.015): PF 4.81 IS (Apr-Jun) / 3.22 OOS
 		// (Jul-Oct) vs 1.83 / 1.13 for the rest; x2 on those (never above 2x the base size): $ +32%, PF 1.43 -> 1.54, max DD +8%.
 		// NOT statistically significant (1 of ~30 order-flow cells tested, rank correlation 0.06): treat it as a test, not an edge.
+		// FAILED OUT OF SAMPLE (research/mine/of_validate.py, 11 new months of NQ trades 2025-05..2026-03, 1,207 Ultra trades, rule unchanged):
+		// boosted trades avg $19.0 / PF 1.49 vs $19.4 / PF 1.42 for the rest, rank correlation -0.02, better in 6 of 11 months; the extra $
+		// is only the larger size (PF 1.43 -> 1.45, max DD +9%). MNQ's own flow agreed with NQ's on 70% of the decisions (Sep 2025). KEEP OFF.
 		// Aggressor side from the tick stream as OrderFlowRecorder.cs: trade at/above the ask = buy, at/below the bid = sell, otherwise
 		// tick rule. Historical runs need Tick Replay; a session joined mid-way (no Tick Replay history) never boosts until the next
 		// 18:00 ET start. Market entries use the delta at the bar close before the fill (= research); resting stop / limit entries
@@ -1519,7 +1522,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: stop the day at +$ (whole account; LucidPro 40% consistency: 500 with 2 contracts; 0 = off)", Order = 15, GroupName = "07. Prop account (cushion gating)")] public double FundedProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 16, GroupName = "07. Prop account (cushion gating)")] public double FundedStepUpCushion { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 17, GroupName = "07. Prop account (cushion gating)")] public int FundedStepUpContracts { get; set; }
-		[NinjaScriptProperty][Display(Name = "Order-flow boost on (EXPERIMENTAL; backtests need Tick Replay)", Order = 1, GroupName = "09. Order flow (experimental)")] public bool UseOrderFlowBoost { get; set; }
+		[NinjaScriptProperty][Display(Name = "Order-flow boost on (FAILED out-of-sample test: keep OFF; backtests need Tick Replay)", Order = 1, GroupName = "09. Order flow (experimental)")] public bool UseOrderFlowBoost { get; set; }
 		[NinjaScriptProperty][Range(0.0, 1.0)][Display(Name = "Session delta with the trade >= (0.015 = research top 20%)", Order = 2, GroupName = "09. Order flow (experimental)")] public double OrderFlowCvdMin { get; set; }
 		[NinjaScriptProperty][Range(1, 5)][Display(Name = "Size multiplier when the delta agrees", Order = 3, GroupName = "09. Order flow (experimental)")] public int OrderFlowBoost { get; set; }
 		[NinjaScriptProperty][Display(Name = "Stack on other x2 boosts (off = never above multiplier x base size)", Order = 4, GroupName = "09. Order flow (experimental)")] public bool OrderFlowStack { get; set; }
