@@ -20,6 +20,8 @@ research/tmp/
 /research/data/nq_hd.npz
 /research/data/nq_hd_utc.pkl
 /research/data/nqhd_long.npz
+/research/data/nqdb.npz
+/research/data/mgcdb.npz
 /research/data/nqhd_long_utc.pkl
 /research/data/nsx_1519_utc.pkl
 /research/data/spx_1519_utc.pkl
