@@ -1,7 +1,8 @@
 """Convert Databento GLBX.MDP3 ohlcv-1m continuous futures (NQ.v.0 / GC.v.0, 2010-06 -> 2026-10) into the research npz format
 (same keys as prep_nt.py: bar OPEN time, ET session date = ET + 6 h, 17:00-18:00 ET and weekend bars dropped).
-Rolls: the volume-based continuous symbol switches contract at a session boundary; prices before each switch are shifted
-(additive back-adjustment) by the spread between the new and the old contract measured on the ohlcv-1d bars of the day before
+Rolls: the volume-based continuous symbol switches contract at a session boundary; prices from each switch on are shifted
+(additive FORWARD adjustment: 2010 prices stay raw, later ones move down by the cumulative carry, ~5,000 NQ points by 2026, so
+nothing turns negative) by the spread between the new and the old contract measured on the ohlcv-1d bars of the day before
 the switch (v.1 close - v.0 close), so intraday point moves stay exact and cross-day levels (prior close, SMA20, ATR) have no
 roll gaps.  Gold: prices x 2.5 (research convention: tick 0.25 = one MGC tick, $4 per research point).
 Usage (from research/): python3 -I prep_databento.py <ohlcv-1m.dbn.zst> <ohlcv-1d v0v1.dbn.zst> <out name> [scale]"""
@@ -24,7 +25,7 @@ for k in sw[::-1]:
     j = a.merge(b, on="day", suffixes=("_o", "_n"))
     if len(j): sp = float(j.close_n.iat[-1] - j.close_o.iat[-1]); how = "daily"
     else: sp = float(m.open.iat[k] - m.close.iat[k - 1]); how = "gap"
-    adj[:k] += sp; rolls.append((str(t), int(old), int(new), round(sp, 2), how))
+    adj[k:] -= sp; rolls.append((str(t), int(old), int(new), round(sp, 2), how))
 for c in ("open", "high", "low", "close"): m[c] = (m[c] + adj) * scale
 print("rolls", len(rolls), "| by daily spread", sum(r[4] == "daily" for r in rolls), "| last 3", rolls[:3])
 print("min price after adjustment", round(float(m.low.min()), 2))
