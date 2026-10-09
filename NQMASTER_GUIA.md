@@ -867,3 +867,33 @@ Settings — MFFU eval: NQMaster Ultra, Contracts 1, PropMode Eval, EvalTarget 3
 - `research/mine/final3y_conf.py` (600 resampled years x edge haircut 0-100%, prior 10/20/30/20/12/8% on 0/20/35/50/75/100% edge loss): MFFU Ultra 1c P(positive year) 82% (99% with backtested edge), P(>= $1,200/month) 38% (83%); step-up 50% (91%); Lucid 1c 20% (64%); P(>= 80% of backtest) 25% (67% even with a perfect edge). Worst 10% of years about -$120/month per account (eval fees).
 - `research/mine/final3y_weak.py`: if the audit-weak modules (ON07, LATEFH, ENG10, MOM1030, MOM13 + 3 gold) or the 2020-only modules are luck, MFFU Ultra still makes $1,315-1,553/month resampled and stays >= Ultra lean and WR70Plus -> keep Ultra.
 - `research/mine/nt_compare.py --set ultra_final | ultralean_final | wr70plus_final` compares a Strategy Analyzer export with the current-rule research trades.
+
+## ★ 2026-10-09 Order-flow boost (EXPERIMENTAL, group 09 "Order flow", default OFF)
+
+What it does: NQMaster reads every trade from the tick stream (`OnMarketData`), splits volume into aggressive buys (trade at/above the ask) and aggressive sells (at/below the bid; tick rule in between, same as `OrderFlowRecorder.cs`), and keeps the **session cumulative delta** = (buys - sells) / (buys + sells) since 18:00 ET. When an entry goes the same way as the delta by >= `OrderFlowCvdMin` (0.015), its size is multiplied by `OrderFlowBoost` (2).
+- `OrderFlowStack` off (default): never above 2x the base size (a trade already at x2 from context / confluence / ICT stays x2). On: x2 on top (up to 4x).
+- Market entries use the delta at the bar close before the fill (= research). Resting stop / limit entries (ORB60, ORB90, VOLB, ENG10, LON, ICT) are re-sized every 1-minute bar until they fill (`ChangeOrder`; if NinjaTrader ignores a change, that order keeps its size and the Output says so).
+- Not in safe / no-boost prop modes, not in the Gold profile. It changes **size only**: same trades, same entries, same exits.
+- Dashboard line: current session delta, which side is boosted now, boosted / total entries. End of run (Output): "order flow: N trades read, X of Y entries filled with the boost".
+
+Research (`research/mine/of_trades.py`, `of_boost.py` -> `of_boost.json`; Databento NQ aggressor trades 2026-04-01..10-08, Ultra on real NQ futures, $ per MNQ contract):
+
+| Apr 1 - Oct 8 2026 | Entries boosted | Net | PF | Max DD |
+|---|---|---|---|---|
+| Boost OFF | - | $18,096 | 1.43 | $4,154 |
+| Boost ON (cap, default) | 16% | $23,943 | 1.54 | $4,479 |
+| Boost ON + Stack | 16% | $27,473 | 1.61 | $4,479 |
+| Jul-Oct only (out of sample): OFF / cap | 12% | $3,082 / $5,368 | 1.13 / 1.21 | $4,154 / $4,479 |
+
+Honest caveat: it was 1 of ~30 order-flow cells tested, with a weak rank correlation (0.06): it is NOT statistically proven. Boosted trades did better in every full month Apr-Sep, but that is ~100 trades. It also uses MNQ's own trades on an MNQ chart, while the research used NQ's.
+
+### How to backtest it (Strategy Analyzer)
+1. F5 in the NinjaScript Editor (the new code is parse-checked only).
+2. Tools > Options > Market data: tick **Show Tick Replay**.
+3. Strategy Analyzer: NQMaster, MNQ 12-26, 1 Minute, **Tick Replay ticked** in the data series, from **2026-02-01** (warm-up ~25 RTH days) to 2026-10-08, same commission / slippage 1 as before. Profile Ultra, Contracts 1, AdaptiveSize false, PropMode Off, everything else default.
+4. Run A: `UseOrderFlowBoost` = false. Run B: `UseOrderFlowBoost` = true. Same settings, both with Tick Replay (slow: it reads every tick).
+5. Check the last Output line of run B: about 12-20% of entries boosted is expected. "NO TICK DATA" = Tick Replay is not on or the data provider has no tick history for those dates.
+6. Send both trade CSVs: `research/mine/nt_compare.py` + a split of boosted vs not boosted per module and per month will tell whether MNQ's flow behaves like NQ's. Keep it on only if run B beats run A in Jul-Oct too.
+7. If MNQ shows nothing: one more run B on an **NQ** chart (Contracts 1 = 10x MNQ dollars) tests the exact research flow; if NQ works and MNQ doesn't, NQMaster can be changed to read NQ's flow while trading MNQ.
+
+Live: the delta needs the whole session. A chart loaded mid-session does not boost until the next 18:00 ET start (dashboard: "waiting for the next 18:00 ET session") unless Tick Replay is also on for the live chart. Script `research/mine/patch_orderflow.py`; backup `NQMaster_backup_pre_orderflow.cs`.

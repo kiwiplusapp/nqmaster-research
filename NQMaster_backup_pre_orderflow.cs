@@ -69,7 +69,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public int Anchor = -1; public double AnchorPx = double.NaN;	// Lookback -5: open of the bar at the anchor time (ET minutes)
 			public bool Parked, ParkLimit, ParkHit; public double ParkPx; public int ParkQty;	// entry cancelled for an opposite trade, re-placed when free
 			public Order SeenOrd, CancelOrd; public int SeenBar = -1, CancelBar = -1;	// stale-order watchdog (PurgeStaleEntries)
-			public int OfQ0, OfWant; public Order OfChangeOrd, OfNoChange; public int OfChangeBar = -1;	// order-flow boost: size before the boost, last re-size
 		}
 		private List<Mod> mods;
 		private Mod orb, orb2, mseq, mseqs, crt, lon, ict, rsi, volb, eng10;
@@ -155,7 +154,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 0; EvalDailyStop = 0; FundedCushionSafe = 750; FundedPayoutAt = 5000; FundedHighFull = true; FundedCushionFull = 0;
 				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400; EvalSafeSet = NQMasterSafeSet.Estable; FundedProfitStop = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
 				OrbPriorCloseAtr = 0.10; VolbBreakEven = true; MomAgreement = true; VolbTrendLastEntry = 1047; NewsBlackout = false; NewsTimes = "";
-				UseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;
 			}
 			else if (State == State.Configure)
 			{
@@ -201,9 +199,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				if (zombieCount > 0)
 					Print(string.Format("NQMaster | {0} stale entry order(s) were dropped during this run (Output lines 'STALE ORDER'). Before this fix each one blocked a module and the opposite direction for good.", zombieCount));
-				if (UseOrderFlowBoost && mods != null)
-					Print(ofTicks == 0 ? "NQMaster | ORDER FLOW BOOST was on but NO TICK DATA arrived, so nothing was boosted. Backtests need Tick Replay: Tools > Options > Market data > 'Show Tick Replay', then tick 'Tick Replay' in the Strategy Analyzer data series."
-						: string.Format("NQMaster | order flow: {0:N0} trades read, {1} of {2} entries filled with the boost ({3:0.0}%; research Apr-Oct 2026: ~16%).", ofTicks, ofBoosted, ofEntries, ofEntries > 0 ? 100.0 * ofBoosted / ofEntries : 0));
 				if (mods != null && totalTrades == 0 && rthDaysSeen < 25)
 					Print(string.Format("NQMaster | 0 trades: only {0} RTH days loaded; needs ~25 days of warm-up. Start the test 2+ months earlier.", rthDaysSeen));
 			}
@@ -363,12 +358,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (pend5.InTrade || CurrentBars[0] > pend5Bar + 2 || (pend5Dir == 1 ? Low[0] <= pend5Stop : High[0] >= pend5Stop)) pend5 = null;
 				else if (CurrentBars[0] > pend5Bar && DirectionAllowed(pend5Dir))
 				{
-					ArmPriceBracket(pend5, pend5Dir, pend5Stop); int pq = OfApply(pend5, pend5Qty, pend5Dir); Order po = pend5Dir == 1 ? EnterLong(0, pq, pend5.Sig) : EnterShort(0, pq, pend5.Sig);
+					ArmPriceBracket(pend5, pend5Dir, pend5Stop); Order po = pend5Dir == 1 ? EnterLong(0, pend5Qty, pend5.Sig) : EnterShort(0, pend5Qty, pend5.Sig);
 					if (po != null) pend5.Entry = po; Log(pend5.Sig + " entered after the deferral"); pend5 = null;
 				}
 			}
 			ManageParked(openMin, closeMin);
-			if (UseOrderFlowBoost) OfRefresh();
 
 			// ---- modules on the 1-minute series
 			foreach (Mod o in new Mod[] { orb, orb2 })
@@ -466,7 +460,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!DirectionAllowed(d)) { if (lastDeferred) o.Armed = true; else if (!PastLevel(d, entry)) { o.Dir = d; ParkSetup(o, false, Instrument.MasterInstrument.RoundToTickSize(entry), oq); } return; }
 			bool through = PastLevel(d, entry);
 			o.Dir = d;
-			oq = OfApply(o, oq, d);
 			Order r = d == 1 ? (through ? EnterLong(0, oq, o.Sig) : EnterLongStopMarket(0, true, oq, entry, o.Sig)) : (through ? EnterShort(0, oq, o.Sig) : EnterShortStopMarket(0, true, oq, entry, o.Sig));
 			if (r != null) o.Entry = r;
 			Log(string.Format("{0} {1} @ {2} | SL {3}t | TP {4:0.##}R", o.Sig, d == 1 ? "BUY" : "SELL", Fmt(entry), st, o.R));
@@ -499,15 +492,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double mk = double.NaN;
 				if (State == State.Realtime) try { mk = d == 1 ? GetCurrentAsk() : GetCurrentBid(); } catch { }
 				if (!double.IsNaN(mk) && (mk - lvl) * d <= TickSize && !OppBusy(d, volb))
-				{ ArmPriceBracket(volb, d, Instrument.MasterInstrument.RoundToTickSize(rthOpenPx)); int vq = OfApply(volb, Qty(), d); Order vm = d == 1 ? EnterLong(0, vq, volb.Sig) : EnterShort(0, vq, volb.Sig); if (vm != null) volb.Entry = vm; }
+				{ ArmPriceBracket(volb, d, Instrument.MasterInstrument.RoundToTickSize(rthOpenPx)); Order vm = d == 1 ? EnterLong(0, Qty(), volb.Sig) : EnterShort(0, Qty(), volb.Sig); if (vm != null) volb.Entry = vm; }
 				volbDone = true; return;
 			}
 			// never cancel other modules' working entries for VOLB: wait while the position or a working order points the other way
 			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return;
 			foreach (Mod o in mods) if (o != volb && Working(o.Entry) && o.Dir == -d) return;
 			ArmPriceBracket(volb, d, Instrument.MasterInstrument.RoundToTickSize(rthOpenPx));
-			int vsq = OfApply(volb, Qty(), d);
-			Order vr = d == 1 ? EnterLongStopMarket(0, true, vsq, lvl, volb.Sig) : EnterShortStopMarket(0, true, vsq, lvl, volb.Sig);
+			Order vr = d == 1 ? EnterLongStopMarket(0, true, Qty(), lvl, volb.Sig) : EnterShortStopMarket(0, true, Qty(), lvl, volb.Sig);
 			if (vr != null) volb.Entry = vr;
 		}
 
@@ -546,11 +538,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (PastLevel(e10d, e10px))
 			{
 				if ((Close[0] - e10px) * e10d > 0.5 * Math.Abs(e10px - e10sl)) { Log("ENG10 skipped (price ran > 0.5R past the level)"); return; }
-				int eq = OfApply(eng10, Qty(), e10d);
-				Order em = e10d == 1 ? EnterLong(0, eq, eng10.Sig) : EnterShort(0, eq, eng10.Sig);
+				Order em = e10d == 1 ? EnterLong(0, Qty(), eng10.Sig) : EnterShort(0, Qty(), eng10.Sig);
 				if (em != null) eng10.Entry = em;
 			}
-			else { int esq = OfApply(eng10, Qty(), e10d); Order er = e10d == 1 ? EnterLongStopMarket(0, true, esq, e10px, eng10.Sig) : EnterShortStopMarket(0, true, esq, e10px, eng10.Sig); if (er != null) eng10.Entry = er; }
+			else { Order er = e10d == 1 ? EnterLongStopMarket(0, true, Qty(), e10px, eng10.Sig) : EnterShortStopMarket(0, true, Qty(), e10px, eng10.Sig); if (er != null) eng10.Entry = er; }
 			Log(string.Format("ENG10 {0} @ {1} | SL {2}", e10d == 1 ? "BUY" : "SELL", Fmt(e10px), Fmt(e10sl)));
 		}
 		// price already at/through a stop-entry level? historical: bar close; realtime: current ask / bid (a stop there would be rejected)
@@ -606,7 +597,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			m.Dir = d; m.EntryBar = CurrentBars[0] + 1;
 			int tq = m.Sig == "MOM13" ? LateQty(d, Hm(m.Time)) : Qty();
 			if (m.DoubleDist > 0 && !noBoost && Math.Abs(Close[0] - reference) >= m.DoubleDist * atrDaily) tq = 2 * Qty();
-			tq = OfApply(m, tq, d);
 			Order tr = d == 1 ? EnterLong(0, tq, m.Sig) : EnterShort(0, tq, m.Sig);
 			if (tr != null) m.Entry = tr;
 			Log(string.Format("{0} {1} | ref {2} | SL {3}t", m.Sig, d == 1 ? "BUY" : "SELL", Fmt(reference), st));
@@ -627,7 +617,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (risk <= 0 || risk > 0.5 * todayAtr || !DirectionAllowed(d)) return;
 			ArmPriceBracket(crt, d, stop);
 			int cq = CtxBoost(LateQty(d, 720), FeatTrend(d) >= 1.7456 || FeatGap(d) >= 0.1048 || FeatPdRet(d) >= 0.6155, "CRT11");
-			cq = OfApply(crt, cq, d);
 			Order cr = d == 1 ? EnterLong(0, cq, crt.Sig) : EnterShort(0, cq, crt.Sig);
 			if (cr != null) crt.Entry = cr;
 			Log(string.Format("CRT11 {0} | SL {1}", d == 1 ? "BUY" : "SELL", Fmt(stop)));
@@ -660,8 +649,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (risk <= 0 || risk > 0.25 * atrDaily) { lonStage = 3; return; }
 				if (!DirectionAllowed(lon.Dir)) { lonStage = 3; ArmPriceBracket(lon, lon.Dir, stop); ParkSetup(lon, true, lim, Qty()); return; }
 				ArmPriceBracket(lon, lon.Dir, stop);
-				int lq = OfApply(lon, Qty(), lon.Dir);
-				Order lr = lon.Dir == 1 ? EnterLongLimit(0, true, lq, lim, lon.Sig) : EnterShortLimit(0, true, lq, lim, lon.Sig);
+				Order lr = lon.Dir == 1 ? EnterLongLimit(0, true, Qty(), lim, lon.Sig) : EnterShortLimit(0, true, Qty(), lim, lon.Sig);
 				if (lr != null) lon.Entry = lr;
 				Log(string.Format("LON {0} LIMIT @ {1} | SL {2}", lon.Dir == 1 ? "BUY" : "SELL", Fmt(lim), Fmt(stop)));
 			}
@@ -709,7 +697,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 					int mq = CtxBoost(LateQty(1, closeMin), FeatPos(1, Closes[0][0]) >= 0.9686 || FeatM30(1) >= 0.1728 || FeatRet5(1) >= 2.0674, "MSEQ");
 					if (!DirectionAllowed(1, 2)) { if (lastDeferred) { pend5 = mseq; pend5Dir = 1; pend5Stop = stopm; pend5Qty = mq; pend5Bar = CurrentBars[0]; } }
-					else { ArmPriceBracket(mseq, 1, stopm); Order mo = EnterLong(0, OfApply(mseq, mq, 1), mseq.Sig); if (mo != null) mseq.Entry = mo; Log("MSEQ BUY | SL " + Fmt(stopm)); }
+					else { ArmPriceBracket(mseq, 1, stopm); Order mo = EnterLong(0, mq, mseq.Sig); if (mo != null) mseq.Entry = mo; Log("MSEQ BUY | SL " + Fmt(stopm)); }
 				}
 			}
 
@@ -729,7 +717,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 					int sq = LateQty(-1, closeMin);
 					if (!DirectionAllowed(-1, 2)) { if (lastDeferred) { pend5 = mseqs; pend5Dir = -1; pend5Stop = stops; pend5Qty = sq; pend5Bar = CurrentBars[0]; } }
-					else { ArmPriceBracket(mseqs, -1, stops); Order so = EnterShort(0, OfApply(mseqs, sq, -1), mseqs.Sig); if (so != null) mseqs.Entry = so; Log("MSEQS SELL | SL " + Fmt(stops)); }
+					else { ArmPriceBracket(mseqs, -1, stops); Order so = EnterShort(0, sq, mseqs.Sig); if (so != null) mseqs.Entry = so; Log("MSEQS SELL | SL " + Fmt(stops)); }
 				}
 			}
 
@@ -748,8 +736,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					SetStopLoss(rsi.Sig, CalculationMode.Ticks, st, false);
 					SetProfitTarget(rsi.Sig, CalculationMode.Ticks, Math.Max(1, (int)Math.Round(rsi.R * st)));
 					rsi.Dir = d; rsiTrades++;
-					int rq = OfApply(rsi, Qty(), d);
-					Order rr = d == 1 ? EnterLong(0, rq, rsi.Sig) : EnterShort(0, rq, rsi.Sig);
+					Order rr = d == 1 ? EnterLong(0, Qty(), rsi.Sig) : EnterShort(0, Qty(), rsi.Sig);
 					if (rr != null) rsi.Entry = rr;
 					Log(string.Format("RSI2 {0} | RSI {1:0.0} | SL {2}t", d == 1 ? "BUY" : "SELL", rsiVal, st));
 				}
@@ -805,8 +792,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				}
 				ict.Dir = d; ictExtPend = ictExt[s]; ictExpiry = CurrentBars[1] + 20;
 				ArmPriceBracket(ict, d, stop);
-				int iqo = OfApply(ict, iq, d);
-				Order ir = d == 1 ? EnterLongLimit(0, true, iqo, lim, ict.Sig) : EnterShortLimit(0, true, iqo, lim, ict.Sig);
+				Order ir = d == 1 ? EnterLongLimit(0, true, iq, lim, ict.Sig) : EnterShortLimit(0, true, iq, lim, ict.Sig);
 				if (ir != null) ict.Entry = ir;
 				Log(string.Format("ICT {0} LIMIT @ {1} | SL {2}", d == 1 ? "BUY" : "SELL", Fmt(lim), Fmt(stop)));
 			}
@@ -1148,7 +1134,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Order e = o.Entry;
 			if (e == null || !Working(e)) return;
 			if (o != volb && (e.OrderType == OrderType.StopMarket || e.OrderType == OrderType.Limit))
-			{ o.Parked = true; o.ParkHit = false; o.ParkLimit = e.OrderType == OrderType.Limit; o.ParkPx = o.ParkLimit ? e.LimitPrice : e.StopPrice; o.ParkQty = Math.Max(1, UseOrderFlowBoost && o.OfQ0 > 0 ? o.OfQ0 : e.Quantity); Log(o.Sig + " order parked (opposite trade)"); }
+			{ o.Parked = true; o.ParkHit = false; o.ParkLimit = e.OrderType == OrderType.Limit; o.ParkPx = o.ParkLimit ? e.LimitPrice : e.StopPrice; o.ParkQty = Math.Max(1, e.Quantity); Log(o.Sig + " order parked (opposite trade)"); }
 			CancelEntry(o);
 		}
 		// a setup blocked by an opposite POSITION at placement time: kept and placed when free (research drops only a fill against it)
@@ -1183,10 +1169,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (OppBusy(o.Dir, o)) continue;
 				o.Parked = false;
 				Order r = null;
-				int pkq = OfApply(o, o.ParkQty, o.Dir);
-				if (o.ParkLimit) r = o.Dir == 1 ? EnterLongLimit(0, true, pkq, o.ParkPx, o.Sig) : EnterShortLimit(0, true, pkq, o.ParkPx, o.Sig);
+				if (o.ParkLimit) r = o.Dir == 1 ? EnterLongLimit(0, true, o.ParkQty, o.ParkPx, o.Sig) : EnterShortLimit(0, true, o.ParkQty, o.ParkPx, o.Sig);
 				else if (PastLevel(o.Dir, o.ParkPx)) { Log(o.Sig + " parked order dropped (level passed)"); continue; }
-				else r = o.Dir == 1 ? EnterLongStopMarket(0, true, pkq, o.ParkPx, o.Sig) : EnterShortStopMarket(0, true, pkq, o.ParkPx, o.Sig);
+				else r = o.Dir == 1 ? EnterLongStopMarket(0, true, o.ParkQty, o.ParkPx, o.Sig) : EnterShortStopMarket(0, true, o.ParkQty, o.ParkPx, o.Sig);
 				if (r != null) o.Entry = r;
 				Log(o.Sig + " parked order re-placed @ " + Fmt(o.ParkPx));
 			}
@@ -1227,7 +1212,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (m.CancelOrd == e && CurrentBars[0] - m.CancelBar >= 2) why = "cancel never confirmed";
 				else if (age >= 2 && (s == OrderState.Initialized || s == OrderState.Submitted)) why = "never accepted";
 				else if (age >= 2 && e.OrderType == OrderType.Market && s != OrderState.PartFilled) why = "market entry never filled";
-				else if (m.OfChangeOrd == e && CurrentBars[0] - m.OfChangeBar >= 2 && (s == OrderState.ChangePending || s == OrderState.ChangeSubmitted)) why = "size change never confirmed";
 				if (why == null) continue;
 				DropStale(m, why, true);
 			}
@@ -1275,7 +1259,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				m.InTrade = true; m.EntryPx = execution.Order.AverageFillPrice;
 				if (first)
 				{
-				if (UseOrderFlowBoost) { ofEntries++; if (m.OfQ0 > 0 && execution.Order.Quantity > m.OfQ0) ofBoosted++; }
 				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(Times[0][0]).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
 				if (m == orb2) orb2.Trades++;
 				if (m == volb) { volbDone = true; volb.EntryBar = CurrentBars[0]; volbBeSet = false; }
@@ -1342,7 +1325,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Profile, status, trendDir == 1 ? "UP" : trendDir == -1 ? "DOWN" : "-", todayAtr, pullbackDay ? "yes" : "no", mm.ToString(),
 				totalTrades, totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
 			if (zombieCount > 0) txt += string.Format("\nStale orders dropped: {0} (see Output)", zombieCount);
-			if (UseOrderFlowBoost) txt += "\n" + OfStatus();
 			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / edgeH, edgeDays, edgeAlarm ? " | ALARM" : "");
 			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1}{4} | cushion ${2:0} (threshold ${3:0})", PropMode, gate, propCushion, propThr,
 				PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable ? " (Estable)" : "");
@@ -1350,85 +1332,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += string.Format("\nPAYOUT: profit >= ${0:0} -> request it", FundedPayoutAt);
 			if (AtrStartMax > 0 && !double.IsNaN(atrStartRatio)) txt += string.Format("\nATR ratio {0:0.00}: {1}", atrStartRatio, atrStartRatio < AtrStartMax ? "OK to start a new eval" : "do NOT start a new eval today");
 			Draw.TextFixed(this, "NQM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
-		}
-		#endregion
-
-		#region Order-flow boost
-		// ---- order-flow size boost (EXPERIMENTAL, default off). research/mine/of_trades.py + of_boost.py, Databento NQ trades
-		// 2026-04-01..10-08 (645 Ultra trades, real NQ futures): session cumulative delta = (aggressor buy - sell volume since 18:00 ET)
-		// / session volume, oriented with the trade, measured when the entry fills. Top 20% (>= 0.015): PF 4.81 IS (Apr-Jun) / 3.22 OOS
-		// (Jul-Oct) vs 1.83 / 1.13 for the rest; x2 on those (never above 2x the base size): $ +32%, PF 1.43 -> 1.54, max DD +8%.
-		// NOT statistically significant (1 of ~30 order-flow cells tested, rank correlation 0.06): treat it as a test, not an edge.
-		// Aggressor side from the tick stream as OrderFlowRecorder.cs: trade at/above the ask = buy, at/below the bid = sell, otherwise
-		// tick rule. Historical runs need Tick Replay; a session joined mid-way (no Tick Replay history) never boosts until the next
-		// 18:00 ET start. Market entries use the delta at the bar close before the fill (= research); resting stop / limit entries
-		// (ORB, VOLB, ENG10, LON, ICT) are re-sized every 1-minute bar until they fill.
-		private double ofBuy, ofSell, ofLastPx = double.NaN, ofBid = double.NaN, ofAsk = double.NaN;
-		private int ofLastDir = 1, ofSessDay = -1, ofBoosted, ofEntries; private bool ofSessFull; private long ofMinKey = -1, ofTicks;
-		protected override void OnMarketData(MarketDataEventArgs e)
-		{
-			if (!UseOrderFlowBoost || BarsInProgress != 0) return;
-			if (e.MarketDataType == MarketDataType.Bid) { ofBid = e.Price; return; }
-			if (e.MarketDataType == MarketDataType.Ask) { ofAsk = e.Price; return; }
-			if (e.MarketDataType != MarketDataType.Last) return;
-			long mk = e.Time.Ticks / TimeSpan.TicksPerMinute;
-			if (mk != ofMinKey)
-			{
-				ofMinKey = mk;
-				DateTime sd = ToEt(e.Time).AddHours(6);					// session date: 18:00 ET starts the next day's session
-				int key = sd.Year * 10000 + sd.Month * 100 + sd.Day;
-				if (key != ofSessDay) { ofSessFull = ofSessDay > 0; ofSessDay = key; ofBuy = 0; ofSell = 0; }
-			}
-			double b = e.Bid > 0 ? e.Bid : ofBid, a = e.Ask > 0 ? e.Ask : ofAsk, px = e.Price;
-			int dir;
-			if (!double.IsNaN(a) && a > 0 && px >= a) dir = 1;
-			else if (!double.IsNaN(b) && b > 0 && px <= b) dir = -1;
-			else if (!double.IsNaN(ofLastPx) && px > ofLastPx) dir = 1;
-			else if (!double.IsNaN(ofLastPx) && px < ofLastPx) dir = -1;
-			else dir = ofLastDir;
-			ofLastPx = px; ofLastDir = dir; ofTicks++;
-			if (dir == 1) ofBuy += e.Volume; else ofSell += e.Volume;
-		}
-		private double OfCvd() { return (ofSessFull && ofBuy + ofSell > 0) ? (ofBuy - ofSell) / (ofBuy + ofSell) : double.NaN; }
-		private bool OfAgrees(int d) { double c = OfCvd(); return !double.IsNaN(c) && d * c >= OrderFlowCvdMin; }
-		// size after the boost; q = the module's size before it (already including context / confluence / ICT x2)
-		private int OfQty(int q, int d, string who)
-		{
-			if (!UseOrderFlowBoost || q <= 0 || noBoost || OrderFlowBoost <= 1 || Profile == NQMasterProfile.Gold || !OfAgrees(d)) return q;
-			int nq = OrderFlowStack ? q * OrderFlowBoost : Math.Max(q, Qty() * OrderFlowBoost);
-			if (nq != q && who != null) Log(string.Format("{0} order-flow x{1}: session delta {2:+0.000;-0.000} with the trade -> {3} contracts", who, OrderFlowBoost, d * OfCvd(), nq));
-			return nq;
-		}
-		private int OfApply(Mod m, int q, int d) { m.OfQ0 = q; return OfQty(q, d, m.Sig); }
-		// resting stop / limit entries follow the delta until they fill (one size change per 1-minute bar at most)
-		private void OfRefresh()
-		{
-			foreach (Mod m in mods)
-			{
-				Order e = m.Entry;
-				if (e == null || m.InTrade || m.OfQ0 <= 0 || e.Filled > 0 || zombies.Contains(e) || m.OfNoChange == e) continue;
-				if (e.OrderState != OrderState.Working && e.OrderState != OrderState.Accepted) continue;
-				if (m.OfChangeOrd == e && m.OfWant != e.Quantity)
-				{
-					if (CurrentBars[0] - m.OfChangeBar < 2) continue;		// change still in flight
-					m.OfNoChange = e; Log(string.Format("{0} order-flow re-size was not applied by NinjaTrader: this order keeps {1} contracts", m.Sig, e.Quantity)); continue;
-				}
-				if (e.OrderType != OrderType.StopMarket && e.OrderType != OrderType.Limit) continue;
-				int d = e.OrderAction == OrderAction.Buy ? 1 : -1;
-				int want = OfQty(m.OfQ0, d, null);
-				if (want == e.Quantity) continue;
-				int was = e.Quantity;
-				try { m.OfChangeOrd = e; m.OfChangeBar = CurrentBars[0]; m.OfWant = want; ChangeOrder(e, want, e.LimitPrice, e.StopPrice); Log(string.Format("{0} resting entry re-sized {1} -> {2} (session delta {3:+0.000;-0.000} with the trade)", m.Sig, was, want, d * OfCvd())); }
-				catch (Exception ex) { m.OfNoChange = e; Log(m.Sig + " order-flow re-size failed: " + ex.Message); }
-			}
-		}
-		private string OfStatus()
-		{
-			if (ofTicks == 0) return "Order flow boost: NO TICK DATA (backtest: enable Tick Replay)";
-			if (!ofSessFull) return "Order flow boost: waiting for the next 18:00 ET session (joined mid-session)";
-			double c = OfCvd();
-			return string.Format("Order flow: session delta {0:+0.000;-0.000} ({1:N0} contracts) | x{2} for {3} >= {4:0.000} | boosted {5}/{6}",
-				c, ofBuy + ofSell, OrderFlowBoost, double.IsNaN(c) ? "-" : c >= OrderFlowCvdMin ? "LONGS" : c <= -OrderFlowCvdMin ? "SHORTS" : "none", OrderFlowCvdMin, ofBoosted, ofEntries);
 		}
 		#endregion
 
@@ -1519,10 +1422,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: stop the day at +$ (whole account; LucidPro 40% consistency: 500 with 2 contracts; 0 = off)", Order = 15, GroupName = "07. Prop account (cushion gating)")] public double FundedProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 16, GroupName = "07. Prop account (cushion gating)")] public double FundedStepUpCushion { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 17, GroupName = "07. Prop account (cushion gating)")] public int FundedStepUpContracts { get; set; }
-		[NinjaScriptProperty][Display(Name = "Order-flow boost on (EXPERIMENTAL; backtests need Tick Replay)", Order = 1, GroupName = "09. Order flow (experimental)")] public bool UseOrderFlowBoost { get; set; }
-		[NinjaScriptProperty][Range(0.0, 1.0)][Display(Name = "Session delta with the trade >= (0.015 = research top 20%)", Order = 2, GroupName = "09. Order flow (experimental)")] public double OrderFlowCvdMin { get; set; }
-		[NinjaScriptProperty][Range(1, 5)][Display(Name = "Size multiplier when the delta agrees", Order = 3, GroupName = "09. Order flow (experimental)")] public int OrderFlowBoost { get; set; }
-		[NinjaScriptProperty][Display(Name = "Stack on other x2 boosts (off = never above multiplier x base size)", Order = 4, GroupName = "09. Order flow (experimental)")] public bool OrderFlowStack { get; set; }
 		#endregion
 	}
 }
