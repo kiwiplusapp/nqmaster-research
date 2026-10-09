@@ -1,0 +1,331 @@
+{
+ "NQ_lat0ms": {
+  "all": {
+   "trades": 372,
+   "wr": 70.7,
+   "pf": 1.087,
+   "avg": 1.67,
+   "net": 621,
+   "entry_slip_ticks_avg": 0.58,
+   "entry_slip_ticks_p90": 2.0
+  },
+  "news_days": {
+   "trades": 32,
+   "wr": 87.5,
+   "pf": 1.746,
+   "avg": 13.15,
+   "net": 421,
+   "entry_slip_ticks_avg": 1.81,
+   "entry_slip_ticks_p90": 6.0
+  },
+  "other_days": {
+   "trades": 340,
+   "wr": 69.1,
+   "pf": 1.03,
+   "avg": 0.59,
+   "net": 201,
+   "entry_slip_ticks_avg": 0.46,
+   "entry_slip_ticks_p90": 1.0
+  },
+  "other_side_also_broke_before_0930": {
+   "trades": 195,
+   "wr": 46.7,
+   "pf": 0.313,
+   "avg": -23.41,
+   "net": -4565,
+   "entry_slip_ticks_avg": 0.61,
+   "entry_slip_ticks_p90": 2.0
+  },
+  "triggered_in_first_second": {
+   "trades": 59,
+   "wr": 54.2,
+   "pf": 0.521,
+   "avg": -14.93,
+   "net": -881,
+   "entry_slip_ticks_avg": 0.73,
+   "entry_slip_ticks_p90": 2.0
+  }
+ },
+ "NQ_lat50ms": {
+  "all": {
+   "trades": 372,
+   "wr": 66.1,
+   "pf": 0.979,
+   "avg": -0.4,
+   "net": -150,
+   "entry_slip_ticks_avg": 5.87,
+   "entry_slip_ticks_p90": 11.0
+  },
+  "news_days": {
+   "trades": 32,
+   "wr": 62.5,
+   "pf": 1.074,
+   "avg": 1.48,
+   "net": 47,
+   "entry_slip_ticks_avg": 33.69,
+   "entry_slip_ticks_p90": 167.8
+  },
+  "other_days": {
+   "trades": 340,
+   "wr": 66.5,
+   "pf": 0.97,
+   "avg": -0.58,
+   "net": -198,
+   "entry_slip_ticks_avg": 3.25,
+   "entry_slip_ticks_p90": 8.0
+  },
+  "other_side_also_broke_before_0930": {
+   "trades": 195,
+   "wr": 41.5,
+   "pf": 0.26,
+   "avg": -25.66,
+   "net": -5004,
+   "entry_slip_ticks_avg": 2.76,
+   "entry_slip_ticks_p90": 9.2
+  },
+  "triggered_in_first_second": {
+   "trades": 59,
+   "wr": 47.5,
+   "pf": 0.433,
+   "avg": -18.6,
+   "net": -1097,
+   "entry_slip_ticks_avg": 1.22,
+   "entry_slip_ticks_p90": 22.0
+  }
+ },
+ "NQ_lat250ms": {
+  "all": {
+   "trades": 372,
+   "wr": 65.6,
+   "pf": 0.961,
+   "avg": -0.78,
+   "net": -290,
+   "entry_slip_ticks_avg": 7.18,
+   "entry_slip_ticks_p90": 17.8
+  },
+  "news_days": {
+   "trades": 32,
+   "wr": 50.0,
+   "pf": 0.821,
+   "avg": -3.97,
+   "net": -127,
+   "entry_slip_ticks_avg": 56.97,
+   "entry_slip_ticks_p90": 204.1
+  },
+  "other_days": {
+   "trades": 340,
+   "wr": 67.1,
+   "pf": 0.976,
+   "avg": -0.48,
+   "net": -163,
+   "entry_slip_ticks_avg": 2.5,
+   "entry_slip_ticks_p90": 10.0
+  },
+  "other_side_also_broke_before_0930": {
+   "trades": 195,
+   "wr": 42.1,
+   "pf": 0.26,
+   "avg": -26.0,
+   "net": -5070,
+   "entry_slip_ticks_avg": 2.82,
+   "entry_slip_ticks_p90": 12.0
+  },
+  "triggered_in_first_second": {
+   "trades": 59,
+   "wr": 49.2,
+   "pf": 0.381,
+   "avg": -20.66,
+   "net": -1219,
+   "entry_slip_ticks_avg": 9.78,
+   "entry_slip_ticks_p90": 44.4
+  }
+ },
+ "minute_sim_same_period": {
+  "trades": 347,
+  "wr": 70.6,
+  "pf": 1.457,
+  "net": 3032
+ },
+ "sep2025_NQ_lat50": {
+  "trades": 22,
+  "wr": 63.6,
+  "pf": 0.55,
+  "avg": -6.21,
+  "net": -137,
+  "entry_slip_ticks_avg": 11.05,
+  "entry_slip_ticks_p90": 21.5
+ },
+ "sep2025_MNQ_lat50": {
+  "trades": 22,
+  "wr": 59.1,
+  "pf": 0.528,
+  "avg": -7.66,
+  "net": -169,
+  "entry_slip_ticks_avg": 11.05,
+  "entry_slip_ticks_p90": 13.5
+ },
+ "by_month_NQ_lat50": {
+  "202505": {
+   "trades": 22,
+   "wr": 54.5,
+   "pf": 0.957,
+   "avg": -0.76,
+   "net": -17,
+   "entry_slip_ticks_avg": 17.82,
+   "entry_slip_ticks_p90": 62.5
+  },
+  "202506": {
+   "trades": 21,
+   "wr": 71.4,
+   "pf": 1.79,
+   "avg": 6.37,
+   "net": 134,
+   "entry_slip_ticks_avg": 2.81,
+   "entry_slip_ticks_p90": 13.0
+  },
+  "202507": {
+   "trades": 23,
+   "wr": 56.5,
+   "pf": 1.006,
+   "avg": 0.07,
+   "net": 2,
+   "entry_slip_ticks_avg": 15.87,
+   "entry_slip_ticks_p90": 55.2
+  },
+  "202508": {
+   "trades": 21,
+   "wr": 57.1,
+   "pf": 0.435,
+   "avg": -11.92,
+   "net": -250,
+   "entry_slip_ticks_avg": 0.48,
+   "entry_slip_ticks_p90": 1.0
+  },
+  "202509": {
+   "trades": 22,
+   "wr": 63.6,
+   "pf": 0.55,
+   "avg": -6.21,
+   "net": -137,
+   "entry_slip_ticks_avg": 11.05,
+   "entry_slip_ticks_p90": 21.5
+  },
+  "202510": {
+   "trades": 23,
+   "wr": 65.2,
+   "pf": 0.807,
+   "avg": -3.16,
+   "net": -73,
+   "entry_slip_ticks_avg": 2.87,
+   "entry_slip_ticks_p90": 6.2
+  },
+  "202511": {
+   "trades": 19,
+   "wr": 52.6,
+   "pf": 0.707,
+   "avg": -9.14,
+   "net": -174,
+   "entry_slip_ticks_avg": -2.05,
+   "entry_slip_ticks_p90": 2.2
+  },
+  "202512": {
+   "trades": 22,
+   "wr": 59.1,
+   "pf": 0.58,
+   "avg": -7.07,
+   "net": -156,
+   "entry_slip_ticks_avg": 7.14,
+   "entry_slip_ticks_p90": 8.0
+  },
+  "202601": {
+   "trades": 21,
+   "wr": 76.2,
+   "pf": 1.324,
+   "avg": 3.66,
+   "net": 77,
+   "entry_slip_ticks_avg": 5.19,
+   "entry_slip_ticks_p90": 4.0
+  },
+  "202602": {
+   "trades": 20,
+   "wr": 65.0,
+   "pf": 1.056,
+   "avg": 0.99,
+   "net": 20,
+   "entry_slip_ticks_avg": 14.95,
+   "entry_slip_ticks_p90": 74.3
+  },
+  "202603": {
+   "trades": 22,
+   "wr": 72.7,
+   "pf": 1.601,
+   "avg": 10.1,
+   "net": 222,
+   "entry_slip_ticks_avg": -3.82,
+   "entry_slip_ticks_p90": 7.8
+  },
+  "202604": {
+   "trades": 21,
+   "wr": 52.4,
+   "pf": 0.51,
+   "avg": -16.75,
+   "net": -352,
+   "entry_slip_ticks_avg": 10.95,
+   "entry_slip_ticks_p90": 6.0
+  },
+  "202605": {
+   "trades": 21,
+   "wr": 76.2,
+   "pf": 1.887,
+   "avg": 13.02,
+   "net": 273,
+   "entry_slip_ticks_avg": 1.0,
+   "entry_slip_ticks_p90": 7.0
+  },
+  "202606": {
+   "trades": 22,
+   "wr": 95.5,
+   "pf": 13.32,
+   "avg": 39.98,
+   "net": 880,
+   "entry_slip_ticks_avg": -0.64,
+   "entry_slip_ticks_p90": 12.7
+  },
+  "202607": {
+   "trades": 23,
+   "wr": 73.9,
+   "pf": 0.963,
+   "avg": -1.07,
+   "net": -25,
+   "entry_slip_ticks_avg": 1.7,
+   "entry_slip_ticks_p90": 9.8
+  },
+  "202608": {
+   "trades": 21,
+   "wr": 66.7,
+   "pf": 0.636,
+   "avg": -14.25,
+   "net": -299,
+   "entry_slip_ticks_avg": -6.33,
+   "entry_slip_ticks_p90": 6.0
+  },
+  "202609": {
+   "trades": 22,
+   "wr": 68.2,
+   "pf": 0.74,
+   "avg": -7.9,
+   "net": -174,
+   "entry_slip_ticks_avg": 8.41,
+   "entry_slip_ticks_p90": 5.8
+  },
+  "202610": {
+   "trades": 6,
+   "wr": 50.0,
+   "pf": 0.49,
+   "avg": -17.11,
+   "net": -103,
+   "entry_slip_ticks_avg": 46.5,
+   "entry_slip_ticks_p90": 141.0
+  }
+ }
+}

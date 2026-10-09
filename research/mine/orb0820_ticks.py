@@ -94,7 +94,7 @@ def month(f):
             g = X[X.date == r["date"]]
             tod = g.tod.to_numpy(np.int64); p = g.p.to_numpy(np.float64)
             k = np.where((tod >= T830) & (tod < T930) & ((p >= r["level"]) if r["side"] == 1 else (p <= r["level"])))[0][0]
-            j = np.searchsorted(tod, tod[k] + r["lat_ms"] * 1_000_000); r["entry"] = float(p[min(j, len(p) - 1)])
+            j = max(k, np.searchsorted(tod, tod[k] + r["lat_ms"] * 1_000_000)); r["entry"] = float(p[min(j, len(p) - 1)])
     print(os.path.basename(f), len(out) // len(LATS), "days", flush=True)
     return out
 
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     for lat in sorted(T.lat_ms.unique()):
         S = T[(T.feed == "NQ") & (T.lat_ms == lat)]
         OUT[f"NQ_lat{lat}ms"] = dict(all=summary(S), news_days=summary(S[S.news]), other_days=summary(S[~S.news]),
-                                     whipsaw_days=summary(S[S.both == 1]), triggered_first_second=summary(S[S.trig_sec < 1.0]))
+                                     other_side_also_broke_before_0930=summary(S[S.both == 1]), triggered_in_first_second=summary(S[S.trig_sec < 1.0]))
         print(f"lat {lat} ms", json.dumps(OUT[f"NQ_lat{lat}ms"]), flush=True)
     # same days on the 1-minute research sim
     tr = run_events(D, gen_orb(D, dict(A=820, T=10, W=60, cap=0.25, R=0.5, tf=0, hold=240)), flat=955, maxday=1, slip=0.25)
