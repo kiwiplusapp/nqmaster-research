@@ -88,3 +88,20 @@ Es un CUSUM del resultado diario por contrato dividido por 10 × ATR.
 - Si la ventaja desaparece, tarda ~14 meses en detectarlo, porque la ventaja del oro es chica.
 - En el régimen del oro de 2010-19, WinRate habría dado alarma a los ~2,6 años; Robust nunca.
 - Poné *Edge monitor start date* = el día que arrancás en vivo.
+
+## Órdenes trabadas (2026-10-07)
+GoldMaster tiene el mismo vigilante que NQMaster (ver "Órdenes trabadas" en `NQMASTER_GUIA.md`). En NQMaster, una orden de entrada que NinjaTrader nunca procesó bloqueó todos los cortos durante 14 meses.
+
+El vigilante descarta una entrada en estos casos:
+- no fue aceptada 2 barras después;
+- es a mercado y no se llenó en 2 barras;
+- se pidió cancelarla y la cancelación no se confirmó en 2 barras.
+
+Cuando descarta una, imprime `STALE ORDER dropped (...)` en Output. Al pasar a tiempo real, una entrada que siga Initialized se cancela y no se envía.
+
+Backup: `GoldMaster_backup_pre_zombie.cs`.
+
+## Evaluación con 1 contrato en NQ (2026-10-08)
+En el plan con modo Estable de NQMaster (ver `NQMASTER_GUIA.md`), GoldMaster va con Profile **WinRate** y **Contracts 2** durante toda la evaluación.
+
+Sus módulos OD1030 y ENG0408 tienen la mejor relación entre ganancia y riesgo en los tres períodos, y casi no se mueven junto con NQ (correlación 0,0-0,1). Por eso suman velocidad sin bajar el porcentaje de aprobación.

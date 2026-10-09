@@ -7,6 +7,14 @@
   "sha256": "48b8c8d1cfbd9814d92427962aa06d24fdafd2e1cb4d6548a1c899d66e2619cb",
   "size": 106790651
  },
+ "research/data/es_long.npz": {
+  "sha256": "200cc7e37c31a581cbfe3600b310f215e642b1c0bd460f43a100d7a118001316",
+  "size": 231734420
+ },
+ "research/data/es_long_utc.pkl": {
+  "sha256": "3f3e225c999e77e9585e4786a1393318eed312b5185e9bf20807636e04240d47",
+  "size": 174218315
+ },
  "research/data/eur_hd.npz": {
   "sha256": "cc48558281ae72058e1c9b6ef806b2fca0abccb35cfda6b9cfcef3b7e2d83dc6",
   "size": 150839660
@@ -66,6 +74,10 @@
  "research/data/nsx_1519_utc.pkl": {
   "sha256": "5046928b1a65f8d29ba3396ca60a7940538daf12575f734356c3782ccb8ca399",
   "size": 81467339
+ },
+ "research/data/spx_1519_utc.pkl": {
+  "sha256": "1e309026dc0145be8f7fc6426a57651215288fdd4ab23cd55e6a5e8c0913c019",
+  "size": 67429019
  },
  "research/data/wti.npz": {
   "sha256": "4962b16164a41603926f2d668442f5c8366790d45cfef959bf8fca8004cba470",

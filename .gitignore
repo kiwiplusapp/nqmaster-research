@@ -5,6 +5,8 @@ research/tmp/
 # >>> big originals (restored by tools/restore_data.py)
 /research/data/es_hd.npz
 /research/data/es_hd_utc.pkl
+/research/data/es_long.npz
+/research/data/es_long_utc.pkl
 /research/data/eur_hd.npz
 /research/data/eur_hd_raw.npz
 /research/data/eurusd_hd_utc.pkl
@@ -20,6 +22,7 @@ research/tmp/
 /research/data/nqhd_long.npz
 /research/data/nqhd_long_utc.pkl
 /research/data/nsx_1519_utc.pkl
+/research/data/spx_1519_utc.pkl
 /research/data/wti.npz
 /research/data/wti_1019_utc.pkl
 /research/data/wti_duka_utc.pkl

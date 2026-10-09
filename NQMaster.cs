@@ -45,6 +45,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 {
 	public enum NQMasterProfile { MaxSharpe, WinRate70, Gold, Custom, MaxTrades, MaxPlus, MaxPlus2, Ultra, WR70Plus, Core }
 	public enum NQMasterPropMode { Off, Eval, Funded }
+	public enum NQMasterSafeSet { Classic, Estable }
 
 	public class NQMaster : Strategy
 	{
@@ -67,12 +68,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public bool Retry;
 			public int Anchor = -1; public double AnchorPx = double.NaN;	// Lookback -5: open of the bar at the anchor time (ET minutes)
 			public bool Parked, ParkLimit, ParkHit; public double ParkPx; public int ParkQty;	// entry cancelled for an opposite trade, re-placed when free
+			public Order SeenOrd, CancelOrd; public int SeenBar = -1, CancelBar = -1;	// stale-order watchdog (PurgeStaleEntries)
 		}
 		private List<Mod> mods;
 		private Mod orb, orb2, mseq, mseqs, crt, lon, ict, rsi, volb, eng10;
 		private double rthFirstClose = double.NaN;
 		private double e10aO, e10aH, e10aL, e10aC, e10bO, e10bH, e10bL, e10bC, close10 = double.NaN; private bool e10aHas, e10bHas, eng10Done;
-		private double volbUp = double.NaN, volbDn = double.NaN; private bool volbDone, volbTrendOnly;
+		private double volbUp = double.NaN, volbDn = double.NaN; private bool volbDone, volbTrendOnly, volbTrendBase; private double volbRBase = 2.0;
+		private List<Order> zombies = new List<Order>(); private int zombieCount;	// entry orders NinjaTrader never processed (PurgeStaleEntries)
 		private int orbFirstDir, orbFirstMin = 9999;
 		private int m11Dir, onSum, lonDir;	// confluence state (MOM11 direction, overnight modules ON07/REV06/LON)
 		private List<Mod> timeMods;
@@ -83,6 +86,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private SimpleFont dashFont;
 		private bool badTimeframe;
 		private HashSet<int> fomc;
+		// Tier-1 news (MyFundedFutures: CPI, Employment Report 08:30 ET, FOMC minutes 14:00 ET; FOMC days are skipped anyway).
+		// CPI / NFP from the BLS schedules (2024 - Dec 2026; 2027 not published yet: add them in NewsTimes), minutes = decision + 21 days.
+		private const string BuiltinNews = "2024-01-03 14:00,2024-01-05 08:30,2024-01-11 08:30,2024-02-02 08:30,2024-02-13 08:30,2024-02-21 14:00,2024-03-08 08:30,2024-03-12 08:30,2024-04-05 08:30,2024-04-10 08:30,2024-04-10 14:00,2024-05-03 08:30,2024-05-15 08:30,2024-05-22 14:00,2024-06-07 08:30,2024-06-12 08:30,2024-07-03 14:00,2024-07-05 08:30,2024-07-11 08:30,2024-08-02 08:30,2024-08-14 08:30,2024-08-21 14:00,2024-09-06 08:30,2024-09-11 08:30,2024-10-04 08:30,2024-10-09 14:00,2024-10-10 08:30,2024-11-01 08:30,2024-11-13 08:30,2024-11-28 14:00,2024-12-06 08:30,2024-12-11 08:30,2025-01-08 14:00,2025-01-10 08:30,2025-01-15 08:30,2025-02-07 08:30,2025-02-12 08:30,2025-02-19 14:00,2025-03-07 08:30,2025-03-12 08:30,2025-04-04 08:30,2025-04-09 14:00,2025-04-10 08:30,2025-05-02 08:30,2025-05-13 08:30,2025-05-28 14:00,2025-06-06 08:30,2025-06-11 08:30,2025-07-03 08:30,2025-07-09 14:00,2025-07-15 08:30,2025-08-01 08:30,2025-08-12 08:30,2025-08-20 14:00,2025-09-05 08:30,2025-09-11 08:30,2025-10-03 08:30,2025-10-08 14:00,2025-10-24 08:30,2025-11-19 14:00,2025-11-20 08:30,2025-12-16 08:30,2025-12-18 08:30,2025-12-31 14:00,2026-01-09 08:30,2026-01-13 08:30,2026-02-11 08:30,2026-02-13 08:30,2026-02-18 14:00,2026-03-06 08:30,2026-03-11 08:30,2026-04-03 08:30,2026-04-08 14:00,2026-04-10 08:30,2026-05-08 08:30,2026-05-12 08:30,2026-05-20 14:00,2026-06-05 08:30,2026-06-10 08:30,2026-07-02 08:30,2026-07-08 14:00,2026-07-14 08:30,2026-08-07 08:30,2026-08-12 08:30,2026-08-19 14:00,2026-09-04 08:30,2026-09-11 08:30,2026-10-07 14:00,2026-10-14 08:30,2026-11-06 08:30,2026-11-10 08:30,2026-11-18 14:00,2026-12-04 08:30,2026-12-10 08:30,2026-12-30 14:00,2027-02-17 14:00,2027-04-07 14:00,2027-05-19 14:00,2027-06-30 14:00,2027-08-18 14:00,2027-10-06 14:00,2027-11-17 14:00,2027-12-29 14:00";
+		private List<DateTime> newsEt; private bool profUltra, volbBeSet;
 
 		// completed RTH days
 		private int rthDay = -1, rthDaysSeen, atrCount;
@@ -145,7 +152,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				PauseFile = "pause_trading.txt"; ShowDashboard = true; PrintLog = true;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0;
 				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 0; EvalDailyStop = 0; FundedCushionSafe = 750; FundedPayoutAt = 5000; FundedHighFull = true; FundedCushionFull = 0;
-				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400;
+				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400; EvalSafeSet = NQMasterSafeSet.Estable; FundedProfitStop = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
+				OrbPriorCloseAtr = 0.10; VolbBreakEven = true; MomAgreement = true; VolbTrendLastEntry = 1047; NewsBlackout = false; NewsTimes = "";
 			}
 			else if (State == State.Configure)
 			{
@@ -164,18 +172,33 @@ namespace NinjaTrader.NinjaScript.Strategies
 					DateTime d;
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
 				}
+				newsEt = new List<DateTime>();
+				foreach (string raw in (BuiltinNews + "," + (NewsTimes ?? "")).Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					DateTime nt;
+					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out nt)) newsEt.Add(nt);
+				}
 				BuildModules();
 				foreach (Mod m in mods) m.BaseOn = m.On;
 				EdgeParams();
 			}
 			else if (State == State.Realtime)
 			{
-				foreach (Mod m in mods) if (m.Entry != null) m.Entry = GetRealtimeOrder(m.Entry);
+				// an entry still Initialized at the switch was never processed on history (NinjaTrader would send it live now): drop it
+				foreach (Mod m in mods)
+				{
+					if (m.Entry == null) continue;
+					if (m.Entry.OrderState == OrderState.Initialized) DropStale(m, "not processed on history", false);
+					else m.Entry = GetRealtimeOrder(m.Entry);
+				}
+				foreach (Order z in zombies) { try { Order r = GetRealtimeOrder(z); if (r != null && Working(r)) CancelOrder(r); } catch { } }
 				eqPeak = netPnl;	// adaptive size measures the drawdown from the moment the strategy goes live
 				PropGoLive();
 			}
 			else if (State == State.Terminated)
 			{
+				if (zombieCount > 0)
+					Print(string.Format("NQMaster | {0} stale entry order(s) were dropped during this run (Output lines 'STALE ORDER'). Before this fix each one blocked a module and the opposite direction for good.", zombieCount));
 				if (mods != null && totalTrades == 0 && rthDaysSeen < 25)
 					Print(string.Format("NQMaster | 0 trades: only {0} RTH days loaded; needs ~25 days of warm-up. Start the test 2+ months earlier.", rthDaysSeen));
 			}
@@ -186,6 +209,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void BuildModules()
 		{
 			bool w7 = Profile == NQMasterProfile.WR70Plus, mt = Profile == NQMasterProfile.MaxTrades, ul = Profile == NQMasterProfile.Ultra, mp2 = Profile == NQMasterProfile.MaxPlus2 || ul, mp = Profile == NQMasterProfile.MaxPlus || mp2, ms = Profile == NQMasterProfile.MaxSharpe || mt || mp, wr = Profile == NQMasterProfile.WinRate70, gold = Profile == NQMasterProfile.Gold, custom = Profile == NQMasterProfile.Custom, core = Profile == NQMasterProfile.Core;
+			profUltra = ul;
 			mods = new List<Mod>(); timeMods = new List<Mod>();
 			orb = new Mod(); orb.Sig = gold ? "GC_ORB30" : "ORB60"; orb.Kind = 0;
 			orb.On = (custom ? UseOrb : (true) && UseOrb);
@@ -214,7 +238,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Mod lf06 = AddTime("LF06", (custom ? UseLf06 : (ul || (w7 && NightOnWr70)) && UseLf06), 600, -5, true, 0.20, 0.5, 240, false, false); lf06.MinDist = 0.20; lf06.Anchor = 4 * 60;
 			Mod lf0430 = AddTime("LF0430", (custom ? UseLf0430 : (ul || (w7 && NightOnWr70)) && UseLf0430), 430, -5, true, 0.35, 0.5, 240, true, false); lf0430.MinDist = 0.10; lf0430.Anchor = 4 * 60;
 			eng10 = NewMod("ENG10", (custom ? UseEng10 : ul && UseEng10), 0.5); eng10.PriceTarget = true; eng10.MaxHold = 400;
-			volb = NewMod("VOLB", (custom ? UseVolBreak : (ul || w7 || core) && UseVolBreak), w7 ? 0.5 : 2.0); volb.PriceTarget = true; volb.MaxHold = 400; volbTrendOnly = w7;
+			volb = NewMod("VOLB", (custom ? UseVolBreak : (ul || w7 || core) && UseVolBreak), w7 ? 0.5 : 2.0); volb.PriceTarget = true; volb.MaxHold = 400; volbTrendOnly = w7; volbTrendBase = volbTrendOnly; volbRBase = volb.R;
 			rsi = NewMod("RSI2", (custom ? UseRsi2 : (mt) && UseRsi2), 0.3); rsi.StopAtr = 0.15; rsi.MaxHold = 120;
 			StringBuilder sb = new StringBuilder();
 			foreach (Mod m in mods) if (m.On) sb.Append(m.Sig + " ");
@@ -241,6 +265,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			int etDate = etOpen.Year * 10000 + etOpen.Month * 100 + etOpen.Day;
 
 			ProcessClosedTrades();
+			PurgeStaleEntries();
 
 			if (Bars.IsFirstBarOfSession)
 			{
@@ -256,6 +281,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				edgeDayQty = Qty(); edgeDayTradable = !fomcToday; edgeDayDate = tradeDay;
 				NewSession();
 				PropSessionStart();
+				edgeDayQty = Qty();                                  // after the prop cushion is known (funded step-up)
 				sessHi = High[0]; sessLo = Low[0];
 			}
 			sessHi = Math.Max(sessHi, High[0]); sessLo = Math.Min(sessLo, Low[0]);
@@ -300,6 +326,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			AccountGuard();
 			DailyLossCheck();
 			PropDailyCheck();
+			if (NewsBlackout && InNews(etClose, 3)) { FlattenAll("news blackout (Tier-1 release)"); status = "NEWS BLACKOUT"; UpdateDashboard(); return; }
 
 			// exits: module time exits, London exit, flatten
 			if (FlattenTime > 0 && closeMin >= Hm(FlattenTime) && closeMin < 18 * 60) { FlattenAll("end of day"); UpdateDashboard(); return; }
@@ -307,9 +334,21 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (m.InTrade && m.MaxHold > 0 && CurrentBars[0] - m.EntryBar >= m.MaxHold) ExitModule(m, "time exit");
 			if (rsi.InTrade && CurrentBars[0] - rsi.EntryBar >= rsi.MaxHold) ExitModule(rsi, "time exit");
 			if (volb.InTrade && CurrentBars[0] - volb.EntryBar >= volb.MaxHold) ExitModule(volb, "time exit");
+			// research/mine/wrq_exits.py: VOLB 2R (Ultra) stop to entry + 0.10R once the bar reaches +0.75R, from the next bar
+			// (VOLB WR 52/51/50% -> 61/62/61%, PF 1.25/1.52/1.50 -> 1.30/1.66/1.57; plateau 0.4-1.0R x 0-0.2R)
+			if (VolbBreakEven && volb.InTrade && !volbTrendOnly && !volbBeSet && volb.R >= 1.5)
+			{
+				double vr = (volb.EntryPx - volb.StopPx) * volb.Dir;
+				if (vr > 0 && (volb.Dir == 1 ? High[0] >= volb.EntryPx + 0.75 * vr : Low[0] <= volb.EntryPx - 0.75 * vr))
+				{
+					double be = Instrument.MasterInstrument.RoundToTickSize(volb.EntryPx + volb.Dir * 0.10 * vr); volbBeSet = true;
+					if ((Close[0] - be) * volb.Dir > TickSize) { SetStopLoss(volb.Sig, CalculationMode.Price, be, false); Log("VOLB stop -> entry + 0.1R @ " + Fmt(be)); }
+					else ExitModule(volb, "break-even level already crossed");
+				}
+			}
 			if (eng10.InTrade && CurrentBars[0] - eng10.EntryBar >= eng10.MaxHold) ExitModule(eng10, "time exit");
 			if (lon.InTrade && openMin >= 570 && openMin < 18 * 60) ExitModule(lon, "London exit 09:30");
-			if (Working(lon.Entry) && (openMin >= 480 && openMin < 18 * 60)) CancelOrder(lon.Entry);
+			if (Working(lon.Entry) && (openMin >= 480 && openMin < 18 * 60)) CancelEntry(lon);
 
 			bool canTrade = CanTrade();
 			if (!canTrade) { CancelAllEntries(); UpdateDashboard(); return; }
@@ -401,12 +440,16 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (o.UsePullback && !pullbackDay) return;
 			if (trendDir == 0 || atrCount < 14 || double.IsNaN(todayAtr)) return;
 			bool window = closeMin < 780;
-			if (!window) { if (Working(o.Entry)) CancelOrder(o.Entry); return; }
+			if (!window) { CancelEntry(o); return; }
 			if (!o.Parked && !o.Armed && !o.InTrade && !Working(o.Entry) && o.Trades > 0 && o.Trades < 2 && Close[0] < o.OrH && Close[0] > o.OrL) o.Armed = true;
 			if (o.Parked || !o.Armed || o.InTrade || Working(o.Entry) || o.Trades >= 2) return;
 			if (CurrentBars[0] <= deferUntil && trendDir == -deferDir) return;	// an opposite deferred module enters first
 			int d = trendDir;
 			double entry = d == 1 ? o.OrH + TickSize : o.OrL - TickSize;
+			// research/mine/wrq_combo.py (ORBt): the breakout trigger must clear the prior RTH close by >= 0.10 ATR in the trade direction
+			// (ORB60 0.6R PF 1.62/1.60/1.56 -> 1.92/1.81/2.05, ORB90 1.43/1.31/1.38 -> 1.87/1.48/1.75, IS / CFD 24-26 / MNQ 24-26)
+			if (OrbPriorCloseAtr > -1 && !double.IsNaN(atrPrevClose) && (entry - atrPrevClose) * d < OrbPriorCloseAtr * todayAtr)
+			{ o.Armed = false; o.Trades = 2; Log(o.Sig + " skipped today: breakout level not beyond the prior close by " + OrbPriorCloseAtr.ToString("0.00") + " ATR"); return; }
 			double opp = d == 1 ? o.OrL - TickSize : o.OrH + TickSize;
 			int st = Math.Max(8, (int)Math.Round(Math.Min(Math.Abs(entry - opp), StopCapAtr * todayAtr) / TickSize));
 			o.Armed = false;
@@ -427,18 +470,20 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void ManageVolb(int openMin)
 		{
 			if (volbDone || volb.InTrade || double.IsNaN(volbUp) || double.IsNaN(rthOpenPx) || atrCount < 14) return;
-			if (openMin >= 899) { if (Working(volb.Entry)) CancelOrder(volb.Entry); volbDone = true; return; }
+			if (openMin >= 899) { CancelEntry(volb); volbDone = true; return; }
+			// research/mine/wrq_combo.py (VTSO): trend-only VOLB (WR70Plus / Estable) fills after 10:47 ET lose their edge
+			if (volbTrendOnly && VolbTrendLastEntry > 0 && openMin >= Hm(VolbTrendLastEntry)) { CancelEntry(volb); volbDone = true; return; }
 			int d = (volbUp - Close[0]) <= (Close[0] - volbDn) ? 1 : -1;
 			if (volbTrendOnly)
 			{
-				if (trendDir == 0 || (trendDir == 1 && Low[0] <= volbDn) || (trendDir == -1 && High[0] >= volbUp)) { if (Working(volb.Entry)) CancelOrder(volb.Entry); volbDone = true; return; }
+				if (trendDir == 0 || (trendDir == 1 && Low[0] <= volbDn) || (trendDir == -1 && High[0] >= volbUp)) { CancelEntry(volb); volbDone = true; return; }
 				d = trendDir;
 			}
 			if (CurrentBars[0] <= deferUntil) return;      // another module is waiting for VOLB's order to be cancelled
 			if (Working(volb.Entry))
 			{
 				if (volb.Dir == d) return;
-				CancelOrder(volb.Entry); return;                    // switch side on the next bar
+				CancelEntry(volb); return;                    // switch side on the next bar
 			}
 			double lvl = d == 1 ? Instrument.MasterInstrument.RoundToTickSize(volbUp) : Instrument.MasterInstrument.RoundToTickSize(volbDn);
 			if (PastLevel(d, lvl))
@@ -465,7 +510,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (eng10Retry && !eng10.InTrade && !eng10.Parked) { if (openMin >= 600 && openMin < 689) Eng10Place(); else eng10Retry = false; return; }
 			if (eng10Done || eng10.InTrade)
 			{
-				if (Working(eng10.Entry) && openMin >= 689 && openMin < 18 * 60) { CancelOrder(eng10.Entry); Log("ENG10 entry expired"); }
+				if (Working(eng10.Entry) && openMin >= 689 && openMin < 18 * 60) { CancelEntry(eng10); Log("ENG10 entry expired"); }
 				return;
 			}
 			if (openMin != 599) return;
@@ -536,6 +581,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double vw = vwPv / vwV;
 				int vd = Close[0] > vw ? 1 : (Close[0] < vw ? -1 : 0);
 				if (vd != (Close[0] > reference ? 1 : -1)) return;
+			}
+			// research/mine/wrq_agree.py: MOM1030 / MOM13 alone lose (IS PF < 1); with another module already open the same way
+			// MOM1030 PF 1.08/1.13/1.17 -> 1.34/1.46/1.71, MOM13 1.31/1.17/1.19 -> 1.54/1.45/1.51 (Ultra)
+			if (MomAgreement && profUltra && (m.Sig == "MOM1030" || m.Sig == "MOM13"))
+			{
+				bool agree = false;
+				foreach (Mod x in mods) if (x != m && x.InTrade && x.Dir == d) { agree = true; break; }
+				if (!agree) { Log(m.Sig + " skipped: no other module open the same way"); return; }
 			}
 			if (!DirectionAllowed(d)) return;
 			int st = Math.Max(4, (int)Math.Round(m.StopAtr * atrDaily / TickSize));
@@ -615,6 +668,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void OnFiveMinute()
 		{
 			if (CurrentBars[1] < 8) return;
+			newsBlock5 = NewsBlackout && InNews(ToEt(Times[1][0]), 8);	// a 5-minute entry would still be open at the news window
 			// RSI(2) on the 5-minute closes (Wilder, alpha 0.5), updated on every 5m bar
 			double chg = Closes[1][0] - Closes[1][1];
 			if (double.IsNaN(rsiUp)) { rsiUp = Math.Max(chg, 0); rsiDn = Math.Max(-chg, 0); }
@@ -693,7 +747,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (Working(ict.Entry))
 			{
 				bool invalid = (ict.Dir == -1 && Highs[1][0] > ictExtPend) || (ict.Dir == 1 && Lows[1][0] < ictExtPend);
-				if (CurrentBars[1] >= ictExpiry || invalid) CancelOrder(ict.Entry);
+				if (CurrentBars[1] >= ictExpiry || invalid) CancelEntry(ict);
 			}
 			bool inWin = openMin >= 570 && openMin < 630;
 			for (int q = 0; q < 6; q++)
@@ -783,10 +837,16 @@ namespace NinjaTrader.NinjaScript.Strategies
 			evalDayIndex++; evalEqDayStart = EvalEquity();
 			if (evalDayIndex == EvalLateDay && evalEqDayStart < EvalLateGoal) Log(string.Format("EVAL: day {0}, profit {1:0} < {2:0} -> {3} contracts", evalDayIndex, evalEqDayStart, EvalLateGoal, EvalLateContracts));
 		}
+		// ---- funded step-up (research/mine/final3y_acct.py, MyFundedFutures Rapid EOD 50K, Ultra + gold Robust, REAL 2024-26): 1 contract
+		// until the cushion over the EOD-trailing threshold (day start) is >= FundedStepUpCushion ($3,000 = balance >= start + $3,100 once
+		// the threshold has locked at start + $100), then FundedStepUpContracts (2); back to Contracts below. Withdraw down to start + $6,100.
+		// $ per account per month (history / +1 tick / resampled): 3,888 / 3,592 / 3,336 vs 2,137 / 1,984 / 2,012 at 1 contract.
+		private bool StepUpOn { get { return PropMode == NQMasterPropMode.Funded && FundedStepUpCushion > 0 && !double.IsNaN(propCushion) && propCushion >= FundedStepUpCushion; } }
 		private int Qty()
 		{
 			if (EvalMode) return (evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal
 				&& (EvalLateMinCushion <= 0 || double.IsNaN(propCushion) || propCushion >= EvalLateMinCushion)) ? EvalLateContracts : Contracts;
+			if (StepUpOn) return FundedStepUpContracts;
 			if (!AdaptiveSize) return Contracts;
 			return (eqPeak - netPnl) > SizeDownDrawdown ? SizeLow : SizeHigh;
 		}
@@ -951,23 +1011,38 @@ namespace NinjaTrader.NinjaScript.Strategies
 				else gate = propCushion >= FundedCushionSafe ? (FundedHighFull ? GateMode.Full : GateMode.NoBoost) : GateMode.Safe;
 				noBoost = gate != GateMode.Full;
 			}
+			// Eval SAFE gear "Estable" (research/mine/gate84.py -> gate_lo.py, gate_final.py): below the cushion only the stable modules trade,
+			// no x2, VOLB trend-only at 0.5R. Lucid 50K, 1 contract, Ultra above $1,200 cushion, gold WinRate x2, eval started on an
+			// ATR < 1.15 day: pass 92% / 83% / 96% (CFD 2024-26 / MNQ 2024-26 / CFD 2020-23) vs 57-65% / 75-76% / 95% without gating.
+			bool estable = PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable;
 			foreach (Mod m in mods)
-				m.On = m.BaseOn && !(gate == GateMode.Safe && (m.Sig == "VOLB" || m.Sig == "LON" || m.Sig == "MOM1030" || m.Sig == "MOM11"));
+				m.On = m.BaseOn && (estable ? EstableSig(m.Sig)
+					: !(gate == GateMode.Safe && (m.Sig == "VOLB" || m.Sig == "LON" || m.Sig == "MOM1030" || m.Sig == "MOM11")));
+			if (volb != null) { volbTrendOnly = estable || volbTrendBase; volb.R = estable ? 0.5 : volbRBase; }
 			atrStartRatio = double.NaN;
 			if (atrHist != null && atrHist.Count >= 20 && !double.IsNaN(todayAtr) && todayAtr > 0)
 			{
 				List<double> srt = new List<double>(atrHist.Count > 60 ? atrHist.GetRange(atrHist.Count - 60, 60) : atrHist); srt.Sort(); int nn = srt.Count;
 				double med = nn % 2 == 1 ? srt[nn / 2] : 0.5 * (srt[nn / 2 - 1] + srt[nn / 2]); atrStartRatio = med > 0 ? todayAtr / med : double.NaN;
 			}
-			if (PropMode != NQMasterPropMode.Off) Log(string.Format("PROP {0}: equity {1:0} | threshold {2:0} | cushion {3:0} -> {4}", PropMode, PropEquity(), propThr, propCushion, gate));
+			if (PropMode != NQMasterPropMode.Off) Log(string.Format("PROP {0}: equity {1:0} | threshold {2:0} | cushion {3:0} -> {4}{5}", PropMode, PropEquity(), propThr, propCushion, gate,
+				StepUpOn ? string.Format(" | STEP-UP {0} contracts", FundedStepUpContracts) : ""));
+		}
+		private static bool EstableSig(string s)
+		{
+			return s == "CRT11" || s == "ORB90" || s == "MSEQ" || s == "ON07" || s == "REV06" || s == "VOLB" || s == "VW13" || s == "ENG10" || s == "LATEFH";
 		}
 		private void PropDailyCheck()
 		{
-			if (PropMode != NQMasterPropMode.Eval || (EvalDailyStop <= 0 && EvalProfitStop <= 0) || propStopped || double.IsNaN(propDayStart)) return;
+			// Funded: optional daily profit stop for LucidPro's 40% per-payout-cycle consistency (research/mine/lucidpro.py: 2 contracts,
+			// stop at +$500 for the whole account -> $/month per account +13% vs LucidFlex 2c/2c; no daily loss stop in Funded)
+			bool evalMode = PropMode == NQMasterPropMode.Eval;
+			double lossStop = evalMode ? EvalDailyStop : 0, profitStop = evalMode ? EvalProfitStop : (PropMode == NQMasterPropMode.Funded ? FundedProfitStop : 0);
+			if ((lossStop <= 0 && profitStop <= 0) || propStopped || double.IsNaN(propDayStart)) return;
 			double now = State == State.Realtime ? Account.Get(AccountItem.CashValue, Currency.UsDollar) + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar)
 				: StartBalance + netPnl + (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Closes[0][0]));
-			if (EvalDailyStop > 0 && now - propDayStart <= -EvalDailyStop) { propStopped = true; FlattenAll("prop daily stop"); Log(string.Format("PROP DAILY STOP: {0:0} today", now - propDayStart)); }
-			else if (EvalProfitStop > 0 && now - propDayStart >= EvalProfitStop) { propStopped = true; FlattenAll("eval daily profit stop"); Log(string.Format("EVAL DAILY PROFIT STOP: +{0:0} today (Lucid consistency)", now - propDayStart)); }
+			if (lossStop > 0 && now - propDayStart <= -lossStop) { propStopped = true; FlattenAll("prop daily stop"); Log(string.Format("PROP DAILY STOP: {0:0} today", now - propDayStart)); }
+			else if (profitStop > 0 && now - propDayStart >= profitStop) { propStopped = true; FlattenAll(evalMode ? "eval daily profit stop" : "funded daily profit stop"); Log(string.Format("{0} DAILY PROFIT STOP: +{1:0} today (Lucid consistency)", evalMode ? "EVAL" : "FUNDED", now - propDayStart)); }
 		}
 
 		private bool lastDeferred; private int deferUntil = -1, deferDir;
@@ -987,8 +1062,18 @@ namespace NinjaTrader.NinjaScript.Strategies
 			return true;
 		}
 
+		// true from `before` minutes before a Tier-1 release (bar close times) until 2 minutes after it: with before = 3 the bar closing
+		// at 08:27 flattens (flat before 08:28:00) and entries resume with the bar closing at 08:32.
+		private bool InNews(DateTime etClose, int before)
+		{
+			if (newsEt == null) return false;
+			foreach (DateTime e in newsEt) { double m = (etClose - e).TotalMinutes; if (m >= -before && m < 2) return true; }
+			return false;
+		}
+		private bool newsBlock5;
 		private bool CanTrade()
 		{
+			if (newsBlock5 && BarsInProgress == 1) { status = "NEWS BLACKOUT"; return false; }
 			if (fomcToday) { status = "FOMC day: no trading"; return false; }
 			if (targetHit) { status = "eval target reached"; return false; }
 			if (ddTripped) { status = "drawdown guard"; return false; }
@@ -1040,7 +1125,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Log("FLATTEN: " + why);
 		}
 
-		private void CancelAllEntries() { foreach (Mod m in mods) { m.Parked = false; if (Working(m.Entry)) CancelOrder(m.Entry); } }
+		private void CancelAllEntries() { foreach (Mod m in mods) { m.Parked = false; CancelEntry(m); } }
 		// ---- parking (research/mine/patch_review2.py): research keeps every module's order working and only drops a fill against an open
 		// opposite position. NinjaTrader's managed rules cannot hold opposite entry orders at once, so the cancelled one is kept here and
 		// re-placed as soon as no opposite position / working order remains. Dropped if its level trades while blocked or its window ends.
@@ -1050,7 +1135,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (e == null || !Working(e)) return;
 			if (o != volb && (e.OrderType == OrderType.StopMarket || e.OrderType == OrderType.Limit))
 			{ o.Parked = true; o.ParkHit = false; o.ParkLimit = e.OrderType == OrderType.Limit; o.ParkPx = o.ParkLimit ? e.LimitPrice : e.StopPrice; o.ParkQty = Math.Max(1, e.Quantity); Log(o.Sig + " order parked (opposite trade)"); }
-			CancelOrder(e);
+			CancelEntry(o);
 		}
 		// a setup blocked by an opposite POSITION at placement time: kept and placed when free (research drops only a fill against it)
 		private void ParkSetup(Mod o, bool limit, double px, int qty)
@@ -1098,13 +1183,57 @@ namespace NinjaTrader.NinjaScript.Strategies
 			OrderState s = o.OrderState;
 			return s != OrderState.Filled && s != OrderState.Cancelled && s != OrderState.Rejected && s != OrderState.Unknown;
 		}
+		// every cancel of a module entry goes through here so the watchdog knows when it was asked for
+		private void CancelEntry(Mod m)
+		{
+			Order e = m.Entry;
+			if (!Working(e)) return;
+			if (m.CancelOrd != e) { m.CancelOrd = e; m.CancelBar = CurrentBars[0]; }
+			CancelOrder(e);
+		}
+		// ---- stale-order watchdog. NinjaTrader can hand back an entry order that it never processes (it stays Initialized) or whose
+		// cancel never completes; Working() then reports it as live forever and every opposite entry is deferred. Strategy Analyzer
+		// MNQ 2024-26 (Ultra): a VOLB buy stop placed 2025-08-13 09:32 ET never reached the market (price crossed it on 2025-09-15 without
+		// a fill) and could not be cancelled -> VOLB never traded again and 0 shorts were taken for 14 months (research: 577 shorts,
+		// WR 65.7%, PF 1.53, +$17.6k per contract). Historical orders are processed at once and live ones within seconds, so an entry
+		// that is still not accepted 2 bars later, a market entry still unfilled 2 bars later, or a cancel not confirmed 2 bars after it
+		// was requested is dead: it is dropped (cancel attempted, reference cleared) and a STALE ORDER line is printed. Every entry is
+		// cancelled at FlattenTime, so a dead order is found the same day at the latest.
+		private void PurgeStaleEntries()
+		{
+			foreach (Mod m in mods)
+			{
+				Order e = m.Entry;
+				if (!Working(e)) continue;
+				if (e != m.SeenOrd) { m.SeenOrd = e; m.SeenBar = CurrentBars[0]; }
+				int age = CurrentBars[0] - m.SeenBar;
+				OrderState s = e.OrderState;
+				string why = null;
+				if (m.CancelOrd == e && CurrentBars[0] - m.CancelBar >= 2) why = "cancel never confirmed";
+				else if (age >= 2 && (s == OrderState.Initialized || s == OrderState.Submitted)) why = "never accepted";
+				else if (age >= 2 && e.OrderType == OrderType.Market && s != OrderState.PartFilled) why = "market entry never filled";
+				if (why == null) continue;
+				DropStale(m, why, true);
+			}
+		}
+		private void DropStale(Mod m, string why, bool cancel)
+		{
+			Order e = m.Entry;
+			OrderState s = e.OrderState;
+			if (cancel) { try { CancelOrder(e); } catch { } }
+			zombies.Add(e); zombieCount++;
+			m.Entry = null; m.SeenOrd = null; m.CancelOrd = null;
+			Print(string.Format("{0} | NQMaster | STALE ORDER dropped ({1}): {2} {3} {4} x{5} @ {6}, state {7} - the module and the opposite direction trade again",
+				Times[0][0].ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), why, m.Sig, e.OrderAction, e.OrderType, e.Quantity,
+				e.OrderType == OrderType.Market ? "market" : Fmt(e.OrderType == OrderType.Limit ? e.LimitPrice : e.StopPrice), s));
+		}
 		private Mod BySig(string sig) { if (mods == null || string.IsNullOrEmpty(sig)) return null; foreach (Mod m in mods) if (m.Sig == sig) return m; return null; }
 
 		protected override void OnOrderUpdate(Order order, double limitPrice, double stopPrice, int quantity, int filled, double averageFillPrice,
 			OrderState orderState, DateTime time, ErrorCode error, string nativeError)
 		{
 			Mod m = BySig(order.Name);
-			if (m != null && (m.Entry == null || m.Entry == order || !Working(m.Entry))) m.Entry = order;
+			if (m != null && !zombies.Contains(order) && (m.Entry == null || m.Entry == order || !Working(m.Entry))) m.Entry = order;
 			if (orderState == OrderState.Rejected)
 			{
 				Print(string.Format("NQMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
@@ -1132,7 +1261,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(Times[0][0]).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
 				if (m == orb2) orb2.Trades++;
-				if (m == volb) { volbDone = true; volb.EntryBar = CurrentBars[0]; }
+				if (m == volb) { volbDone = true; volb.EntryBar = CurrentBars[0]; volbBeSet = false; }
 				if (m == eng10) eng10.EntryBar = CurrentBars[0];
 				if (m.Sig == "MOM11" && m11Dir == 0) m11Dir = m.Dir;
 				if (m == lon || m.Sig == "ON07" || m.Sig == "REV06") onSum += m.Dir;
@@ -1195,8 +1324,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 			string txt = string.Format("NQ MASTER ({0}) | {1}\ntrend {2} | ATRd {3:0.0} | pullback day {4}\n{5}\nTotal {6} tr | WR {7:0.0}% | PF {8:0.00} | ${9:0.00}",
 				Profile, status, trendDir == 1 ? "UP" : trendDir == -1 ? "DOWN" : "-", todayAtr, pullbackDay ? "yes" : "no", mm.ToString(),
 				totalTrades, totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
+			if (zombieCount > 0) txt += string.Format("\nStale orders dropped: {0} (see Output)", zombieCount);
 			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / edgeH, edgeDays, edgeAlarm ? " | ALARM" : "");
-			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1} | cushion ${2:0} (threshold ${3:0})", PropMode, gate, propCushion, propThr);
+			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1}{4} | cushion ${2:0} (threshold ${3:0})", PropMode, gate, propCushion, propThr,
+				PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable ? " (Estable)" : "");
+			if (PropMode == NQMasterPropMode.Funded && FundedStepUpCushion > 0) txt += string.Format("\nSize: {0} contracts per module ({1})", Qty(), StepUpOn ? "step-up on" : string.Format("step-up at cushion ${0:0}", FundedStepUpCushion));
 			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += string.Format("\nPAYOUT: profit >= ${0:0} -> request it", FundedPayoutAt);
 			if (AtrStartMax > 0 && !double.IsNaN(atrStartRatio)) txt += string.Format("\nATR ratio {0:0.00}: {1}", atrStartRatio, atrStartRatio < AtrStartMax ? "OK to start a new eval" : "do NOT start a new eval today");
 			Draw.TextFixed(this, "NQM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
@@ -1233,6 +1365,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Night modules also in WR70Plus (NF05 / LF06 / LF0430)", Order = 26, GroupName = "01. Module switches (any profile)")] public bool NightOnWr70 { get; set; }
 		[NinjaScriptProperty][Range(-5.0, 5.0)][Display(Name = "Pullback max prior-day move (x ATRd)", Order = 20, GroupName = "02. Edge")] public double PullbackMaxRet { get; set; }
 		[NinjaScriptProperty][Range(0.05, 1.0)][Display(Name = "ORB stop cap (x ATRd)", Order = 21, GroupName = "02. Edge")] public double StopCapAtr { get; set; }
+		[NinjaScriptProperty][Range(-1.0, 2.0)][Display(Name = "ORB: breakout must clear the prior close by x ATR (0.10; -1 = off)", Order = 22, GroupName = "02. Edge")] public double OrbPriorCloseAtr { get; set; }
+		[NinjaScriptProperty][Display(Name = "VOLB 2R (Ultra): stop to entry + 0.1R after +0.75R", Order = 23, GroupName = "02. Edge")] public bool VolbBreakEven { get; set; }
+		[NinjaScriptProperty][Display(Name = "MOM1030 / MOM13 (Ultra): only with another module open the same way", Order = 24, GroupName = "02. Edge")] public bool MomAgreement { get; set; }
+		[NinjaScriptProperty][Range(0, 2359)][Display(Name = "VOLB trend-only (WR70Plus / Estable): last entry HHMM ET (1047; 0 = off)", Order = 25, GroupName = "02. Edge")] public int VolbTrendLastEntry { get; set; }
+		[NinjaScriptProperty][Display(Name = "News blackout: flat, no orders 2 min around CPI / NFP / FOMC minutes (MFFU funded)", Order = 1, GroupName = "08. News blackout")] public bool NewsBlackout { get; set; }
+		[NinjaScriptProperty][Display(Name = "Extra Tier-1 times ET (yyyy-MM-dd HH:mm, comma list; 2027 CPI / NFP)", Order = 2, GroupName = "08. News blackout")] public string NewsTimes { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Contracts per module", Order = 30, GroupName = "03. Risk / account")] public int Contracts { get; set; }
 		[NinjaScriptProperty][Range(1000, 1659)][Display(Name = "Flatten time (ET HHmm)", Order = 31, GroupName = "03. Risk / account")] public int FlattenTime { get; set; }
 		[NinjaScriptProperty][Display(Name = "Skip FOMC days", Order = 32, GroupName = "03. Risk / account")] public bool SkipFomc { get; set; }
@@ -1269,6 +1407,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Prop mode (Off / Eval / Funded)", Order = 1, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropMode PropMode { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Trailing drawdown $ (EOD, locks at start+100)", Order = 2, GroupName = "07. Prop account (cushion gating)")] public double PropTrailingDD { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: full mode when cushion >= $", Order = 3, GroupName = "07. Prop account (cushion gating)")] public double EvalCushionFull { get; set; }
+		[NinjaScriptProperty][Display(Name = "Eval: modules below the cushion (Estable = stable set, recommended; Classic = old SAFE)", Order = 3, GroupName = "07. Prop account (cushion gating)")] public NQMasterSafeSet EvalSafeSet { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: account daily stop $ (0 = off)", Order = 4, GroupName = "07. Prop account (cushion gating)")] public double EvalDailyStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: safe mode when cushion < $", Order = 5, GroupName = "07. Prop account (cushion gating)")] public double FundedCushionSafe { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: request payout at profit >= $", Order = 6, GroupName = "07. Prop account (cushion gating)")] public double FundedPayoutAt { get; set; }
@@ -1280,6 +1419,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, 100)][Display(Name = "Eval consistency % (best day <= % of profit; Lucid 50, 0 = off)", Order = 11, GroupName = "07. Prop account (cushion gating)")] public double ConsistencyPct { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: best day so far $ (after a restart)", Order = 12, GroupName = "07. Prop account (cushion gating)")] public double EvalBestDaySoFar { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: stop the day at +$ (whole account; 1400 with 2 contracts, 700 with 1; 0 = off)", Order = 14, GroupName = "07. Prop account (cushion gating)")] public double EvalProfitStop { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: stop the day at +$ (whole account; LucidPro 40% consistency: 500 with 2 contracts; 0 = off)", Order = 15, GroupName = "07. Prop account (cushion gating)")] public double FundedProfitStop { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 16, GroupName = "07. Prop account (cushion gating)")] public double FundedStepUpCushion { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 17, GroupName = "07. Prop account (cushion gating)")] public int FundedStepUpContracts { get; set; }
 		#endregion
 	}
 }

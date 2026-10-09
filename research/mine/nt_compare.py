@@ -1,8 +1,10 @@
 """Compare a NinjaTrader Strategy Analyzer trade export with the research trades, module by module (port validation).
 
 Usage (from research/mine):
-  python nt_compare.py "<NT trades.csv>" --set ultra      [--tz America/Argentina/Buenos_Aires] [--out nt_compare_ultra]
-  python nt_compare.py "<NT trades.csv>" --set gold_robust | gold_winrate | wr70plus
+  python nt_compare.py "<NT trades.csv>" --set ultra_final  [--tz America/Argentina/Buenos_Aires] [--out nt_compare_ultra]
+  (ultra_final / ultralean_final / wr70plus_final = current NQMaster rules of 2026-10-08, NightOnWr70 on for WR70Plus;
+   ultra / wr70plus / wr70plus_night = the older rule set)
+  python nt_compare.py "<NT trades.csv>" --set gold_robust | gold_winrate | wr70plus | wr70plus_night (NightOnWr70 = true)
 
 NT export: Strategy Analyzer -> Trades tab -> right click -> Export (CSV, ';' separated, '1.234,56 $' numbers, local PC time).
 Run NT with Contracts = 1 on real MNQ / MGC 1-minute data; P&L is compared per contract (NT profit / qty).
@@ -29,8 +31,16 @@ def drive_real(name):
                              d=df.d.to_numpy(), u=df.usd.to_numpy(), w=1.0))
 def nf05_real(): return pd.concat([drive_real(n) for n in DRIVES], ignore_index=True)
 
+FINAL = {"ultra_final": "Ultra", "ultralean_final": "UltraLean", "wr70plus_final": "WR70Plus"}
+
+
 def research_set(name):
-    if name in ("ultra", "wr70plus"):
+    if name in FINAL:                                            # current NQMaster rules (2026-10-08), final3y.py trade sets, REAL 2024-02..2026-09
+        X = pickle.load(open("final3y_trades.pkl", "rb"))[FINAL[name]]
+        X = X[["date", "mod", "tin", "tout", "d", "u", "w"]].copy()
+        X["mod"] = X["mod"].replace({"VW13b": "VW13", "VOLB_tf1": "VOLB", "VOLB_tf0": "VOLB"})
+        return X.sort_values(["date", "tin"]).reset_index(drop=True), "nq"
+    if name in ("ultra", "wr70plus", "wr70plus_night"):
         from ict_redo import ictf
         from ultra_plus_lib import mined
         T = pickle.load(open("robust_trades.pkl", "rb"))
@@ -40,7 +50,7 @@ def research_set(name):
                      mined(("LATE_MOM", 762), "REAL", "LATE15"), mined(("ENGULF_4H", 1172), "REAL", "ENG10"), mined(("LATE_MOM", 1107), "REAL", "LATEFH"), nf05_real()]
         else:
             F = T["WR70Plus"]["REAL"][0]
-            parts = [F[F["mod"] != "ICT"], ictf("REAL", 2.0), mined(("LATE_MOM", 762), "REAL", "LATE15")]
+            parts = [F[F["mod"] != "ICT"], ictf("REAL", 2.0), mined(("LATE_MOM", 762), "REAL", "LATE15")] + ([nf05_real()] if name == "wr70plus_night" else [])
         X = pd.concat([p[["date", "mod", "tin", "tout", "d", "u", "w"]] for p in parts], ignore_index=True).sort_values(["date", "tin"]).reset_index(drop=True)
         X["mod"] = X["mod"].replace({"VW13b": "VW13", "VOLB_tf1": "VOLB", "VOLB_tf0": "VOLB"})
         return conflict_filter(X), "nq"
@@ -80,7 +90,7 @@ def stats(u):
     return dict(n=len(u), wr=round(100 * (u > 0).mean(), 1), pf=round(u[u > 0].sum() / gl, 2) if gl > 0 else np.nan, net=round(u.sum()))
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("csv"); ap.add_argument("--set", default="ultra", choices=["ultra", "wr70plus", "gold_robust", "gold_winrate"])
+    ap = argparse.ArgumentParser(); ap.add_argument("csv"); ap.add_argument("--set", default="ultra", choices=["ultra_final", "ultralean_final", "wr70plus_final", "ultra", "wr70plus", "wr70plus_night", "gold_robust", "gold_winrate"])
     ap.add_argument("--tz", default="America/Argentina/Buenos_Aires"); ap.add_argument("--out", default=None); ap.add_argument("--tol", type=int, default=3)
     a = ap.parse_args(); out = a.out or "nt_compare_" + a.set
     R, inst = research_set(a.set); N = nt_frame(a.csv, a.tz)

@@ -1,0 +1,27 @@
+{
+ "chosen_on_IS": "{'L': 10, 'm': 1.5, 'f': 60, 'trail': 0, 'hs': 0.5, 'tf': 1, 'maxday': 1, 'side': 0}",
+ "IS": {
+  "ultra": 3.092,
+  "ultra_minus_volb": 3.326,
+  "swap": 3.408,
+  "ultra_mo": 1656,
+  "swap_mo": 1528,
+  "share_of_noise_cfgs_beating_ultra": 1.0
+ },
+ "C24": {
+  "ultra": 3.435,
+  "ultra_minus_volb": 3.075,
+  "swap": 2.904,
+  "ultra_mo": 2317,
+  "swap_mo": 1641,
+  "share_of_noise_cfgs_beating_ultra": 0.0
+ },
+ "REAL": {
+  "ultra": 3.613,
+  "ultra_minus_volb": 3.374,
+  "swap": 3.307,
+  "ultra_mo": 2429,
+  "swap_mo": 1831,
+  "share_of_noise_cfgs_beating_ultra": 0.0
+ }
+}

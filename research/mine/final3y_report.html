@@ -1,0 +1,500 @@
+<title>NQMaster Prop Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column (max 1080px) like a desk trading report; an order-ticket summary up top, then
+   evidence sections, each a heading + short lede + table/chart in its own scroll box. */
+:root{
+  --paper:#f4f6f9; --panel:#ffffff; --ink:#14203a; --ink-2:#4b5670; --ink-3:#7a849a; --rule:#d8dde7; --tint:#e9eefa;
+  --mnq:#2c58d0; --mgc:#a8750a; --gain:#17784f; --loss:#b63a29; --gain-bg:#e3f2ea; --loss-bg:#f8e6e2; --warn:#9a6a00; --warn-bg:#fbf1d9;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif; --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:72px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0e1320; --panel:#151c2c; --ink:#e5e9f2; --ink-2:#a3adc2; --ink-3:#758099; --rule:#29324a; --tint:#1b2540;
+  --mnq:#83a5ff; --mgc:#e2b04c; --gain:#4fc08b; --loss:#f17d6b; --gain-bg:#14301f; --loss-bg:#3a1c18; --warn:#e8bd55; --warn-bg:#352a10; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --paper:#0e1320; --panel:#151c2c; --ink:#e5e9f2; --ink-2:#a3adc2; --ink-3:#758099; --rule:#29324a; --tint:#1b2540;
+  --mnq:#83a5ff; --mgc:#e2b04c; --gain:#4fc08b; --loss:#f17d6b; --gain-bg:#14301f; --loss-bg:#3a1c18; --warn:#e8bd55; --warn-bg:#352a10; color-scheme:dark; }
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:400 15px/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:var(--s6) var(--s8);display:flex;flex-direction:column;gap:var(--s7)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(30px,5.2vw,52px);line-height:1.04;font-weight:780;font-stretch:82%;letter-spacing:-.01em}
+h2{font-size:clamp(22px,3vw,30px);line-height:1.15;font-weight:720;font-stretch:88%}
+h3{font-size:17px;font-weight:680;font-stretch:95%}
+p{margin:0;max-width:68ch}
+.eyebrow{font:500 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.lede{color:var(--ink-2);font-size:16px}
+.muted{color:var(--ink-2)}
+.small{font-size:13px}
+.mono{font-family:var(--f-mono)}
+.num{font-variant-numeric:tabular-nums}
+section{display:flex;flex-direction:column;gap:var(--s4)}
+.head{display:flex;flex-direction:column;gap:var(--s3)}
+.stack{display:flex;flex-direction:column;gap:var(--s3)}
+.pos{color:var(--gain)} .neg{color:var(--loss)}
+a{color:var(--mnq)}
+code,kbd{font-family:var(--f-mono);font-size:.92em}
+
+/* order ticket */
+.ticket{background:var(--panel);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.ticket-strip{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:center;padding:var(--s3) var(--s5);background:var(--ink);color:var(--paper);font:500 12px/1.4 var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+.ticket-strip b{font-weight:600}
+.ticket-strip .sep{opacity:.45}
+.ticket-body{padding:var(--s5);display:flex;flex-direction:column;gap:var(--s5)}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--s4) var(--s5)}
+.fig{display:flex;flex-direction:column;gap:2px;min-width:0}
+.fig .k{font:500 12px/1.3 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.fig .v{font:600 clamp(26px,3.4vw,34px)/1.1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.fig .v small{font-size:.5em;font-weight:500;color:var(--ink-2)}
+.fig .d{font-size:13px;color:var(--ink-2)}
+.verdict{border-top:1px solid var(--rule);padding-top:var(--s4);display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--s4) var(--s6)}
+.verdict p{font-size:15px}
+.verdict strong{color:var(--ink)}
+
+/* tables */
+.tbox{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:9px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+thead th{font:500 11.5px/1.3 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);vertical-align:bottom;white-space:normal;min-width:72px}
+thead th:first-child{min-width:190px}
+tbody tr:last-child td{border-bottom:0}
+td.lab{white-space:normal;min-width:190px;max-width:320px}
+tr.grp td{background:var(--tint);font:600 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);text-align:left}
+tr.pick td{background:color-mix(in srgb,var(--mnq) 7%,var(--panel))}
+tr.pick td:first-child{box-shadow:inset 3px 0 0 var(--mnq)}
+.tag{display:inline-block;font:600 10.5px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 6px;border-radius:4px;vertical-align:1px;margin-left:6px}
+.tag.rec{background:var(--mnq);color:var(--panel)}
+.tag.alt{background:var(--tint);color:var(--ink-2)}
+.tag.gold{background:color-mix(in srgb,var(--mgc) 18%,var(--panel));color:var(--mgc)}
+td .sub{display:block;font-size:12px;color:var(--ink-3)}
+td.hl{font-weight:600}
+td.c35{background:color-mix(in srgb,var(--warn) 10%,var(--panel))}
+th.c35{color:var(--warn)}
+
+details{background:var(--panel);border:1px solid var(--rule);border-radius:8px}
+details>summary{cursor:pointer;padding:var(--s3) var(--s4);font:500 14px/1.4 var(--f-body);color:var(--ink-2);list-style:none;display:flex;gap:var(--s2);align-items:center}
+details>summary::before{content:"+";font:600 15px/1 var(--f-mono);width:16px;color:var(--mnq)}
+details[open]>summary::before{content:"\2212"}
+details>summary:focus-visible{outline:2px solid var(--mnq);outline-offset:-2px;border-radius:8px}
+details .tbox{border:0;border-top:1px solid var(--rule);border-radius:0 0 8px 8px}
+
+/* firm rule cards */
+.firms{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--s4)}
+.firm{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:var(--s4) var(--s5);display:flex;flex-direction:column;gap:var(--s2);min-width:0}
+.firm dl{display:grid;grid-template-columns:max-content 1fr;gap:4px var(--s4);margin:0;font-size:13.5px}
+.firm dt{color:var(--ink-3);font:500 12px/1.6 var(--f-mono);text-transform:uppercase;letter-spacing:.04em}
+.firm dd{margin:0;min-width:0}
+
+/* chart */
+.chartcard{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:var(--s4) var(--s4) var(--s3);display:flex;flex-direction:column;gap:var(--s3)}
+.chartbar{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;justify-content:space-between}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:7px;overflow:hidden}
+.seg button{font:500 13px/1 var(--f-body);background:transparent;color:var(--ink-2);border:0;padding:9px 12px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:focus-visible{outline:2px solid var(--mnq);outline-offset:-2px}
+.chartmeta{font:500 12.5px/1.4 var(--f-mono);color:var(--ink-2)}
+.chartscroll{overflow-x:auto} .chartscroll svg{display:block;width:100%;min-width:640px;height:auto}
+svg text{font-family:var(--f-mono);font-size:11px;fill:var(--ink-3)}
+svg .grid{stroke:var(--rule);stroke-width:1}
+svg .zero{stroke:var(--ink-3);stroke-width:1}
+svg .bp{fill:var(--gain)} svg .bn{fill:var(--loss)}
+svg .eq{fill:none;stroke:var(--mnq);stroke-width:2}
+
+/* settings */
+.setgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:var(--s4)}
+.setcard{background:var(--panel);border:1px solid var(--rule);border-radius:8px;display:flex;flex-direction:column;min-width:0}
+.setcard header{padding:var(--s3) var(--s4);border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:2px}
+.setcard header .eyebrow{color:var(--mnq)}
+.setcard .blk{padding:var(--s3) var(--s4);display:flex;flex-direction:column;gap:6px}
+.setcard .blk+.blk{border-top:1px dashed var(--rule)}
+.chip{font:600 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;align-self:flex-start;padding:4px 7px;border-radius:4px}
+.chip.nq{background:color-mix(in srgb,var(--mnq) 14%,var(--panel));color:var(--mnq)}
+.chip.gc{background:color-mix(in srgb,var(--mgc) 16%,var(--panel));color:var(--mgc)}
+.kv{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px var(--s3);font:400 13px/1.45 var(--f-mono);margin:0}
+.kv dt{color:var(--ink-2);min-width:0;overflow-wrap:anywhere}
+.kv dd{margin:0;text-align:right;color:var(--ink);font-weight:500}
+.note{font-size:13px;color:var(--ink-2)}
+.instr{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--s4)}
+.instr .firm .sym{font:700 26px/1 var(--f-display);font-stretch:85%}
+
+/* confidence */
+.meters{display:flex;flex-direction:column;gap:var(--s3);background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:var(--s4) var(--s5)}
+.meter{display:grid;grid-template-columns:minmax(0,1fr) 64px;gap:4px var(--s4);align-items:center}
+.meter .lbl{font-size:14.5px}
+.meter .pct{font:600 18px/1 var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.meter .track{grid-column:1 / -1;height:8px;border-radius:4px;background:var(--tint);position:relative}
+.meter .mark{position:absolute;top:-4px;width:2px;height:16px;border-radius:1px;background:var(--ink)}
+.meter .lbl .sub{display:block;font-size:12.5px;color:var(--ink-3)}
+.meter .fill{height:100%;border-radius:4px;background:var(--mnq)}
+.meter.lo .fill{background:var(--warn)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--s5)}
+.cols ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:var(--s2)}
+.cols li{max-width:62ch}
+.cols h3{margin-bottom:var(--s2)}
+.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:var(--s2)}
+.steps li{max-width:72ch}
+.callout{background:var(--warn-bg);border-radius:8px;padding:var(--s3) var(--s4);font-size:14px}
+footer{border-top:1px solid var(--rule);padding-top:var(--s4)}
+@media (prefers-reduced-motion:no-preference){ .meter .fill{transition:width .6s ease} }
+@media (max-width:560px){ th,td{padding:8px 9px} .ticket-body{padding:var(--s4)} .meters{padding:var(--s4)} }
+</style>
+
+<div class="wrap">
+
+<header class="head">
+  <span class="eyebrow">NQMaster + GoldMaster · prop-firm playbook · 9 Oct 2026</span>
+  <h1>MyFundedFutures or Lucid, Ultra or WR70Plus</h1>
+  <p class="lede">Current NQMaster and GoldMaster logic replayed on real MNQ and MGC futures from 1 Feb 2024 to 25 Sep 2026: 657 trading days, the whole real-futures history we have. So "the last 3 years" here is 2.7 years. Costs are $1.90 per round turn plus 1 tick of slippage per side. Every figure is for 1 contract per module unless a row says otherwise.</p>
+</header>
+
+<section aria-labelledby="ans">
+  <h2 id="ans" class="eyebrow" style="font-size:12px">The short answer</h2>
+  <div class="ticket">
+    <div class="ticket-strip"><b>MyFundedFutures Rapid EOD 50K</b><span class="sep">/</span><span>Profile Ultra, eval and funded</span><span class="sep">/</span><span>MNQ + MGC</span><span class="sep">/</span><span>1 contract, 2 once the funded cushion reaches $3,000</span></div>
+    <div class="ticket-body">
+      <div class="figs" id="figs"></div>
+      <div class="verdict">
+        <p><strong>Use MyFundedFutures first.</strong> Its funded account pays out everything above a $2,100 buffer every day with no cap. With the same strategy, it makes roughly 40–50% more per account than Lucid. You can hold 3 Rapid accounts there. Lucid Flex 50K is a good second firm: same profile, slightly faster eval, up to 5 funded accounts.</p>
+        <p><strong>Ultra beats WR70Plus for money.</strong> WR70Plus wins more trades (69.8% vs 65.2%) and passes more evals (83% vs 77%). But it takes 8–10 more trading days to pass and earns about 40% less once funded. Use WR70Plus only if a high trade win rate matters more to you than income.</p>
+        <p><strong>How sure I am:</strong> 82% that a year at MyFundedFutures ends positive per account. It will probably earn less than the backtest, so plan on roughly half: about $1,000 per account per month with 1 contract, or about $1,540 with the automatic 2-contract step-up. The downside is small: the firm absorbs trading losses, so a bad year costs you mostly eval fees. <a href="#sure">Details below.</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="trades">
+  <div class="head">
+    <span class="eyebrow">1 · Trades</span>
+    <h2 id="trades">Win rate and profit per trade</h2>
+    <p class="lede">Each profile includes its gold modules: Ultra uses GoldMaster Robust, WR70Plus uses GoldMaster WinRate. Ultra lean is Ultra without ON07, LATEFH and ENG10, the three weakest modules. These are per-contract results with no prop-firm rules applied.</p>
+  </div>
+  <div class="tbox"><table id="t-prof"></table></div>
+  <div class="tbox"><table id="t-year"></table></div>
+  <div class="chartcard">
+    <div class="chartbar">
+      <div class="seg" role="group" aria-label="Profile">
+        <button type="button" id="b-Ultra" data-p="Ultra" aria-pressed="true">Ultra</button>
+        <button type="button" id="b-UltraLean" data-p="UltraLean" aria-pressed="false">Ultra lean</button>
+        <button type="button" id="b-WR70Plus" data-p="WR70Plus" aria-pressed="false">WR70Plus</button>
+      </div>
+      <span class="chartmeta" id="chartmeta"></span>
+    </div>
+    <div class="chartscroll"><svg id="chart" viewBox="0 0 960 300" role="img" aria-label="Monthly profit and loss per contract"></svg></div>
+    <p class="note">Monthly P&amp;L for 1 contract per module (MNQ + MGC). Bars are months, green above zero and red below. The line is the running total on the right-hand scale.</p>
+  </div>
+  <details>
+    <summary>Per-module trade statistics (MNQ part of each profile, REAL futures)</summary>
+    <div class="tbox"><table id="t-mod"></table></div>
+  </details>
+</section>
+
+<section aria-labelledby="evals">
+  <div class="head">
+    <span class="eyebrow">2 · Evaluations</span>
+    <h2 id="evals">How often and how fast you pass</h2>
+    <p class="lede">Each trading day is used as a possible eval start, and the eval runs until it hits the target or the trailing drawdown. The tables give the pass share, the median trading days to pass and the chance of passing within 22 and 33 trading days. "Resampled" means 300 synthetic years rebuilt from blocks of real days; p10 is the pass rate in the unluckiest 10% of those years. The last two columns let you start a new eval the day after a failed one: they show the chance of having a funded account within 33 trading days (about 6.5 weeks) and how many evals that takes on average.</p>
+  </div>
+  <div class="firms">
+    <div class="firm"><h3>MyFundedFutures Rapid EOD 50K</h3>
+      <dl>
+        <dt>Eval</dt><dd>$157 once, target $3,000, $2,000 trailing drawdown on end-of-day balance (locks at +$100), best day ≤ 30% of profit, at least 4 trading days, 30 micros</dd>
+        <dt>Funded</dt><dd>No consistency rule, no daily loss limit. Daily payouts of everything above a $2,100 buffer (min $500, no cap), 90% split</dd>
+        <dt>Limits</dt><dd>3 Rapid accounts. Funded: flat from 2 min before to 2 min after CPI, jobs report and FOMC minutes. Bots allowed.</dd>
+      </dl></div>
+    <div class="firm"><h3>Lucid Flex 50K</h3>
+      <dl>
+        <dt>Eval</dt><dd>About $105 with a coupon, target $3,000, $2,000 trailing drawdown on end-of-day balance (locks at +$100), best day ≤ 50% of profit</dd>
+        <dt>Funded</dt><dd>Payout after 5 days of +$150 or more; you get 50% of the profit, up to $2,000. 5 payouts, 90% split</dd>
+        <dt>Limits</dt><dd>5 funded accounts per household. Bots allowed.</dd>
+      </dl></div>
+  </div>
+  <div class="tbox"><table id="t-eval"></table></div>
+  <p class="note">The Estable eval runs full Ultra while the account is at least $1,200 above its drawdown limit. Below that it switches to the stable module set with no double-size trades. In both firms it has the highest pass rate, but it is slower. Ultra fixed passes 5–6 trading days faster, which is why it makes more money per year. MyFundedFutures takes a little longer than Lucid because its 30% consistency rule is stricter.</p>
+</section>
+
+<section aria-labelledby="money">
+  <div class="head">
+    <span class="eyebrow">3 · Money</span>
+    <h2 id="money">Money per month, per account</h2>
+    <p class="lede">Each simulation runs one account for 12 months. It pays for an eval, trades until it passes, collects payouts while funded, and buys a new eval after a bust or the last payout. The figures are net of eval fees and the 10% firm share, averaged over all 12-month windows that start every third trading day. "+1 tick" doubles slippage to 2 ticks per side. "Losing years" is the share of resampled years that end below zero.</p>
+  </div>
+  <div class="tbox"><table id="t-life"></table></div>
+  <p class="note">The <b>2-contract step-up</b> is now automatic (FundedStepUpCushion 3000 in NQMaster and GoldMaster). The funded account trades 1 contract until the balance reaches $53,100, which leaves $3,000 above the locked drawdown limit. From there it trades 2, and it drops back to 1 if the balance falls below $53,100. Withdraw only the part above $56,100. At Lucid the 2-contract rule adds little and quadruples funded busts (2.6 vs 0.6 per year), so I don't recommend it there.</p>
+  <details>
+    <summary>Every eval × funded combination tested (32 rows)</summary>
+    <div class="tbox"><table id="t-lifeall"></table></div>
+  </details>
+</section>
+
+<section aria-labelledby="setup">
+  <div class="head">
+    <span class="eyebrow">4 · Setup</span>
+    <h2 id="setup">Instruments and exact settings</h2>
+    <p class="lede">Run two charts on the same account: NQMaster on MNQ and GoldMaster on MGC. Both use 1-minute bars over the full Globex session (18:00–17:00 ET). Use the front-month contract and roll on NinjaTrader's roll date. Every other market tested has been rejected: S&amp;P (MES), oil, euro and silver. Their costs eat the edge.</p>
+  </div>
+  <div class="instr">
+    <div class="firm"><span class="sym" style="color:var(--mnq)">MNQ</span><span class="muted small mono">Micro E-mini Nasdaq-100 · tick 0.25 = $0.50 · $2 per point</span><p class="small">NQMaster, Profile Ultra. Makes about 87% of the profit. On a 1-contract setting it opens at most about 11 micros at once (99% of the time 7 or fewer).</p></div>
+    <div class="firm"><span class="sym" style="color:var(--mgc)">MGC</span><span class="muted small mono">Micro Gold · tick 0.10 = $1.00 · $10 per point</span><p class="small">GoldMaster, Robust for Ultra accounts and WinRate for WR70Plus or Estable. It adds about $420 a month per contract and moves independently of NQ (correlation 0.00). That smooths the equity curve.</p></div>
+  </div>
+  <div class="setgrid" id="sets"></div>
+  <p class="note">Settings not listed stay at their defaults. In particular: ORB prior-close filter 0.10, VOLB break-even on, MOM agreement on, VOLB trend last entry 1047, Skip FOMC on, Min ATR 150, AdaptiveSize off, DailyLossLimit 0, EdgeMonitor on. At MyFundedFutures the eval also requires 4 trading days. If NQMaster reaches the $3,000 target earlier (rare at 1 contract), place one micro trade on each remaining day.</p>
+</section>
+
+<section aria-labelledby="sure" id="sure-sec">
+  <div class="head">
+    <span class="eyebrow">5 · Confidence</span>
+    <h2 id="sure">How sure I am, realistically</h2>
+    <p class="lede">Each percentage comes from 600 resampled years for each of six scenarios of how much edge survives in live trading, mixed with the weights below. The weights are my judgment, written down so you can argue with them. The bar is the realistic mix. The thin mark shows the same number if the edge were exactly as backtested.</p>
+  </div>
+  <div class="meters" id="meters"></div>
+  <p class="note">Weights: 10% the edge holds fully, 20% it loses a fifth, 30% it loses 35%, 20% it loses half, 12% it loses three quarters, 8% it is gone. Worst 10% of years: about −$120 per account per month, which is mostly eval fees. Even if the edge were gone completely, the average would be about break-even (+$44 a month), because the firm absorbs the trading losses.</p>
+  <p class="note"><b>Why "matches the backtest" is low even for a perfect system:</b> with exactly the backtested edge, one year lands at 80% or more of the backtest income only 67% of the time. The rest is the luck of which days that year happens to contain. Every backtest also overstates live results somewhat, because the best of many tested ideas always got a little lucky.</p>
+  <div class="head" style="margin-top:var(--s3)">
+    <h3>If the weakest modules turn out to be luck</h3>
+    <p class="muted small">MyFundedFutures, eval and funded at 1 contract, resampled money per month. S1 sets the five modules the overfitting audit could not separate from chance (ON07, LATEFH, ENG10, MOM1030, MOM13) to zero average and removes the three weak gold modules. S2 does the same for the modules that only work since 2020 (MOM11, MOM1030, MOM13, ON07, REV06). Ultra stays the best or equal in every case, so it is the right profile to run.</p>
+  </div>
+  <div class="tbox"><table id="t-weak"></table></div>
+  <div class="cols">
+    <div><h3>Why I believe the edge is real</h3>
+      <ul>
+        <li>NinjaTrader's own Strategy Analyzer reproduces the research. WR70Plus over the last 365 days: 837 trades at 68% WR in NinjaTrader vs 818 trades at 69.8% in research. GoldMaster: 58 trades, WR 74%, PF 2.59 vs 67 trades, 74.6%, 2.56. The older MaxSharpe profile over 2024–26: PF 1.31 vs 1.35.</li>
+        <li>These are real futures with real costs. Every year is positive (Ultra + gold PF 1.33 in 2024, 1.47 in 2025, 1.70 in 2026), and 26 of 32 months made money.</li>
+        <li>It still works with 4 extra ticks of slippage per side (PF stays at or above 1.30). It passes the deflated-Sharpe test that corrects for the 300,000+ configurations we mined.</li>
+        <li>The profit comes from about 20 modules that barely move together. No single one carries the result; the largest, VOLB, is $641 of the $3,143 a month.</li>
+      </ul></div>
+    <div><h3>Why I can't promise it</h3>
+      <ul>
+        <li>The modules were found while looking at 2020–2026, so none of this data is truly unseen. Your first live month is the first real out-of-sample test.</li>
+        <li>In 2015–2019 the market was calmer: the daily range was under 150 points most days. The same modules lost money after costs. If that regime returns, the edge shrinks toward zero. The Min ATR 150 guard stops trading on those days, which protects the account but also stops the income.</li>
+        <li>Choppy range days are the weak spot (PF 0.74–0.85). A month full of them loses: the worst month was −$3,132 per contract (September 2024), and August 2026 lost $2,306 with WR70Plus.</li>
+        <li>2026 was exceptional at $5,206 a month. Don't extrapolate it; 2024 made $1,802 a month.</li>
+        <li>Firms change rules: Apex banned bots in March 2026. If MyFundedFutures reads its news rule as "every data release", Ultra loses 15–18% of its profit. MyFundedFutures can also move a funded account to live at its discretion, which ends the uncapped daily payouts.</li>
+        <li>Every account trades the same signals, so a bad month hits all of them at once.</li>
+        <li>The latest code changes (ORB prior-close filter, VOLB break-even, MOM agreement, news blackout) have not been compiled or tested in NinjaTrader yet.</li>
+      </ul></div>
+  </div>
+  <div class="head" style="margin-top:var(--s3)">
+    <h3>What you earn if the edge is weaker than the backtest</h3>
+    <p class="muted small">Each column removes that share of the average daily profit from every day, in both the eval and the funded account. 35% is the case I consider realistic, based on the robustness audit.</p>
+  </div>
+  <div class="tbox"><table id="t-hair"></table></div>
+  <div class="head" style="margin-top:var(--s3)">
+    <h3>How to find out quickly (the first 60 trading days)</h3>
+  </div>
+  <ol class="steps">
+    <li>Compile NQMaster and GoldMaster in NinjaTrader (F5). Run the Strategy Analyzer from 2024-02-01 to today with the settings in section 4, starting the data 4–6 months earlier for warm-up. Send me the trades CSV and I'll compare it with this research trade by trade.</li>
+    <li>Ask MyFundedFutures in writing: are automated NinjaTrader strategies allowed on Rapid accounts, and which releases count as Tier-1 news?</li>
+    <li>Add the 2027 CPI and jobs-report times to <code>NewsTimes</code> before January.</li>
+    <li>Start with one MyFundedFutures eval, with the edge monitor on. Add the second and third accounts after the first one passes.</li>
+    <li>Stop adding accounts and review if live P&amp;L per contract is below zero after 60 trading days or the edge monitor alarms. If the edge is real, each of those has less than a 10% chance of happening.</li>
+  </ol>
+</section>
+
+<footer class="stack small muted">
+  <p><b>Method.</b> The eval and funded simulations use minute-by-minute equity: realised P&amp;L plus the open position's worst point in each minute. That checks the trailing drawdown the way the firm does. MyFundedFutures funded accounts apply the Tier-1 news blackout. FOMC days are skipped in every profile. Account-level daily profit stops: $800 in the MyFundedFutures eval (30% rule) and $1,400 at Lucid (50% rule). Not modelled: platform or data outages, firm discretion, and slippage beyond the +1 tick stress test. Source files: <code>research/mine/final3y.py</code>, <code>final3y_acct.py</code>, <code>final3y_haircut.py</code> and their JSON outputs.</p>
+</footer>
+</div>
+
+<script>
+const DATA = {"period":[20240201,20260925],"days":657,"profiles":{"Ultra":{"all":{"n":3894,"wr":65.2,"pf":1.5,"avg_win":115.1,"avg_loss":-143.0,"exp":25.16,"trades_per_day":5.93,"per_month":3143,"max_dd":6097,"worst_month":-3132,"best_month":14424,"pos_months":"26/32","sharpe":4.22,"worst_day":-2188,"monthly":{"2024-02":548,"2024-03":-943,"2024-04":4386,"2024-05":-576,"2024-06":2943,"2024-07":4252,"2024-08":260,"2024-09":-3132,"2024-10":3818,"2024-11":2182,"2024-12":5917,"2025-01":-230,"2025-02":3898,"2025-03":1967,"2025-04":14424,"2025-05":1065,"2025-06":-447,"2025-07":630,"2025-08":2643,"2025-09":778,"2025-10":2905,"2025-11":2823,"2025-12":2846,"2026-01":1342,"2026-02":6093,"2026-03":10068,"2026-04":7772,"2026-05":5639,"2026-06":7069,"2026-07":1634,"2026-08":-184,"2026-09":5932},"years":{"2024":{"n":1429,"wr":63.3,"pf":1.33,"avg_win":86.0,"avg_loss":-111.5,"exp":13.56,"per_month":1802},"2025":{"n":1432,"wr":65.9,"pf":1.47,"avg_win":110.3,"avg_loss":-145.5,"exp":23.1,"per_month":2855},"2026":{"n":1033,"wr":66.6,"pf":1.7,"avg_win":160.0,"avg_loss":-187.2,"exp":44.05,"per_month":5206}},"last6":{"n":701,"wr":65.0,"pf":1.6,"avg_win":163.7,"avg_loss":-190.5,"exp":39.94,"per_month":4757}},"nq":{"n":3313,"wr":65.8,"pf":1.54,"avg_win":110.8,"avg_loss":-138.3,"exp":25.61,"trades_per_day":5.04,"per_month":2724,"max_dd":5798,"worst_month":-3254,"best_month":13394,"pos_months":"27/32","sharpe":3.97,"worst_day":-1748,"last6":{"n":589,"wr":65.4,"pf":1.61,"avg_win":150.1,"avg_loss":-175.4,"exp":37.35,"per_month":3732}},"gold":{"n":581,"wr":61.4,"pf":1.35,"avg_win":141.2,"avg_loss":-166.6,"exp":22.55,"per_month":419},"modules":{"CRT11":{"n":86,"wr":58.1,"pf":2.34,"avg_win":291.0,"avg_loss":-172.8,"exp":96.82,"per_month":266},"ENG10":{"n":121,"wr":68.6,"pf":1.21,"avg_win":98.6,"avg_loss":-178.2,"exp":11.67,"per_month":45},"ICT":{"n":64,"wr":59.4,"pf":1.37,"avg_win":217.3,"avg_loss":-231.0,"exp":35.14,"per_month":72},"LATE15":{"n":92,"wr":60.9,"pf":1.26,"avg_win":86.3,"avg_loss":-106.5,"exp":10.88,"per_month":32},"LATEFH":{"n":158,"wr":63.3,"pf":1.43,"avg_win":65.9,"avg_loss":-79.6,"exp":12.53,"per_month":63},"LF0430":{"n":72,"wr":62.5,"pf":1.45,"avg_win":124.2,"avg_loss":-143.1,"exp":23.96,"per_month":55},"LF06":{"n":76,"wr":76.3,"pf":1.49,"avg_win":70.1,"avg_loss":-151.9,"exp":17.53,"per_month":43},"LON":{"n":192,"wr":44.3,"pf":1.45,"avg_win":152.3,"avg_loss":-83.5,"exp":20.86,"per_month":128},"MOM1030":{"n":125,"wr":82.4,"pf":1.71,"avg_win":43.4,"avg_loss":-118.7,"exp":14.86,"per_month":59},"MOM11":{"n":517,"wr":81.6,"pf":1.38,"avg_win":53.4,"avg_loss":-172.2,"exp":11.96,"per_month":198},"MOM13":{"n":169,"wr":60.4,"pf":1.71,"avg_win":114.6,"avg_loss":-101.8,"exp":28.83,"per_month":156},"MSEQ":{"n":162,"wr":55.6,"pf":1.47,"avg_win":196.6,"avg_loss":-166.8,"exp":35.07,"per_month":182},"MSEQS":{"n":22,"wr":63.6,"pf":2.3,"avg_win":252.4,"avg_loss":-191.8,"exp":90.85,"per_month":64},"NF05":{"n":114,"wr":50.0,"pf":1.38,"avg_win":169.7,"avg_loss":-123.1,"exp":23.3,"per_month":85},"ON07":{"n":233,"wr":54.5,"pf":1.26,"avg_win":55.1,"avg_loss":-52.6,"exp":6.12,"per_month":46},"ORB60":{"n":129,"wr":69.8,"pf":1.95,"avg_win":227.7,"avg_loss":-269.0,"exp":77.51,"per_month":320},"ORB90":{"n":107,"wr":65.4,"pf":1.92,"avg_win":172.4,"avg_loss":-170.2,"exp":53.94,"per_month":184},"REV06":{"n":173,"wr":80.3,"pf":1.18,"avg_win":42.4,"avg_loss":-147.5,"exp":5.08,"per_month":28},"VOLB":{"n":500,"wr":61.2,"pf":1.58,"avg_win":177.9,"avg_loss":-177.3,"exp":40.08,"per_month":641},"VW13":{"n":59,"wr":78.0,"pf":1.57,"avg_win":46.6,"avg_loss":-105.0,"exp":13.22,"per_month":25},"VW13b":{"n":142,"wr":69.7,"pf":1.16,"avg_win":49.9,"avg_loss":-99.1,"exp":4.79,"per_month":22}}},"UltraLean":{"all":{"n":3352,"wr":65.8,"pf":1.53,"avg_win":121.7,"avg_loss":-153.8,"exp":27.61,"trades_per_day":5.1,"per_month":2968,"max_dd":5467,"worst_month":-2897,"best_month":12538,"pos_months":"27/32","sharpe":4.2,"worst_day":-2147,"monthly":{"2024-02":514,"2024-03":-1124,"2024-04":4690,"2024-05":-652,"2024-06":2990,"2024-07":4044,"2024-08":618,"2024-09":-2897,"2024-10":4488,"2024-11":1802,"2024-12":5594,"2025-01":-246,"2025-02":3213,"2025-03":2250,"2025-04":12538,"2025-05":1086,"2025-06":-1003,"2025-07":830,"2025-08":2618,"2025-09":977,"2025-10":2015,"2025-11":1898,"2025-12":2579,"2026-01":1326,"2026-02":5638,"2026-03":9431,"2026-04":7709,"2026-05":5556,"2026-06":7178,"2026-07":1388,"2026-08":283,"2026-09":5529},"years":{"2024":{"n":1222,"wr":64.5,"pf":1.38,"avg_win":91.7,"avg_loss":-120.8,"exp":16.2,"per_month":1840},"2025":{"n":1225,"wr":65.9,"pf":1.44,"avg_win":115.6,"avg_loss":-154.9,"exp":23.32,"per_month":2465},"2026":{"n":905,"wr":67.6,"pf":1.75,"avg_win":168.4,"avg_loss":-201.0,"exp":48.81,"per_month":5053}},"last6":{"n":610,"wr":66.4,"pf":1.66,"avg_win":172.8,"avg_loss":-205.9,"exp":45.54,"per_month":4719}},"nq":{"n":2771,"wr":66.8,"pf":1.57,"avg_win":117.9,"avg_loss":-150.7,"exp":28.67,"trades_per_day":4.22,"per_month":2549,"max_dd":5167,"worst_month":-3018,"best_month":11508,"pos_months":"27/32","sharpe":3.94,"worst_day":-1706,"last6":{"n":498,"wr":67.1,"pf":1.7,"avg_win":159.0,"avg_loss":-191.0,"exp":43.73,"per_month":3695}},"gold":{"n":581,"wr":61.4,"pf":1.35,"avg_win":141.2,"avg_loss":-166.6,"exp":22.55,"per_month":419},"modules":{"CRT11":{"n":86,"wr":58.1,"pf":2.37,"avg_win":291.0,"avg_loss":-170.9,"exp":97.65,"per_month":268},"ICT":{"n":64,"wr":59.4,"pf":1.37,"avg_win":217.3,"avg_loss":-231.0,"exp":35.14,"per_month":72},"LATE15":{"n":92,"wr":60.9,"pf":1.26,"avg_win":86.3,"avg_loss":-106.5,"exp":10.88,"per_month":32},"LF0430":{"n":72,"wr":62.5,"pf":1.45,"avg_win":124.2,"avg_loss":-143.1,"exp":23.96,"per_month":55},"LF06":{"n":76,"wr":76.3,"pf":1.49,"avg_win":70.1,"avg_loss":-151.9,"exp":17.53,"per_month":43},"LON":{"n":192,"wr":44.3,"pf":1.45,"avg_win":152.3,"avg_loss":-83.5,"exp":20.86,"per_month":128},"MOM1030":{"n":98,"wr":85.7,"pf":1.94,"avg_win":44.5,"avg_loss":-137.7,"exp":18.5,"per_month":58},"MOM11":{"n":518,"wr":81.5,"pf":1.37,"avg_win":53.4,"avg_loss":-171.9,"exp":11.66,"per_month":193},"MOM13":{"n":167,"wr":60.5,"pf":1.62,"avg_win":107.1,"avg_loss":-100.9,"exp":24.88,"per_month":133},"MSEQ":{"n":162,"wr":55.6,"pf":1.47,"avg_win":196.6,"avg_loss":-167.4,"exp":34.82,"per_month":180},"MSEQS":{"n":22,"wr":63.6,"pf":2.3,"avg_win":252.4,"avg_loss":-191.8,"exp":90.85,"per_month":64},"NF05":{"n":114,"wr":50.0,"pf":1.38,"avg_win":169.7,"avg_loss":-123.1,"exp":23.3,"per_month":85},"ORB60":{"n":128,"wr":70.3,"pf":1.99,"avg_win":227.7,"avg_loss":-271.3,"exp":79.53,"per_month":325},"ORB90":{"n":106,"wr":66.0,"pf":1.94,"avg_win":172.4,"avg_loss":-172.5,"exp":55.31,"per_month":187},"REV06":{"n":173,"wr":80.3,"pf":1.18,"avg_win":42.4,"avg_loss":-147.5,"exp":5.08,"per_month":28},"VOLB":{"n":500,"wr":61.2,"pf":1.58,"avg_win":177.9,"avg_loss":-177.3,"exp":40.08,"per_month":641},"VW13":{"n":59,"wr":78.0,"pf":1.57,"avg_win":46.6,"avg_loss":-105.0,"exp":13.22,"per_month":25},"VW13b":{"n":142,"wr":69.7,"pf":1.16,"avg_win":49.9,"avg_loss":-99.1,"exp":4.79,"per_month":22}}},"WR70Plus":{"all":{"n":2314,"wr":69.8,"pf":1.56,"avg_win":106.5,"avg_loss":-158.3,"exp":26.6,"trades_per_day":3.52,"per_month":1967,"max_dd":3784,"worst_month":-2306,"best_month":7702,"pos_months":"26/32","sharpe":3.85,"worst_day":-1706,"monthly":{"2024-02":619,"2024-03":-1081,"2024-04":2687,"2024-05":-1109,"2024-06":3408,"2024-07":4563,"2024-08":-212,"2024-09":-1884,"2024-10":2464,"2024-11":2067,"2024-12":3050,"2025-01":580,"2025-02":1910,"2025-03":2160,"2025-04":7702,"2025-05":1919,"2025-06":-643,"2025-07":836,"2025-08":1904,"2025-09":691,"2025-10":839,"2025-11":1489,"2025-12":2860,"2026-01":1074,"2026-02":2210,"2026-03":3992,"2026-04":4210,"2026-05":4219,"2026-06":5224,"2026-07":2104,"2026-08":-2306,"2026-09":3978},"years":{"2024":{"n":843,"wr":68.9,"pf":1.43,"avg_win":83.7,"avg_loss":-130.0,"exp":17.29,"per_month":1336},"2025":{"n":849,"wr":71.3,"pf":1.54,"avg_win":103.8,"avg_loss":-166.7,"exp":26.08,"per_month":1907},"2026":{"n":622,"wr":69.1,"pf":1.69,"avg_win":140.9,"avg_loss":-186.2,"exp":39.94,"per_month":2835}},"last6":{"n":423,"wr":68.3,"pf":1.68,"avg_win":150.8,"avg_loss":-194.1,"exp":41.53,"per_month":2976}},"nq":{"n":2126,"wr":69.8,"pf":1.53,"avg_win":107.1,"avg_loss":-162.0,"exp":25.86,"trades_per_day":3.24,"per_month":1757,"max_dd":4212,"worst_month":-3185,"best_month":7010,"pos_months":"26/32","sharpe":3.51,"worst_day":-1706,"last6":{"n":391,"wr":68.0,"pf":1.62,"avg_win":149.2,"avg_loss":-196.2,"exp":38.81,"per_month":2568}},"gold":{"n":188,"wr":70.2,"pf":2.01,"avg_win":98.9,"avg_loss":-115.7,"exp":34.95,"per_month":210},"modules":{"CRT11":{"n":114,"wr":52.6,"pf":1.9,"avg_win":284.4,"avg_loss":-166.3,"exp":70.9,"per_month":258},"ICT":{"n":73,"wr":60.3,"pf":1.37,"avg_win":209.2,"avg_loss":-232.6,"exp":33.73,"per_month":79},"LATE15":{"n":92,"wr":60.9,"pf":1.26,"avg_win":86.3,"avg_loss":-106.5,"exp":10.88,"per_month":32},"LF0430":{"n":72,"wr":62.5,"pf":1.45,"avg_win":124.2,"avg_loss":-143.1,"exp":23.96,"per_month":55},"LF06":{"n":82,"wr":75.6,"pf":1.41,"avg_win":68.9,"avg_loss":-152.0,"exp":15.05,"per_month":39},"MOM11":{"n":517,"wr":81.4,"pf":1.36,"avg_win":53.5,"avg_loss":-171.9,"exp":11.62,"per_month":192},"MSEQ":{"n":175,"wr":56.0,"pf":1.44,"avg_win":187.3,"avg_loss":-165.1,"exp":32.25,"per_month":180},"MSEQS":{"n":22,"wr":63.6,"pf":2.3,"avg_win":252.4,"avg_loss":-191.8,"exp":90.85,"per_month":64},"NF05":{"n":125,"wr":48.0,"pf":1.3,"avg_win":167.8,"avg_loss":-118.8,"exp":18.77,"per_month":75},"ORB60":{"n":126,"wr":69.0,"pf":2.24,"avg_win":268.9,"avg_loss":-267.7,"exp":102.84,"per_month":414},"ORB90":{"n":107,"wr":66.4,"pf":1.96,"avg_win":171.4,"avg_loss":-172.5,"exp":55.7,"per_month":190},"REV06":{"n":266,"wr":80.5,"pf":1.15,"avg_win":41.4,"avg_loss":-148.1,"exp":4.34,"per_month":37},"VOLB_tf1":{"n":152,"wr":69.1,"pf":1.31,"avg_win":113.9,"avg_loss":-193.8,"exp":18.75,"per_month":91},"VW13":{"n":59,"wr":78.0,"pf":1.57,"avg_win":46.6,"avg_loss":-105.0,"exp":13.22,"per_month":25},"VW13b":{"n":144,"wr":70.1,"pf":1.18,"avg_win":49.9,"avg_loss":-99.1,"exp":5.41,"per_month":25}}}},"firms":{"Lucid Flex 50K":{"evals":{"Estable (Ultra / Estable gear, C1200)":{"history":{"pass_pct":88.8,"bust_pct":11.2,"p22":44.1,"p33":55.4,"med_days":23.0,"mean_days":33.4},"funded_within_33d":60.6,"evals_used_33d":1.13,"+1 tick":{"pass_pct":87.1,"bust_pct":12.9,"p22":41.4,"p33":53.9,"med_days":24.0,"mean_days":33.5},"bootstrap_pass":76.3,"bootstrap_pass_p10":53.3},"Ultra fixed":{"history":{"pass_pct":77.6,"bust_pct":22.4,"p22":50.6,"p33":67.2,"med_days":18.0,"mean_days":20.1},"funded_within_33d":77.1,"evals_used_33d":1.26,"+1 tick":{"pass_pct":76.5,"bust_pct":23.5,"p22":47.9,"p33":64.0,"med_days":18.0,"mean_days":21.1},"bootstrap_pass":72.5,"bootstrap_pass_p10":52.3},"Ultra lean fixed":{"history":{"pass_pct":75.4,"bust_pct":24.6,"p22":48.9,"p33":65.5,"med_days":18.0,"mean_days":20.4},"funded_within_33d":77.2,"evals_used_33d":1.26,"+1 tick":{"pass_pct":74.9,"bust_pct":25.1,"p22":46.6,"p33":63.1,"med_days":19.0,"mean_days":21.1},"bootstrap_pass":73.3,"bootstrap_pass_p10":54.4},"WR70Plus fixed":{"history":{"pass_pct":82.7,"bust_pct":17.3,"p22":32.7,"p33":47.9,"med_days":28.0,"mean_days":32.8},"funded_within_33d":48.9,"evals_used_33d":1.19,"+1 tick":{"pass_pct":79.9,"bust_pct":20.1,"p22":31.5,"p33":46.1,"med_days":29.0,"mean_days":32.6},"bootstrap_pass":79.4,"bootstrap_pass_p10":57.5}},"life":{"Estable (Ultra / Estable gear, C1200) | Ultra 1c":[{"test":"history","per_month":1221,"p10_month":782,"p_neg_year":0.0,"evals_per_year":3.4,"passes_per_year":2.72,"funded_busts_per_year":0.69,"payouts_per_year":8.3,"cash_per_funded_month":2066,"funded_share":61},{"test":"+1 tick","per_month":1253,"p10_month":860,"p_neg_year":0.0,"evals_per_year":3.4,"passes_per_year":2.6,"funded_busts_per_year":0.76,"payouts_per_year":8.6,"cash_per_funded_month":2098,"funded_share":61},{"test":"bootstrap","per_month":1223,"p10_month":706,"p_neg_year":0.7,"evals_per_year":4.3,"passes_per_year":3.13,"funded_busts_per_year":1.19,"payouts_per_year":8.4,"cash_per_funded_month":2060,"funded_share":61}],"Estable (Ultra / Estable gear, C1200) | Ultra lean 1c":[{"test":"history","per_month":959,"p10_month":632,"p_neg_year":0.0,"evals_per_year":3.8,"passes_per_year":3.18,"funded_busts_per_year":1.53,"payouts_per_year":6.6,"cash_per_funded_month":1837,"funded_share":54},{"test":"+1 tick","per_month":951,"p10_month":715,"p_neg_year":0.0,"evals_per_year":4.0,"passes_per_year":3.16,"funded_busts_per_year":1.55,"payouts_per_year":6.6,"cash_per_funded_month":1858,"funded_share":53},{"test":"bootstrap","per_month":1202,"p10_month":706,"p_neg_year":1.0,"evals_per_year":4.3,"passes_per_year":3.1,"funded_busts_per_year":1.15,"payouts_per_year":8.3,"cash_per_funded_month":1992,"funded_share":62}],"Estable (Ultra / Estable gear, C1200) | WR70Plus 1c":[{"test":"history","per_month":845,"p10_month":632,"p_neg_year":0.0,"evals_per_year":2.7,"passes_per_year":2.04,"funded_busts_per_year":0.47,"payouts_per_year":5.8,"cash_per_funded_month":1410,"funded_share":62},{"test":"+1 tick","per_month":839,"p10_month":632,"p_neg_year":0.0,"evals_per_year":2.9,"passes_per_year":2.09,"funded_busts_per_year":0.45,"payouts_per_year":5.8,"cash_per_funded_month":1383,"funded_share":63},{"test":"bootstrap","per_month":931,"p10_month":574,"p_neg_year":1.2,"evals_per_year":3.3,"passes_per_year":2.39,"funded_busts_per_year":0.68,"payouts_per_year":6.4,"cash_per_funded_month":1357,"funded_share":71}],"Estable (Ultra / Estable gear, C1200) | Ultra 1c -> 2c from $1,500 cushion":[{"test":"history","per_month":1004,"p10_month":706,"p_neg_year":0.0,"evals_per_year":5.5,"passes_per_year":3.91,"funded_busts_per_year":2.6,"payouts_per_year":7.0,"cash_per_funded_month":3219,"funded_share":33},{"test":"+1 tick","per_month":1229,"p10_month":860,"p_neg_year":0.0,"evals_per_year":4.8,"passes_per_year":3.33,"funded_busts_per_year":1.61,"payouts_per_year":8.5,"cash_per_funded_month":2898,"funded_share":44},{"test":"bootstrap","per_month":1313,"p10_month":680,"p_neg_year":1.7,"evals_per_year":5.8,"passes_per_year":4.13,"funded_busts_per_year":2.2,"payouts_per_year":9.1,"cash_per_funded_month":2849,"funded_share":48}],"Ultra fixed | Ultra 1c":[{"test":"history","per_month":1458,"p10_month":1165,"p_neg_year":0.0,"evals_per_year":3.9,"passes_per_year":2.87,"funded_busts_per_year":0.59,"payouts_per_year":9.9,"cash_per_funded_month":2216,"funded_share":67},{"test":"+1 tick","per_month":1382,"p10_month":1024,"p_neg_year":0.0,"evals_per_year":4.1,"passes_per_year":2.86,"funded_busts_per_year":0.83,"payouts_per_year":9.5,"cash_per_funded_month":2058,"funded_share":69},{"test":"bootstrap","per_month":1341,"p10_month":723,"p_neg_year":0.2,"evals_per_year":4.9,"passes_per_year":3.36,"funded_busts_per_year":1.24,"payouts_per_year":9.2,"cash_per_funded_month":2078,"funded_share":67}],"Ultra fixed | Ultra lean 1c":[{"test":"history","per_month":1300,"p10_month":1015,"p_neg_year":0.0,"evals_per_year":4.1,"passes_per_year":3.07,"funded_busts_per_year":1.17,"payouts_per_year":8.9,"cash_per_funded_month":1978,"funded_share":68},{"test":"+1 tick","per_month":1026,"p10_month":697,"p_neg_year":0.0,"evals_per_year":4.7,"passes_per_year":3.58,"funded_busts_per_year":1.84,"payouts_per_year":7.1,"cash_per_funded_month":1653,"funded_share":65},{"test":"bootstrap","per_month":1306,"p10_month":714,"p_neg_year":0.2,"evals_per_year":4.8,"passes_per_year":3.34,"funded_busts_per_year":1.25,"payouts_per_year":9.0,"cash_per_funded_month":1986,"funded_share":68}],"Ultra fixed | WR70Plus 1c":[{"test":"history","per_month":937,"p10_month":715,"p_neg_year":0.0,"evals_per_year":3.5,"passes_per_year":2.61,"funded_busts_per_year":0.79,"payouts_per_year":6.5,"cash_per_funded_month":1343,"funded_share":72},{"test":"+1 tick","per_month":904,"p10_month":710,"p_neg_year":0.0,"evals_per_year":3.7,"passes_per_year":2.63,"funded_busts_per_year":0.81,"payouts_per_year":6.2,"cash_per_funded_month":1308,"funded_share":72},{"test":"bootstrap","per_month":995,"p10_month":689,"p_neg_year":0.3,"evals_per_year":3.6,"passes_per_year":2.53,"funded_busts_per_year":0.69,"payouts_per_year":6.8,"cash_per_funded_month":1362,"funded_share":75}],"Ultra fixed | Ultra 1c -> 2c from $1,500 cushion":[{"test":"history","per_month":1382,"p10_month":989,"p_neg_year":0.0,"evals_per_year":6.3,"passes_per_year":4.59,"funded_busts_per_year":2.6,"payouts_per_year":9.6,"cash_per_funded_month":2825,"funded_share":51},{"test":"+1 tick","per_month":1407,"p10_month":1001,"p_neg_year":0.0,"evals_per_year":6.5,"passes_per_year":4.16,"funded_busts_per_year":2.2,"payouts_per_year":9.8,"cash_per_funded_month":2901,"funded_share":50},{"test":"bootstrap","per_month":1453,"p10_month":697,"p_neg_year":0.5,"evals_per_year":7.0,"passes_per_year":4.76,"funded_busts_per_year":2.6,"payouts_per_year":10.1,"cash_per_funded_month":2818,"funded_share":54}],"Ultra lean fixed | Ultra 1c":[{"test":"history","per_month":1436,"p10_month":1080,"p_neg_year":0.0,"evals_per_year":3.9,"passes_per_year":2.83,"funded_busts_per_year":0.61,"payouts_per_year":9.8,"cash_per_funded_month":2182,"funded_share":67},{"test":"+1 tick","per_month":1321,"p10_month":865,"p_neg_year":0.0,"evals_per_year":4.2,"passes_per_year":3.16,"funded_busts_per_year":1.01,"payouts_per_year":9.1,"cash_per_funded_month":2022,"funded_share":67},{"test":"bootstrap","per_month":1316,"p10_month":715,"p_neg_year":0.3,"evals_per_year":4.9,"passes_per_year":3.38,"funded_busts_per_year":1.26,"payouts_per_year":9.1,"cash_per_funded_month":2074,"funded_share":66}],"Ultra lean fixed | Ultra lean 1c":[{"test":"history","per_month":1307,"p10_month":1015,"p_neg_year":0.0,"evals_per_year":4.1,"passes_per_year":3.08,"funded_busts_per_year":1.05,"payouts_per_year":9.0,"cash_per_funded_month":1984,"funded_share":68},{"test":"+1 tick","per_month":994,"p10_month":697,"p_neg_year":0.0,"evals_per_year":4.5,"passes_per_year":3.56,"funded_busts_per_year":1.83,"payouts_per_year":6.9,"cash_per_funded_month":1612,"funded_share":64},{"test":"bootstrap","per_month":1291,"p10_month":714,"p_neg_year":0.7,"evals_per_year":4.7,"passes_per_year":3.28,"funded_busts_per_year":1.19,"payouts_per_year":8.9,"cash_per_funded_month":1998,"funded_share":67}],"Ultra lean fixed | WR70Plus 1c":[{"test":"history","per_month":900,"p10_month":715,"p_neg_year":0.0,"evals_per_year":3.4,"passes_per_year":2.53,"funded_busts_per_year":0.81,"payouts_per_year":6.2,"cash_per_funded_month":1295,"funded_share":72},{"test":"+1 tick","per_month":846,"p10_month":715,"p_neg_year":0.0,"evals_per_year":3.4,"passes_per_year":2.51,"funded_busts_per_year":0.81,"payouts_per_year":5.8,"cash_per_funded_month":1239,"funded_share":71},{"test":"bootstrap","per_month":983,"p10_month":680,"p_neg_year":0.5,"evals_per_year":3.6,"passes_per_year":2.52,"funded_busts_per_year":0.7,"payouts_per_year":6.8,"cash_per_funded_month":1363,"funded_share":74}],"Ultra lean fixed | Ultra 1c -> 2c from $1,500 cushion":[{"test":"history","per_month":1393,"p10_month":989,"p_neg_year":0.0,"evals_per_year":6.4,"passes_per_year":4.53,"funded_busts_per_year":2.6,"payouts_per_year":9.7,"cash_per_funded_month":2960,"funded_share":49},{"test":"+1 tick","per_month":1318,"p10_month":847,"p_neg_year":0.0,"evals_per_year":6.3,"passes_per_year":4.5,"funded_busts_per_year":2.61,"payouts_per_year":9.2,"cash_per_funded_month":2852,"funded_share":48},{"test":"bootstrap","per_month":1423,"p10_month":697,"p_neg_year":0.8,"evals_per_year":6.7,"passes_per_year":4.66,"funded_busts_per_year":2.52,"payouts_per_year":9.9,"cash_per_funded_month":2823,"funded_share":52}],"WR70Plus fixed | Ultra 1c":[{"test":"history","per_month":1178,"p10_month":865,"p_neg_year":0.0,"evals_per_year":3.7,"passes_per_year":2.81,"funded_busts_per_year":0.89,"payouts_per_year":8.1,"cash_per_funded_month":1976,"funded_share":61},{"test":"+1 tick","per_month":1152,"p10_month":724,"p_neg_year":0.0,"evals_per_year":3.7,"passes_per_year":2.82,"funded_busts_per_year":0.94,"payouts_per_year":7.9,"cash_per_funded_month":1922,"funded_share":62},{"test":"bootstrap","per_month":1163,"p10_month":706,"p_neg_year":0.5,"evals_per_year":4.0,"passes_per_year":2.95,"funded_busts_per_year":1.08,"payouts_per_year":8.0,"cash_per_funded_month":2051,"funded_share":58}],"WR70Plus fixed | Ultra lean 1c":[{"test":"history","per_month":960,"p10_month":706,"p_neg_year":0.0,"evals_per_year":4.4,"passes_per_year":3.45,"funded_busts_per_year":1.99,"payouts_per_year":6.7,"cash_per_funded_month":1884,"funded_share":53},{"test":"+1 tick","per_month":928,"p10_month":706,"p_neg_year":0.0,"evals_per_year":4.1,"passes_per_year":3.21,"funded_busts_per_year":1.56,"payouts_per_year":6.4,"cash_per_funded_month":1708,"funded_share":56},{"test":"bootstrap","per_month":1142,"p10_month":705,"p_neg_year":0.3,"evals_per_year":4.0,"passes_per_year":2.88,"funded_busts_per_year":1.04,"payouts_per_year":7.8,"cash_per_funded_month":1977,"funded_share":60}],"WR70Plus fixed | WR70Plus 1c":[{"test":"history","per_month":814,"p10_month":715,"p_neg_year":0.0,"evals_per_year":3.0,"passes_per_year":2.33,"funded_busts_per_year":0.64,"payouts_per_year":5.6,"cash_per_funded_month":1313,"funded_share":64},{"test":"+1 tick","per_month":771,"p10_month":715,"p_neg_year":0.0,"evals_per_year":3.0,"passes_per_year":2.26,"funded_busts_per_year":0.68,"payouts_per_year":5.3,"cash_per_funded_month":1290,"funded_share":62},{"test":"bootstrap","per_month":897,"p10_month":574,"p_neg_year":0.3,"evals_per_year":3.1,"passes_per_year":2.31,"funded_busts_per_year":0.66,"payouts_per_year":6.2,"cash_per_funded_month":1358,"funded_share":68}],"WR70Plus fixed | Ultra 1c -> 2c from $1,500 cushion":[{"test":"history","per_month":855,"p10_month":457,"p_neg_year":0.0,"evals_per_year":5.9,"passes_per_year":4.51,"funded_busts_per_year":3.28,"payouts_per_year":6.0,"cash_per_funded_month":2584,"funded_share":35},{"test":"+1 tick","per_month":785,"p10_month":247,"p_neg_year":0.0,"evals_per_year":6.3,"passes_per_year":4.5,"funded_busts_per_year":3.35,"payouts_per_year":5.6,"cash_per_funded_month":2406,"funded_share":35},{"test":"bootstrap","per_month":1187,"p10_month":670,"p_neg_year":3.0,"evals_per_year":5.6,"passes_per_year":4.01,"funded_busts_per_year":2.2,"payouts_per_year":8.2,"cash_per_funded_month":2804,"funded_share":44}]}},"MyFundedFutures Rapid EOD 50K":{"evals":{"Estable (Ultra / Estable gear, C1200)":{"history":{"pass_pct":88.1,"bust_pct":11.9,"p22":38.2,"p33":50.3,"med_days":27.5,"mean_days":36.4},"funded_within_33d":54.3,"evals_used_33d":1.13,"+1 tick":{"pass_pct":88.1,"bust_pct":11.9,"p22":35.7,"p33":48.1,"med_days":31.0,"mean_days":36.8},"bootstrap_pass":76.3,"bootstrap_pass_p10":52.1},"Ultra fixed":{"history":{"pass_pct":77.4,"bust_pct":22.6,"p22":43.2,"p33":62.6,"med_days":21.0,"mean_days":23.0},"funded_within_33d":70.5,"evals_used_33d":1.31,"+1 tick":{"pass_pct":75.7,"bust_pct":24.3,"p22":40.2,"p33":60.0,"med_days":21.0,"mean_days":23.9},"bootstrap_pass":72.1,"bootstrap_pass_p10":51.3},"Ultra lean fixed":{"history":{"pass_pct":77.2,"bust_pct":22.8,"p22":41.4,"p33":60.3,"med_days":21.0,"mean_days":24.2},"funded_within_33d":67.8,"evals_used_33d":1.28,"+1 tick":{"pass_pct":75.5,"bust_pct":24.5,"p22":37.5,"p33":55.9,"med_days":23.0,"mean_days":25.4},"bootstrap_pass":73.0,"bootstrap_pass_p10":50.3},"WR70Plus fixed":{"history":{"pass_pct":82.6,"bust_pct":17.4,"p22":30.5,"p33":47.7,"med_days":29.0,"mean_days":34.0},"funded_within_33d":48.1,"evals_used_33d":1.19,"+1 tick":{"pass_pct":79.4,"bust_pct":20.6,"p22":28.8,"p33":45.1,"med_days":29.0,"mean_days":34.0},"bootstrap_pass":78.1,"bootstrap_pass_p10":55.4}},"life":{"Estable (Ultra / Estable gear, C1200) | Ultra 1c":[{"test":"history","per_month":1992,"p10_month":887,"p_neg_year":0.0,"evals_per_year":1.5,"passes_per_year":1.31,"funded_busts_per_year":0.31,"payouts_per_year":27.6,"cash_per_funded_month":2698,"funded_share":75},{"test":"+1 tick","per_month":1890,"p10_month":826,"p_neg_year":0.0,"evals_per_year":1.6,"passes_per_year":1.31,"funded_busts_per_year":0.31,"payouts_per_year":25.4,"cash_per_funded_month":2588,"funded_share":74},{"test":"bootstrap","per_month":1901,"p10_month":807,"p_neg_year":1.5,"evals_per_year":2.2,"passes_per_year":1.63,"funded_busts_per_year":0.7,"payouts_per_year":27.1,"cash_per_funded_month":2471,"funded_share":78}],"Estable (Ultra / Estable gear, C1200) | Ultra lean 1c":[{"test":"history","per_month":1714,"p10_month":801,"p_neg_year":0.0,"evals_per_year":2.0,"passes_per_year":1.77,"funded_busts_per_year":0.77,"payouts_per_year":24.4,"cash_per_funded_month":2376,"funded_share":73},{"test":"+1 tick","per_month":1586,"p10_month":718,"p_neg_year":0.0,"evals_per_year":2.1,"passes_per_year":1.85,"funded_busts_per_year":0.85,"payouts_per_year":21.9,"cash_per_funded_month":2292,"funded_share":70},{"test":"bootstrap","per_month":1773,"p10_month":678,"p_neg_year":2.3,"evals_per_year":2.1,"passes_per_year":1.6,"funded_busts_per_year":0.64,"payouts_per_year":25.6,"cash_per_funded_month":2290,"funded_share":79}],"Estable (Ultra / Estable gear, C1200) | WR70Plus 1c":[{"test":"history","per_month":1135,"p10_month":588,"p_neg_year":0.0,"evals_per_year":1.5,"passes_per_year":1.31,"funded_busts_per_year":0.31,"payouts_per_year":17.8,"cash_per_funded_month":1480,"funded_share":78},{"test":"+1 tick","per_month":1071,"p10_month":563,"p_neg_year":0.0,"evals_per_year":1.6,"passes_per_year":1.31,"funded_busts_per_year":0.31,"payouts_per_year":16.5,"cash_per_funded_month":1413,"funded_share":77},{"test":"bootstrap","per_month":1180,"p10_month":532,"p_neg_year":2.2,"evals_per_year":1.7,"passes_per_year":1.28,"funded_busts_per_year":0.31,"payouts_per_year":19.4,"cash_per_funded_month":1455,"funded_share":83}],"Estable (Ultra / Estable gear, C1200) | Ultra 1c -> 2c from $3,000 cushion":[{"test":"history","per_month":3612,"p10_month":1127,"p_neg_year":0.0,"evals_per_year":1.8,"passes_per_year":1.47,"funded_busts_per_year":0.52,"payouts_per_year":32.4,"cash_per_funded_month":5047,"funded_share":72},{"test":"+1 tick","per_month":3431,"p10_month":1130,"p_neg_year":0.0,"evals_per_year":1.8,"passes_per_year":1.44,"funded_busts_per_year":0.49,"payouts_per_year":30.3,"cash_per_funded_month":4782,"funded_share":72},{"test":"bootstrap","per_month":3128,"p10_month":833,"p_neg_year":3.2,"evals_per_year":2.8,"passes_per_year":2.05,"funded_busts_per_year":1.18,"payouts_per_year":29.4,"cash_per_funded_month":4314,"funded_share":73}],"Ultra fixed | Ultra 1c":[{"test":"history","per_month":2137,"p10_month":1251,"p_neg_year":0.0,"evals_per_year":1.8,"passes_per_year":1.43,"funded_busts_per_year":0.43,"payouts_per_year":29.8,"cash_per_funded_month":2668,"funded_share":81},{"test":"+1 tick","per_month":1984,"p10_month":1062,"p_neg_year":0.0,"evals_per_year":1.8,"passes_per_year":1.41,"funded_busts_per_year":0.41,"payouts_per_year":26.9,"cash_per_funded_month":2540,"funded_share":79},{"test":"bootstrap","per_month":2012,"p10_month":1028,"p_neg_year":1.0,"evals_per_year":2.3,"passes_per_year":1.66,"funded_busts_per_year":0.71,"payouts_per_year":28.7,"cash_per_funded_month":2493,"funded_share":82}],"Ultra fixed | Ultra lean 1c":[{"test":"history","per_month":1871,"p10_month":1213,"p_neg_year":0.0,"evals_per_year":2.0,"passes_per_year":1.64,"funded_busts_per_year":0.64,"payouts_per_year":26.6,"cash_per_funded_month":2349,"funded_share":81},{"test":"+1 tick","per_month":1616,"p10_month":931,"p_neg_year":0.0,"evals_per_year":2.4,"passes_per_year":2.04,"funded_busts_per_year":1.04,"payouts_per_year":22.4,"cash_per_funded_month":2189,"funded_share":75},{"test":"bootstrap","per_month":1881,"p10_month":890,"p_neg_year":1.3,"evals_per_year":2.3,"passes_per_year":1.61,"funded_busts_per_year":0.65,"payouts_per_year":27.1,"cash_per_funded_month":2316,"funded_share":82}],"Ultra fixed | WR70Plus 1c":[{"test":"history","per_month":1216,"p10_month":875,"p_neg_year":0.0,"evals_per_year":1.8,"passes_per_year":1.44,"funded_busts_per_year":0.44,"payouts_per_year":19.2,"cash_per_funded_month":1487,"funded_share":83},{"test":"+1 tick","per_month":1105,"p10_month":743,"p_neg_year":0.0,"evals_per_year":1.9,"passes_per_year":1.51,"funded_busts_per_year":0.51,"payouts_per_year":17.2,"cash_per_funded_month":1383,"funded_share":82},{"test":"bootstrap","per_month":1237,"p10_month":604,"p_neg_year":0.5,"evals_per_year":1.8,"passes_per_year":1.28,"funded_busts_per_year":0.31,"payouts_per_year":20.4,"cash_per_funded_month":1469,"funded_share":86}],"Ultra fixed | Ultra 1c -> 2c from $3,000 cushion":[{"test":"history","per_month":3888,"p10_month":2295,"p_neg_year":0.0,"evals_per_year":2.0,"passes_per_year":1.56,"funded_busts_per_year":0.61,"payouts_per_year":35.2,"cash_per_funded_month":4899,"funded_share":80},{"test":"+1 tick","per_month":3592,"p10_month":1953,"p_neg_year":0.0,"evals_per_year":2.1,"passes_per_year":1.64,"funded_busts_per_year":0.69,"payouts_per_year":31.9,"cash_per_funded_month":4627,"funded_share":78},{"test":"bootstrap","per_month":3336,"p10_month":1317,"p_neg_year":2.0,"evals_per_year":3.0,"passes_per_year":2.11,"funded_busts_per_year":1.22,"payouts_per_year":31.4,"cash_per_funded_month":4353,"funded_share":78}],"Ultra lean fixed | Ultra 1c":[{"test":"history","per_month":2128,"p10_month":1337,"p_neg_year":0.0,"evals_per_year":1.8,"passes_per_year":1.44,"funded_busts_per_year":0.44,"payouts_per_year":29.8,"cash_per_funded_month":2632,"funded_share":82},{"test":"+1 tick","per_month":1962,"p10_month":1169,"p_neg_year":0.0,"evals_per_year":1.8,"passes_per_year":1.52,"funded_busts_per_year":0.52,"payouts_per_year":26.7,"cash_per_funded_month":2507,"funded_share":79},{"test":"bootstrap","per_month":1994,"p10_month":998,"p_neg_year":1.0,"evals_per_year":2.3,"passes_per_year":1.63,"funded_busts_per_year":0.68,"payouts_per_year":28.4,"cash_per_funded_month":2491,"funded_share":81}],"Ultra lean fixed | Ultra lean 1c":[{"test":"history","per_month":1856,"p10_month":1269,"p_neg_year":0.0,"evals_per_year":2.0,"passes_per_year":1.64,"funded_busts_per_year":0.64,"payouts_per_year":26.7,"cash_per_funded_month":2344,"funded_share":80},{"test":"+1 tick","per_month":1641,"p10_month":966,"p_neg_year":0.0,"evals_per_year":2.3,"passes_per_year":2.01,"funded_busts_per_year":1.01,"payouts_per_year":22.9,"cash_per_funded_month":2193,"funded_share":76},{"test":"bootstrap","per_month":1870,"p10_month":889,"p_neg_year":1.3,"evals_per_year":2.2,"passes_per_year":1.57,"funded_busts_per_year":0.61,"payouts_per_year":26.9,"cash_per_funded_month":2320,"funded_share":82}],"Ultra lean fixed | WR70Plus 1c":[{"test":"history","per_month":1195,"p10_month":843,"p_neg_year":0.0,"evals_per_year":1.8,"passes_per_year":1.52,"funded_busts_per_year":0.52,"payouts_per_year":18.8,"cash_per_funded_month":1466,"funded_share":83},{"test":"+1 tick","per_month":1108,"p10_month":766,"p_neg_year":0.0,"evals_per_year":1.9,"passes_per_year":1.53,"funded_busts_per_year":0.53,"payouts_per_year":17.1,"cash_per_funded_month":1381,"funded_share":82},{"test":"bootstrap","per_month":1227,"p10_month":570,"p_neg_year":0.8,"evals_per_year":1.8,"passes_per_year":1.28,"funded_busts_per_year":0.3,"payouts_per_year":20.2,"cash_per_funded_month":1469,"funded_share":85}],"Ultra lean fixed | Ultra 1c -> 2c from $3,000 cushion":[{"test":"history","per_month":3769,"p10_month":2328,"p_neg_year":0.0,"evals_per_year":2.1,"passes_per_year":1.68,"funded_busts_per_year":0.73,"payouts_per_year":33.9,"cash_per_funded_month":4789,"funded_share":79},{"test":"+1 tick","per_month":3550,"p10_month":2106,"p_neg_year":0.0,"evals_per_year":2.1,"passes_per_year":1.68,"funded_busts_per_year":0.73,"payouts_per_year":31.9,"cash_per_funded_month":4556,"funded_share":79},{"test":"bootstrap","per_month":3307,"p10_month":1334,"p_neg_year":2.2,"evals_per_year":2.9,"passes_per_year":2.08,"funded_busts_per_year":1.19,"payouts_per_year":31.1,"cash_per_funded_month":4347,"funded_share":77}],"WR70Plus fixed | Ultra 1c":[{"test":"history","per_month":1992,"p10_month":1154,"p_neg_year":0.0,"evals_per_year":2.0,"passes_per_year":1.53,"funded_busts_per_year":0.53,"payouts_per_year":27.7,"cash_per_funded_month":2651,"funded_share":76},{"test":"+1 tick","per_month":1843,"p10_month":1050,"p_neg_year":0.0,"evals_per_year":2.1,"passes_per_year":1.56,"funded_busts_per_year":0.56,"payouts_per_year":25.3,"cash_per_funded_month":2499,"funded_share":75},{"test":"bootstrap","per_month":1852,"p10_month":788,"p_neg_year":1.7,"evals_per_year":2.1,"passes_per_year":1.6,"funded_busts_per_year":0.68,"payouts_per_year":26.4,"cash_per_funded_month":2462,"funded_share":76}],"WR70Plus fixed | Ultra lean 1c":[{"test":"history","per_month":1570,"p10_month":796,"p_neg_year":0.0,"evals_per_year":2.3,"passes_per_year":2.01,"funded_busts_per_year":1.01,"payouts_per_year":22.1,"cash_per_funded_month":2278,"funded_share":70},{"test":"+1 tick","per_month":1497,"p10_month":801,"p_neg_year":0.0,"evals_per_year":2.5,"passes_per_year":1.99,"funded_busts_per_year":0.99,"payouts_per_year":20.9,"cash_per_funded_month":2166,"funded_share":71},{"test":"bootstrap","per_month":1736,"p10_month":711,"p_neg_year":1.8,"evals_per_year":2.1,"passes_per_year":1.57,"funded_busts_per_year":0.61,"payouts_per_year":25.1,"cash_per_funded_month":2290,"funded_share":77}],"WR70Plus fixed | WR70Plus 1c":[{"test":"history","per_month":1101,"p10_month":716,"p_neg_year":0.0,"evals_per_year":1.7,"passes_per_year":1.46,"funded_busts_per_year":0.46,"payouts_per_year":16.8,"cash_per_funded_month":1460,"funded_share":77},{"test":"+1 tick","per_month":1028,"p10_month":660,"p_neg_year":0.0,"evals_per_year":1.8,"passes_per_year":1.45,"funded_busts_per_year":0.45,"payouts_per_year":15.6,"cash_per_funded_month":1373,"funded_share":76},{"test":"bootstrap","per_month":1148,"p10_month":523,"p_neg_year":1.7,"evals_per_year":1.7,"passes_per_year":1.3,"funded_busts_per_year":0.32,"payouts_per_year":18.9,"cash_per_funded_month":1442,"funded_share":81}],"WR70Plus fixed | Ultra 1c -> 2c from $3,000 cushion":[{"test":"history","per_month":3594,"p10_month":1796,"p_neg_year":0.0,"evals_per_year":2.3,"passes_per_year":1.61,"funded_busts_per_year":0.71,"payouts_per_year":32.1,"cash_per_funded_month":4926,"funded_share":74},{"test":"+1 tick","per_month":3288,"p10_month":1510,"p_neg_year":0.0,"evals_per_year":2.4,"passes_per_year":1.65,"funded_busts_per_year":0.75,"payouts_per_year":29.3,"cash_per_funded_month":4580,"funded_share":72},{"test":"bootstrap","per_month":2991,"p10_month":850,"p_neg_year":3.3,"evals_per_year":2.7,"passes_per_year":1.98,"funded_busts_per_year":1.13,"payouts_per_year":28.2,"cash_per_funded_month":4270,"funded_share":71}]}}},"haircut":[{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c","haircut":0.0,"pass_pct":77.4,"med_days":21.0,"hist_month":2137,"boot_month":2012,"boot_p10":1028,"boot_neg_year":1.0,"cash_per_funded_month":2493},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c","haircut":0.25,"pass_pct":66.7,"med_days":24.0,"hist_month":1377,"boot_month":1295,"boot_p10":207,"boot_neg_year":5.7,"cash_per_funded_month":1897},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c","haircut":0.35,"pass_pct":61.3,"med_days":25.0,"hist_month":1189,"boot_month":1048,"boot_p10":14,"boot_neg_year":9.3,"cash_per_funded_month":1690},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c","haircut":0.5,"pass_pct":45.1,"med_days":20.0,"hist_month":839,"boot_month":704,"boot_p10":-105,"boot_neg_year":18.7,"cash_per_funded_month":1393},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Estable (Ultra / Estable gear, C1200)","funded":"Ultra 1c","haircut":0.0,"pass_pct":88.1,"med_days":27.5,"hist_month":1992,"boot_month":1901,"boot_p10":807,"boot_neg_year":1.5,"cash_per_funded_month":2471},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Estable (Ultra / Estable gear, C1200)","funded":"Ultra 1c","haircut":0.25,"pass_pct":66.5,"med_days":26.0,"hist_month":1220,"boot_month":1157,"boot_p10":24,"boot_neg_year":9.5,"cash_per_funded_month":1861},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Estable (Ultra / Estable gear, C1200)","funded":"Ultra 1c","haircut":0.35,"pass_pct":69.3,"med_days":32.0,"hist_month":1095,"boot_month":902,"boot_p10":-78,"boot_neg_year":16.3,"cash_per_funded_month":1653},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Estable (Ultra / Estable gear, C1200)","funded":"Ultra 1c","haircut":0.5,"pass_pct":52.9,"med_days":28.0,"hist_month":742,"boot_month":562,"boot_p10":-92,"boot_neg_year":29.3,"cash_per_funded_month":1349},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c -> 2c from $3,000 cushion","haircut":0.0,"pass_pct":77.4,"med_days":21.0,"hist_month":3888,"boot_month":3336,"boot_p10":1317,"boot_neg_year":2.0,"cash_per_funded_month":4353},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c -> 2c from $3,000 cushion","haircut":0.25,"pass_pct":66.7,"med_days":24.0,"hist_month":2279,"boot_month":2009,"boot_p10":76,"boot_neg_year":8.5,"cash_per_funded_month":3120},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c -> 2c from $3,000 cushion","haircut":0.35,"pass_pct":61.3,"med_days":25.0,"hist_month":1811,"boot_month":1578,"boot_p10":-78,"boot_neg_year":13.5,"cash_per_funded_month":2710},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c -> 2c from $3,000 cushion","haircut":0.5,"pass_pct":45.1,"med_days":20.0,"hist_month":1489,"boot_month":1044,"boot_p10":-118,"boot_neg_year":25.8,"cash_per_funded_month":2179},{"firm":"Lucid Flex 50K","eval":"Ultra fixed","funded":"Ultra 1c","haircut":0.0,"pass_pct":77.6,"med_days":18.0,"hist_month":1458,"boot_month":1341,"boot_p10":723,"boot_neg_year":0.2,"cash_per_funded_month":2078},{"firm":"Lucid Flex 50K","eval":"Ultra fixed","funded":"Ultra 1c","haircut":0.25,"pass_pct":65.7,"med_days":21.0,"hist_month":790,"boot_month":922,"boot_p10":338,"boot_neg_year":2.7,"cash_per_funded_month":1672},{"firm":"Lucid Flex 50K","eval":"Ultra fixed","funded":"Ultra 1c","haircut":0.35,"pass_pct":63.7,"med_days":22.0,"hist_month":741,"boot_month":782,"boot_p10":97,"boot_neg_year":4.5,"cash_per_funded_month":1533},{"firm":"Lucid Flex 50K","eval":"Ultra fixed","funded":"Ultra 1c","haircut":0.5,"pass_pct":50.9,"med_days":19.0,"hist_month":590,"boot_month":571,"boot_p10":-70,"boot_neg_year":12.0,"cash_per_funded_month":1317},{"firm":"Lucid Flex 50K","eval":"Estable (Ultra / Estable gear, C1200)","funded":"Ultra 1c","haircut":0.0,"pass_pct":88.8,"med_days":23.0,"hist_month":1221,"boot_month":1223,"boot_p10":706,"boot_neg_year":0.7,"cash_per_funded_month":2060},{"firm":"Lucid Flex 50K","eval":"Estable (Ultra / Estable gear, C1200)","funded":"Ultra 1c","haircut":0.25,"pass_pct":70.5,"med_days":24.0,"hist_month":718,"boot_month":807,"boot_p10":106,"boot_neg_year":5.8,"cash_per_funded_month":1655},{"firm":"Lucid Flex 50K","eval":"Estable (Ultra / Estable gear, C1200)","funded":"Ultra 1c","haircut":0.35,"pass_pct":60.3,"med_days":24.5,"hist_month":665,"boot_month":661,"boot_p10":-27,"boot_neg_year":10.3,"cash_per_funded_month":1495},{"firm":"Lucid Flex 50K","eval":"Estable (Ultra / Estable gear, C1200)","funded":"Ultra 1c","haircut":0.5,"pass_pct":54.8,"med_days":25.0,"hist_month":288,"boot_month":471,"boot_p10":-61,"boot_neg_year":19.3,"cash_per_funded_month":1299},{"firm":"Lucid Flex 50K","eval":"Ultra fixed","funded":"Ultra 1c -> 2c from $1,500 cushion","haircut":0.0,"pass_pct":77.6,"med_days":18.0,"hist_month":1382,"boot_month":1453,"boot_p10":697,"boot_neg_year":0.5,"cash_per_funded_month":2818},{"firm":"Lucid Flex 50K","eval":"Ultra fixed","funded":"Ultra 1c -> 2c from $1,500 cushion","haircut":0.25,"pass_pct":65.7,"med_days":21.0,"hist_month":1007,"boot_month":984,"boot_p10":221,"boot_neg_year":4.3,"cash_per_funded_month":2339},{"firm":"Lucid Flex 50K","eval":"Ultra fixed","funded":"Ultra 1c -> 2c from $1,500 cushion","haircut":0.35,"pass_pct":63.7,"med_days":22.0,"hist_month":866,"boot_month":815,"boot_p10":71,"boot_neg_year":6.3,"cash_per_funded_month":2173},{"firm":"Lucid Flex 50K","eval":"Ultra fixed","funded":"Ultra 1c -> 2c from $1,500 cushion","haircut":0.5,"pass_pct":50.9,"med_days":19.0,"hist_month":644,"boot_month":598,"boot_p10":-79,"boot_neg_year":12.0,"cash_per_funded_month":1883}],"conf":{"prior":{"0.0":0.1,"0.2":0.2,"0.35":0.3,"0.5":0.2,"0.75":0.12,"1.0":0.08},"cases":[{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c","backtest_month":2012,"rows":[{"h":0.0,"mean":2012,"median":1958,"p10":1028,"p90":3135,"p_pos":99.0,"p_1200":83.2,"p_80":66.5,"p_50":90.2},{"h":0.1,"mean":1735,"median":1663,"p10":692,"p90":2844,"p_pos":98.2,"p_1200":72.5,"p_80":54.0,"p_50":80.5},{"h":0.2,"mean":1450,"median":1376,"p10":417,"p90":2564,"p_pos":96.0,"p_1200":58.7,"p_80":40.8,"p_50":67.2},{"h":0.3,"mean":1172,"median":1109,"p10":100,"p90":2274,"p_pos":93.2,"p_1200":45.7,"p_80":28.2,"p_50":54.3},{"h":0.35,"mean":1048,"median":968,"p10":14,"p90":2155,"p_pos":90.7,"p_1200":39.7,"p_80":23.0,"p_50":48.7},{"h":0.4,"mean":931,"median":840,"p10":-65,"p90":2003,"p_pos":88.0,"p_1200":33.5,"p_80":18.5,"p_50":42.2},{"h":0.5,"mean":704,"median":577,"p10":-105,"p90":1730,"p_pos":81.3,"p_1200":23.7,"p_80":12.0,"p_50":29.8},{"h":0.6,"mean":505,"median":362,"p10":-131,"p90":1389,"p_pos":71.8,"p_1200":14.0,"p_80":6.0,"p_50":20.7},{"h":0.75,"mean":291,"median":123,"p10":-157,"p90":1025,"p_pos":58.5,"p_1200":6.3,"p_80":2.8,"p_50":10.7},{"h":1.0,"mean":44,"median":-131,"p10":-183,"p90":502,"p_pos":35.2,"p_1200":1.0,"p_80":0.7,"p_50":2.2}],"combined":{"mean":993,"median":880,"p10":-118,"p90":2284,"p_pos":82.3,"p_1200":37.6,"p_80":24.7,"p_50":45.1}},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra fixed","funded":"Ultra 1c -> 2c from $3,000 cushion","backtest_month":3336,"rows":[{"h":0.0,"mean":3336,"median":3209,"p10":1317,"p90":5727,"p_pos":98.0,"p_1200":91.2,"p_80":62.2,"p_50":85.2},{"h":0.1,"mean":2813,"median":2645,"p10":793,"p90":5106,"p_pos":97.0,"p_1200":85.2,"p_80":49.2,"p_50":75.7},{"h":0.2,"mean":2293,"median":2069,"p10":302,"p90":4597,"p_pos":94.5,"p_1200":74.0,"p_80":35.8,"p_50":60.5},{"h":0.3,"mean":1782,"median":1600,"p10":-30,"p90":3906,"p_pos":89.2,"p_1200":59.5,"p_80":23.7,"p_50":48.7},{"h":0.35,"mean":1578,"median":1386,"p10":-78,"p90":3621,"p_pos":86.5,"p_1200":54.3,"p_80":19.3,"p_50":40.2},{"h":0.4,"mean":1394,"median":1185,"p10":-92,"p90":3267,"p_pos":82.0,"p_1200":49.7,"p_80":17.2,"p_50":35.7},{"h":0.5,"mean":1044,"median":730,"p10":-118,"p90":2707,"p_pos":74.2,"p_1200":37.2,"p_80":10.8,"p_50":24.5},{"h":0.6,"mean":752,"median":418,"p10":-131,"p90":2196,"p_pos":66.0,"p_1200":25.2,"p_80":5.7,"p_50":16.5},{"h":0.75,"mean":429,"median":61,"p10":-157,"p90":1596,"p_pos":52.8,"p_1200":14.7,"p_80":2.7,"p_50":9.7},{"h":1.0,"mean":115,"median":-131,"p10":-196,"p90":791,"p_pos":32.3,"p_1200":5.2,"p_80":0.8,"p_50":1.7}],"combined":{"mean":1541,"median":1216,"p10":-131,"p90":3855,"p_pos":78.3,"p_1200":50.3,"p_80":21.8,"p_50":39.2}},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"Ultra lean fixed","funded":"Ultra lean 1c","backtest_month":1870,"rows":[{"h":0.0,"mean":1870,"median":1828,"p10":889,"p90":2933,"p_pos":98.7,"p_1200":80.8,"p_80":70.0,"p_50":88.2},{"h":0.1,"mean":1595,"median":1549,"p10":597,"p90":2682,"p_pos":98.0,"p_1200":68.0,"p_80":52.8,"p_50":79.2},{"h":0.2,"mean":1340,"median":1274,"p10":322,"p90":2417,"p_pos":95.5,"p_1200":54.3,"p_80":40.7,"p_50":67.0},{"h":0.3,"mean":1090,"median":1015,"p10":94,"p90":2143,"p_pos":92.8,"p_1200":42.0,"p_80":28.2,"p_50":55.3},{"h":0.35,"mean":961,"median":896,"p10":-12,"p90":1979,"p_pos":89.2,"p_1200":35.7,"p_80":22.7,"p_50":47.5},{"h":0.4,"mean":852,"median":800,"p10":-65,"p90":1852,"p_pos":86.2,"p_1200":29.5,"p_80":17.8,"p_50":41.3},{"h":0.5,"mean":644,"median":539,"p10":-92,"p90":1568,"p_pos":79.8,"p_1200":19.3,"p_80":11.8,"p_50":29.0},{"h":0.6,"mean":455,"median":299,"p10":-118,"p90":1272,"p_pos":70.2,"p_1200":12.0,"p_80":5.7,"p_50":19.7},{"h":0.75,"mean":255,"median":70,"p10":-144,"p90":913,"p_pos":56.7,"p_1200":4.3,"p_80":2.3,"p_50":9.3},{"h":1.0,"mean":23,"median":-118,"p10":-183,"p90":472,"p_pos":31.7,"p_1200":1.0,"p_80":0.7,"p_50":1.7}],"combined":{"mean":907,"median":779,"p10":-105,"p90":2105,"p_pos":81.2,"p_1200":34.7,"p_80":25.1,"p_50":43.6}},{"firm":"MyFundedFutures Rapid EOD 50K","eval":"WR70Plus fixed","funded":"WR70Plus 1c","backtest_month":1148,"rows":[{"h":0.0,"mean":1148,"median":1143,"p10":523,"p90":1836,"p_pos":98.3,"p_1200":45.0,"p_80":67.7,"p_50":87.7},{"h":0.1,"mean":975,"median":963,"p10":308,"p90":1681,"p_pos":96.2,"p_1200":30.2,"p_80":53.8,"p_50":77.7},{"h":0.2,"mean":814,"median":804,"p10":96,"p90":1477,"p_pos":93.3,"p_1200":21.5,"p_80":39.7,"p_50":67.5},{"h":0.3,"mean":648,"median":626,"p10":-39,"p90":1315,"p_pos":87.8,"p_1200":14.5,"p_80":26.8,"p_50":54.3},{"h":0.35,"mean":566,"median":539,"p10":-52,"p90":1232,"p_pos":84.2,"p_1200":11.2,"p_80":22.3,"p_50":47.3},{"h":0.4,"mean":490,"median":455,"p10":-65,"p90":1148,"p_pos":79.8,"p_1200":8.2,"p_80":18.5,"p_50":39.2},{"h":0.5,"mean":350,"median":269,"p10":-78,"p90":942,"p_pos":70.3,"p_1200":4.3,"p_80":10.7,"p_50":26.7},{"h":0.6,"mean":230,"median":98,"p10":-92,"p90":725,"p_pos":59.7,"p_1200":2.3,"p_80":6.3,"p_50":16.7},{"h":0.75,"mean":96,"median":-52,"p10":-105,"p90":508,"p_pos":42.8,"p_1200":0.7,"p_80":2.7,"p_50":8.2},{"h":1.0,"mean":-41,"median":-92,"p10":-131,"p90":150,"p_pos":18.0,"p_1200":0.0,"p_80":0.2,"p_50":1.7}],"combined":{"mean":517,"median":447,"p10":-92,"p90":1277,"p_pos":74.0,"p_1200":12.1,"p_80":23.6,"p_50":42.6}},{"firm":"Lucid Flex 50K","eval":"Ultra fixed","funded":"Ultra 1c","backtest_month":1341,"rows":[{"h":0.0,"mean":1341,"median":1439,"p10":723,"p90":1915,"p_pos":99.8,"p_1200":64.0,"p_80":73.2,"p_50":96.3},{"h":0.1,"mean":1168,"median":1165,"p10":680,"p90":1634,"p_pos":99.0,"p_1200":48.2,"p_80":58.5,"p_50":91.3},{"h":0.2,"mean":1022,"median":1006,"p10":539,"p90":1474,"p_pos":98.5,"p_1200":34.3,"p_80":45.8,"p_50":84.3},{"h":0.3,"mean":843,"median":830,"p10":230,"p90":1456,"p_pos":97.0,"p_1200":21.7,"p_80":28.7,"p_50":72.7},{"h":0.35,"mean":782,"median":715,"p10":97,"p90":1439,"p_pos":95.5,"p_1200":17.7,"p_80":26.2,"p_50":67.2},{"h":0.4,"mean":715,"median":697,"p10":71,"p90":1333,"p_pos":93.8,"p_1200":14.0,"p_80":21.0,"p_50":62.2},{"h":0.5,"mean":571,"median":565,"p10":-70,"p90":1147,"p_pos":88.0,"p_1200":7.5,"p_80":13.2,"p_50":46.3},{"h":0.6,"mean":451,"median":397,"p10":-88,"p90":997,"p_pos":83.0,"p_1200":4.0,"p_80":7.3,"p_50":34.0},{"h":0.75,"mean":289,"median":221,"p10":-114,"p90":812,"p_pos":72.2,"p_1200":1.2,"p_80":3.0,"p_50":18.5},{"h":1.0,"mean":90,"median":10,"p10":-149,"p90":522,"p_pos":53.3,"p_1200":0.3,"p_80":0.7,"p_50":3.7}],"combined":{"mean":731,"median":702,"p10":-70,"p90":1456,"p_pos":88.6,"p_1200":20.4,"p_80":27.6,"p_50":59.2}}]},"weak":[{"scenario":"S0 as backtested","profile":"Ultra","gold":"Robust","nq_gold_per_month":3143,"sharpe":4.22,"eval_pass":77.4,"eval_med_days":21.0,"life_hist":2137,"life_boot":1992,"boot_p10":989,"p_pos":99.0,"p_1200":81.5},{"scenario":"S0 as backtested","profile":"UltraLean","gold":"Robust","nq_gold_per_month":2968,"sharpe":4.21,"eval_pass":77.2,"eval_med_days":21.0,"life_hist":1856,"life_boot":1842,"boot_p10":867,"p_pos":98.8,"p_1200":78.5},{"scenario":"S0 as backtested","profile":"WR70Plus","gold":"WinRate","nq_gold_per_month":1967,"sharpe":3.85,"eval_pass":82.6,"eval_med_days":29.0,"life_hist":1101,"life_boot":1124,"boot_p10":508,"p_pos":98.2,"p_1200":43.2},{"scenario":"S1 weak modules are noise","profile":"Ultra","gold":"Robust-weak","nq_gold_per_month":2604,"sharpe":3.63,"eval_pass":72.9,"eval_med_days":23.0,"life_hist":1636,"life_boot":1517,"boot_p10":479,"p_pos":97.5,"p_1200":61.0},{"scenario":"S1 weak modules are noise","profile":"UltraLean","gold":"Robust-weak","nq_gold_per_month":2607,"sharpe":3.83,"eval_pass":76.2,"eval_med_days":23.0,"life_hist":1557,"life_boot":1534,"boot_p10":630,"p_pos":97.8,"p_1200":65.0},{"scenario":"S1 weak modules are noise","profile":"WR70Plus","gold":"WinRate-weak","nq_gold_per_month":1839,"sharpe":3.65,"eval_pass":80.2,"eval_med_days":30.0,"life_hist":1038,"life_boot":1014,"boot_p10":384,"p_pos":98.5,"p_1200":33.0},{"scenario":"S2 2020-regime modules fade","profile":"Ultra","gold":"Robust","nq_gold_per_month":2656,"sharpe":3.59,"eval_pass":70.9,"eval_med_days":23.0,"life_hist":1713,"life_boot":1553,"boot_p10":543,"p_pos":97.0,"p_1200":62.3},{"scenario":"S2 2020-regime modules fade","profile":"UltraLean","gold":"Robust","nq_gold_per_month":2556,"sharpe":3.64,"eval_pass":72.4,"eval_med_days":24.0,"life_hist":1488,"life_boot":1459,"boot_p10":463,"p_pos":97.0,"p_1200":61.0},{"scenario":"S2 2020-regime modules fade","profile":"WR70Plus","gold":"WinRate","nq_gold_per_month":1738,"sharpe":3.4,"eval_pass":78.6,"eval_med_days":32.0,"life_hist":916,"life_boot":915,"boot_p10":258,"p_pos":95.8,"p_1200":25.5},{"scenario":"S3 both","profile":"Ultra","gold":"Robust-weak","nq_gold_per_month":2378,"sharpe":3.31,"eval_pass":66.2,"eval_med_days":24.0,"life_hist":1476,"life_boot":1315,"boot_p10":284,"p_pos":96.0,"p_1200":54.2},{"scenario":"S3 both","profile":"UltraLean","gold":"Robust-weak","nq_gold_per_month":2386,"sharpe":3.5,"eval_pass":70.0,"eval_med_days":24.0,"life_hist":1199,"life_boot":1317,"boot_p10":382,"p_pos":96.2,"p_1200":53.5},{"scenario":"S3 both","profile":"WR70Plus","gold":"WinRate-weak","nq_gold_per_month":1610,"sharpe":3.2,"eval_pass":75.4,"eval_med_days":32.0,"life_hist":844,"life_boot":804,"boot_p10":147,"p_pos":94.5,"p_1200":20.0}]};
+const $ = id => document.getElementById(id);
+const money = (v, sign=false) => (v < 0 ? "−$" : (sign && v > 0 ? "+$" : "$")) + Math.abs(Math.round(v)).toLocaleString("en-US");
+const pct = v => (v == null ? "–" : (+v).toFixed(1) + "%");
+const cls = v => v < 0 ? "neg" : "";
+const PN = {Ultra:"Ultra + gold Robust", UltraLean:"Ultra lean + gold Robust", WR70Plus:"WR70Plus + gold WinRate"};
+const MF = "MyFundedFutures Rapid EOD 50K", LF = "Lucid Flex 50K";
+const EST = "Estable (Ultra / Estable gear, C1200)";
+const EVS = {[EST]:"Estable", "Ultra fixed":"Ultra", "Ultra lean fixed":"Ultra lean", "WR70Plus fixed":"WR70Plus"};
+const EVN = {[EST]:"Estable gating, 1 contract", "Ultra fixed":"Ultra, fixed 1 contract", "Ultra lean fixed":"Ultra lean, fixed 1 contract", "WR70Plus fixed":"WR70Plus, fixed 1 contract"};
+const FN = n => n.replace("Ultra 1c -> 2c from $3,000 cushion","Ultra, 1 → 2 contracts (step-up)").replace("Ultra 1c -> 2c from $1,500 cushion","Ultra, 2 contracts above $1,500 cushion").replace("Ultra lean 1c","Ultra lean, 1 contract").replace("WR70Plus 1c","WR70Plus, 1 contract").replace("Ultra 1c","Ultra, 1 contract");
+const life = (f, ev, fu) => DATA.firms[f].life[ev + " | " + fu];
+const lt = (rows, t) => rows.find(r => r.test === t);
+
+/* ---------- ticket figures */
+(function(){
+  const e = DATA.firms[MF].evals["Ultra fixed"], L = life(MF, "Ultra fixed", "Ultra 1c"), S = life(MF, "Ultra fixed", "Ultra 1c -> 2c from $3,000 cushion");
+  const P = DATA.profiles.Ultra.all;
+  const h35 = DATA.haircut.find(x => x.firm === MF && x.eval === "Ultra fixed" && x.funded === "Ultra 1c" && x.haircut === 0.35);
+  const s35 = DATA.haircut.find(x => x.firm === MF && x.eval === "Ultra fixed" && x.funded.indexOf("2c") > 0 && x.haircut === 0.35);
+  const F = [
+    ["Eval pass rate", Math.round(e.history.pass_pct) + "<small>%</small>", `resampled ${Math.round(e.bootstrap_pass)}% · with 35% less edge ${Math.round(h35.pass_pct)}%`],
+    ["Median time to pass", e.history.med_days + "<small> days</small>", `about ${Math.round(e.history.med_days/5)} weeks · ${Math.round(e.funded_within_33d)}% funded within 33 days with restarts`],
+    ["Trade win rate", P.wr + "<small>%</small>", `PF ${P.pf.toFixed(2)} · ${P.trades_per_day} trades a day · ${P.pos_months} months positive`],
+    ["Per account, per month", money(lt(S,"history").per_month), `with the step-up · realistic ${money(s35.boot_month)} · 1 contract only ${money(lt(L,"history").per_month)} (realistic ${money(h35.boot_month)})`],
+  ];
+  $("figs").innerHTML = F.map(([k,v,d]) => `<div class="fig"><span class="k">${k}</span><span class="v">${v}</span><span class="d">${d}</span></div>`).join("");
+})();
+
+/* ---------- profile table */
+(function(){
+  const rows = [["Trades", p=>p.n.toLocaleString("en-US")], ["Trades a day", p=>p.trades_per_day.toFixed(2)], ["Win rate", p=>pct(p.wr)], ["Profit factor", p=>p.pf.toFixed(2)],
+    ["Average win", p=>money(p.avg_win)], ["Average loss", p=>money(p.avg_loss)], ["Average per trade", p=>money(p.exp)], ["Profit per month", p=>money(p.per_month)],
+    ["Max drawdown", p=>money(-p.max_dd)], ["Worst month", p=>money(p.worst_month)], ["Worst day", p=>money(p.worst_day)], ["Months positive", p=>p.pos_months], ["Sharpe (annual)", p=>p.sharpe.toFixed(2)],
+    ["Last 6 months: WR / PF", p=>`${pct(p.last6.wr)} / ${p.last6.pf.toFixed(2)}`], ["Last 6 months: per month", p=>money(p.last6.per_month)]];
+  const ks = ["Ultra","UltraLean","WR70Plus"];
+  let h = `<thead><tr><th>1 contract, Feb 2024 – Sep 2026</th>${ks.map(k=>`<th>${PN[k]}</th>`).join("")}</tr></thead><tbody>`;
+  for (const [lab, f] of rows) h += `<tr><td>${lab}</td>${ks.map(k=>{const v=f(DATA.profiles[k].all);return `<td class="${/^−/.test(v)?'neg':''}">${v}</td>`}).join("")}</tr>`;
+  h += `<tr class="grp"><td colspan="4">Gold part only (GoldMaster on MGC)</td></tr>`;
+  h += `<tr><td>Gold trades · WR · PF</td>${ks.map(k=>{const g=DATA.profiles[k].gold;return `<td>${g.n} · ${pct(g.wr)} · ${g.pf.toFixed(2)}</td>`}).join("")}</tr>`;
+  h += `<tr><td>Gold profit per month</td>${ks.map(k=>`<td>${money(DATA.profiles[k].gold.per_month)}</td>`).join("")}</tr></tbody>`;
+  $("t-prof").innerHTML = h;
+})();
+
+/* ---------- years table */
+(function(){
+  const ks = ["Ultra","UltraLean","WR70Plus"], ys = ["2024","2025","2026"];
+  let h = `<thead><tr><th>By year (2024 from Feb, 2026 to Sep)</th><th>Trades</th><th>Win rate</th><th>Profit factor</th><th>Average per trade</th><th>Profit per month</th></tr></thead><tbody>`;
+  for (const k of ks){ const Y = DATA.profiles[k].all.years;
+    h += `<tr class="grp"><td colspan="6">${PN[k]}</td></tr>`;
+    for (const y of ys) h += `<tr><td>${y}</td><td>${Y[y].n.toLocaleString("en-US")}</td><td>${pct(Y[y].wr)}</td><td>${Y[y].pf.toFixed(2)}</td><td>${money(Y[y].exp)}</td><td>${money(Y[y].per_month)}</td></tr>`; }
+  $("t-year").innerHTML = h + "</tbody>";
+})();
+
+/* ---------- modules */
+(function(){
+  const desc = {ORB60:"60-min opening range breakout", ORB90:"90-min opening range breakout", MSEQ:"Momentum sequence long", MSEQS:"Momentum sequence short", CRT11:"11:00 one-hour CRT",
+    ICT:"NY open sweep + CISD (x2)", MOM11:"11:00 momentum, 0.3R", MOM1030:"10:30 momentum", MOM13:"13:00 momentum", ON07:"07:00 overnight momentum", REV06:"06:00 reversal",
+    LON:"London breakout + FVG", VW13:"13:00 VWAP distance", VW13b:"13:00 VWAP distance, 2nd lot", VOLB:"Volatility breakout 2R", VOLB_tf1:"Volatility breakout, trend only 0.5R",
+    LATE15:"15:00 trend-day continuation", LATEFH:"15:00 first half hour agrees", ENG10:"06–10 4H candle breakout", NF05:"05:00 fade of the night move", LF06:"06:00 fade since 04:00", LF0430:"04:30 fade with trend"};
+  const all = new Set([...Object.keys(DATA.profiles.Ultra.modules), ...Object.keys(DATA.profiles.WR70Plus.modules)]);
+  const ord = [...all].sort((a,b)=>((DATA.profiles.Ultra.modules[b]||DATA.profiles.WR70Plus.modules[b]).per_month)-((DATA.profiles.Ultra.modules[a]||DATA.profiles.WR70Plus.modules[a]).per_month));
+  const c = m => m ? `<td>${m.n}</td><td>${pct(m.wr)}</td><td>${m.pf.toFixed(2)}</td><td>${money(m.per_month)}</td>` : `<td colspan="4" style="text-align:center;color:var(--ink-3)">not in profile</td>`;
+  let h = `<thead><tr><th>Module</th><th>Ultra trades</th><th>Ultra WR</th><th>Ultra PF</th><th>Ultra per month</th><th>WR70Plus trades</th><th>WR70Plus WR</th><th>WR70Plus PF</th><th>WR70Plus per month</th></tr></thead><tbody>`;
+  for (const k of ord) h += `<tr><td class="lab"><b class="mono">${k}</b><span class="sub">${desc[k]||""}</span></td>${c(DATA.profiles.Ultra.modules[k])}${c(DATA.profiles.WR70Plus.modules[k])}</tr>`;
+  $("t-mod").innerHTML = h + "</tbody>";
+})();
+
+/* ---------- monthly chart */
+function drawChart(p){
+  const mo = DATA.profiles[p].all.monthly, ks = Object.keys(mo), vs = ks.map(k=>mo[k]);
+  const W=960, H=300, ml=58, mr=62, mt=14, mb=34, iw=W-ml-mr, ih=H-mt-mb;
+  const lo = Math.min(0, ...vs), hi = Math.max(0, ...vs);
+  const step = (hi-lo) > 12000 ? 4000 : 2000;
+  const y0 = Math.floor(lo/step)*step, y1 = Math.ceil(hi/step)*step;
+  const Y = v => mt + ih - (v - y0) / (y1 - y0) * ih;
+  let cum = 0; const cs = vs.map(v => cum += v); const cmax = Math.max(...cs, 1);
+  const cstep = cmax > 80000 ? 20000 : 10000, c1 = Math.ceil(cmax/cstep)*cstep;
+  const YC = v => mt + ih - v / c1 * ih;
+  const bw = iw / ks.length;
+  let s = "";
+  for (let v=y0; v<=y1; v+=step){ s += `<line class="${v===0?'zero':'grid'}" x1="${ml}" x2="${W-mr}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${ml-8}" y="${Y(v)+4}" text-anchor="end">${v===0?'0':(v<0?'−':'')+Math.abs(v/1000)+'k'}</text>`; }
+  for (let v=0; v<=c1; v+=cstep){ s += `<text x="${W-mr+8}" y="${YC(v)+4}" style="fill:var(--mnq)">${v/1000}k</text>`; }
+  ks.forEach((k,i)=>{ const v=vs[i], x=ml+i*bw+bw*0.16, w=bw*0.68, yA=Y(Math.max(v,0)), yB=Y(Math.min(v,0));
+    s += `<rect class="${v>=0?'bp':'bn'}" x="${x.toFixed(1)}" y="${yA.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(1,yB-yA).toFixed(1)}" rx="1.5"><title>${k}: ${money(v,true)}</title></rect>`;
+    const [yy,mm] = k.split("-"); if (mm==="02"||mm==="08") s += `<text x="${(ml+i*bw+bw/2).toFixed(1)}" y="${H-12}" text-anchor="middle">${["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+mm]} ${yy.slice(2)}</text>`; });
+  s += `<polyline class="eq" points="${cs.map((v,i)=>`${(ml+i*bw+bw/2).toFixed(1)},${YC(v).toFixed(1)}`).join(" ")}"/>`;
+  const li = cs.length-1; s += `<circle cx="${(ml+li*bw+bw/2).toFixed(1)}" cy="${YC(cs[li]).toFixed(1)}" r="4" style="fill:var(--mnq)"/>`;
+  $("chart").innerHTML = s;
+  const P = DATA.profiles[p].all, neg = vs.filter(v=>v<0).length;
+  $("chartmeta").textContent = `${PN[p]} · total ${money(cs[li])} · ${neg} losing months of ${vs.length} · worst ${money(P.worst_month)}`;
+  document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.p === p ? "true" : "false"));
+  try { localStorage.setItem("f3prof", p); } catch(e){}
+}
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => drawChart(b.dataset.p)));
+(function(){ let p = "Ultra"; try { const s = localStorage.getItem("f3prof"); if (s && DATA.profiles[s]) p = s; } catch(e){} drawChart(p); })();
+
+/* ---------- eval table */
+(function(){
+  const order = ["Ultra fixed", EST, "Ultra lean fixed", "WR70Plus fixed"];
+  let h = `<thead><tr><th>Eval, 1 contract</th><th>Pass (history)</th><th>Pass, +1 tick</th><th>Pass, resampled</th><th>Resampled p10</th><th>Median days to pass</th><th>Pass within 22 days</th><th>Pass within 33 days</th><th>Funded within 33 days, with restarts</th><th>Evals used in those 33 days</th></tr></thead><tbody>`;
+  for (const f of [MF, LF]){
+    h += `<tr class="grp"><td colspan="10">${f}</td></tr>`;
+    for (const ev of order){ const e = DATA.firms[f].evals[ev], H = e.history;
+      const tag = ev==="Ultra fixed" ? `<span class="tag rec">fastest</span>` : (ev===EST ? `<span class="tag alt">highest pass</span>` : "");
+      h += `<tr class="${ev==='Ultra fixed'?'pick':''}"><td class="lab">${EVN[ev]}${tag}</td><td class="hl">${pct(H.pass_pct)}</td><td>${pct(e["+1 tick"].pass_pct)}</td><td>${pct(e.bootstrap_pass)}</td><td>${pct(e.bootstrap_pass_p10)}</td><td>${H.med_days} <span class="sub">≈ ${(H.med_days/5).toFixed(1)} weeks</span></td><td>${pct(H.p22)}</td><td>${pct(H.p33)}</td><td class="hl">${pct(e.funded_within_33d)}</td><td>${e.evals_used_33d.toFixed(2)}</td></tr>`; }
+  }
+  $("t-eval").innerHTML = h + "</tbody>";
+})();
+
+/* ---------- lifecycle tables */
+function lifeRow(f, ev, fu, tag, pick){
+  const R = life(f, ev, fu), H = lt(R,"history"), T = lt(R,"+1 tick"), B = lt(R,"bootstrap");
+  return `<tr class="${pick?'pick':''}"><td class="lab">${EVS[ev]} eval → ${FN(fu)} funded${tag||""}</td><td class="hl">${money(H.per_month)}</td><td>${money(T.per_month)}</td><td>${money(B.per_month)}</td><td class="${cls(B.p10_month)}">${money(B.p10_month)}</td><td>${pct(B.p_neg_year)}</td><td>${H.payouts_per_year}</td><td>${H.funded_busts_per_year}</td><td>${H.evals_per_year}</td><td>${money(H.cash_per_funded_month)}</td></tr>`;
+}
+const LH = `<thead><tr><th>Eval → funded, per account slot</th><th>Per month (history)</th><th>Per month, +1 tick</th><th>Per month, resampled</th><th>Resampled p10</th><th>Losing years</th><th>Payouts a year</th><th>Funded busts a year</th><th>Evals bought a year</th><th>Cash per funded month</th></tr></thead><tbody>`;
+(function(){
+  const S = {[MF]:"Ultra 1c -> 2c from $3,000 cushion", [LF]:"Ultra 1c -> 2c from $1,500 cushion"};
+  let h = LH;
+  for (const f of [MF, LF]){
+    h += `<tr class="grp"><td colspan="10">${f}</td></tr>`;
+    if (f === MF){ h += lifeRow(f, "Ultra fixed", S[f], `<span class="tag rec">recommended</span>`, true); h += lifeRow(f, "Ultra fixed", "Ultra 1c", `<span class="tag alt">lower risk</span>`); }
+    else { h += lifeRow(f, "Ultra fixed", "Ultra 1c", `<span class="tag rec">recommended</span>`, true); h += lifeRow(f, "Ultra fixed", S[f]); }
+    h += lifeRow(f, EST, "Ultra 1c", `<span class="tag alt">highest pass</span>`);
+    h += lifeRow(f, "Ultra lean fixed", "Ultra 1c");
+    h += lifeRow(f, "Ultra fixed", "WR70Plus 1c");
+    h += lifeRow(f, "WR70Plus fixed", "WR70Plus 1c", `<span class="tag gold">highest win rate</span>`);
+  }
+  $("t-life").innerHTML = h + "</tbody>";
+  let a = LH;
+  for (const f of [MF, LF]){
+    a += `<tr class="grp"><td colspan="10">${f}</td></tr>`;
+    for (const k of Object.keys(DATA.firms[f].life)){ const [ev, fu] = k.split(" | "); a += lifeRow(f, ev, fu, "", false); }
+  }
+  $("t-lifeall").innerHTML = a + "</tbody>";
+})();
+
+/* ---------- settings cards */
+(function(){
+  const card = (eyebrow, title, nq, gc, note) => `<article class="setcard"><header><span class="eyebrow">${eyebrow}</span><h3>${title}</h3></header>
+    <div class="blk"><span class="chip nq">MNQ · NQMaster</span><dl class="kv">${nq.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl></div>
+    <div class="blk"><span class="chip gc">MGC · GoldMaster</span><dl class="kv">${gc.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl></div>
+    ${note?`<div class="blk"><p class="note">${note}</p></div>`:""}</article>`;
+  const evNQ = (cons, stop, news) => [["Profile","Ultra"],["Contracts","1"],["PropMode","Eval"],["StartBalance","50000"],["EvalTarget","3000"],["PropTrailingDD","2000"],["EvalCushionFull","0"],["ConsistencyPct",cons],["EvalProfitStop",stop],["AtrStartMax","0"],["NewsBlackout",news],["EvalStartDate","eval start day"]];
+  const evGC = (cons, stop, news) => [["Profile","Robust"],["Contracts","1"],["StartBalance","50000"],["EvalTarget","3000"],["ConsistencyPct",cons],["AccountProfitStop",stop],["NewsBlackout",news]];
+  const fuNQ = (pay, news) => [["Profile","Ultra"],["Contracts","1"],["PropMode","Funded"],["FundedCushionSafe","0"],["FundedCushionFull","0"],["FundedHighFull","true"],["FundedProfitStop","0"],["FundedPayoutAt",pay],["NewsBlackout",news]];
+  const fuGC = (news) => [["Profile","Robust"],["Contracts","1"],["AccountProfitStop","0"],["EvalTarget","0"],["NewsBlackout",news]];
+  $("sets").innerHTML =
+    card("MyFundedFutures · eval", "Ultra, 1 contract", evNQ("30","800","false"), evGC("30","800","false"),
+      "For the highest pass rate instead of speed, use EvalCushionFull 1200 with EvalSafeSet Estable, and GoldMaster WinRate with Contracts 2 (88% pass, median 27.5 days).") +
+    card("MyFundedFutures · funded", "Ultra, 1 → 2 contracts automatically", fuNQ("6600","true").concat([["FundedStepUpCushion","3000"],["FundedStepUpContracts","2"]]), fuGC("true").concat([["FundedStepUpCushion","3000"],["FundedStepUpContracts","2"]]),
+      "Withdraw whenever the balance is at least $56,600, down to $56,100. Lower-risk plan: FundedStepUpCushion 0 on both, withdraw from $54,600 down to $54,100.") +
+    card("Lucid Flex · eval", "Ultra, 1 contract", evNQ("50","1400","false"), evGC("50","1400","false"),
+      "Estable alternative: EvalCushionFull 1200, EvalSafeSet Estable, GoldMaster WinRate with Contracts 2 (89% pass, median 23 days).") +
+    card("Lucid Flex · funded", "Ultra, 1 contract", fuNQ("4000","false"), fuGC("false"),
+      "Request a payout once profit is at least $4,000 and you have 5 days of +$150 since the last one. Lucid pays 50% of profit, up to $2,000.");
+})();
+
+/* ---------- confidence meters */
+(function(){
+  const C = (f, fu) => DATA.conf.cases.find(c => c.firm === f && c.funded === fu && (c.eval === "Ultra fixed"));
+  const c1 = C(MF, "Ultra 1c"), c2 = C(MF, "Ultra 1c -> 2c from $3,000 cushion"), cl = C(LF, "Ultra 1c");
+  const z = c => c.rows.find(r => r.h === 0);
+  const M = [["A year at MyFundedFutures ends positive per account, after eval fees (1 contract)", c1.combined.p_pos, z(c1).p_pos],
+    ["At least $1,200 per account per month: MyFundedFutures with the automatic step-up", c2.combined.p_1200, z(c2).p_1200],
+    ["At least $1,200 per account per month: MyFundedFutures, 1 contract", c1.combined.p_1200, z(c1).p_1200],
+    ["At least $1,200 per account per month: Lucid, 1 contract", cl.combined.p_1200, z(cl).p_1200],
+    ["Income reaches at least half the backtest (MyFundedFutures, 1 contract)", c1.combined.p_50, z(c1).p_50],
+    ["Income reaches 80% of the backtest or more (MyFundedFutures, 1 contract)", c1.combined.p_80, z(c1).p_80]];
+  $("meters").innerHTML = M.map(([l,v,pf])=>`<div class="meter${v<50?' lo':''}"><span class="lbl">${l}<span class="sub">with the backtested edge: ${Math.round(pf)}%</span></span><span class="pct">${Math.round(v)}%</span><div class="track"><div class="fill" style="width:${v}%"></div><div class="mark" style="left:calc(${pf}% - 1px)"></div></div></div>`).join("");
+})();
+
+/* ---------- weak-module scenarios */
+(function(){
+  const sc = [...new Set(DATA.weak.map(r => r.scenario))], ps = ["Ultra","UltraLean","WR70Plus"];
+  let h = `<thead><tr><th>Scenario</th>${ps.map(p=>`<th>${PN[p]}</th>`).join("")}</tr></thead><tbody>`;
+  for (const s of sc){ h += `<tr><td class="lab">${s}</td>`;
+    for (const p of ps){ const r = DATA.weak.find(x => x.scenario===s && x.profile===p);
+      h += `<td><b>${money(r.life_boot)}</b><span class="sub">pass ${Math.round(r.eval_pass)}% · $1,200+ in ${Math.round(r.p_1200)}% of years</span></td>`; }
+    h += `</tr>`; }
+  $("t-weak").innerHTML = h + "</tbody>";
+})();
+
+/* ---------- haircut table */
+(function(){
+  const hs = [0, 0.25, 0.35, 0.5];
+  const cases = [...new Set(DATA.haircut.map(x => x.firm + "|" + x.eval + "|" + x.funded))];
+  let h = `<thead><tr><th>Setup (resampled money per month, eval pass rate, losing years)</th>${hs.map(v=>`<th class="${v===0.35?'c35':''}">${v===0?'Backtest edge':Math.round(v*100)+'% less edge'}</th>`).join("")}</tr></thead><tbody>`;
+  for (const c of cases){ const [f, ev, fu] = c.split("|");
+    h += `<tr><td class="lab">${f.replace(" Rapid EOD 50K","").replace(" Flex 50K","")}: ${EVS[ev]} eval → ${FN(fu)}</td>`;
+    for (const v of hs){ const x = DATA.haircut.find(r => r.firm===f && r.eval===ev && r.funded===fu && r.haircut===v);
+      h += `<td class="${v===0.35?'c35':''}"><b class="${cls(x.boot_month)}">${money(x.boot_month)}</b><span class="sub">pass ${Math.round(x.pass_pct)}% · losing yr ${x.boot_neg_year}%</span></td>`; }
+    h += `</tr>`; }
+  $("t-hair").innerHTML = h + "</tbody>";
+})();
+</script>

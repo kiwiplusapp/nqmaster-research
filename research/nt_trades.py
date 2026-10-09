@@ -1,9 +1,13 @@
 import numpy as np, pandas as pd
 def load_nt(path):
     t = pd.read_csv(path, sep=";", dtype=str).dropna(subset=["Trade number"])
-    num = lambda s: s.str.replace(" $", "", regex=False).str.replace(".", "", regex=False).str.replace(",", ".", regex=False).astype(float)
+    # numbers: '1.234,56 $' or '-$1234,56' (both exports seen); times: 24 h or 12 h with 'a m' / 'p m' (Spanish Windows locale)
+    num = lambda s: s.str.replace("$", "", regex=False).str.strip().str.replace(".", "", regex=False).str.replace(",", ".", regex=False).astype(float)
     t["pnl"] = num(t["Profit"]); t["qty"] = t["Qty"].astype(int)
-    t["tin"] = pd.to_datetime(t["Entry time"], format="%d/%m/%Y %H:%M:%S"); t["tout"] = pd.to_datetime(t["Exit time"], format="%d/%m/%Y %H:%M:%S")
+    def tm(s):
+        s = s.str.replace("a m", "AM", regex=False).str.replace("p m", "PM", regex=False).str.replace("a. m.", "AM", regex=False).str.replace("p. m.", "PM", regex=False)
+        return pd.to_datetime(s, format="%d/%m/%Y %I:%M:%S %p") if s.str.contains("M$", regex=True).all() else pd.to_datetime(s, format="%d/%m/%Y %H:%M:%S")
+    t["tin"] = tm(t["Entry time"]); t["tout"] = tm(t["Exit time"])
     t["mod"] = t["Entry name"]; t["y"] = t.tin.dt.year
     return t
 if __name__ == "__main__":

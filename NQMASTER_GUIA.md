@@ -536,6 +536,45 @@ No encontró problemas graves. Ajustes de tiempo aplicados:
 
 Backup: `NQMaster_backup_pre_review5.cs`. Parche: `research/mine/patch_review5.py`.
 
+## Órdenes trabadas: 0 cortos desde agosto 2025 (corregido 2026-10-07)
+**Qué pasó.** En Strategy Analyzer (Ultra, MNQ, del 01/01/2024 al 06/10/2026) el último corto fue el 12/08/2025. Después hubo 0 cortos en 14 meses y VOLB no volvió a operar.
+- **La causa.** El 13/08/2025 a las 09:32 ET, VOLB puso una compra stop en 25.492. NinjaTrader nunca la procesó: el precio pasó ese nivel el 15/09/2025 sin llenarla, y cancelarla no tuvo efecto.
+- **Por qué bloqueaba los cortos.** La estrategia la seguía viendo como orden activa. Cada corto encontraba "una orden de compra activa en contra", la mandaba a cancelar y se postergaba para siempre.
+- **El mismo riesgo en vivo.** Puede pasar operando en vivo con cualquier módulo. Además, al pasar de histórico a tiempo real, NinjaTrader puede mandar esa orden vieja al mercado.
+
+**El arreglo (NQMaster y GoldMaster).** Un vigilante revisa, en cada barra de 1 minuto, las órdenes de entrada de cada módulo y descarta una orden si:
+- sigue sin ser aceptada (Initialized o Submitted) 2 barras después;
+- es una entrada a mercado que no se llenó en 2 barras;
+- se pidió cancelarla hace 2 barras o más y la cancelación no se confirmó.
+
+Todas las entradas se cancelan a las 15:56, así que una orden trabada se libera ese mismo día como máximo.
+
+Cuando el vigilante descarta una orden, intenta cancelarla, el módulo y la dirección contraria vuelven a operar, y en Output aparece una línea `STALE ORDER dropped (...)`. Al terminar la prueba sale el total, que también se ve en el panel.
+
+Al pasar a tiempo real, toda entrada que siga Initialized se cancela y no se convierte. En histórico, las órdenes sanas se procesan en el momento, y en vivo en segundos, así que el vigilante no toca órdenes válidas.
+
+**Cuánto costó el error** (`research/mine/shorts_bug_eval.py`, mismo CSV comparado con la investigación):
+
+| Período | Lado | Trades | Cortos | WR | PF | $/mes (1 contrato base) | Lucid 50K, 2 contratos: aprueba | Mediana de días |
+|---|---|---|---|---|---|---|---|---|
+| 02/2024 a 07/2025 | NinjaTrader | 2.222 | 802 | 62,2% | 1,33 | 2.271 | 62,8% | 13 |
+| 02/2024 a 07/2025 | Investigación | 2.165 | 786 | 62,4% | 1,34 | 2.342 | 61,8% | 13 |
+| 13/08/2025 a 09/2026 | NinjaTrader | 908 | **0** | 65,7% | 1,33 | **1.180** | **36,0%** | 15 |
+| 13/08/2025 a 09/2026 | Investigación | 1.406 | 577 | 65,9% | 1,47 | **3.104** | **57,4%** | **9** |
+
+- Antes del bloqueo, NinjaTrader y la investigación coinciden.
+- Durante el bloqueo se perdieron 577 cortos (WR 65,7%, PF 1,53, +$17,6k por contrato) y 109 largos de VOLB (+$3,7k).
+- En los trades que sí coinciden, NinjaTrader y la investigación dan casi lo mismo ($44,3k vs $45,0k), así que el resto del port está bien.
+- La simulación de evaluaciones es diaria (sin drawdown intradía) y sirve para comparar.
+
+**Qué hacer.**
+1. Compilá con F5.
+2. Repetí la prueba en Strategy Analyzer del 01/01/2024 a hoy, con Contracts 1 y PropMode Off.
+3. Exportá los trades y corré `python nt_compare.py "<csv>" --set ultra`. Deberían volver los cortos de VOLB, MOM11, CRT11, LON, etc. desde agosto 2025.
+4. Si en Output aparece alguna línea `STALE ORDER`, mandámela: dice qué orden era, de qué módulo, a qué precio y en qué estado quedó.
+
+Backups: `NQMaster_backup_pre_zombie.cs`, `GoldMaster_backup_pre_zombie.cs`.
+
 ## Oro: reversiones de madrugada con 16 años (`research/mine/gold_new_port.py`, `lc150.py`)
 Las mismas 5.760 configuraciones de impulsos anclados, corridas en oro 2010-2026. Solo 4 ganan en los cinco tramos, cerca de lo que daría el azar con tantas pruebas:
 - GF07: a las 07:00, revertir el movimiento desde las 06:00. WR 76%.
@@ -567,3 +606,264 @@ El informe muestra, módulo por módulo, los trades de la investigación y de Ni
 **Año por año** (Ultra ampliado + oro WinRate, 1 contrato, trading libre): todos los años ganan.
 - PF de 1,26 a 1,66, win rate de 62% a 68% y 64-100% de meses positivos (2020-2026).
 - En futuros reales: 2024 +$18.095, 2025 +$32.805, 2026 (hasta septiembre) +$34.972.
+
+## ¿75-80% de evaluaciones aprobadas en 20 días? (2026-10-07, `research/mine/eval20.py`, `eval20_life.py`)
+Medido con el sistema ya corregido (con cortos y módulos nocturnos) sobre Lucid Flex 50K: objetivo $3.000, MLL $2.000 EOD, consistencia 50% y stop de ganancia diario $1.400. Cada día hábil cuenta como un inicio posible. Promedio de IS, C24 y REAL:
+
+| Configuración | Aprueba en ≤20 días hábiles | Aprueba sin límite | Mediana de días | Quema |
+|---|---|---|---|---|
+| WR70Plus + noche + oro WinRate, **2 contratos** | 45% | 60% | 14 | 40% |
+| WR70Plus + noche, 2 contratos (tu prueba) | 43% | 60% | 14 | 40% |
+| Ultra + noche + oro Robust, 2 contratos | 44% | 49% | 10 | 51% |
+| WR70Plus + noche + oro WinRate, **1 contrato** | 20% | **84%** (70% en C24) | 32 | 16% |
+| 1 contrato, pasa a 2 en el día 15 si va < $2.100 | 26% | 71% | 23 | 29% |
+
+- **Ninguna configuración llega a 75-80% en ≤20 días.** Las más de 300 políticas de tamaño probadas (subir o bajar contratos según el día y el colchón) quedan en 41-46%.
+- **Por qué:** el porcentaje que aprueba en un plazo fijo depende de qué tan estable es la ganancia diaria (Sharpe). Haría falta un Sharpe anual de ~5 a 6, y el sistema tiene ~3,5 a 4.
+- **Qué forma de cuenta lo permitiría** (`eval20_map.csv`, k = contratos):
+  - sin regla de consistencia,
+  - objetivo de ≤ $750 × k,
+  - drawdown de ≥ $1.500 × k, es decir, el drawdown del doble del objetivo.
+
+  Con la consistencia del 50%, el techo es ~55%, aunque el objetivo sea chico.
+- **Lo que sí se puede elegir:**
+  - **Velocidad:** 2 contratos. ~45% aprueba en 20 días, mediana 14 días.
+  - **Probabilidad:** 1 contrato + oro WinRate. 84% aprueba, pero tarda ~6 semanas (Lucid no tiene límite de tiempo).
+
+## Subir el win rate por trade: ¿ayuda a aprobar? (2026-10-08, `research/mine/pass20_search.py`)
+Todas las mezclas se miden igual: Lucid 50K, aprobar en ≤20 días, simulación diaria. Los contratos se eligen en IS (2020-23) y se aplican en C24 y en MNQ real.
+
+| Mezcla | Win rate (MNQ real) | Profit factor (real) | Trades/día | Aprueba ≤20 días (IS / C24 / real) |
+|---|---|---|---|---|
+| WR70Plus + noche (tu perfil) | 68,9% | 1,37 | 3,5 | 42 / 40 / 44% |
+| Ultra + noche | 63,8% | 1,38 | 6,0 | 38 / 40 / 44% |
+| Win rate 75%, 4 trades/día | 72,7% | 1,33 | 4,0 | 43 / 30 / 35% |
+| Win rate 80%, 4 trades/día | 77,7% | 1,19 | 3,9 | 38 / 41 / 41% |
+| Win rate 80%, 1 trade/día | 80,6% | 1,36 | 1,2 | 25 / 34 / 36% |
+| Mejor de la búsqueda directa (elegida en IS) | 70,2% | 1,31 | 4,4 | **55** / 39 / 45% |
+
+- **El win rate sí se puede subir a 75-80%,** achicando los objetivos de ganancia. Pero cada ganancia es más chica y el profit factor baja, así que se aprueba igual o menos.
+- **La búsqueda directa** probó 30 arranques sobre 23 módulos, cada uno con sus objetivos y tamaños. En 2020-23 llega a 55%, pero fuera de muestra vuelve a 39-45%, lo mismo que tu perfil: es sobreajuste. No se cambia el perfil.
+
+## ★ Evaluación con 1 contrato: modo Estable (2026-10-08)
+Pedido: aprobar ~84% de las evaluaciones con 1 contrato y tardar menos de ~6 semanas.
+
+**Qué hace.** Mientras la cuenta tiene colchón (≥ $1.200 sobre el umbral de pérdida), opera Ultra completo con los módulos nocturnos. Si el colchón baja de $1.200, ese día opera solo los módulos más estables, sin multiplicador x2:
+- CRT11, ORB90, MSEQ, ON07, REV06, VW13, ENG10 y LATEFH;
+- VOLB, solo a favor de la tendencia y con objetivo 0,5R.
+
+El oro sigue operando todo el tiempo.
+
+### Configuración
+| Dónde | Ajuste |
+|---|---|
+| NQMaster (MNQ 1 min) | Profile **Ultra**, Contracts **1**, AdaptiveSize **false**, DailyLossLimit **0** |
+| NQMaster, grupo 07 | PropMode **Eval**, EvalTarget **3000**, Trailing drawdown **2000**, Eval: full mode when cushion ≥ **1200**, Eval: modules below the cushion **Estable**, EvalProfitStop **1400**, ConsistencyPct **50**, AtrStartMax **1.15** |
+| GoldMaster (MGC 1 min) | Profile **WinRate**, Contracts **2** |
+| Arranque | Comprá o empezá la evaluación **solo el día en que el panel diga "OK to start a new eval"**: el ATR del día es menor a 1,15 veces su mediana de 60 días, y pasa en ~7 de cada 10 días. |
+
+### Resultado (simulación exacta minuto a minuto, Lucid Flex 50K, cada día posible de inicio)
+| Plan | Aprueba CFD 2024-26 | Aprueba MNQ real 2024-26 | Aprueba CFD 2020-23 | Mediana de días hábiles |
+|---|---|---|---|---|
+| Hoy (WR70Plus + noche + oro WinRate, 1 contrato) | 57-65% | 75-76% | 95% | 25-35 |
+| **Modo Estable, cambio a $1.200 (recomendado)** | **92%** | **83%** | **96%** | **28-32** |
+| Modo Estable, cambio a $1.500 (más seguro, más lento) | 93% | 91% | 96% | 34-36 |
+| 2 contratos con modo Estable | 47-58% | 55-61% | 62-74% | 10-14 |
+
+- **Prueba de remuestreo** (2.000 historias armadas con bloques de 20 días): el plan aprueba con una mediana de ~73-78%, en un rango de 55-90%, y le gana al de hoy en ~2 de cada 3 historias. El 84% no está garantizado: depende del mercado de esas semanas.
+- **El cambio está en cuántas se aprueban, no en la velocidad.** Con 1 contrato la ganancia es de ~$100-150 por día, así que llegar a $3.000 lleva ~4-6 semanas igual. Con 2 contratos se tarda la mitad, pero se aprueba ~55%.
+
+### Probado y descartado
+- **Buscar en 2020-23 qué módulos usar en cada modo y con qué peso:** 97-98% en esos años, 56-81% fuera de muestra. Es sobreajuste.
+- **2 contratos desde el arranque o después del bloqueo:** quema más evaluaciones.
+- **Minería completa sobre el S&P (MES, 45.278 configuraciones, `results_es.csv`, `es_check.py`):** ningún candidato sobrevive a 2015-19 más 4 ticks de costo. En MES el costo es 1,27% del rango diario, contra 0,41% en MNQ.
+
+### Para probarlo en Strategy Analyzer
+- El cambio de modo usa la ganancia de NQMaster desde su primer trade.
+- Para ver una evaluación, empezá la prueba ~2 meses antes del día de inicio (NQMaster necesita ~25 días de mercado de arranque).
+- En una prueba de años, una vez que la ganancia pasa $2.100 el umbral queda fijo y la estrategia opera siempre en modo completo.
+
+Scripts: `research/mine/fast1c.py`, `gate84.py`, `gate84b.py`, `gate84c.py`, `gate_joint.py`, `gate_start.py`, `gate_impl.py`, `gate_struct.py`, `gate_final.py` (con remuestreo), `gate_lo.py`, `gate_g.py`, `gate_k2.py`. Backup: `NQMaster_backup_pre_estable.cs`.
+
+## LucidPro: evaluación sin consistencia (2026-10-08)
+Pregunta: ¿se puede sacar la regla de consistencia en Lucid?
+- **LucidFlex:** no. La evaluación exige que el mejor día sea ≤ 50% de la ganancia, y no hay ningún agregado para quitarla (artículo de soporte de Lucid del 26-08-2026). Si te pasás, no se pierde la cuenta: hay que seguir operando hasta bajar ese porcentaje.
+- **LucidPro:** la evaluación **no tiene consistencia**, y se puede aprobar en un día. Reglas de la 50K (proea.app, verificadas el 03-10-2026):
+  - Evaluación: objetivo $3.000, pérdida máxima de $2.000 al cierre que se fija en +$100, máximo 4 minis / 40 micros. Pérdida diaria de $1.200 suave y opcional: se quita con un agregado de ~$20. Precio de lista $192 (Flex $146).
+  - Fondeada: tamaño completo desde el primer día, colchón de $2.100 (el retiro mínimo de $500 se pide con saldo ≥ inicio + $2.600), tope de retiro $2.000 el primero y $2.500 después, reparto 90/10.
+  - Consistencia de la fondeada: **40% por ciclo de retiro** (el mejor día ≤ 40% de la ganancia del ciclo).
+
+### Con 1 contrato no cambia nada
+Con 1 contrato la regla del 50% casi nunca frena: un día rara vez supera $1.500. Aprobación con el modo Estable a $1.200, Flex contra Pro: 87/99/85% en los dos casos (CFD 2024-26 / CFD 2020-23 / MNQ real). La mediana de días también es la misma (26-31). Sacar la consistencia no acerca el 84% ni lo hace más rápido.
+
+### Con 3 o 4 contratos sí sirve
+| Ultra + noche + oro Robust | Flex aprueba | Pro aprueba | Mediana de días, Flex → Pro |
+|---|---|---|---|
+| 2 contratos | 44 / 53 / 50% | 47 / 56 / 53% | 9-10 → 7-8 |
+| 3 contratos | 36 / 46 / 42% | 42 / 49 / 49% | 6-7 → 4-5 |
+| 4 contratos | 32 / 38 / 36% | 38 / 44 / 40% | 5-6 → **3** |
+
+(CFD 2024-26 / CFD 2020-23 / MNQ real; todos los días de inicio. Esperar el ATR < 1,15 no cambia nada con 3-4 contratos. Activar la pérdida diaria de $1.200 en la evaluación baja la aprobación hasta 8 puntos, así que conviene comprar el agregado sin pérdida diaria.)
+
+### Ingreso por cuenta (ciclo de 12 meses: evaluaciones, fondeada y retiros; 9 pruebas = historia, +1 tick y 1.000 años de Monte Carlo en 3 períodos)
+| Plan | $/mes por cuenta (promedio) | Peor de 9 | Evaluaciones/año | Fondeadas quemadas/año |
+|---|---|---|---|---|
+| Flex: evaluación 2c / fondeada 2c, retiro a $4.000 (el plan de hoy) | $1.393 | $1.268 | 12 | 3,6 |
+| Pro: evaluación 4c / fondeada 2c, sin tope diario | $1.284 | $1.045 | 13 | 2,8 |
+| **Pro: evaluación 4c / fondeada 2c, tope de ganancia diaria $500 en la fondeada, retiro apenas se pueda** | **$1.578** | **$1.331** | 18 | 5,2 |
+| Pro: igual con tope de $400 | $1.605 | $1.238 | 19 | 5,1 |
+| Pro: evaluación 3c / fondeada 2c, tope $400 | $1.477 | $1.188 | 16 | 5,0 |
+
+- Sin tope diario en la fondeada, Pro gana menos que Flex: la regla del 40% por ciclo frena los retiros.
+- Con el tope de $500 (cuenta entera), Pro supera a Flex en 8 de las 9 pruebas, +13% de promedio. Entre $400 y $700 los resultados son parecidos, no hay un valor exacto que importe.
+- Con 4 contratos, el máximo de posiciones abiertas a la vez llega rara vez a ~44 micros contra el límite de 40: Lucid rechaza esa orden y NQMaster la ignora. Para no tocar nunca el límite, usá 3 contratos ($1.477).
+- Supuestos: Pro a $152 por evaluación (Flex $105). Si pagás el precio de lista, son ~$90/mes menos y Pro sigue arriba. Las dos cuentas cuentan hasta 5 retiros y después pasan a cuenta real.
+
+### Configuración LucidPro 50K
+| Fase | NQMaster (MNQ) | GoldMaster (MGC) |
+|---|---|---|
+| Evaluación | Profile **Ultra**, Contracts **4**, AdaptiveSize false. Grupo 07: PropMode **Eval**, EvalTarget 3000, PropTrailingDD 2000, EvalCushionFull **0**, EvalProfitStop **0**, ConsistencyPct **0**, AtrStartMax 0 | Profile **Robust**, Contracts **4**, AccountProfitStop **0**, ConsistencyPct **0**, EvalTarget 3000 |
+| Fondeada | Profile **Ultra**, Contracts **2**. Grupo 07: PropMode **Funded**, FundedCushionSafe 750, FundedCushionFull 1500, **FundedProfitStop 500**, FundedPayoutAt 2600 | Profile **Robust**, Contracts **2**, **AccountProfitStop 500** |
+
+Pedí el retiro apenas el saldo pase el inicio + $2.600 y el mejor día del ciclo sea ≤ 40% de la ganancia del ciclo. Con el tope de $500 esto se cumple casi siempre.
+
+Script: `research/mine/lucidpro.py` (`lucidpro_eval.csv`, `lucidpro_life.csv`, `lucidpro_life_fg.csv`, `lucidpro_life_fg2.csv`). Código nuevo: `FundedProfitStop` en NQMaster. Backup: `NQMaster_backup_pre_lucidpro.cs`.
+
+## ★ Cuenta fondeada en 22 días o menos (2026-10-08)
+Pedido: aprobar en un porcentaje muy alto y en no más de 22 días hábiles.
+
+**Una sola evaluación de 50K no llega:** con la ganancia diaria del sistema, ninguna configuración aprueba una evaluación de 50K más de ~50-55% de las veces en 22 días. Lo que sí llega es esto: **si una evaluación se quema, comprás otra y arrancás la sesión siguiente**. Cada evaluación con 4 contratos se define en ~3 días (aprueba o se quema), así que en 22 días entran varias.
+
+### % de veces con cuenta fondeada dentro de 22 días hábiles
+Ultra + noche + oro Robust; evaluación nueva al día siguiente de cada quema. Simulación minuto a minuto, todos los días de inicio.
+
+| Plan | Historia (CFD 24-26 / CFD 20-23 / MNQ real) | Con +1 tick de costo | Remuestreo: mediana / peor 10% | Mediana de días | Evaluaciones usadas | Costo |
+|---|---|---|---|---|---|---|
+| **LucidPro 50K, 4 contratos** | **97 / 94 / 97%** | 97 / 93 / 97% | 94-98% / 89-95% | **5** | 2,4 | ~$370 |
+| LucidPro 50K, 3 contratos | 93 / 86 / 92% | 93 / 85 / 92% | 88-95% / 81-89% | 6 | 2,1 | ~$320 |
+| LucidPro 25K, 2 contratos | 98 / 96 / 98% | 97 / 96 / 98% | 96-99% / 93-96% | 4 | 2,3 | ~$200 |
+| LucidFlex 50K, 2 contratos | 73 / 63 / 74% | 72 / 61 / 72% | 64-77% / 52-68% | 11 | 1,9 | ~$195 |
+| LucidFlex 50K, 1 contrato | 47 / 33 / 54% | 45 / 30 / 52% | 32-57% / 21-44% | 13 | 1,2 | ~$130 |
+
+- Cada evaluación sola aprueba ~40%. El 94-97% sale de reintentar rápido. El costo de las evaluaciones extra está incluido arriba, y también en el ingreso mensual de la sección LucidPro ($1.578 por cuenta con evaluación 4c y fondeada 2c con tope de $500).
+- La 25K es igual de segura y más barata, pero la fondeada paga topes más chicos ($1.000 / $1.500). Con el límite de 5 fondeadas por hogar, la 50K deja más plata por cuenta.
+- La configuración en NinjaTrader es la de la tabla "Configuración LucidPro 50K" de arriba. Cuando una evaluación se quema: comprá otra, cargá NQMaster y GoldMaster en la cuenta nueva con los mismos ajustes y arrancá la sesión siguiente. El archivo del grupo 07 es por nombre de cuenta, así que la nueva arranca limpia.
+
+Scripts: `research/mine/funded22.py` (`funded22.csv`) y `funded22_boot.py` (`funded22_boot.csv`).
+
+### ¿WR70Plus con 1 contrato en la fondeada?
+La evaluación es la misma (LucidPro 50K, 4 contratos, Ultra) y solo cambia la fondeada. Ingreso por cuenta, promedio y peor de 9 pruebas (`research/mine/funded_wr.py`, `funded_wr.csv`):
+
+| Fondeada | $/mes | Peor | Fondeadas quemadas/año | Retiros/año |
+|---|---|---|---|---|
+| **Ultra 2c, tope de ganancia diaria $400-500 (recomendado)** | **$1.578-1.605** | $1.238-1.331 | 5,1-5,2 | 11,7-12,5 |
+| WR70Plus 2c, tope $400 | $1.291 | $1.130 | 3,0 | 9,6 |
+| Ultra 1c, tope $700 | $1.217 | $963 | 1,3 | 8,7 |
+| WR70Plus 1c, sin tope | $990 | $813 | 0,7 | 7,5 |
+
+WR70Plus con 1 contrato quema muy pocas fondeadas, pero deja ~38% menos plata: cada retiro tarda más en juntarse. Si lo que importa es el ingreso, va Ultra con 2 contratos y tope de $400-500. Si importa quemar poco, va WR70Plus con 1 contrato (Profile WR70Plus + NightOnWr70, Contracts 1, FundedProfitStop 0; GoldMaster WinRate 1).
+
+## ★ 2026-10-08 research round (English): trade quality, quant strategies, overfitting audit, prop firms
+Five parallel studies. Files: `research/mine/wrq_*` (trade quality), `q_*` (quant literature), `audit_*` (overfitting audit),
+`acct1c_*` (1-contract account economics), `mffu_*` and `news_cost*` (MyFundedFutures), prop-firm survey notes in
+`research/mine/propfirms_2026.md`.
+
+### 1. New rules in NQMaster (group 02, all ON by default)
+| Property | Rule | Effect (IS / CFD 2024-26 / MNQ 2024-26) |
+|---|---|---|
+| `OrbPriorCloseAtr` = 0.10 | ORB60 / ORB90 only trade when the breakout level is >= 0.10 x daily ATR beyond the prior RTH close in the trade direction (-1 = off) | ORB60 PF 1.62/1.60/1.56 -> 1.92/1.81/2.05; ORB90 1.43/1.31/1.38 -> 1.87/1.48/1.75 |
+| `VolbBreakEven` = true | VOLB 2R (Ultra): stop to entry + 0.10R once price reaches +0.75R | VOLB WR 52/51/50% -> 61/62/61%, PF 1.25/1.52/1.50 -> 1.30/1.66/1.57 |
+| `MomAgreement` = true | MOM1030 / MOM13 (Ultra) only enter when another module already holds a filled position the same way | MOM1030 PF 1.08/1.13/1.17 -> 1.34/1.46/1.71 (2015-19 0.89 -> 1.21); MOM13 1.31/1.17/1.19 -> 1.54/1.45/1.51 |
+| `VolbTrendLastEntry` = 1047 | trend-only VOLB (WR70Plus, Estable gear): no entry after 10:47 ET (0 = off) | VOLB_tf1 PF 1.47/1.24/1.20 -> 1.72/1.34/1.31 |
+
+Portfolio (1 base contract, $1.90 + 1 tick, FOMC skipped):
+| | WR IS / C24 / REAL | PF IS / C24 / REAL | Sharpe | $/month REAL |
+|---|---|---|---|---|
+| Ultra before | 65.0 / 63.3 / 63.8 | 1.42 / 1.42 / 1.45 | 3.31 / 3.49 / 3.70 | 2,711 |
+| **Ultra now** | **66.6 / 64.9 / 65.8** | **1.50 / 1.50 / 1.54** | 3.71 / 3.70 / 3.95 | 2,707 |
+| Ultra now, lean (`UseOn07`, `UseLateFh`, `UseEng10` = false) | 67.5 / 65.8 / 66.8 | 1.52 / 1.53 / 1.57 | 3.60 / 3.69 / 3.92 | 2,534 (max DD -11%) |
+| WR70Plus before | 70.6 / 68.0 / 68.8 | 1.52 / 1.41 / 1.46 | 3.36 / 2.88 / 3.15 | 1,769 |
+| **WR70Plus now** | **71.3 / 68.8 / 69.8** | **1.61 / 1.45 / 1.53** | 3.86 / 3.08 / 3.50 | 1,751 |
+Only these 4 of ~2,550 tested exit / filter changes survived (IS -> OOS correlation of PF gains ~0.0-0.1; PBO ~0.56 for
+'pick the best exit / filter'): smaller targets raise WR mechanically but not PF. Lean Ultra: the audit rates ON07, LATEFH and
+ENG10 as chance-level evidence (isolated parameter cells, profit concentrated in one year); dropping them costs 6-8% of $ but
+raises WR and PF and lowers drawdown.
+
+### 2. Quant strategies from the literature (q_*): nothing to add
+9 new families (2,784 configs): noise-area intraday momentum (Zarattini 2024; real on NQ but it duplicates VOLB), pre-FOMC drift,
+turn of month, pre-holiday, rebalancing flows, same-half-hour persistence, time-series momentum, variance-ratio regimes, NQ-vs-ES
+relative strength, cross-asset lead-lag (1-minute lagged correlation 0.005-0.01). Two thin survivors (month-end rebalancing fade,
+afternoon variance-ratio momentum) add +0.02..+0.2 Sharpe with confidence intervals including 0 and WR 40-55% -> not added.
+"Quantum" trading: no demonstrated, implementable edge (best-known claim: HSBC + IBM 2025 on bond quote fill rates).
+
+### 3. Overfitting audit (audit_*)
+- Profiles pass the deflated Sharpe test at 300k trials (Ultra 1.00 CFD / 0.93 REAL); every year 2020-26 positive.
+- Modules are weaker than their backtests: in most mined families the IS-best config has ~0 out-of-sample Sharpe.
+  Strong: CRT11, MSEQ, ORB60, VOLB, LON, NF05, LF06. Watch: ICT x2 (2026 PF 0.73), MOM11, ORB90, VW13, REV06, LATE15, LF0430.
+  Chance-level: MOM1030 / MOM13 without the agreement rule, ON07, LATEFH, ENG10; gold ENG0408, SVWAP22, ENG0206 (gold is a
+  diversifier with low proven edge: DSR 0.03-0.26).
+- Realistic forward expectation (+1 tick, 35% of the edge removed): Ultra WR ~63%, PF ~1.26, ~$1,700/month per base contract;
+  WR70Plus WR ~69%, PF ~1.27, ~$1,100/month (2024-26 volatility). Range days remain the main risk (PF 0.76-0.84).
+
+### 4. Prop firms (survey verified Oct 2026, sources in propfirms_2026.md)
+- **Apex bans automation since 2026-03-01 (Apex 4.0)** -> the Apex scaling plan in OPERAR_5x150K.md is no longer valid.
+- Topstep: NinjaTrader closed to new accounts (TopstepX only). Take Profit Trader, Alpha Futures, Phidias, Earn2Trade: no bots.
+- Bot-friendly: Lucid, MyFundedFutures (MFFU), Bulenox, FundedNext, (FTMO Futures beta), Tradeify (exclusive use only).
+- Going live closes the sim accounts at Lucid / Topstep / MFFU.
+
+### 5. Best 1-contract plan: MyFundedFutures Rapid EOD 50K (mffu_rapid*.py, exact dense grids, 9 tests)
+Rules (help.myfundedfutures.com, Aug 2026): eval $157 one-time, target $3,000, $2,000 EOD trailing (locks at +$100), no DLL,
+30% consistency, min 4 days, 30 micros; funded: EOD trailing $2,000 locking at +$100, no consistency, no DLL, **daily payouts with
+no cap** once $2,100 buffer is cleared (min $500), 90/10, max 3 Rapid accounts, **Tier-1 news: flat and no orders 2 min around
+CPI / Employment Report / FOMC minutes** (bots allowed; no HFT, no hedging, no copy trading between traders).
+| | Eval pass (hist / +1 tick / bootstrap) | Median days | $/month per account slot (mean / worst of 9) | Cash per funded month |
+|---|---|---|---|---|
+| Eval Estable 1c -> funded **1c**, keep $4,100 | 99/86/82 · 97/80/77 · 92/70/69 | 28-36 | **1,647 / 1,113** | ~2,360 |
+| Eval Estable 1c -> funded 1c, 2c from $3,000 cushion (manual), keep $6,100 | same | same | 2,780 / 1,927 | ~4,100 |
+| Lucid Flex 50K, eval Estable 1c -> funded 1c (acct1c_) | 99/87/85 | 26-31 | 1,033 / 840 | ~1,850 |
+- News blackout cost (news_cost.py): Ultra -2.4/-4.0/-5.7% of P&L, WR70Plus -4.2/-1.3/-2.8% (IS/C24/REAL). Not in the table.
+- Assumes the account keeps running (MFFU moves accounts to live at its discretion or after a $10k day; live = $0 start,
+  $2,000 EOD, 90/10 daily, up to $5k of sim profit into a reserve). If it were moved to live after 12 payouts with no income
+  afterwards: ~$960/month.
+- Under the realistic forward haircut (35% of the edge removed, mffu_haircut.py): 1c/1c $712/month per slot (eval pass ~59%),
+  1c -> 2c $1,171; cash per funded month still $1,690 (1c) / $2,800 (2c).
+
+**NinjaTrader settings, MFFU Rapid EOD 50K**
+- Eval: NQMaster Profile Ultra, Contracts 1, AdaptiveSize false, PropMode Eval, EvalTarget 3000, PropTrailingDD 2000,
+  EvalCushionFull 1200, EvalSafeSet Estable, EvalProfitStop 800, ConsistencyPct 30, AtrStartMax 0, NewsBlackout false.
+  GoldMaster Profile WinRate, Contracts 2, EvalTarget 3000, ConsistencyPct 30, AccountProfitStop 800, NewsBlackout false.
+- Funded: NQMaster Profile Ultra, Contracts 1, PropMode Funded, FundedCushionSafe 0, FundedCushionFull 0, FundedProfitStop 0,
+  FundedPayoutAt 4600, **NewsBlackout true**. GoldMaster Profile Robust, Contracts 1, AccountProfitStop 0, **NewsBlackout true**.
+  Request a payout whenever the balance is >= start + $4,600 and withdraw down to start + $4,100.
+- 2027 CPI / Employment Report dates are not published yet: add them to `NewsTimes` ("yyyy-MM-dd 08:30", comma list) when BLS
+  publishes the 2027 schedule. FOMC minutes (decision + 21 days, 14:00) are built in through 2027.
+- Ask MFFU support in writing to confirm that (a) a NinjaTrader bot is fine on Rapid EOD, and (b) holding positions through
+  non-Tier-1 releases (e.g. 08:30 jobless claims, 10:00 ISM) is allowed on Rapid EOD sim funded; their policy text has one line
+  that reads as 'no positions 2 min around any data release' (if so: -15-18% of Ultra P&L, news_cost.py scenario ALL).
+
+## ★ 2026-10-09 MFFU vs Lucid playbook (English) — report: https://claude.ai/artifact/16gzpcEvJBHeKWkqTUuoFZ
+
+Current NQMaster logic (2026-10-08 rules) + GoldMaster on REAL MNQ/MGC futures, 2024-02-01..2026-09-25 (657 days), 1 contract, $1.90 + 1 tick per side. Scripts `research/mine/final3y.py`, `final3y_acct.py`, `final3y_haircut.py`; page copy `research/mine/final3y_report.html`.
+
+| Profile (with gold) | WR | PF | Trades/day | $/month | Max DD | Worst month |
+|---|---|---|---|---|---|---|
+| Ultra + gold Robust | 65.2% | 1.50 | 5.93 | $3,143 | $6,097 | -$3,132 |
+| Ultra lean + gold Robust | 65.8% | 1.53 | 5.10 | $2,968 | $5,467 | -$2,897 |
+| WR70Plus + gold WinRate | 69.8% | 1.56 | 3.52 | $1,967 | $3,784 | -$2,306 |
+
+Eval at 1 contract (pass % history, median trading days): MFFU Ultra fixed 77% / 21 d, Estable 88% / 27.5 d, WR70Plus 83% / 29 d; Lucid Ultra fixed 78% / 18 d, Estable 89% / 23 d, WR70Plus 83% / 28 d.
+
+Money per account per month (history / +1 tick / resampled; realistic = 35% less edge, resampled):
+- **MFFU Rapid EOD 50K, Ultra eval -> Ultra 1c funded, keep $4,100: $2,137 / $1,984 / $2,012; realistic ~$1,050 (recommended).**
+- MFFU with step-up (2 contracts from balance $53,100, withdraw above $56,100): $3,888 / $3,592 / $3,336; realistic ~$1,580.
+- Lucid Flex 50K, Ultra eval -> Ultra 1c funded: $1,458 / $1,382 / $1,341; realistic ~$780.
+- WR70Plus funded earns ~40% less (MFFU ~$1,100-1,240, Lucid ~$800-940).
+
+Settings — MFFU eval: NQMaster Ultra, Contracts 1, PropMode Eval, EvalTarget 3000, PropTrailingDD 2000, EvalCushionFull 0 (or 1200 + EvalSafeSet Estable for max pass), ConsistencyPct 30, EvalProfitStop 800, AtrStartMax 0; GoldMaster Robust 1 (WinRate 2 with Estable), EvalTarget 3000, ConsistencyPct 30, AccountProfitStop 800. MFFU funded: NQMaster PropMode Funded, FundedCushionSafe 0, FundedCushionFull 0, FundedHighFull true, FundedPayoutAt 4600, NewsBlackout true; GoldMaster Robust 1, NewsBlackout true; withdraw down to $54,100. Lucid: same with ConsistencyPct 50, EvalProfitStop / AccountProfitStop 1400, FundedPayoutAt 4000, NewsBlackout false.
+
+### Automatic funded step-up + computed confidence (2026-10-09)
+
+- New properties (NOT compiled yet, F5 on the PC): NQMaster group 07 `FundedStepUpCushion` (0 = off) and `FundedStepUpContracts` (2); GoldMaster group 02 the same two. In PropMode Funded, when the cushion over the EOD-trailing threshold at the session start is >= FundedStepUpCushion, every module trades FundedStepUpContracts; below it, back to Contracts. MyFundedFutures: FundedStepUpCushion 3000 on BOTH strategies (2 contracts from a $53,100 balance), FundedPayoutAt 6600, withdraw down to $56,100. Script: `research/mine/patch_stepup.py`; backups `*_backup_pre_stepup.cs`.
+- `research/mine/final3y_conf.py` (600 resampled years x edge haircut 0-100%, prior 10/20/30/20/12/8% on 0/20/35/50/75/100% edge loss): MFFU Ultra 1c P(positive year) 82% (99% with backtested edge), P(>= $1,200/month) 38% (83%); step-up 50% (91%); Lucid 1c 20% (64%); P(>= 80% of backtest) 25% (67% even with a perfect edge). Worst 10% of years about -$120/month per account (eval fees).
+- `research/mine/final3y_weak.py`: if the audit-weak modules (ON07, LATEFH, ENG10, MOM1030, MOM13 + 3 gold) or the 2020-only modules are luck, MFFU Ultra still makes $1,315-1,553/month resampled and stays >= Ultra lean and WR70Plus -> keep Ultra.
+- `research/mine/nt_compare.py --set ultra_final | ultralean_final | wr70plus_final` compares a Strategy Analyzer export with the current-rule research trades.
