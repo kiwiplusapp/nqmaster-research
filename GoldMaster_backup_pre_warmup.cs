@@ -109,7 +109,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseOd = true; UseEng0408 = true; UseSvwap = true; UseEng0610 = true; UseAsia = true; UseEng0206 = true; UseLate = false;
 				UseEng0610 = false;
 				Contracts = 1; FlattenTime = 1651; SkipFomc = true; FomcDates = "";
-				WarmupDays = 60; DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; NewsBlackout = false; NewsTimes = ""; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
+				DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; NewsBlackout = false; NewsTimes = ""; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 8; EvalLateGoal = 2100; EvalLateContracts = 2; EvalLateMinCushion = 1000;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
 			}
@@ -156,7 +156,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				}
 				catch { }
 				acctStopped = false; dayStopped = false; dayStartPnl = netPnl;
-				if (rthDays < WarmupDays) Print("GoldMaster | WARNING: only " + rthDays + " RTH days loaded, warm-up needs " + WarmupDays + " - set Days to load >= " + (2 * WarmupDays) + " or lower 'Warm-up days'.");
+				if (rthDays < 60) Print("GoldMaster | WARNING: only " + rthDays + " RTH days loaded - set Days to load >= 120 (ATR / trend warm-up).");
 			}
 			else if (State == State.Terminated)
 			{
@@ -280,11 +280,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (rthHas)
 			{
 				double tr = double.IsNaN(prevRthClose) ? rthH - rthL : Math.Max(rthH - rthL, Math.Max(Math.Abs(rthH - prevRthClose), Math.Abs(rthL - prevRthClose)));
-				atr = double.IsNaN(atr) ? tr : atr + (tr - atr) / (WarmupDays < 60 ? Math.Min(rthDays + 1, 14) : 14.0);	// short warm-up: plain mean over the first 14 days
+				atr = double.IsNaN(atr) ? tr : atr + (tr - atr) / 14.0;
 				prevRthClose = rthC; pdc = rthLastOpen >= RthClose - 1 ? rthC : double.NaN;
 				closes.Add(rthC); while (closes.Count > 20) closes.RemoveAt(0); rthDays++;
 				trendDir = 0;
-				if (closes.Count >= Math.Min(20, Math.Max(2, WarmupDays))) { double s = 0; foreach (double x in closes) s += x; s /= closes.Count; trendDir = rthC > s ? 1 : (rthC < s ? -1 : 0); }
+				if (closes.Count >= 20) { double s = 0; foreach (double x in closes) s += x; s /= closes.Count; trendDir = rthC > s ? 1 : (rthC < s ? -1 : 0); }
 			}
 			else pdc = double.NaN;
 			rthHas = false;
@@ -382,7 +382,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 
 		#region Modules
-		private bool AtrOk { get { return !double.IsNaN(atr) && atr > 0 && closes.Count >= Math.Min(15, Math.Max(2, WarmupDays)) && rthDays >= WarmupDays; } }
+		private bool AtrOk { get { return !double.IsNaN(atr) && atr > 0 && closes.Count >= 15 && rthDays >= 60; } }
 
 		private void OpenDrive()
 		{
@@ -668,7 +668,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (targetHit) { status = "eval target reached"; return false; }
 			if (edgePaused) { status = "EDGE MONITOR ALARM - review before trading"; return false; }
 			if (PauseActive()) { status = "MANUAL PAUSE (file)"; return false; }
-			status = AtrOk ? "trading" : "warming up (needs " + WarmupDays + " RTH days: Days to load >= " + (2 * WarmupDays) + " or lower 'Warm-up days')";
+			status = AtrOk ? "trading" : "warming up (needs 60 RTH days: Days to load >= 120)";
 			return true;
 		}
 		private void ProcessClosedTrades()
@@ -738,7 +738,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "News blackout: flat, no orders 2 min around CPI / NFP / FOMC minutes (MFFU funded)", Order = 13, GroupName = "02. Risk / account")] public bool NewsBlackout { get; set; }
 		[NinjaScriptProperty][Display(Name = "Extra Tier-1 times ET (yyyy-MM-dd HH:mm, comma list)", Order = 14, GroupName = "02. Risk / account")] public string NewsTimes { get; set; }
 		[NinjaScriptProperty][Range(0, 100)][Display(Name = "Eval consistency % (Lucid 50, 0 = off)", Order = 10, GroupName = "02. Risk / account")] public double ConsistencyPct { get; set; }
-		[NinjaScriptProperty][Range(2, 60)][Display(Name = "Warm-up days (60 = validated; 2 = trade from day 3 with short ATR / trend averages)", Order = 15, GroupName = "02. Risk / account")] public int WarmupDays { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: best day so far $ (after a restart)", Order = 11, GroupName = "02. Risk / account")] public double EvalBestDaySoFar { get; set; }
 		[Display(Name = "Show dashboard", Order = 1, GroupName = "03. Display")] public bool ShowDashboard { get; set; }
 		[NinjaScriptProperty][Display(Name = "Edge monitor on", Order = 1, GroupName = "04. Edge monitor")] public bool EdgeMonitor { get; set; }

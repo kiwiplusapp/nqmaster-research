@@ -905,3 +905,15 @@ Honest caveat: it was 1 of ~30 order-flow cells tested, with a weak rank correla
 7. If MNQ shows nothing: one more run B on an **NQ** chart (Contracts 1 = 10x MNQ dollars) tests the exact research flow; if NQ works and MNQ doesn't, NQMaster can be changed to read NQ's flow while trading MNQ.
 
 Live: the delta needs the whole session. A chart loaded mid-session does not boost until the next 18:00 ET start (dashboard: "waiting for the next 18:00 ET session") unless Tick Replay is also on for the live chart. Script `research/mine/patch_orderflow.py`; backup `NQMaster_backup_pre_orderflow.cs`.
+
+## ★ 2026-10-10 Warm-up days (new setting, both strategies)
+
+- **NQMaster** group "03. Risk / account" → `Warm-up days` (default **15** = validated: ATR from 14 RTH days, trend from 15 closes). Range 2-15.
+- **GoldMaster** group "02. Risk / account" → `Warm-up days` (default **60** = validated). Range 2-60.
+- With 2 the modules trade from the 3rd RTH day of loaded data. ATR is then the plain average of the few days seen and the
+  trend is today's close vs the average of the few closes seen: until ~15 (NQ) / ~20 (gold) days are loaded the signals are an
+  approximation and **those first weeks will not match the research**. After that everything is identical to the default.
+- Live trading never needs a low value: when a strategy is enabled it first runs over the history loaded on the chart, so with
+  **Days to load ≥ 45 (NQMaster) / ≥ 120 (GoldMaster)** it is already warmed up at the first live minute.
+- Backtests that must match the research: keep the defaults and start the Strategy Analyzer 1-2 months (NQ) / 3 months (gold)
+  before the period you want to look at. Script `research/mine/patch_warmup.py`; backups `*_backup_pre_warmup.cs`.

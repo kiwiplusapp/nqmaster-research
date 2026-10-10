@@ -155,7 +155,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 0; EvalDailyStop = 0; FundedCushionSafe = 750; FundedPayoutAt = 5000; FundedHighFull = true; FundedCushionFull = 0;
 				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400; EvalSafeSet = NQMasterSafeSet.Estable; FundedProfitStop = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
 				OrbPriorCloseAtr = 0.10; VolbBreakEven = true; MomAgreement = true; VolbTrendLastEntry = 1047; NewsBlackout = false; NewsTimes = "";
-				WarmupDays = 15;
 				UseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;
 			}
 			else if (State == State.Configure)
@@ -205,8 +204,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (UseOrderFlowBoost && mods != null)
 					Print(ofTicks == 0 ? "NQMaster | ORDER FLOW BOOST was on but NO TICK DATA arrived, so nothing was boosted. Backtests need Tick Replay: Tools > Options > Market data > 'Show Tick Replay', then tick 'Tick Replay' in the Strategy Analyzer data series."
 						: string.Format("NQMaster | order flow: {0:N0} trades read, {1} of {2} entries filled with the boost ({3:0.0}%; research Apr-Oct 2026: ~16%).", ofTicks, ofBoosted, ofEntries, ofEntries > 0 ? 100.0 * ofBoosted / ofEntries : 0));
-				if (mods != null && totalTrades == 0 && rthDaysSeen < WarmupDays + 2)
-					Print(string.Format("NQMaster | 0 trades: only {0} RTH days loaded; needs {1} days of warm-up (property 'Warm-up days'). Start the test earlier or lower it.", rthDaysSeen, WarmupDays));
+				if (mods != null && totalTrades == 0 && rthDaysSeen < 25)
+					Print(string.Format("NQMaster | 0 trades: only {0} RTH days loaded; needs ~25 days of warm-up. Start the test 2+ months earlier.", rthDaysSeen));
 			}
 		}
 
@@ -431,7 +430,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			rthCloses.Add(dayClose);
 			while (rthCloses.Count > 20) rthCloses.RemoveAt(0);
 			trendDir = 0;
-			if (rthCloses.Count >= TrendMin)
+			if (rthCloses.Count >= 15)
 			{
 				double s = 0; foreach (double x in rthCloses) s += x;
 				trendDir = dayClose > s / rthCloses.Count ? 1 : (dayClose < s / rthCloses.Count ? -1 : 0);
@@ -445,7 +444,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void ManageOrb(Mod o, int closeMin)
 		{
 			if (o.UsePullback && !pullbackDay) return;
-			if (trendDir == 0 || atrCount < AtrMin || double.IsNaN(todayAtr)) return;
+			if (trendDir == 0 || atrCount < 14 || double.IsNaN(todayAtr)) return;
 			bool window = closeMin < 780;
 			if (!window) { CancelEntry(o); return; }
 			if (!o.Parked && !o.Armed && !o.InTrade && !Working(o.Entry) && o.Trades > 0 && o.Trades < 2 && Close[0] < o.OrH && Close[0] > o.OrL) o.Armed = true;
@@ -477,7 +476,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// stop at the RTH open price, target 2R, max 400 min, 09:30-15:00 entries (research/mine/families2.py, VOL_BREAK).
 		private void ManageVolb(int openMin)
 		{
-			if (volbDone || volb.InTrade || double.IsNaN(volbUp) || double.IsNaN(rthOpenPx) || atrCount < AtrMin) return;
+			if (volbDone || volb.InTrade || double.IsNaN(volbUp) || double.IsNaN(rthOpenPx) || atrCount < 14) return;
 			if (openMin >= 899) { CancelEntry(volb); volbDone = true; return; }
 			// research/mine/wrq_combo.py (VTSO): trend-only VOLB (WR70Plus / Estable) fills after 10:47 ET lose their edge
 			if (volbTrendOnly && VolbTrendLastEntry > 0 && openMin >= Hm(VolbTrendLastEntry)) { CancelEntry(volb); volbDone = true; return; }
@@ -524,7 +523,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			if (openMin != 599) return;
 			eng10Done = true;
-			if (!e10aHas || !e10bHas || atrCount < AtrMin || double.IsNaN(todayAtr) || todayAtr <= 0 || trendDir == 0) return;
+			if (!e10aHas || !e10bHas || atrCount < 14 || double.IsNaN(todayAtr) || todayAtr <= 0 || trendDir == 0) return;
 			int d = 0;
 			if (e10bC > e10bO && e10bC > e10aH) d = 1; else if (e10bC < e10bO && e10bC < e10aL) d = -1;
 			if (d == 0 || d != trendDir) return;
@@ -564,7 +563,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void TimeEntry(Mod m)
 		{
 			lastDeferred = false;
-			if (atrCount < AtrMin || double.IsNaN(atrDaily) || m.InTrade) return;
+			if (atrCount < 14 || double.IsNaN(atrDaily) || m.InTrade) return;
 			double reference = double.NaN;
 			if (m.Lookback == -1) reference = sessOpen;
 			else if (m.Lookback == -2) reference = rthOpenPx;
@@ -618,7 +617,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			lastDeferred = false;
 			if (crt.Done || crt.InTrade) return;
 			crt.Done = true;
-			if (atrCount < AtrMin || double.IsNaN(todayAtr) || todayAtr <= 0) return;
+			if (atrCount < 14 || double.IsNaN(todayAtr) || todayAtr <= 0) return;
 			int d = 0;
 			if (c2H > c1H && c2C < c1H && c2C > c1L && c2L >= c1L) d = -1;
 			else if (c2L < c1L && c2C > c1L && c2C < c1H && c2H <= c1H) d = 1;
@@ -644,7 +643,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (Close[0] > rH || Close[0] < rL)
 				{
 					int d = Close[0] > rH ? 1 : -1;
-					if (atrCount < AtrMin || double.IsNaN(atrDaily) || d != trendDir) { lonStage = 3; return; }
+					if (atrCount < 14 || double.IsNaN(atrDaily) || d != trendDir) { lonStage = 3; return; }
 					lon.Dir = d; lonStage = 1;
 				}
 				else return;
@@ -696,7 +695,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (FlattenTime > 0 && closeMin >= Hm(FlattenTime)) return;
 
 			// ---- MSEQ (uptrend days, signal bar opening 10:30-15:45)
-			if (mseq.On && !mseq.InTrade && !Working(mseq.Entry) && trendDir == 1 && openMin >= 630 && openMin < 945 && atrCount >= AtrMin)
+			if (mseq.On && !mseq.InTrade && !Working(mseq.Entry) && trendDir == 1 && openMin >= 630 && openMin < 945 && atrCount >= 14)
 			{
 				int n = 5; bool ok = Closes[1][n] < Opens[1][n];
 				double mainLow = Lows[1][n];
@@ -735,7 +734,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 
 			// ---- RSI2 pullback: RSI(2) < 10 (> 90) with the daily trend and the intraday trend (price vs RTH open and VWAP agree)
-			if (rsi.On && !rsi.InTrade && !Working(rsi.Entry) && rsiTrades < 3 && closeMin >= 630 && closeMin < 945 && atrCount >= AtrMin && trendDir != 0
+			if (rsi.On && !rsi.InTrade && !Working(rsi.Entry) && rsiTrades < 3 && closeMin >= 630 && closeMin < 945 && atrCount >= 14 && trendDir != 0
 				&& !double.IsNaN(rthOpenPx) && vwV > 0 && !double.IsNaN(todayAtr) && todayAtr > 0)
 			{
 				double c0 = Closes[1][0], vw = vwPv / vwV;
@@ -791,7 +790,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (!trig) continue;
 				ictAct[s] = false;
 				int d = s == 0 ? -1 : 1;
-				if (ict.InTrade || Working(ict.Entry) || ict.Parked || ictTrades >= 3 || d != trendDir || atrCount < AtrMin) continue;
+				if (ict.InTrade || Working(ict.Entry) || ict.Parked || ictTrades >= 3 || d != trendDir || atrCount < 14) continue;
 				double stop = d == -1 ? ictExt[s] + TickSize : ictExt[s] - TickSize;
 				double lim = Instrument.MasterInstrument.RoundToTickSize(cisd);
 				if ((d == -1 && lim <= Closes[1][0]) || (d == 1 && lim >= Closes[1][0])) continue;
@@ -886,13 +885,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (q >= cap) return q;
 			Log(who + " context x2"); return cap;
 		}
-		// warm-up (property WarmupDays; 15 = validated): RTH days of ATR history and closes needed before the modules trade
-		private int AtrMin { get { return Math.Min(14, Math.Max(1, WarmupDays)); } }
-		private int TrendMin { get { return Math.Min(15, Math.Max(2, WarmupDays)); } }
 		private double LastClose(int back) { int n = rthCloses.Count; return n > back ? rthCloses[n - 1 - back] : double.NaN; }
 		private double FeatTrend(int d)
 		{
-			if (rthCloses.Count < TrendMin || double.IsNaN(todayAtr) || todayAtr <= 0) return double.NaN;
+			if (rthCloses.Count < 15 || double.IsNaN(todayAtr) || todayAtr <= 0) return double.NaN;
 			double sm = 0; foreach (double x in rthCloses) sm += x; sm /= rthCloses.Count;
 			return (LastClose(0) - sm) * d / todayAtr;
 		}
@@ -1485,7 +1481,6 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Drawdown buffer $", Order = 37, GroupName = "03. Risk / account")] public double DrawdownBuffer { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Daily loss limit $ (0 = off; eval: 800, funded: 500)", Order = 46, GroupName = "03. Risk / account")] public double DailyLossLimit { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Min daily ATR (points) to trade (0 = off)", Order = 47, GroupName = "03. Risk / account")] public double MinAtrPoints { get; set; }
-		[NinjaScriptProperty][Range(2, 15)][Display(Name = "Warm-up days (15 = validated; 2 = trade from day 3 with short ATR / trend averages)", Order = 48, GroupName = "03. Risk / account")] public int WarmupDays { get; set; }
 		[NinjaScriptProperty][Display(Name = "Eval mode (late size-up)", Order = 1, GroupName = "05. Evaluation mode")] public bool EvalMode { get; set; }
 		[NinjaScriptProperty][Display(Name = "Eval start date (yyyy-MM-dd)", Order = 2, GroupName = "05. Evaluation mode")] public string EvalStartDate { get; set; }
 		[NinjaScriptProperty][Range(1, 30)][Display(Name = "Late day (sessions since start, 0-based)", Order = 3, GroupName = "05. Evaluation mode")] public int EvalLateDay { get; set; }
