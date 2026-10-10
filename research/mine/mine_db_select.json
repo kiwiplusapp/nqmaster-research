@@ -1,0 +1,28 @@
+{
+ "configs": 53486,
+ "by_tag": {
+  "db_old": 45278,
+  "db_new": 8208
+ },
+ "stage1": 195,
+ "stage1_and_2": 0,
+ "stage2_rate_given_stage1": 0.0,
+ "stage2_rate_all_configs": 0.0017,
+ "stage2_rate_configs_T1pf_1.0_1.2": 0.0023,
+ "stage1_by_family": {
+  "DAY_MR": 42,
+  "NQ_DRIVE": 33,
+  "G_DRIVE": 26,
+  "G_ORB": 24,
+  "ENGULF_4H": 20,
+  "VA_80": 13,
+  "CLOCK_ANCHOR": 13,
+  "LATE_MOM": 10,
+  "RVOL_DRIVE": 7,
+  "ROUND_NUM": 4,
+  "OPEN_DRIVE": 1,
+  "PIVOT_BREAK": 1,
+  "OR_FAIL": 1
+ },
+ "final_by_family": {}
+}

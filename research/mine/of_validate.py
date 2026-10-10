@@ -90,7 +90,7 @@ if __name__ == "__main__":
         a, bq = sep.cvd >= THR, sep.cvd_mnq >= THR
         # per-minute session delta of the two contracts through the month
         idx = M_new.index[(M_new.index >= Mm.index.min()) & (M_new.index <= Mm.index.max())]
-        sess = pd.Series(D.daydate[np.searchsorted(ep_all, idx.to_numpy()).clip(0, len(ep_all) - 1)], index=idx)
+        sess = pd.Series(D.day[np.searchsorted(ep_all, idx.to_numpy()).clip(0, len(ep_all) - 1)], index=idx)
         nq = M_new.reindex(idx).fillna(0); mn = Mm.reindex(idx).fillna(0)
         cn = (nq.buy - nq.sell).groupby(sess.values).cumsum() / (nq.buy + nq.sell).groupby(sess.values).cumsum().replace(0, np.nan)
         cm = (mn.buy - mn.sell).groupby(sess.values).cumsum() / (mn.buy + mn.sell).groupby(sess.values).cumsum().replace(0, np.nan)

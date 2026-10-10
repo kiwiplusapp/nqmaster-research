@@ -870,6 +870,14 @@ Settings — MFFU eval: NQMaster Ultra, Contracts 1, PropMode Eval, EvalTarget 3
 
 ## ★ 2026-10-09 Order-flow boost (EXPERIMENTAL, group 09 "Order flow", default OFF)
 
+> **RESULT (same day): FAILED the out-of-sample test -> keep `UseOrderFlowBoost` OFF; the Tick Replay backtest below is not needed.**
+> Second free Databento credit ($116.61 of $125): NQ aggressor trades for 11 NEW months (2025-05..2026-03) + MNQ for Sep 2025, rule unchanged
+> (`research/mine/of_validate.py` -> `of_validate.json`). On 1,207 new Ultra trades the boosted 19% averaged $19.0 (PF 1.49, WR 64.8%) vs
+> $19.4 (PF 1.42, WR 66.8%) for the rest; rank correlation -0.02; better in only 6 of 11 months; the top fifth of the delta was one of the
+> WORST groups (PF 1.28). Boost ON made more $ (+18%) only because the size was bigger: PF 1.43 -> 1.45, max DD +9% = plain leverage.
+> The Apr-Oct 2026 result was luck. Delta over the last 5 / 15 / 30 minutes: orderings flip between the samples too (`of_validate_other.py`).
+> MNQ's own flow vs NQ's (Sep 2025): correlation 0.67-0.72, same boost decision 70% of the time.
+
 What it does: NQMaster reads every trade from the tick stream (`OnMarketData`), splits volume into aggressive buys (trade at/above the ask) and aggressive sells (at/below the bid; tick rule in between, same as `OrderFlowRecorder.cs`), and keeps the **session cumulative delta** = (buys - sells) / (buys + sells) since 18:00 ET. When an entry goes the same way as the delta by >= `OrderFlowCvdMin` (0.015), its size is multiplied by `OrderFlowBoost` (2).
 - `OrderFlowStack` off (default): never above 2x the base size (a trade already at x2 from context / confluence / ICT stays x2). On: x2 on top (up to 4x).
 - Market entries use the delta at the bar close before the fill (= research). Resting stop / limit entries (ORB60, ORB90, VOLB, ENG10, LON, ICT) are re-sized every 1-minute bar until they fill (`ChangeOrder`; if NinjaTrader ignores a change, that order keeps its size and the Output says so).
@@ -897,3 +905,15 @@ Honest caveat: it was 1 of ~30 order-flow cells tested, with a weak rank correla
 7. If MNQ shows nothing: one more run B on an **NQ** chart (Contracts 1 = 10x MNQ dollars) tests the exact research flow; if NQ works and MNQ doesn't, NQMaster can be changed to read NQ's flow while trading MNQ.
 
 Live: the delta needs the whole session. A chart loaded mid-session does not boost until the next 18:00 ET start (dashboard: "waiting for the next 18:00 ET session") unless Tick Replay is also on for the live chart. Script `research/mine/patch_orderflow.py`; backup `NQMaster_backup_pre_orderflow.cs`.
+
+## ★ 2026-10-10 Warm-up days (new setting, both strategies)
+
+- **NQMaster** group "03. Risk / account" → `Warm-up days` (default **15** = validated: ATR from 14 RTH days, trend from 15 closes). Range 2-15.
+- **GoldMaster** group "02. Risk / account" → `Warm-up days` (default **60** = validated). Range 2-60.
+- With 2 the modules trade from the 3rd RTH day of loaded data. ATR is then the plain average of the few days seen and the
+  trend is today's close vs the average of the few closes seen: until ~15 (NQ) / ~20 (gold) days are loaded the signals are an
+  approximation and **those first weeks will not match the research**. After that everything is identical to the default.
+- Live trading never needs a low value: when a strategy is enabled it first runs over the history loaded on the chart, so with
+  **Days to load ≥ 45 (NQMaster) / ≥ 120 (GoldMaster)** it is already warmed up at the first live minute.
+- Backtests that must match the research: keep the defaults and start the Strategy Analyzer 1-2 months (NQ) / 3 months (gold)
+  before the period you want to look at. Script `research/mine/patch_warmup.py`; backups `*_backup_pre_warmup.cs`.
