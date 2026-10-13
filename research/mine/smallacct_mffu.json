@@ -1,0 +1,134 @@
+{
+ "1c, risk cap $300 < $2,000": {
+  "edge-0%": {
+   "T1": {
+    "per_month": 1029,
+    "p10_month": 338,
+    "accounts_lost": 0.14,
+    "neg_year_pct": 2.2
+   },
+   "T2": {
+    "per_month": 1538,
+    "p10_month": 887,
+    "accounts_lost": 0.49,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-35%": {
+   "T1": {
+    "per_month": 484,
+    "p10_month": -52,
+    "accounts_lost": 1.54,
+    "neg_year_pct": 30.2
+   },
+   "T2": {
+    "per_month": 774,
+    "p10_month": 57,
+    "accounts_lost": 1.56,
+    "neg_year_pct": 9.0
+   }
+  },
+  "edge-60%": {
+   "T1": {
+    "per_month": 309,
+    "p10_month": -68,
+    "accounts_lost": 2.78,
+    "neg_year_pct": 56.1
+   },
+   "T2": {
+    "per_month": 203,
+    "p10_month": -118,
+    "accounts_lost": 5.92,
+    "neg_year_pct": 22.5
+   }
+  }
+ },
+ "1c, no cap": {
+  "edge-0%": {
+   "T1": {
+    "per_month": 1099,
+    "p10_month": 356,
+    "accounts_lost": 0.17,
+    "neg_year_pct": 0.0
+   },
+   "T2": {
+    "per_month": 1474,
+    "p10_month": 708,
+    "accounts_lost": 0.94,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-35%": {
+   "T1": {
+    "per_month": 572,
+    "p10_month": -42,
+    "accounts_lost": 1.6,
+    "neg_year_pct": 22.3
+   },
+   "T2": {
+    "per_month": 802,
+    "p10_month": 69,
+    "accounts_lost": 1.67,
+    "neg_year_pct": 4.5
+   }
+  },
+  "edge-60%": {
+   "T1": {
+    "per_month": 356,
+    "p10_month": -78,
+    "accounts_lost": 2.55,
+    "neg_year_pct": 50.4
+   },
+   "T2": {
+    "per_month": 362,
+    "p10_month": -107,
+    "accounts_lost": 5.67,
+    "neg_year_pct": 20.2
+   }
+  }
+ },
+ "step-up 2c from $3,000 cushion + cap": {
+  "edge-0%": {
+   "T1": {
+    "per_month": 1611,
+    "p10_month": 311,
+    "accounts_lost": 0.37,
+    "neg_year_pct": 0.0
+   },
+   "T2": {
+    "per_month": 2139,
+    "p10_month": 634,
+    "accounts_lost": 0.67,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-35%": {
+   "T1": {
+    "per_month": 655,
+    "p10_month": -52,
+    "accounts_lost": 1.83,
+    "neg_year_pct": 48.9
+   },
+   "T2": {
+    "per_month": 1107,
+    "p10_month": 15,
+    "accounts_lost": 2.65,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-60%": {
+   "T1": {
+    "per_month": 348,
+    "p10_month": -68,
+    "accounts_lost": 3.22,
+    "neg_year_pct": 54.0
+   },
+   "T2": {
+    "per_month": 156,
+    "p10_month": -118,
+    "accounts_lost": 6.96,
+    "neg_year_pct": 46.1
+   }
+  }
+ }
+}

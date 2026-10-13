@@ -1,0 +1,226 @@
+{
+ "Lucid Flex 25K": {
+  "edge-0%": {
+   "T1": {
+    "per_month": 706,
+    "p10_month": 412,
+    "accounts_lost_per_year": 5.13,
+    "funded_busts": 1.86,
+    "payouts": 10.7,
+    "neg_year_pct": 0.0
+   },
+   "T2": {
+    "per_month": 672,
+    "p10_month": 451,
+    "accounts_lost_per_year": 7.43,
+    "funded_busts": 2.84,
+    "payouts": 10.1,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-35%": {
+   "T1": {
+    "per_month": 403,
+    "p10_month": 120,
+    "accounts_lost_per_year": 8.93,
+    "funded_busts": 3.22,
+    "payouts": 6.5,
+    "neg_year_pct": 5.8
+   },
+   "T2": {
+    "per_month": 407,
+    "p10_month": 222,
+    "accounts_lost_per_year": 12.11,
+    "funded_busts": 2.15,
+    "payouts": 6.9,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-60%": {
+   "T1": {
+    "per_month": 108,
+    "p10_month": -135,
+    "accounts_lost_per_year": 14.76,
+    "funded_busts": 5.76,
+    "payouts": 3.1,
+    "neg_year_pct": 35.3
+   },
+   "T2": {
+    "per_month": 219,
+    "p10_month": 35,
+    "accounts_lost_per_year": 14.11,
+    "funded_busts": 3.27,
+    "payouts": 4.6,
+    "neg_year_pct": 4.5
+   }
+  }
+ },
+ "Lucid Flex 50K": {
+  "edge-0%": {
+   "T1": {
+    "per_month": 861,
+    "p10_month": 426,
+    "accounts_lost_per_year": 0.83,
+    "funded_busts": 0.21,
+    "payouts": 5.9,
+    "neg_year_pct": 0.0
+   },
+   "T2": {
+    "per_month": 1043,
+    "p10_month": 701,
+    "accounts_lost_per_year": 1.96,
+    "funded_busts": 0.85,
+    "payouts": 7.3,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-35%": {
+   "T1": {
+    "per_month": 433,
+    "p10_month": -49,
+    "accounts_lost_per_year": 2.42,
+    "funded_busts": 1.17,
+    "payouts": 3.2,
+    "neg_year_pct": 19.4
+   },
+   "T2": {
+    "per_month": 620,
+    "p10_month": 239,
+    "accounts_lost_per_year": 3.3,
+    "funded_busts": 0.96,
+    "payouts": 4.5,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-60%": {
+   "T1": {
+    "per_month": 222,
+    "p10_month": -73,
+    "accounts_lost_per_year": 3.85,
+    "funded_busts": 1.22,
+    "payouts": 1.8,
+    "neg_year_pct": 53.2
+   },
+   "T2": {
+    "per_month": 284,
+    "p10_month": -100,
+    "accounts_lost_per_year": 5.69,
+    "funded_busts": 1.19,
+    "payouts": 2.4,
+    "neg_year_pct": 19.1
+   }
+  }
+ },
+ "Lucid Pro 25K": {
+  "edge-0%": {
+   "T1": {
+    "per_month": 531,
+    "p10_month": 257,
+    "accounts_lost_per_year": 3.58,
+    "funded_busts": 1.24,
+    "payouts": 5.7,
+    "neg_year_pct": 0.0
+   },
+   "T2": {
+    "per_month": 602,
+    "p10_month": 443,
+    "accounts_lost_per_year": 3.55,
+    "funded_busts": 1.07,
+    "payouts": 6.5,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-35%": {
+   "T1": {
+    "per_month": 308,
+    "p10_month": 53,
+    "accounts_lost_per_year": 4.93,
+    "funded_busts": 1.32,
+    "payouts": 3.7,
+    "neg_year_pct": 10.1
+   },
+   "T2": {
+    "per_month": 306,
+    "p10_month": 34,
+    "accounts_lost_per_year": 9.9,
+    "funded_busts": 2.53,
+    "payouts": 4.2,
+    "neg_year_pct": 1.1
+   }
+  },
+  "edge-60%": {
+   "T1": {
+    "per_month": 78,
+    "p10_month": -195,
+    "accounts_lost_per_year": 9.88,
+    "funded_busts": 3.26,
+    "payouts": 1.9,
+    "neg_year_pct": 39.6
+   },
+   "T2": {
+    "per_month": 73,
+    "p10_month": -150,
+    "accounts_lost_per_year": 12.51,
+    "funded_busts": 3.54,
+    "payouts": 2.4,
+    "neg_year_pct": 37.1
+   }
+  }
+ },
+ "Lucid Pro 50K": {
+  "edge-0%": {
+   "T1": {
+    "per_month": 766,
+    "p10_month": 268,
+    "accounts_lost_per_year": 0.54,
+    "funded_busts": 0.06,
+    "payouts": 4.6,
+    "neg_year_pct": 0.0
+   },
+   "T2": {
+    "per_month": 859,
+    "p10_month": 664,
+    "accounts_lost_per_year": 1.72,
+    "funded_busts": 0.8,
+    "payouts": 5.1,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-35%": {
+   "T1": {
+    "per_month": 408,
+    "p10_month": -64,
+    "accounts_lost_per_year": 2.22,
+    "funded_busts": 0.91,
+    "payouts": 2.6,
+    "neg_year_pct": 19.4
+   },
+   "T2": {
+    "per_month": 443,
+    "p10_month": 217,
+    "accounts_lost_per_year": 2.46,
+    "funded_busts": 0.73,
+    "payouts": 2.9,
+    "neg_year_pct": 0.0
+   }
+  },
+  "edge-60%": {
+   "T1": {
+    "per_month": 167,
+    "p10_month": -96,
+    "accounts_lost_per_year": 3.31,
+    "funded_busts": 1.09,
+    "payouts": 1.3,
+    "neg_year_pct": 52.5
+   },
+   "T2": {
+    "per_month": 156,
+    "p10_month": -128,
+    "accounts_lost_per_year": 3.71,
+    "funded_busts": 1.03,
+    "payouts": 1.4,
+    "neg_year_pct": 20.2
+   }
+  }
+ }
+}

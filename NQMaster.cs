@@ -40,6 +40,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 {
 	public enum NQMasterProfile { Ultra, WR70Plus, Durable, Custom }
 	public enum NQMasterPropMode { Off, Eval, Funded }
+	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K }
 	public enum NQMasterSafeSet { Classic, Estable }
 
 	public class NQMaster : Strategy
@@ -146,6 +147,34 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (shortSession) Log(string.Format("short session (holiday / half day): the market closes {0:00}:{1:00} ET{2}", sessEndMin / 60, sessEndMin % 60, SkipShortSessions ? " - no new entries this session" : ""));
 			rollHalt = State == State.Realtime && RollDue();
 			if (rollHalt) Warn("nqm_roll", "NQMaster | ROLL DATE reached for " + Instrument.FullName + ": no new entries. Move the strategy to the next contract (same settings).");
+		}
+		// ---- account presets (research/mine/smallacct_*.py, real NQ futures 2020-26, 1 contract per module). Applied at start-up when PropMode is Eval or Funded.
+		// Eval: profit stop = 0.9 x consistency x target (best day must stay under the consistency limit; the old '700 with 1 contract' cost ~9 points of 22-day pass
+		// rate on Lucid 50K), no per-trade risk cap (neutral for passing, it only slows a 25K eval). Funded: per-trade risk cap while the cushion is small.
+		private void ApplyPreset()
+		{
+			if (PropPreset == NQMasterPropPreset.Manual || PropMode == NQMasterPropMode.Off) return;
+			bool ev = PropMode == NQMasterPropMode.Eval;
+			switch (PropPreset)
+			{
+				case NQMasterPropPreset.Lucid25K:
+					StartBalance = 25000; PropTrailingDD = 1000; ConsistencyPct = 50;
+					if (ev) { EvalTarget = 1250; EvalProfitStop = 560; EvalRiskCapCushion = 0; MaxOpenContracts = 20; }
+					else { RiskCapPerContract = 150; FundedRiskCapCushion = 500; FundedPayoutAt = 1500; MaxOpenContracts = 10; FundedProfitStop = 0; }
+					break;
+				case NQMasterPropPreset.Lucid50K:
+					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 50;
+					if (ev) { EvalTarget = 3000; EvalProfitStop = 1350; EvalRiskCapCushion = 0; MaxOpenContracts = 40; }
+					else { RiskCapPerContract = 300; FundedRiskCapCushion = 1000; FundedPayoutAt = 4000; MaxOpenContracts = 20; FundedProfitStop = 0; }
+					break;
+				case NQMasterPropPreset.Mffu50K:
+					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 30;
+					if (ev) { EvalTarget = 3000; EvalProfitStop = 800; EvalRiskCapCushion = 0; MaxOpenContracts = 30; }
+					else { RiskCapPerContract = 300; FundedRiskCapCushion = 2000; FundedPayoutAt = 6600; MaxOpenContracts = 30; FundedProfitStop = 0; }
+					break;
+			}
+			Print(string.Format("NQMaster | preset {0} ({1}): balance {2:0}, trailing DD {3:0}, eval target {4:0}, profit stop {5:0}, consistency {6:0}%, risk cap {7:0} below cushion {8:0}, max open contracts {9}",
+				PropPreset, PropMode, StartBalance, PropTrailingDD, EvalTarget, EvalProfitStop, ConsistencyPct, RiskCapPerContract, ev ? EvalRiskCapCushion : FundedRiskCapCushion, MaxOpenContracts));
 		}
 		private bool RollDue()
 		{
@@ -262,6 +291,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				OrbPriorCloseAtr = 0.10; VolbBreakEven = true; MomAgreement = true; VolbTrendLastEntry = 1047; NewsBlackout = false; NewsTimes = "";
 				MinStopAtr = 0.10; RiskCapPerContract = 300; EvalRiskCapCushion = 1200; FundedRiskCapCushion = 2000;
 				WarmupDays = 15;
+				PropPreset = NQMasterPropPreset.Manual;
 				AccountSyncGuard = true; SkipShortSessions = true; MaxOpenContracts = 20; RollGuard = true; LogToFile = true;
 				UseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;
 			}
@@ -285,6 +315,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
 					else Print("NQMaster | FOMC dates: cannot read '" + raw.Trim() + "' (format yyyy-MM-dd)");
 				}
+				ApplyPreset();
 				newsEt = new List<DateTime>();
 				foreach (string raw in (BuiltinNews + "," + (NewsTimes ?? "")).Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
 				{
@@ -1710,6 +1741,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "k (0 = profile calibration)", Order = 4, GroupName = "06. Edge monitor")] public double EdgeK { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "h (0 = profile calibration)", Order = 5, GroupName = "06. Edge monitor")] public double EdgeH { get; set; }
 		[NinjaScriptProperty][Display(Name = "Prop mode (Off / Eval / Funded)", Order = 1, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropMode PropMode { get; set; }
+		[NinjaScriptProperty][Display(Name = "Account preset (Lucid 25K / Lucid 50K / MFFU 50K): fills balance, drawdown, target, profit stop, risk cap and contract cap for the chosen mode", Order = 0, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropPreset PropPreset { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Trailing drawdown $ (EOD, locks at start+100)", Order = 2, GroupName = "07. Prop account (cushion gating)")] public double PropTrailingDD { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: full mode when cushion >= $", Order = 3, GroupName = "07. Prop account (cushion gating)")] public double EvalCushionFull { get; set; }
 		[NinjaScriptProperty][Display(Name = "Eval: modules below the cushion (Estable = stable set, recommended; Classic = old SAFE)", Order = 3, GroupName = "07. Prop account (cushion gating)")] public NQMasterSafeSet EvalSafeSet { get; set; }
@@ -1723,7 +1755,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: no-x2 between safe cushion and this $, full above (0 = off; EQ2: 1500)", Order = 13, GroupName = "07. Prop account (cushion gating)")] public double FundedCushionFull { get; set; }
 		[NinjaScriptProperty][Range(0, 100)][Display(Name = "Eval consistency % (best day <= % of profit; Lucid 50, 0 = off)", Order = 11, GroupName = "07. Prop account (cushion gating)")] public double ConsistencyPct { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: best day so far $ (after a restart)", Order = 12, GroupName = "07. Prop account (cushion gating)")] public double EvalBestDaySoFar { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: stop the day at +$ (whole account; 1400 with 2 contracts, 700 with 1; 0 = off)", Order = 14, GroupName = "07. Prop account (cushion gating)")] public double EvalProfitStop { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: stop the day at +$ (whole account; 0.9 x consistency % x target: Lucid 50K 1350, Lucid 25K 560, MFFU 50K 800; 0 = off)", Order = 14, GroupName = "07. Prop account (cushion gating)")] public double EvalProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: stop the day at +$ (whole account; LucidPro 40% consistency: 500 with 2 contracts; 0 = off)", Order = 15, GroupName = "07. Prop account (cushion gating)")] public double FundedProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 16, GroupName = "07. Prop account (cushion gating)")] public double FundedStepUpCushion { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 17, GroupName = "07. Prop account (cushion gating)")] public int FundedStepUpContracts { get; set; }
