@@ -2,7 +2,7 @@
 
 ## ★★ 2026-10-12 overhaul — READ THIS FIRST (English)
 
-Full report: see the published artifact "NQMaster audit 2026-10-12" (link in the chat). Research:
+Full report: https://claude.ai/artifact/61HUsYa5HWgrGunADkmDN2 (NQMaster System Audit). Research:
 - `research/mine/hist_profiles.md`: every profile on the same real futures data.
 - `cand16.py`, `cand16_life.py`, `robust2_*.py`: candidates and the risk layer.
 - `stress_hist.py`, `stress_vol.py`, `liqbuf.py`: August-type stress tests.

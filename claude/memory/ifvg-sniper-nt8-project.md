@@ -184,4 +184,5 @@ Rejected: IFVG, FVG/Silver Bullet, sweeps, gap fade, last-half-hour, London ORB,
     - GoldMaster FlattenTime 1600 (was 1651; MFFU auto-closes 16:10, Lucid 16:45). Re-priced neutral in `gold_flat1600.py`: WinRate PF 1.49/1.70/1.98, Robust 1.23/1.35/1.37.
   - Both files type-check with mcs against an NT8 API stub (scratchpad stub/s0.cs; the pre-overhaul backups also pass). NOT compiled in NinjaTrader: F5 on the PC.
   - Backups: NQMaster_backup_pre_overhaul.cs, *_backup_pre_audit.cs. The guide section is at the top of NQMASTER_GUIA.md.
+  - Report artifact: https://claude.ai/artifact/61HUsYa5HWgrGunADkmDN2 ("NQMaster System Audit").
   - Python/AI answer (`audit_bestpractices_ai_2026-10-12.md`): feasible as NinjaTrader execution + a Python ops/advisor layer. A self-improving live AI that changes the strategy is not recommended (overfitting, prop-firm rules, no edge evidence for news/LLM signals).
