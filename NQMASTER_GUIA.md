@@ -1,5 +1,36 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★ 2026-10-13 (later): 75-90% funded within one month — the route (English) — READ THIS FIRST
+
+Script: `research/mine/month80.py` -> `month80.json`. Real Databento NQ futures, Ultra after the 10-12 overhaul, $1.90 + 1 tick per side. "Within a month" is counted strictly: the funded account must be reached in at most 20 listed trading days, which is about 22 real trading days. The day list skips FOMC and ATR<150 days. Two periods: T1 = starts 2020-03..2023-10 and T2 = starts 2024-01..2026. Nothing was fitted on T2. The 90% intervals come from a block bootstrap with 44-day blocks. "Edge -35%" removes 35% of the mean daily profit, as a realistic forward estimate.
+
+**The route.** Use a **25K evaluation with no consistency rule** (Lucid Pro 25K or FundedNext Rapid Pro 25K). Run **2 contracts per module** in the eval, and **buy a new eval the day after any bust**. The 2 contracts double the speed toward the small $1,250-1,500 target. A bust only costs $80-125 and one day, and with no consistency rule nothing slows the pass down.
+
+| Setup | Funded within a month, T1 / T2 | 90% interval T1 / T2 | Edge -35%, T1 / T2 | Evals bought (T2) | Fees (T2) |
+|---|---|---|---|---|---|
+| **Lucid Pro 25K, eval 2c + restarts** | **89.9% / 92.5%** | 83-95 / 90-97 | **83.3% / 89.1%** | 2.4 | $294 |
+| **FundedNext Rapid Pro 25K, eval 2c + restarts** | **87.1% / 91.4%** | 78-93 / 88-97 | **80.5% / 81.8%** | 2.5 | $196 |
+| Lucid Flex 25K, eval 2c + restarts | 85.6% / 90.4% | 81-95 / 87-97 | 73.9% / 85.0% | 2.4 | $212 |
+| Bulenox Opt2 25K, eval 3c + restarts | 88.0% / 89.9% | 81-93 / 86-96 | 74.2% / 69.4% | 2.1 | $374 |
+| Lucid Pro 50K, eval 4c + restarts | 87.1% / 91.4% | 78-93 / 88-97 | 80.6% / 81.8% | 2.4 | $469 |
+| Lucid Pro 25K, eval 1c + restarts | 71.7% / 75.0% | 60-82 / 66-88 | 57.4% / 67.2% | 1.7 | $208 |
+| Lucid Flex 25K, eval 1c + restarts | 64.6% / 68.6% | 54-76 / 59-83 | 53.3% / 54.5% | 1.8 | $156 |
+| MFFU Rapid EOD 50K, eval 1c + restarts | 19.6% / 29.6% | | 13.6% / 21.0% | 1.2 | $190 |
+
+**One eval on its own** (no restart) peaks at about 50-55% within a month in every setup: Bulenox 25K 1c 54.7/53.3, Lucid Pro 25K 1c 54.0/49.9, Lucid Pro 25K 2c 44.8/44.0. A single attempt is limited by the size of the edge, about $90-120 per day per contract against a $1,000 drawdown. Going above that takes the restart protocol, and with restarts 2 contracts is better than 1. Contracts above 2 on a 25K account do not help Lucid. Bulenox needs 3 contracts because its target is $1,500 with a $500 DLL.
+
+**How to run it (preset `LucidPro25K` or `FundedNext25K`, group 07, PropMode = Eval):**
+- The preset sets: balance 25,000; trailing DD 1,000; consistency 0; target 1,250 (Lucid Pro) or 1,500 (FundedNext); **Contracts 2**; no eval profit stop; no eval risk cap; MaxOpenContracts 20. Profile: **Ultra**. GoldMaster: off in the eval, because its fixed $2,000 DD does not fit a 25K account.
+- At checkout, choose **no daily loss limit** (Lucid Pro offers a no-DLL add-on). 2c Ultra can briefly hold up to about 20 micros. Lucid Pro 25K allows 20 micros in the eval, so MaxOpenContracts 20 is the guard.
+- **Bust -> buy the next eval the same evening and start it the next session.** This step is what produces the 90%. Waiting days between evals loses most of the gain.
+- When it passes, set PropMode = Funded. The same preset then sets the funded account to **1 contract**, a $150 per-contract risk cap below a $500 cushion, payout request at $1,500 profit, and no step-up. Funded income at 1 contract on a 25K account is about $670-700 per month per seat (earlier study `smallacct_life2.py`, Lucid Flex 25K). The money comes from stacking seats: Lucid allows 5 funded accounts.
+- Budget: about 2.4-3.5 evals per funded account, $200-400 in fees.
+
+**Caveats.**
+- The edge was assembled with 2020-26 in view. The 35% haircut rows are the planning numbers: 80-89% for Lucid Pro 25K and FundedNext 25K.
+- The rules were checked in October 2026 (Lucid Pro: no eval consistency, 25K target 1,250, DD 1,000 EOD; FundedNext Rapid Pro: no consistency, target 1,500, DD 1,000). Re-check them before buying.
+- NQMaster.cs changed: new presets LucidPro25K and FundedNext25K (`patch_preset2.py`, backup `NQMaster_backup_pre_preset2.cs`). It passes the stub compile; **press F5 on the PC**.
+
 ## ★★★ 2026-10-13: the fastest route to a funded account at 1 contract (English) — READ THIS FIRST
 
 Scripts: `research/mine/smallacct_build.py`, `smallacct_eval.py`, `smallacct_protocol.py`, `smallacct_haircut.py`, `smallacct_g.py`, `smallacct_life.py`, `smallacct_life2.py`, `smallacct_mffu.py`, `smallacct_timing.py`, `smallacct_conc.py`, `smallacct_profiles.py`. Data: real Databento NQ futures, Ultra after the 10-12 overhaul, 1 base contract per module, $1.90 + 1 tick per side. "Start days": every trading day of 2020-03..2023-10 (T1) and 2024-01..2026 (T2); nothing was fitted on T2.
