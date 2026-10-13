@@ -1,5 +1,32 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★ 2026-10-13 (night): ONE eval, no second purchase, >= 70% pass (English) — READ THIS FIRST
+
+Scripts: `research/mine/single70.py` (wide grid of 22,000 settings; its Bulenox rows wrongly allowed running without the mandatory DLL, and its "robust" view mixed periods, so do not use it for decisions) and **`research/mine/single70b.py`** (the clean protocol) -> `single70b.json`. Each setting is chosen on 2020-23 starts and checked on 2024-26 starts. It runs on real Databento NQ futures, at 1 contract, with $1.90 + 1 tick per side. Each start is a single attempt with no restarts. "Within N days" counts listed trading days.
+
+**The answer.** One eval passes more than 70% of the time when it is allowed to run **without a deadline** on a **50K account** at **1 contract** (Lucid, Bulenox and MFFU evals have no time limit). The winning setting, chosen on 2020-23 alone, is **profile WR70Plus with an account daily stop of $900** (on Bulenox, its own $1,100 DLL). The pass comes later, not faster: the median is ~37-40 trading days.
+
+| One eval, 1 contract | Pass within 1 month / 2 months / 3 months / 6 months, 2020-23 | Same, 2024-26 | 90% interval (6 months, 2024-26) | 35% weaker edge (6 months, 2020-23 / 2024-26) | Bust |
+|---|---|---|---|---|---|
+| **Bulenox Opt2 50K, WR70Plus, DLL $1,100** | 14 / 54 / 71 / **89%** | 14 / 46 / 65 / **83%** | 67-94 | **67% / 65%** | 2.5% / 16% |
+| **Lucid Flex 50K, WR70Plus, EvalDailyStop $900** (+ profit stop $1,350 for the 50% rule) | 13 / 54 / 71 / **88%** | 15 / 47 / 65 / **77%** | 64-93 | 65% / 63% | 7.5% / 22% |
+| Lucid Pro 50K, WR70Plus, EvalDailyStop $900 | 13 / 54 / 71 / **88%** | 14 / 47 / 65 / **77%** | 64-93 | 65% / 62% | 7.5% / 22% |
+| MFFU Rapid EOD 50K, WR70Plus, EvalDailyStop $900 (+ $800 profit stop) | 10 / 52 / 72 / **90%** | 13 / 44 / 63 / **77%** | 64-93 | 64% / 63% | 6.5% / 22% |
+| Lucid Flex 50K, Ultra, no stop (faster alternative) | 24 / 60 / 74 / 83% | 31 / 68 / 73 / 75% | 65-90 | 57% / 54% | 17% / 25% |
+| Bulenox Opt2 50K, Ultra (faster alternative) | 24 / 60 / 75 / 84% | 31 / 67 / 73 / 78% | 67-93 | 66% / 60% | 16% / 22% |
+
+- **Within one month, a single eval stays at about 50% in every setup tested.** Even the best 2020-23 choice falls to 43-53% on 2024-26. The trade-off is time: the patient WR70Plus setting needs ~2 months and passes most often.
+- The 25K accounts are worse for a single attempt (about 50-60% on 2024-26 at any horizon): their target is close to the drawdown. Their advantage is speed with restarts (section below).
+- Risk-cap or Estable gearing chosen on 2020-23 for 25K accounts did not hold on 2024-26, so it is not recommended.
+
+**Settings (NQMaster, PropMode = Eval, Contracts = 1, AdaptiveSize false):**
+- Lucid Flex 50K: Profile **WR70Plus**, PropPreset **Lucid50K** (target 3,000, DD 2,000, 50% consistency, profit stop 1,350), then **EvalDailyStop 900**. Night modules on (NightOnWr70) as in the validated WR70Plus set.
+- Lucid Pro 50K: as above, but set ConsistencyPct 0 and EvalProfitStop 0 after the preset (set PropPreset Manual and enter them by hand).
+- Bulenox Opt2 50K: PropPreset Manual, StartBalance 50000, PropTrailingDD 2500, ConsistencyPct 0, EvalTarget 3000, EvalProfitStop 0, EvalRiskCapCushion 0, **EvalDailyStop 1100** (Bulenox applies its own $1,100 DLL; NQMaster just stops at the same level). Bulenox allows automation only if it is your own strategy on your own accounts.
+- MFFU Rapid EOD 50K: PropPreset **Mffu50K** (target 3,000, DD 2,000, 30% consistency, profit stop 800), Profile WR70Plus, **EvalDailyStop 900**.
+- GoldMaster: off in the eval (not part of this test).
+- Let it run: no deadline, no reset. Check the edge monitor weekly.
+
 ## ★★★★ 2026-10-13 (later): 75-90% funded within one month — the route (English) — READ THIS FIRST
 
 Script: `research/mine/month80.py` -> `month80.json`. Real Databento NQ futures, Ultra after the 10-12 overhaul, $1.90 + 1 tick per side. "Within a month" is counted strictly: the funded account must be reached in at most 20 listed trading days, which is about 22 real trading days. The day list skips FOMC and ATR<150 days. Two periods: T1 = starts 2020-03..2023-10 and T2 = starts 2024-01..2026. Nothing was fitted on T2. The 90% intervals come from a block bootstrap with 44-day blocks. "Edge -35%" removes 35% of the mean daily profit, as a realistic forward estimate.
