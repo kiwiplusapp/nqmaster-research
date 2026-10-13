@@ -141,3 +141,47 @@ Rejected: IFVG, FVG/Silver Bullet, sweeps, gap fade, last-half-hour, London ORB,
 - 2026-10-09 16-YEAR REAL-FUTURES MINING (user: 'are there no more high-WR high-PF strategies? mine Nasdaq'). mine/run_mine_db.py (nqdb.npz, each config real $ T1 2020-23 / T2 2024-26 + cost-normalised 0.345% ATR A 2010-14 / B 2015-19; ~13 min for 45k configs on 4 CPUs) -> results_db_old.csv (29 old families, 45,278 cfg), results_db_new.csv (families5.py NEW: DAY_MR daily IBS/2-closes/prior-return, RVOL_DRIVE relative volume, VOL_CLIMAX 5m volume climax, OR_FAIL failed opening-range breakout; 8,208 cfg), trades_db_old.pkl.xz / trades_db_new.pkl. mine_db_select.py protocol (fixed before looking): T1 n>=100 WR>=60 PF>=1.4 -> T2 PF>=1.3 WR>=58, B PF>=1.1, A PF>=1.0: 195 pass T1, 0 pass all (P(T2 pass|T1 pass) 15% vs 1.4% base, P(all|T1) 0%). New-family medians PF 0.91-1.02; DAY_MR 42 T1 passers -> T2 median 0.75. Looser T1+T2 only: 29 = 16 G_ORB 08:20-08:30 range breakout (orb0820_check.py: edge only in the 08:30 news minute, whipsaw days skipped by sim counted -> PF 1.23-1.28, +4 ticks on news fills ~1.07 -> REJECTED again), 6 VW13 variants (in NQMaster), 3 ENGULF 0206 (known), 1 G_DRIVE 03:00, 3 RVOL low-volume continuation (isolated cells). mine_db_robust.py (PF>=1.2 in all 4 periods, 10 cfg, WR 36-62%): G_DRIVE 20:00x540 fade = NF05 (confirmed), 09:30 drive 2R hurts Ultra T1, NQ_DRIVE 01:00 isolated; OR_FAIL T15 bk0.10 5m-close tf1 (tg opp WR ~50% PF 1.23/1.21/1.37/1.26; tg R0.5 WR ~70% PF 1.11/1.32/1.11/1.21) adds +0.07-0.10 Sharpe to Ultra in all 4 periods, corr -0.02..-0.07, ~$60/mo per contract, but orfail_ext.py: in 2024-26 only bk 0.10 works (bk 0.15+ PF 0.86-0.89), 10/168 variants hold -> watch list, NOT added. Conclusion told to Federico: no robust high-WR + high-PF strategy in 53,486 configs; edges are a post-2020 regime; Ultra is the combination. Obsidian: Conocimiento/Descartado/Mineria 16 anos futuros reales (9-oct).md.
 - 2026-10-09 08:20 RANGE BREAKOUT TICK BACKTEST (user asked to test it 'with the news blackout off' - it never had a blackout): mine/orb0820_ticks.py (every Databento NQ print 2025-05-01..2026-10-08 from scratchpad raw files, 372 trades; stop entries / stop-loss fill at the first print >= latency after the trigger, target limit needs a 1-tick trade-through) -> orb0820_ticks.json / orb0820_ticks_trades.csv. 1-minute research sim same period WR 70.6% PF 1.46 +$3,032; ticks lat 0 (fill at the triggering print) WR 70.7% PF 1.09 +$621; lat 50 ms WR 66.1% PF 0.98 -$150; lat 250 ms PF 0.96 -$290. CPI/NFP days (32): entry slippage avg 34 ticks, p90 168 at 50 ms. Days where the other side also broke before 09:30 (195) PF 0.26-0.31. MNQ prints (Sep 2025) same as NQ. The 1-minute edge came from skipped both-sides bars and intrabar sequencing -> definitively REJECTED.
 - 2026-10-10 WARM-UP SETTING (user: 'can you disable the 25 days warm up?'): NQMaster WarmupDays (group 03, default 15 = validated; AtrMin = min(14, WarmupDays) replaces every atrCount 14 check, TrendMin = min(15, max(2, WarmupDays)) for trendDir and FeatTrend; range 2-15) and GoldMaster WarmupDays (group 02, default 60; AtrOk closes >= min(15, W) and rthDays >= W, trend from min(20, W) closes, ATR plain-mean ramp over the first 14 days only when W < 60; range 2-60). Defaults leave both exactly as validated. Low values = trades from day 3 with short averages (first weeks do not match research). Live: Days to load >= 45 (NQ) / >= 120 (gold) means no waiting. patch_warmup.py, backups *_backup_pre_warmup.cs, mcs parse OK, NOT compiled (F5 on the PC).
+- 2026-10-12 FULL AUDIT + OVERHAUL (user: "audit everything, remove profiles, compare old systems, much more robust, never lose an account in a month like August, better PF/WR, can it move to Python + ML + AI brain?").
+  - Profile history (`mine/hist_profiles.py/.md`, real Databento NQ 2020-26): every later version beat the earlier ones. Sharpe: MaxSharpe 2.60, MaxPlus 2.77, MaxPlus2 2.90, Ultra 3.43. No old system was better.
+  - NQMaster profiles are now **Ultra / WR70Plus / Durable (new: ORB60, ORB90, MSEQS, CRT11, VOLB 2R, NF05) / Custom**.
+    - Removed: MaxSharpe, WinRate70, MaxPlus, MaxPlus2, Core, MaxTrades, NQ Gold. Old templates must re-add the strategy.
+    - MOM1130 and RSI2 are Custom-only.
+  - Bad months (`robust2_*`):
+    - No predictable regime: autocorrelation ~0, vol/chop/VIX filters fail, the losing-month share equals a random shuffle.
+    - The tail comes from large-risk trades (VOLB / ORB60 / MSEQ).
+  - Changes kept (`cand16.py`, validated on 2010-19 cost-normalised data never used before):
+    - ENG10 and LATEFH off by default.
+    - Context boosts ORB90-vw and ORB60-atr removed: they held in 1 of 4 periods.
+    - MinStopAtr 0.10 for structure modules: WR +0.4-0.8 in all periods.
+    - Ultra new: 2020-23 WR 66.9 / PF 1.47 / Sharpe 3.38 / $1,717 per month; 2024-26 65.7 / 1.50 / 3.65 / $2,304, DD $4,570 (was $5,871), worst month -$2,670 (was -$3,635).
+  - Risk layer:
+    - RiskCapPerContract $300, active while the cushion is below $1,200 (EvalRiskCapCushion) / $2,000 (FundedRiskCapCushion). FundedCushionSafe default is now 0.
+    - MFFU lifecycle 1c (`cand16_life.py`): $893 / $1,327 per month with 0.45 / 0.70 accounts lost per year, vs old Ultra fixed $1,115 / $1,508 with 0.56 / 1.65.
+    - Edge monitor recalibrated (`monitor_recal.py`): Ultra k .0758 / h 18.57, WR70Plus .0577 / 12.18, Durable .0458 / 10.71.
+  - Summer 2026 stress (`stress_hist.py`, MFFU 50K 1c, start on every day Jun-Aug 2026):
+
+    | Setup | Eval pass | Funded busted in 60 days |
+    |---|---|---|
+    | Ultra old | 16% | 88% |
+    | Ultra new | 18% | 59% |
+    | WR70Plus new | 33% | 47% |
+
+    The $2k trailing drawdown cannot absorb a $3.7k drawdown at ATR 530-600, so this cannot be fully avoided.
+  - Rejected:
+    - High-vol guard (cap at any cushion when ATR > k x 250-day median; `stress_vol.py`): costs $150-500 per month.
+    - Intraday liquidation buffer (`liqbuf.py`): no gain.
+  - Code audit (`mine/audit_code_2026-10-12.md`) fixed in `patch_audit.py`. New group "10. Operations (safety)" in NQMaster, "06" in GoldMaster:
+    - AccountSyncGuard: PositionAccount vs Position 2 bars apart -> Account.Flatten(instrument), Alert, SetState(Terminated).
+    - SkipShortSessions: SessionIterator session end, no entries in early-close sessions, flat 5 min before, entries cancelled at session start, realtime bar > 2 min late = no entries.
+    - MaxOpenContracts 20, whole account in realtime (CapQty inside OfApply; every call site skips size 0).
+    - RollGuard (MNQ: 8 days before the 3rd-Friday expiry; MGC: 7 days before the contract month).
+    - LogToFile (Documents\NinjaTrader 8\nqmaster_logs) plus Warn() alerts.
+    - 2026-10-02 NFP and 2027 CPI/NFP added.
+    - Realtime zombie orders keep blocking; the realtime watchdog waits 5 bars.
+    - OpenQty per module (multi-lot exits).
+    - Mid-session restart uses the saved day start.
+    - 2 rejections switch a module off for the session; "liquidation / disabled / margin" rejections stop entries.
+    - GoldMaster FlattenTime 1600 (was 1651; MFFU auto-closes 16:10, Lucid 16:45). Re-priced neutral in `gold_flat1600.py`: WinRate PF 1.49/1.70/1.98, Robust 1.23/1.35/1.37.
+  - Both files type-check with mcs against an NT8 API stub (scratchpad stub/s0.cs; the pre-overhaul backups also pass). NOT compiled in NinjaTrader: F5 on the PC.
+  - Backups: NQMaster_backup_pre_overhaul.cs, *_backup_pre_audit.cs. The guide section is at the top of NQMASTER_GUIA.md.
+  - Python/AI answer (`audit_bestpractices_ai_2026-10-12.md`): feasible as NinjaTrader execution + a Python ops/advisor layer. A self-improving live AI that changes the strategy is not recommended (overfitting, prop-firm rules, no edge evidence for news/LLM signals).

@@ -1,5 +1,144 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★ 2026-10-12 overhaul — READ THIS FIRST (English)
+
+Full report: see the published artifact "NQMaster audit 2026-10-12" (link in the chat). Research:
+- `research/mine/hist_profiles.md`: every profile on the same real futures data.
+- `cand16.py`, `cand16_life.py`, `robust2_*.py`: candidates and the risk layer.
+- `stress_hist.py`, `stress_vol.py`, `liqbuf.py`: August-type stress tests.
+- `rules16_*.py`: context rules checked on 2010-19.
+- `audit_code_2026-10-12.md`: code audit.
+- `audit_bestpractices_ai_2026-10-12.md`: best practices and the Python/AI question.
+
+**Older sections below use profile names that no longer exist.** If an older section disagrees with this one, this one wins.
+
+### Profiles now: Ultra (default), WR70Plus, Durable, Custom
+- **Removed:** MaxSharpe, WinRate70, MaxPlus, MaxPlus2, Core, MaxTrades, and NQMaster's Gold profile (gold runs in GoldMaster.cs). On the same real futures each later version beat the earlier ones (`hist_profiles.md`):
+
+  | Version | Sharpe 2020-26 |
+  |---|---|
+  | MaxSharpe | 2.60 |
+  | MaxPlus | 2.77 |
+  | MaxPlus2 | 2.90 |
+  | Ultra (old) | 3.43 |
+
+  No old system did better. **A saved chart/template/workspace that used a removed profile will not load the strategy: remove it and add NQMaster again.**
+- **Ultra** changes:
+  - ENG10 and LATEFH are off by default (`UseEng10` / `UseLateFh` still exist). The audit found them at chance level.
+  - The ORB90 "VWAP" and ORB60 "ATR" context boosts are removed. On 2010-19 data never used to choose them, they held in 1 of 4 periods and failed in 2015-19 and 2024-26.
+  - New `MinStopAtr` 0.10: structure trades with a stop narrower than 0.10 x daily ATR are skipped (win rate +0.4-0.8 points in all 4 periods).
+- **WR70Plus:** the same two boosts removed, plus the same minimum stop.
+- **Durable (new):** the 6 modules that held up on 16 years of real futures (ORB60, ORB90, MSEQS, CRT11, VOLB 2R, NF05). This is the fallback if the edge monitor alarms.
+- **Custom:** every switch applies. MOM1130 and RSI2 are only available here.
+
+Real NQ futures, 1 base contract, $1.90 + 1 tick per side:
+
+| Profile | 2010-14 PF* | 2015-19 PF* | 2020-23 WR / PF / Sharpe / $ per month | 2024-26 WR / PF / Sharpe / $ per month | 2024-26 max DD / worst month |
+|---|---|---|---|---|---|
+| Ultra (old) | 1.01 | 1.12 | 66.6% / 1.48 / 3.53 / $1,912 | 64.9% / 1.46 / 3.52 / $2,395 | $5,871 / -$3,635 |
+| **Ultra (new)** | 1.02 | 1.13 | 66.9% / 1.47 / 3.38 / $1,717 | **65.7% / 1.50 / 3.65** / $2,304 | **$4,570 / -$2,670** |
+| WR70Plus (old) | 0.98 | 1.07 | 71.8% / 1.59 / 3.68 / $1,440 | 68.8% / 1.46 / 3.17 / $1,581 | $4,059 / -$2,950 |
+| **WR70Plus (new)** | 0.98 | 1.09 | **72.2%** / 1.57 / 3.59 / $1,359 | **69.4%** / 1.48 / 3.30 / $1,567 | $3,893 / -$2,885 |
+| Durable | 1.18 | 1.23 | 62.9% / 1.60 / 2.73 / $953 | 60.2% / 1.66 / 2.91 / $1,429 | $3,845 / -$2,504 |
+
+\* Cost-normalised; this data was never used to choose anything.
+
+August 2026 at 1 contract: Ultra old -$1,830 (PF 0.76), Ultra new -$1,210 (PF 0.83), WR70Plus -$2,950.
+
+### Risk layer (prop accounts) — the main change against months like August
+Losing months are not predictable:
+- Month-to-month autocorrelation is about 0.
+- Volatility, chop and VIX filters do not predict them.
+- 11 of 81 months lost money, which is what random ordering of the same trades gives (13.6% vs 15.6%).
+
+What breaks accounts is a few large-risk trades (VOLB, ORB60, MSEQ) while the cushion is small. So:
+- **`RiskCapPerContract` $300 (group 07):** while the cushion is below **`EvalRiskCapCushion` $1,200** (eval) or **`FundedRiskCapCushion` $2,000** (funded), trades risking more than $300 per base contract are skipped. Above those cushions, everything trades.
+- **`FundedCushionSafe` default is now 0.** The cap replaces the old SAFE gating.
+
+MyFundedFutures Rapid EOD 50K lifecycle, 1 contract, 1,000 resampled years:
+
+| Setup | $/month 2020-23 / 2024-26 | +1 tick | Accounts lost per year |
+|---|---|---|---|
+| Ultra old, no cap | $1,115 / $1,508 | $1,005 / $1,397 | 0.56 / 1.65 |
+| **Ultra new + cap** | $893 / $1,327 | $788 / $1,214 | 0.45 / **0.70** |
+| WR70Plus new + cap | $569 / $674 | $497 / $605 | 0.18 / 0.48 |
+
+Lucid Flex 50K: Ultra new + cap $690 / $882 per month with 0.94 / 1.32 accounts lost, vs old $843 / $1,025 with 1.16 / 3.06. **The trade-off: about 10-20% less money for about half the lost accounts in 2024-26.**
+
+### Honest answer on "never lose an account in a month like August"
+Every eval and funded account was started on every real day of summer 2026 (`stress_hist.py`), MFFU 50K, 1 contract:
+
+| Setup | Eval pass, starts Jun-Aug 2026 | Funded busted within 60 days |
+|---|---|---|
+| Ultra old | 16% | 88% |
+| **Ultra new** | 18% | **59%** |
+| WR70Plus old | 25% | 73% |
+| **WR70Plus new** | **33%** | **47%** |
+
+Over all of 2020-26 the new setup is equal or better: eval pass 80.8% / 75.5% vs 80.6% / 72.8%, and funded 60-day busts 11.9% / 18.0% vs 16.2% / 31.4%.
+
+Summer 2026 had a daily ATR of 530-600 (normal ~340) and a drawdown of $3,671 at 1 contract. A $2,000 trailing drawdown cannot absorb that.
+
+Rejected because they cost more than they saved (2020-23 history and resampling):
+- **High-volatility guard** (the cap at any cushion when ATR > 1.2-1.5 x its 250-day median, `stress_vol.py`): -$150 to -$500 per month.
+- **Intraday "stop before liquidation" buffer** ($100-400 above the threshold, `liqbuf.py`): no gain.
+
+What protects you in practice:
+1. The risk cap.
+2. Staggering account starts so they do not all sit on a small cushion together.
+3. WR70Plus in the funded account if you prefer fewer busts over money.
+4. The edge monitor with recalibrated thresholds:
+
+   | Profile | k | h |
+   |---|---|---|
+   | Ultra | 0.0758 | 18.57 |
+   | WR70Plus | 0.0577 | 12.18 |
+   | Durable | 0.0458 | 10.71 |
+
+   Ultra's false-alarm rate is 0.5% per year.
+
+### Operations layer (code audit) — group "10. Operations (safety)"
+- **Account sync guard** (on):
+  - If the account position and the strategy position differ for 2 bars (firm auto-close, manual flatten, restart with a real position, overfill), the strategy flattens that instrument on the account, raises an alert and stops.
+  - **Never trade MNQ/MGC by hand on an account where the strategy runs.** If you must, turn this off first.
+- **Skip holiday / half-day sessions** (on):
+  - The real session end is read from NinjaTrader's trading hours.
+  - No entries in early-close sessions; flat 5 minutes before an early close.
+  - All entries are cancelled at every session start.
+  - No entries on a bar that arrives more than 2 minutes late.
+  - In the 2025-26 NT run, these sessions lost $1,367 on 51 trades.
+- **Max open contracts** (20) for the whole account (MNQ + MGC): Lucid 50K funded 20, MFFU 50K 30. The validated peak is 11 MNQ at 1 contract.
+- **Roll guard** (on):
+  - No new entries from the roll date of the chart's contract (MNQ Dec-26: 2026-12-10).
+  - Roll: after 16:00 ET on that day, disable both strategies, enable them on the next contract with the same settings, and keep "Merge back adjusted".
+- **Log file** (on): `Documents\NinjaTrader 8\nqmaster_logs\<account>_<date>.txt`. Alerts for target reached, drawdown guard, edge alarm, rejections, stale orders and mismatches.
+- **Other fixes:**
+  - 2027 CPI/NFP and the missing 2026-10-02 NFP are in the news list. A warning appears when the list ends within 35 days.
+  - Unreadable dates are printed.
+  - Realtime stale orders keep blocking the opposite side.
+  - Multi-lot exits are tracked per lot.
+  - A mid-session restart uses the saved day start for the cushion.
+  - 2 rejections stop a module for the session; "liquidation / disabled / margin" rejections stop new entries.
+- **GoldMaster:** flatten at **16:00 ET** (was 16:51: MFFU closes at 16:10, Lucid at 16:45). The research re-price is neutral; see GOLDMASTER_GUIA.md.
+
+### Recommended settings (unchanged firms, new defaults)
+- **MyFundedFutures Rapid EOD 50K**
+  - Eval: Profile Ultra, Contracts 1, PropMode Eval, EvalProfitStop 800, MaxOpenContracts 30.
+  - Funded: PropMode Funded, Contracts 1, withdraw down to $4,100 profit. Step-up (FundedStepUpCushion 3000) is optional: more money, more variance.
+  - GoldMaster Robust 1 contract with FlattenTime 1600.
+- **Lucid Flex 50K:** the same, with EvalProfitStop 1400 and MaxOpenContracts 20.
+- **Prefer fewer busts over money:** WR70Plus in the funded account.
+
+### What you need to do
+1. Copy `NQMaster.cs` and `GoldMaster.cs` to `Documents\NinjaTrader 8\bin\Custom\Strategies` and press **F5**. They were type-checked here against an NT8 API stub, not compiled; if F5 shows an error, send it to me.
+2. Remove old NQMaster instances that used removed profiles and add them again.
+3. Run the Strategy Analyzer on MNQ 1m from 2025-01-04 with Profile Ultra, Contracts 1 and default settings. Send the trades CSV.
+   - Expect fewer trades than the 2026-10-09 run (2,221): ENG10/LATEFH are off, holiday sessions are skipped, and the minimum stop applies.
+4. Paste the backtest numbers into the chat before going live.
+
+---
+
+
 `NQMaster.cs` está compilada e instalada. En NinjaTrader abre el NinjaScript Editor y pulsa **F5**. Reemplaza las 11 instancias anteriores.
 
 ## Cómo usarla
@@ -184,7 +323,7 @@ Ciclo completo de 12 meses por cuenta, con el costo de cada evaluación ($105) d
 - **Fondeada:**
   - NQMaster: **Contracts 2**, PropMode Funded, FundedCushionSafe 750, FundedCushionFull 1500, cobro a **$4.000**.
   - GoldMaster: WinRate, **Contracts 2**.
-- **Límites de Lucid:** el máximo de contratos abiertos a la vez sería ~20 micros en el peor día (16 en el 99% de los días). Entra en el límite de la evaluación (30) y en el de la fondeada inicial (20). Con 3 contratos se pasaría.
+- **Límites de Lucid:** el máximo de contratos abiertos a la vez sería ~20 micros en el peor día (16 en el 99% de los días). Entra en el límite de la evaluación (30) y en el de la fondeada inicial (20). Con 3 contratos se pasaría. **(Desactualizado 2026-10-12:** con los módulos nocturnos y VW13 x2 el máximo validado es 11 MNQ a 1 contrato = 22 micros a 2 contratos; desde 2026-10-12 la propiedad *Max open contracts* (20 por defecto) lo limita.)
 
 | $/mes por cuenta | Historia | Costo +1 tick | Monte Carlo |
 |---|---|---|---|

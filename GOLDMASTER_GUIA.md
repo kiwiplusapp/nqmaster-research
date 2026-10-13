@@ -6,7 +6,7 @@
 1. Abrí un gráfico de **MGC de 1 minuto** con el horario completo de Globex (18:00-17:00 ET).
 2. Cargá al menos **120 días** antes del inicio del backtest (Days to load). Necesita 60 días de sesión regular (09:30-16:00 ET) para que el ATR y la tendencia sean confiables; antes de eso no opera y lo avisa.
 3. Agregá la estrategia **GoldMaster** y elegí el **Profile**.
-4. Cierra todo a las 16:51 ET y no opera los días de FOMC.
+4. Cierra todo a las **16:00 ET** (antes era 16:51: MyFundedFutures cierra a las 16:10 y Lucid a las 16:45; ver la sección de 2026-10-12) y no opera los días de FOMC.
 
 Funciona aparte de NQMaster: un gráfico de MNQ con NQMaster y otro de MGC con GoldMaster, en la misma cuenta.
 
@@ -105,3 +105,27 @@ Backup: `GoldMaster_backup_pre_zombie.cs`.
 En el plan con modo Estable de NQMaster (ver `NQMASTER_GUIA.md`), GoldMaster va con Profile **WinRate** y **Contracts 2** durante toda la evaluación.
 
 Sus módulos OD1030 y ENG0408 tienen la mejor relación entre ganancia y riesgo en los tres períodos, y casi no se mueven junto con NQ (correlación 0,0-0,1). Por eso suman velocidad sin bajar el porcentaje de aprobación.
+
+
+## 2026-10-12 code audit (English): what changed in GoldMaster
+
+- **Flatten time 16:00 ET** (was 16:51). MyFundedFutures auto-closes positions at 16:10 ET and Lucid requires flat by 16:45 ET. After a firm's auto-close, GoldMaster's own later exit could open a reverse, unprotected position after hours. 25 of 332 validated MGC trades were still open after 16:10. Re-priced with the research engine (`research/mine/gold_flat1600.py`), the change is neutral:
+
+  | Profile | Flatten | CFD 2020-23 | CFD 2024-26 | MGC real 2024-26 |
+  |---|---|---|---|---|
+  | WinRate | 16:50 | WR 64.7%, PF 1.42 | WR 68.8%, PF 1.74 | WR 70.3%, PF 1.99 |
+  | WinRate | 16:00 | WR 66.4%, PF 1.49 | WR 69.2%, PF 1.70 | WR 69.3%, PF 1.98 |
+  | Robust | 16:50 | PF 1.22 | PF 1.35 | PF 1.37 |
+  | Robust | 16:00 | PF 1.23 | PF 1.35 | PF 1.37 |
+
+- **New group "06. Operations (safety)"**, the same as NQMaster's group 10:
+  - account/strategy position guard;
+  - skip holiday and half-day sessions;
+  - max open contracts for the whole account (default 20);
+  - roll guard (MGC: no new entries from 7 days before the contract month);
+  - daily log file in `Documents\NinjaTrader 8\nqmaster_logs`.
+
+  See NQMASTER_GUIA.md, section "2026-10-12 overhaul".
+- 2026-10-02 NFP and the 2027 CPI/NFP times were added to the built-in news list.
+- A rejected order raises an alert. After 2 rejections a module stops for the session. A rejection that mentions liquidation, disabled or margin stops all new entries.
+- Not compiled in the cloud: it type-checks against an NT8 API stub. Press **F5** on the PC.

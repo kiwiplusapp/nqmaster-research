@@ -1,0 +1,635 @@
+{
+ "funded": {
+  "Ultra 1c (today)": {
+   "2020-23": {
+    "bust": 20.0,
+    "cash": 1250,
+    "payouts": 18.2,
+    "bust_first_60d": 16.2
+   },
+   "2024-26": {
+    "bust": 68.2,
+    "cash": 1431,
+    "payouts": 17.1,
+    "bust_first_60d": 31.4
+   }
+  },
+  "WR70Plus 1c": {
+   "2020-23": {
+    "bust": 8.7,
+    "cash": 881,
+    "payouts": 15.2,
+    "bust_first_60d": 6.0
+   },
+   "2024-26": {
+    "bust": 39.8,
+    "cash": 834,
+    "payouts": 11.2,
+    "bust_first_60d": 24.5
+   }
+  },
+  "UltraLean 1c": {
+   "2020-23": {
+    "bust": 20.5,
+    "cash": 1119,
+    "payouts": 17.3,
+    "bust_first_60d": 14.7
+   },
+   "2024-26": {
+    "bust": 41.1,
+    "cash": 1315,
+    "payouts": 15.6,
+    "bust_first_60d": 30.2
+   }
+  },
+  "Ultra cap400 always": {
+   "2020-23": {
+    "bust": 17.6,
+    "cash": 978,
+    "payouts": 17.3,
+    "bust_first_60d": 12.8
+   },
+   "2024-26": {
+    "bust": 26.5,
+    "cash": 1013,
+    "payouts": 16.3,
+    "bust_first_60d": 26.5
+   }
+  },
+  "Ultra cap300 always": {
+   "2020-23": {
+    "bust": 25.5,
+    "cash": 762,
+    "payouts": 12.9,
+    "bust_first_60d": 12.5
+   },
+   "2024-26": {
+    "bust": 16.6,
+    "cash": 915,
+    "payouts": 15.9,
+    "bust_first_60d": 16.6
+   }
+  },
+  "cap300 < 1000 <= Ultra": {
+   "2020-23": {
+    "bust": 20.8,
+    "cash": 1233,
+    "payouts": 17.9,
+    "bust_first_60d": 16.2
+   },
+   "2024-26": {
+    "bust": 49.6,
+    "cash": 1760,
+    "payouts": 21.7,
+    "bust_first_60d": 23.5
+   }
+  },
+  "cap200 < 1000 <= Ultra": {
+   "2020-23": {
+    "bust": 22.5,
+    "cash": 1227,
+    "payouts": 17.9,
+    "bust_first_60d": 14.3
+   },
+   "2024-26": {
+    "bust": 61.1,
+    "cash": 1564,
+    "payouts": 19.1,
+    "bust_first_60d": 24.5
+   }
+  },
+  "Estable < 1000 <= Ultra": {
+   "2020-23": {
+    "bust": 13.0,
+    "cash": 1288,
+    "payouts": 19.0,
+    "bust_first_60d": 1.5
+   },
+   "2024-26": {
+    "bust": 74.4,
+    "cash": 1260,
+    "payouts": 15.3,
+    "bust_first_60d": 20.4
+   }
+  },
+  "WR70Plus < 1000 <= Ultra": {
+   "2020-23": {
+    "bust": 24.7,
+    "cash": 1217,
+    "payouts": 17.8,
+    "bust_first_60d": 17.2
+   },
+   "2024-26": {
+    "bust": 67.5,
+    "cash": 1471,
+    "payouts": 17.6,
+    "bust_first_60d": 28.1
+   }
+  },
+  "WR70Plus_cap300 < 1000 <= WR70Plus": {
+   "2020-23": {
+    "bust": 14.8,
+    "cash": 861,
+    "payouts": 14.8,
+    "bust_first_60d": 11.2
+   },
+   "2024-26": {
+    "bust": 43.1,
+    "cash": 776,
+    "payouts": 10.7,
+    "bust_first_60d": 27.3
+   }
+  },
+  "cap300 < 1500 <= Ultra": {
+   "2020-23": {
+    "bust": 15.2,
+    "cash": 1253,
+    "payouts": 18.3,
+    "bust_first_60d": 10.8
+   },
+   "2024-26": {
+    "bust": 49.9,
+    "cash": 1734,
+    "payouts": 21.3,
+    "bust_first_60d": 24.0
+   }
+  },
+  "cap200 < 1500 <= Ultra": {
+   "2020-23": {
+    "bust": 20.7,
+    "cash": 1236,
+    "payouts": 18.0,
+    "bust_first_60d": 12.4
+   },
+   "2024-26": {
+    "bust": 61.6,
+    "cash": 1348,
+    "payouts": 16.2,
+    "bust_first_60d": 24.8
+   }
+  },
+  "Estable < 1500 <= Ultra": {
+   "2020-23": {
+    "bust": 8.6,
+    "cash": 1199,
+    "payouts": 17.7,
+    "bust_first_60d": 1.3
+   },
+   "2024-26": {
+    "bust": 62.9,
+    "cash": 1348,
+    "payouts": 16.6,
+    "bust_first_60d": 16.0
+   }
+  },
+  "WR70Plus < 1500 <= Ultra": {
+   "2020-23": {
+    "bust": 17.6,
+    "cash": 1240,
+    "payouts": 18.2,
+    "bust_first_60d": 8.5
+   },
+   "2024-26": {
+    "bust": 67.8,
+    "cash": 1449,
+    "payouts": 17.4,
+    "bust_first_60d": 26.2
+   }
+  },
+  "WR70Plus_cap300 < 1500 <= WR70Plus": {
+   "2020-23": {
+    "bust": 16.1,
+    "cash": 844,
+    "payouts": 14.5,
+    "bust_first_60d": 10.4
+   },
+   "2024-26": {
+    "bust": 11.8,
+    "cash": 1103,
+    "payouts": 15.2,
+    "bust_first_60d": 11.7
+   }
+  },
+  "cap300 < 2000 <= Ultra": {
+   "2020-23": {
+    "bust": 16.6,
+    "cash": 1207,
+    "payouts": 17.7,
+    "bust_first_60d": 12.2
+   },
+   "2024-26": {
+    "bust": 16.7,
+    "cash": 1864,
+    "payouts": 23.7,
+    "bust_first_60d": 15.5
+   }
+  },
+  "cap200 < 2000 <= Ultra": {
+   "2020-23": {
+    "bust": 23.3,
+    "cash": 1145,
+    "payouts": 16.6,
+    "bust_first_60d": 12.7
+   },
+   "2024-26": {
+    "bust": 11.1,
+    "cash": 1651,
+    "payouts": 21.4,
+    "bust_first_60d": 10.0
+   }
+  },
+  "Estable < 2000 <= Ultra": {
+   "2020-23": {
+    "bust": 3.7,
+    "cash": 1049,
+    "payouts": 15.2,
+    "bust_first_60d": 1.2
+   },
+   "2024-26": {
+    "bust": 13.6,
+    "cash": 1208,
+    "payouts": 15.0,
+    "bust_first_60d": 9.0
+   }
+  },
+  "WR70Plus < 2000 <= Ultra": {
+   "2020-23": {
+    "bust": 12.8,
+    "cash": 1239,
+    "payouts": 18.0,
+    "bust_first_60d": 5.0
+   },
+   "2024-26": {
+    "bust": 38.2,
+    "cash": 1395,
+    "payouts": 16.9,
+    "bust_first_60d": 22.9
+   }
+  },
+  "WR70Plus_cap300 < 2000 <= WR70Plus": {
+   "2020-23": {
+    "bust": 21.9,
+    "cash": 745,
+    "payouts": 12.7,
+    "bust_first_60d": 8.6
+   },
+   "2024-26": {
+    "bust": 7.4,
+    "cash": 1072,
+    "payouts": 14.8,
+    "bust_first_60d": 7.4
+   }
+  },
+  "cap300 < 2500 <= Ultra": {
+   "2020-23": {
+    "bust": 23.1,
+    "cash": 1132,
+    "payouts": 16.3,
+    "bust_first_60d": 12.5
+   },
+   "2024-26": {
+    "bust": 17.1,
+    "cash": 1714,
+    "payouts": 22.3,
+    "bust_first_60d": 17.1
+   }
+  },
+  "cap200 < 2500 <= Ultra": {
+   "2020-23": {
+    "bust": 26.7,
+    "cash": 1002,
+    "payouts": 14.7,
+    "bust_first_60d": 13.3
+   },
+   "2024-26": {
+    "bust": 8.7,
+    "cash": 1500,
+    "payouts": 20.2,
+    "bust_first_60d": 8.2
+   }
+  },
+  "Estable < 2500 <= Ultra": {
+   "2020-23": {
+    "bust": 0.0,
+    "cash": 892,
+    "payouts": 13.0,
+    "bust_first_60d": 0.0
+   },
+   "2024-26": {
+    "bust": 19.0,
+    "cash": 957,
+    "payouts": 11.7,
+    "bust_first_60d": 10.6
+   }
+  },
+  "WR70Plus < 2500 <= Ultra": {
+   "2020-23": {
+    "bust": 8.7,
+    "cash": 1208,
+    "payouts": 17.6,
+    "bust_first_60d": 6.0
+   },
+   "2024-26": {
+    "bust": 66.0,
+    "cash": 1270,
+    "payouts": 15.5,
+    "bust_first_60d": 25.3
+   }
+  },
+  "WR70Plus_cap300 < 2500 <= WR70Plus": {
+   "2020-23": {
+    "bust": 19.8,
+    "cash": 683,
+    "payouts": 11.8,
+    "bust_first_60d": 5.9
+   },
+   "2024-26": {
+    "bust": 7.1,
+    "cash": 971,
+    "payouts": 13.6,
+    "bust_first_60d": 6.6
+   }
+  },
+  "cap300 < 3000 <= Ultra": {
+   "2020-23": {
+    "bust": 24.9,
+    "cash": 1096,
+    "payouts": 15.8,
+    "bust_first_60d": 12.5
+   },
+   "2024-26": {
+    "bust": 16.6,
+    "cash": 1706,
+    "payouts": 22.3,
+    "bust_first_60d": 16.6
+   }
+  },
+  "cap200 < 3000 <= Ultra": {
+   "2020-23": {
+    "bust": 26.9,
+    "cash": 941,
+    "payouts": 13.8,
+    "bust_first_60d": 13.3
+   },
+   "2024-26": {
+    "bust": 7.6,
+    "cash": 1434,
+    "payouts": 19.1,
+    "bust_first_60d": 7.3
+   }
+  },
+  "Estable < 3000 <= Ultra": {
+   "2020-23": {
+    "bust": 0.0,
+    "cash": 803,
+    "payouts": 11.4,
+    "bust_first_60d": 0.0
+   },
+   "2024-26": {
+    "bust": 27.5,
+    "cash": 704,
+    "payouts": 8.3,
+    "bust_first_60d": 10.7
+   }
+  },
+  "WR70Plus < 3000 <= Ultra": {
+   "2020-23": {
+    "bust": 8.7,
+    "cash": 1168,
+    "payouts": 17.3,
+    "bust_first_60d": 6.0
+   },
+   "2024-26": {
+    "bust": 66.2,
+    "cash": 1218,
+    "payouts": 14.2,
+    "bust_first_60d": 25.4
+   }
+  },
+  "WR70Plus_cap300 < 3000 <= WR70Plus": {
+   "2020-23": {
+    "bust": 19.8,
+    "cash": 655,
+    "payouts": 11.2,
+    "bust_first_60d": 5.9
+   },
+   "2024-26": {
+    "bust": 7.1,
+    "cash": 813,
+    "payouts": 12.6,
+    "bust_first_60d": 6.6
+   }
+  },
+  "cap200 < 1000 <= cap300 < 2500 <= Ultra": {
+   "2020-23": {
+    "bust": 24.9,
+    "cash": 1107,
+    "payouts": 15.8,
+    "bust_first_60d": 12.8
+   },
+   "2024-26": {
+    "bust": 13.6,
+    "cash": 1771,
+    "payouts": 23.0,
+    "bust_first_60d": 12.0
+   }
+  },
+  "Estable < 1000 <= cap300 < 2500 <= Ultra": {
+   "2020-23": {
+    "bust": 5.5,
+    "cash": 1175,
+    "payouts": 17.1,
+    "bust_first_60d": 2.9
+   },
+   "2024-26": {
+    "bust": 35.1,
+    "cash": 1796,
+    "payouts": 23.9,
+    "bust_first_60d": 7.3
+   }
+  }
+ },
+ "eval": {
+  "Ultra fixed": {
+   "2020-23": {
+    "passed": 80.0,
+    "median_days": 37.0,
+    "within_22d": 16.1
+   },
+   "2024-26": {
+    "passed": 68.6,
+    "median_days": 31.0,
+    "within_22d": 22.2
+   }
+  },
+  "Estable < 1200 <= Ultra (today's Estable gear)": {
+   "2020-23": {
+    "passed": 92.7,
+    "median_days": 45.0,
+    "within_22d": 13.9
+   },
+   "2024-26": {
+    "passed": 76.9,
+    "median_days": 39.0,
+    "within_22d": 19.4
+   }
+  },
+  "WR70Plus fixed": {
+   "2020-23": {
+    "passed": 91.4,
+    "median_days": 42.0,
+    "within_22d": 12.1
+   },
+   "2024-26": {
+    "passed": 74.1,
+    "median_days": 39.0,
+    "within_22d": 15.3
+   }
+  },
+  "cap300 < 800 <= Ultra": {
+   "2020-23": {
+    "passed": 79.6,
+    "median_days": 38.0,
+    "within_22d": 16.1
+   },
+   "2024-26": {
+    "passed": 70.1,
+    "median_days": 32.0,
+    "within_22d": 21.7
+   }
+  },
+  "cap200 < 800 <= Ultra": {
+   "2020-23": {
+    "passed": 79.7,
+    "median_days": 37.0,
+    "within_22d": 15.6
+   },
+   "2024-26": {
+    "passed": 74.1,
+    "median_days": 34.0,
+    "within_22d": 22.1
+   }
+  },
+  "WR70Plus_cap300 < 800 <= WR70Plus": {
+   "2020-23": {
+    "passed": 86.8,
+    "median_days": 40.0,
+    "within_22d": 12.1
+   },
+   "2024-26": {
+    "passed": 68.3,
+    "median_days": 36.0,
+    "within_22d": 14.1
+   }
+  },
+  "cap300 < 1200 <= Ultra": {
+   "2020-23": {
+    "passed": 79.6,
+    "median_days": 38.0,
+    "within_22d": 15.6
+   },
+   "2024-26": {
+    "passed": 74.1,
+    "median_days": 33.0,
+    "within_22d": 21.3
+   }
+  },
+  "cap200 < 1200 <= Ultra": {
+   "2020-23": {
+    "passed": 79.8,
+    "median_days": 39.0,
+    "within_22d": 15.7
+   },
+   "2024-26": {
+    "passed": 74.4,
+    "median_days": 35.0,
+    "within_22d": 19.8
+   }
+  },
+  "WR70Plus_cap300 < 1200 <= WR70Plus": {
+   "2020-23": {
+    "passed": 84.8,
+    "median_days": 40.0,
+    "within_22d": 11.6
+   },
+   "2024-26": {
+    "passed": 76.9,
+    "median_days": 43.0,
+    "within_22d": 13.3
+   }
+  },
+  "cap300 < 1600 <= Ultra": {
+   "2020-23": {
+    "passed": 84.8,
+    "median_days": 39.0,
+    "within_22d": 16.1
+   },
+   "2024-26": {
+    "passed": 76.1,
+    "median_days": 34.0,
+    "within_22d": 19.3
+   }
+  },
+  "cap200 < 1600 <= Ultra": {
+   "2020-23": {
+    "passed": 77.4,
+    "median_days": 40.0,
+    "within_22d": 14.1
+   },
+   "2024-26": {
+    "passed": 73.2,
+    "median_days": 41.0,
+    "within_22d": 16.8
+   }
+  },
+  "WR70Plus_cap300 < 1600 <= WR70Plus": {
+   "2020-23": {
+    "passed": 83.7,
+    "median_days": 43.0,
+    "within_22d": 10.6
+   },
+   "2024-26": {
+    "passed": 87.6,
+    "median_days": 50.0,
+    "within_22d": 11.8
+   }
+  },
+  "cap300 < 2000 <= Ultra": {
+   "2020-23": {
+    "passed": 83.4,
+    "median_days": 39.0,
+    "within_22d": 14.7
+   },
+   "2024-26": {
+    "passed": 80.4,
+    "median_days": 37.0,
+    "within_22d": 17.8
+   }
+  },
+  "cap200 < 2000 <= Ultra": {
+   "2020-23": {
+    "passed": 76.7,
+    "median_days": 43.0,
+    "within_22d": 9.2
+   },
+   "2024-26": {
+    "passed": 81.0,
+    "median_days": 51.0,
+    "within_22d": 11.9
+   }
+  },
+  "WR70Plus_cap300 < 2000 <= WR70Plus": {
+   "2020-23": {
+    "passed": 78.1,
+    "median_days": 51.0,
+    "within_22d": 6.9
+   },
+   "2024-26": {
+    "passed": 89.9,
+    "median_days": 54.0,
+    "within_22d": 9.0
+   }
+  }
+ },
+ "life": {}
+}
