@@ -1,0 +1,306 @@
+{
+ "MFFU Rapid EOD 50K": {
+  "keep $2000 profit": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 976,
+     "lost": 0.5,
+     "neg_year": 0.0,
+     "p10_month": 396
+    },
+    "T2": {
+     "per_month": 1091,
+     "lost": 1.85,
+     "neg_year": 0.0,
+     "p10_month": 651
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 380,
+     "lost": 2.6,
+     "neg_year": 11.5,
+     "p10_month": -3
+    },
+    "T2": {
+     "per_month": 446,
+     "lost": 3.76,
+     "neg_year": 0.0,
+     "p10_month": 110
+    }
+   }
+  },
+  "keep $3000 profit": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 1080,
+     "lost": 0.38,
+     "neg_year": 0.0,
+     "p10_month": 279
+    },
+    "T2": {
+     "per_month": 1546,
+     "lost": 0.69,
+     "neg_year": 0.0,
+     "p10_month": 718
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 507,
+     "lost": 1.8,
+     "neg_year": 16.5,
+     "p10_month": -42
+    },
+    "T2": {
+     "per_month": 704,
+     "lost": 2.54,
+     "neg_year": 0.0,
+     "p10_month": 116
+    }
+   }
+  },
+  "keep $4000 profit": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 1029,
+     "lost": 0.14,
+     "neg_year": 2.2,
+     "p10_month": 338
+    },
+    "T2": {
+     "per_month": 1538,
+     "lost": 0.49,
+     "neg_year": 0.0,
+     "p10_month": 887
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 484,
+     "lost": 1.54,
+     "neg_year": 30.2,
+     "p10_month": -52
+    },
+    "T2": {
+     "per_month": 774,
+     "lost": 1.56,
+     "neg_year": 9.0,
+     "p10_month": 57
+    }
+   }
+  },
+  "keep $5000 profit": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 976,
+     "lost": 0.14,
+     "neg_year": 5.0,
+     "p10_month": 273
+    },
+    "T2": {
+     "per_month": 1478,
+     "lost": 0.49,
+     "neg_year": 0.0,
+     "p10_month": 776
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 443,
+     "lost": 1.34,
+     "neg_year": 49.6,
+     "p10_month": -52
+    },
+    "T2": {
+     "per_month": 709,
+     "lost": 1.56,
+     "neg_year": 11.2,
+     "p10_month": -18
+    }
+   }
+  },
+  "keep $7000 profit": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 836,
+     "lost": 0.14,
+     "neg_year": 7.2,
+     "p10_month": 123
+    },
+    "T2": {
+     "per_month": 1323,
+     "lost": 0.49,
+     "neg_year": 0.0,
+     "p10_month": 600
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 371,
+     "lost": 1.32,
+     "neg_year": 54.7,
+     "p10_month": -52
+    },
+    "T2": {
+     "per_month": 576,
+     "lost": 1.56,
+     "neg_year": 14.6,
+     "p10_month": -65
+    }
+   }
+  }
+ },
+ "Lucid Flex 50K": {
+  "request payout at profit 2500": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 802,
+     "lost": 1.17,
+     "neg_year": 0.0,
+     "p10_month": 404
+    },
+    "T2": {
+     "per_month": 876,
+     "lost": 3.48,
+     "neg_year": 0.0,
+     "p10_month": 573
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 442,
+     "lost": 3.22,
+     "neg_year": 15.1,
+     "p10_month": -49
+    },
+    "T2": {
+     "per_month": 650,
+     "lost": 3.65,
+     "neg_year": 0.0,
+     "p10_month": 234
+    }
+   }
+  },
+  "request payout at profit 4000": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 861,
+     "lost": 0.83,
+     "neg_year": 0.0,
+     "p10_month": 426
+    },
+    "T2": {
+     "per_month": 1043,
+     "lost": 1.96,
+     "neg_year": 0.0,
+     "p10_month": 701
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 433,
+     "lost": 2.42,
+     "neg_year": 19.4,
+     "p10_month": -49
+    },
+    "T2": {
+     "per_month": 620,
+     "lost": 3.3,
+     "neg_year": 0.0,
+     "p10_month": 239
+    }
+   }
+  },
+  "request payout at profit 5000": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 775,
+     "lost": 0.49,
+     "neg_year": 3.6,
+     "p10_month": 426
+    },
+    "T2": {
+     "per_month": 901,
+     "lost": 1.28,
+     "neg_year": 0.0,
+     "p10_month": 701
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 383,
+     "lost": 2.09,
+     "neg_year": 23.7,
+     "p10_month": -49
+    },
+    "T2": {
+     "per_month": 587,
+     "lost": 2.67,
+     "neg_year": 0.0,
+     "p10_month": 101
+    }
+   }
+  },
+  "request payout at profit 6000": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 705,
+     "lost": 0.43,
+     "neg_year": 5.0,
+     "p10_month": 288
+    },
+    "T2": {
+     "per_month": 844,
+     "lost": 1.46,
+     "neg_year": 0.0,
+     "p10_month": 689
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 333,
+     "lost": 1.75,
+     "neg_year": 26.6,
+     "p10_month": -49
+    },
+    "T2": {
+     "per_month": 554,
+     "lost": 3.02,
+     "neg_year": 9.0,
+     "p10_month": 101
+    }
+   }
+  },
+  "request payout at profit 8000": {
+   "edge-0%": {
+    "T1": {
+     "per_month": 562,
+     "lost": 0.24,
+     "neg_year": 7.2,
+     "p10_month": 138
+    },
+    "T2": {
+     "per_month": 716,
+     "lost": 1.62,
+     "neg_year": 0.0,
+     "p10_month": 576
+    }
+   },
+   "edge-35%": {
+    "T1": {
+     "per_month": 272,
+     "lost": 1.61,
+     "neg_year": 46.0,
+     "p10_month": -49
+    },
+    "T2": {
+     "per_month": 487,
+     "lost": 2.39,
+     "neg_year": 14.6,
+     "p10_month": -49
+    }
+   }
+  }
+ }
+}
