@@ -20,10 +20,11 @@ Scripts: `research/mine/single70.py` (wide grid of 22,000 settings; its Bulenox 
 - Risk-cap or Estable gearing chosen on 2020-23 for 25K accounts did not hold on 2024-26, so it is not recommended.
 
 **Settings (NQMaster, PropMode = Eval, Contracts = 1, AdaptiveSize false):**
-- Lucid Flex 50K: Profile **WR70Plus**, PropPreset **Lucid50K** (target 3,000, DD 2,000, 50% consistency, profit stop 1,350), then **EvalDailyStop 900**. Night modules on (NightOnWr70) as in the validated WR70Plus set.
+- Lucid Flex 50K: Profile **WR70Plus**, PropPreset **Lucid50K** (target 3,000, DD 2,000, 50% consistency, profit stop 1,350), then **EvalDailyStop 900** and **NightOnWr70 = true** (the tested WR70Plus set includes the night fades NF05 / LF06 / LF0430; the code default is false).
 - Lucid Pro 50K: as above, but set ConsistencyPct 0 and EvalProfitStop 0 after the preset (set PropPreset Manual and enter them by hand).
 - Bulenox Opt2 50K: PropPreset Manual, StartBalance 50000, PropTrailingDD 2500, ConsistencyPct 0, EvalTarget 3000, EvalProfitStop 0, EvalRiskCapCushion 0, **EvalDailyStop 1100** (Bulenox applies its own $1,100 DLL; NQMaster just stops at the same level). Bulenox allows automation only if it is your own strategy on your own accounts.
-- MFFU Rapid EOD 50K: PropPreset **Mffu50K** (target 3,000, DD 2,000, 30% consistency, profit stop 800), Profile WR70Plus, **EvalDailyStop 900**.
+- MFFU Rapid EOD 50K: PropPreset **Mffu50K** (target 3,000, DD 2,000, 30% consistency, profit stop 800), Profile WR70Plus, NightOnWr70 true, **EvalDailyStop 900**.
+- Every WR70Plus setting above: **NightOnWr70 = true** (Bulenox too).
 - GoldMaster: off in the eval (not part of this test).
 - Let it run: no deadline, no reset. Check the edge monitor weekly.
 
