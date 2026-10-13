@@ -1,5 +1,265 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★ 2026-10-13 (night): ONE eval, no second purchase, >= 70% pass (English) — READ THIS FIRST
+
+Scripts: `research/mine/single70.py` (wide grid of 22,000 settings; its Bulenox rows wrongly allowed running without the mandatory DLL, and its "robust" view mixed periods, so do not use it for decisions) and **`research/mine/single70b.py`** (the clean protocol) -> `single70b.json`. Each setting is chosen on 2020-23 starts and checked on 2024-26 starts. It runs on real Databento NQ futures, at 1 contract, with $1.90 + 1 tick per side. Each start is a single attempt with no restarts. "Within N days" counts listed trading days.
+
+**The answer.** One eval passes more than 70% of the time when it is allowed to run **without a deadline** on a **50K account** at **1 contract** (Lucid, Bulenox and MFFU evals have no time limit). The winning setting, chosen on 2020-23 alone, is **profile WR70Plus with an account daily stop of $900** (on Bulenox, its own $1,100 DLL). The pass comes later, not faster: the median is ~37-40 trading days.
+
+| One eval, 1 contract | Pass within 1 month / 2 months / 3 months / 6 months, 2020-23 | Same, 2024-26 | 90% interval (6 months, 2024-26) | 35% weaker edge (6 months, 2020-23 / 2024-26) | Bust |
+|---|---|---|---|---|---|
+| **Bulenox Opt2 50K, WR70Plus, DLL $1,100** | 14 / 54 / 71 / **89%** | 14 / 46 / 65 / **83%** | 67-94 | **67% / 65%** | 2.5% / 16% |
+| **Lucid Flex 50K, WR70Plus, EvalDailyStop $900** (+ profit stop $1,350 for the 50% rule) | 13 / 54 / 71 / **88%** | 15 / 47 / 65 / **77%** | 64-93 | 65% / 63% | 7.5% / 22% |
+| Lucid Pro 50K, WR70Plus, EvalDailyStop $900 | 13 / 54 / 71 / **88%** | 14 / 47 / 65 / **77%** | 64-93 | 65% / 62% | 7.5% / 22% |
+| MFFU Rapid EOD 50K, WR70Plus, EvalDailyStop $900 (+ $800 profit stop) | 10 / 52 / 72 / **90%** | 13 / 44 / 63 / **77%** | 64-93 | 64% / 63% | 6.5% / 22% |
+| Lucid Flex 50K, Ultra, no stop (faster alternative) | 24 / 60 / 74 / 83% | 31 / 68 / 73 / 75% | 65-90 | 57% / 54% | 17% / 25% |
+| Bulenox Opt2 50K, Ultra (faster alternative) | 24 / 60 / 75 / 84% | 31 / 67 / 73 / 78% | 67-93 | 66% / 60% | 16% / 22% |
+
+- **Within one month, a single eval stays at about 50% in every setup tested.** Even the best 2020-23 choice falls to 43-53% on 2024-26. The trade-off is time: the patient WR70Plus setting needs ~2 months and passes most often.
+- The 25K accounts are worse for a single attempt (about 50-60% on 2024-26 at any horizon): their target is close to the drawdown. Their advantage is speed with restarts (section below).
+- Risk-cap or Estable gearing chosen on 2020-23 for 25K accounts did not hold on 2024-26, so it is not recommended.
+
+**Settings (NQMaster, PropMode = Eval, Contracts = 1, AdaptiveSize false):**
+- Lucid Flex 50K: Profile **WR70Plus**, PropPreset **Lucid50K** (target 3,000, DD 2,000, 50% consistency, profit stop 1,350), then **EvalDailyStop 900** and **NightOnWr70 = true** (the tested WR70Plus set includes the night fades NF05 / LF06 / LF0430; the code default is false).
+- Lucid Pro 50K: as above, but set ConsistencyPct 0 and EvalProfitStop 0 after the preset (set PropPreset Manual and enter them by hand).
+- Bulenox Opt2 50K: PropPreset Manual, StartBalance 50000, PropTrailingDD 2500, ConsistencyPct 0, EvalTarget 3000, EvalProfitStop 0, EvalRiskCapCushion 0, **EvalDailyStop 1100** (Bulenox applies its own $1,100 DLL; NQMaster just stops at the same level). Bulenox allows automation only if it is your own strategy on your own accounts.
+- MFFU Rapid EOD 50K: PropPreset **Mffu50K** (target 3,000, DD 2,000, 30% consistency, profit stop 800), Profile WR70Plus, NightOnWr70 true, **EvalDailyStop 900**.
+- Every WR70Plus setting above: **NightOnWr70 = true** (Bulenox too).
+- GoldMaster: off in the eval (not part of this test).
+- Let it run: no deadline, no reset. Check the edge monitor weekly.
+
+## ★★★★ 2026-10-13 (later): 75-90% funded within one month — the route (English) — READ THIS FIRST
+
+Script: `research/mine/month80.py` -> `month80.json`. Real Databento NQ futures, Ultra after the 10-12 overhaul, $1.90 + 1 tick per side. "Within a month" is counted strictly: the funded account must be reached in at most 20 listed trading days, which is about 22 real trading days. The day list skips FOMC and ATR<150 days. Two periods: T1 = starts 2020-03..2023-10 and T2 = starts 2024-01..2026. Nothing was fitted on T2. The 90% intervals come from a block bootstrap with 44-day blocks. "Edge -35%" removes 35% of the mean daily profit, as a realistic forward estimate.
+
+**The route.** Use a **25K evaluation with no consistency rule** (Lucid Pro 25K or FundedNext Rapid Pro 25K). Run **2 contracts per module** in the eval, and **buy a new eval the day after any bust**. The 2 contracts double the speed toward the small $1,250-1,500 target. A bust only costs $80-125 and one day, and with no consistency rule nothing slows the pass down.
+
+| Setup | Funded within a month, T1 / T2 | 90% interval T1 / T2 | Edge -35%, T1 / T2 | Evals bought (T2) | Fees (T2) |
+|---|---|---|---|---|---|
+| **Lucid Pro 25K, eval 2c + restarts** | **89.9% / 92.5%** | 83-95 / 90-97 | **83.3% / 89.1%** | 2.4 | $294 |
+| **FundedNext Rapid Pro 25K, eval 2c + restarts** | **87.1% / 91.4%** | 78-93 / 88-97 | **80.5% / 81.8%** | 2.5 | $196 |
+| Lucid Flex 25K, eval 2c + restarts | 85.6% / 90.4% | 81-95 / 87-97 | 73.9% / 85.0% | 2.4 | $212 |
+| Bulenox Opt2 25K, eval 3c + restarts | 88.0% / 89.9% | 81-93 / 86-96 | 74.2% / 69.4% | 2.1 | $374 |
+| Lucid Pro 50K, eval 4c + restarts | 87.1% / 91.4% | 78-93 / 88-97 | 80.6% / 81.8% | 2.4 | $469 |
+| Lucid Pro 25K, eval 1c + restarts | 71.7% / 75.0% | 60-82 / 66-88 | 57.4% / 67.2% | 1.7 | $208 |
+| Lucid Flex 25K, eval 1c + restarts | 64.6% / 68.6% | 54-76 / 59-83 | 53.3% / 54.5% | 1.8 | $156 |
+| MFFU Rapid EOD 50K, eval 1c + restarts | 19.6% / 29.6% | | 13.6% / 21.0% | 1.2 | $190 |
+
+**One eval on its own** (no restart) peaks at about 50-55% within a month in every setup: Bulenox 25K 1c 54.7/53.3, Lucid Pro 25K 1c 54.0/49.9, Lucid Pro 25K 2c 44.8/44.0. A single attempt is limited by the size of the edge, about $90-120 per day per contract against a $1,000 drawdown. Going above that takes the restart protocol, and with restarts 2 contracts is better than 1. Contracts above 2 on a 25K account do not help Lucid. Bulenox needs 3 contracts because its target is $1,500 with a $500 DLL.
+
+**How to run it (preset `LucidPro25K` or `FundedNext25K`, group 07, PropMode = Eval):**
+- The preset sets: balance 25,000; trailing DD 1,000; consistency 0; target 1,250 (Lucid Pro) or 1,500 (FundedNext); **Contracts 2**; no eval profit stop; no eval risk cap; MaxOpenContracts 20. Profile: **Ultra**. GoldMaster: off in the eval, because its fixed $2,000 DD does not fit a 25K account.
+- At checkout, choose **no daily loss limit** (Lucid Pro offers a no-DLL add-on). 2c Ultra can briefly hold up to about 20 micros. Lucid Pro 25K allows 20 micros in the eval, so MaxOpenContracts 20 is the guard.
+- **Bust -> buy the next eval the same evening and start it the next session.** This step is what produces the 90%. Waiting days between evals loses most of the gain.
+- When it passes, set PropMode = Funded. The same preset then sets the funded account to **1 contract**, a $150 per-contract risk cap below a $500 cushion, payout request at $1,500 profit, and no step-up. Funded income at 1 contract on a 25K account is about $670-700 per month per seat (earlier study `smallacct_life2.py`, Lucid Flex 25K). The money comes from stacking seats: Lucid allows 5 funded accounts.
+- Budget: about 2.4-3.5 evals per funded account, $200-400 in fees.
+
+**Caveats.**
+- The edge was assembled with 2020-26 in view. The 35% haircut rows are the planning numbers: 80-89% for Lucid Pro 25K and FundedNext 25K.
+- The rules were checked in October 2026 (Lucid Pro: no eval consistency, 25K target 1,250, DD 1,000 EOD; FundedNext Rapid Pro: no consistency, target 1,500, DD 1,000). Re-check them before buying.
+- NQMaster.cs changed: new presets LucidPro25K and FundedNext25K (`patch_preset2.py`, backup `NQMaster_backup_pre_preset2.cs`). It passes the stub compile; **press F5 on the PC**.
+
+## ★★★ 2026-10-13: the fastest route to a funded account at 1 contract (English) — READ THIS FIRST
+
+Scripts: `research/mine/smallacct_build.py`, `smallacct_eval.py`, `smallacct_protocol.py`, `smallacct_haircut.py`, `smallacct_g.py`, `smallacct_life.py`, `smallacct_life2.py`, `smallacct_mffu.py`, `smallacct_timing.py`, `smallacct_conc.py`, `smallacct_profiles.py`. Data: real Databento NQ futures, Ultra after the 10-12 overhaul, 1 base contract per module, $1.90 + 1 tick per side. "Start days": every trading day of 2020-03..2023-10 (T1) and 2024-01..2026 (T2); nothing was fitted on T2.
+
+**The finding.** What decides "funded within a month" at 1 contract is the account size and what you do after a bust. A 1-contract Ultra earns about $90-120 per day whatever the account. A $25K account asks for $1,250-1,500 profit; a $50K account asks for $3,000. So the 25K target is reached in about half the time, and a bust costs $80-175, not a month.
+
+| Setup (all with serial restarts: a bust is followed by a new eval the next day) | Eval fee | Single eval passed in 22 d | **Funded within 22 trading days** | within 33 d | Evals bought | Fees |
+|---|---|---|---|---|---|---|
+| **Lucid Flex 25K** | $89 | 53% / 50% | **72% / 73%** | 84% / 88% | 1.7 | $155 |
+| Lucid Pro 25K | $123 | 55% / 54% | 68% / 69% | 80% / 81% | 1.5 | $183 |
+| Bulenox Option 2 25K | $175 | 58% / 54% | 64% / 67% | 78% / 82% | 1.3 | $227 |
+| FundedNext Rapid Pro 25K | $80 | 50% / 50% | 63% / 56% | 79% / 67% | 1.5 | $118 |
+| Tradeify Select 25K | $109 | 46% / 45% | 57% / 52% | 73% / 64% | 1.5 | $165 |
+| Lucid Flex 50K | $146 | 27% / 37% | 30% / 44% | 50% / 66% | 1.2 | $170 |
+| MFFU Rapid EOD 50K | $157 | 21% / 30% | 23% / 33% | 44% / 47% | 1.1 | $171 |
+| Bulenox Option 2 50K | $175 | 27% / 37% | 30% / 42% | 50% / 62% | 1.1 | $184 |
+
+Each cell is 2020-23 / 2024-26. Tradeify must not run the same bot as another firm (their rules), so it is listed only for completeness.
+
+**Independent review (`research/mine/redteam_smallacct.md`): the simulator is exact (rebuilt from scratch, 0.0-point mismatch) and all three findings survive, but the headline levels are about 3 points too high.** The study counted a pass on day 23 as "within 22 days" (+1.7 to 2.3 points) and the day list omits FOMC and ATR < 150 days (+0.7 to 1.6 points). Strict 22 trading days, Lucid 25K vs 50K: **2024-26 69.8% vs 41.2%** (table says 72.8 vs 44.3), **2020-23 68.1% vs 27.2%**; with +1 tick 69.1 / 39.5 and 65.3 / 25.8. The 95% interval on the 25K level is about 58-84% (few independent starts: 24-44 per period); the 25K-minus-50K gap is +28 points in 2024-26 (CI +17 to +40) and +42 in 2020-23 (+32 to +54). The strategy itself was built with 2020-26 in view, so 2024-26 is not out-of-sample for the edge: **a realistic forward estimate for Lucid 25K is about 55%** (35% edge haircut: 54-56% vs 19-27% on 50K). Rule sensitivity on 25K: target $1,500 -6 to -8 points, no consistency +6, +2 ticks -1.5 to -4.5, drawdown $900/$1,100 +-1. The profit stop is a plateau: use 0.8-1.0 x consistency x target (50K: $1,200-1,500; 25K: $500-625). Not quantified: the Lucid rules come from third-party summaries, and a 25K funded account has a $1,000 drawdown, a $1,000 payout cap and a 10-micro limit.
+
+**Realistic expectation (edge cut by 35%, +1 tick, `smallacct_haircut.py`):** funded within 22 days is Lucid Flex 25K 56% / 58%, Lucid Pro 25K 59% / 70%, FundedNext 25K 54% / 61%, against Lucid 50K 20% / 29% and MFFU 50K 15% / 23%. With the edge gone entirely the 25K still gets there 33-38% of the time, because the restarts are cheap and the target is small; that is luck, not edge, and it costs fees. The ranking 25K ≫ 50K holds at every edge level.
+
+**Income per seat is a different question** (12-month lifecycle, eval with restarts → funded → payouts → bust → new eval; net of fees, `smallacct_life2.py`, `smallacct_mffu.py`). $ per month, 2020-23 / 2024-26:
+
+| Seat | Backtest edge | 35% less edge | Accounts lost per year (2024-26) |
+|---|---|---|---|
+| Lucid Flex 25K | $706 / $672 | $403 / $407 | 7.4 (fees $89 each) |
+| Lucid Flex 50K | $861 / $1,043 | $433 / $620 | 2.0 |
+| Lucid Pro 50K | $766 / $859 | $408 / $443 | 1.7 |
+| MFFU Rapid EOD 50K, 1 contract, cap $300 below $2,000 | $1,029 / $1,538 | $484 / $774 | 0.5 |
+| MFFU Rapid EOD 50K, step-up to 2 contracts from a $3,000 cushion | $1,611 / $2,139 | $655 / $1,107 | 0.7 |
+
+MFFU pays best because payouts are uncapped and daily. Lucid caps each payout at $1,000 (25K) or $2,000 (50K). At 60% less edge every seat is close to break-even: the system needs a real edge.
+
+**Settings (new property `Account preset` in group 07, applied with PropMode Eval or Funded):**
+
+| Preset | Eval | Funded |
+|---|---|---|
+| Lucid25K | balance 25,000, drawdown 1,000, target 1,250, **profit stop 560**, no risk cap, max 20 contracts | cap $150 below a $500 cushion, max 10 contracts, request payout at $1,500 |
+| Lucid50K | balance 50,000, drawdown 2,000, target 3,000, **profit stop 1,350**, no risk cap, max 40 | cap $300 below a $1,000 cushion, max 20, payout at $4,000 |
+| Mffu50K | target 3,000, consistency 30%, profit stop 800, no risk cap, max 30 | cap $300 below a $2,000 cushion, max 30, payout at $6,600 |
+
+- Choose Lucid **without** the daily loss limit (DLL off), `Contracts` 1.
+- The profit stop that enforces the consistency rule is best at about 0.9 × consistency % × target. The earlier text "700 with 1 contract" was too low: on Lucid 50K it cost about 9 points of 22-day pass rate (28 / 43% at $1,350 against 20 / 33% at $700).
+- **On a 25K account the default risk cap (active below a $1,200 cushion) is always on, because the whole drawdown is only $1,000. A $300 cap that is always on cuts funded-within-a-month from 73% to 67% on Lucid 25K (a $150 cap: to 14%).** The preset turns it off in evals. Never use the 50K defaults on a 25K account.
+- GoldMaster is not part of the 25K plan: its trailing drawdown is fixed at $2,000.
+
+**The protocol.** Buy the 25K eval. When it busts, buy the next one the next day. Stop at the first pass; the funded account is the one you keep. More seats in parallel (starting 3-5 days apart) add only 2-5 points (Lucid 25K: 73% → 75%) and double the fees, so run one eval at a time per firm. Lucid allows 10 accounts in total.
+
+**Tested and rejected (do not add):**
+- Choosing the start day: volatility at the start, or "start after a bad 10 days". The sign flips between 2020-23 and 2024-26 (Lucid 25K, 66% vs 76%).
+- A cap on simultaneously open contracts: flat from 6 contracts up, worse below.
+- A risk cap or the Estable set in the eval: the same or slower (always-on $300 cap, funded within 22 days on Lucid 50K: 44% → 16%). WR70R is slower on both (Lucid 25K 69% vs 73%, 50K 27% vs 44%); `Ultra` stays.
+- The earlier "start evals only when the volatility is low" idea (AtrStartMax) is not supported by this larger sample; leave it at 0.
+
+**Open items.**
+- MFFU 25K rules are not documented here; the row marked * assumes the 50K rules scaled (target $1,500, drawdown $1,000, consistency 30%).
+- Bulenox allows bots only if you built them yourself and own the accounts; confirm in writing.
+- Check that Lucid delivers a new eval account immediately after a bust.
+- The 22 "trading days" count only days the strategy trades (no FOMC or ATR < 150 days), so a month is about 22-23.
+
+## ★★ 2026-10-12 overhaul — READ THIS FIRST (English)
+
+Full report: https://claude.ai/artifact/61HUsYa5HWgrGunADkmDN2 (NQMaster System Audit). Research:
+- `research/mine/hist_profiles.md`: every profile on the same real futures data.
+- `cand16.py`, `cand16_life.py`, `robust2_*.py`: candidates and the risk layer.
+- `stress_hist.py`, `stress_vol.py`, `liqbuf.py`: August-type stress tests.
+- `rules16_*.py`: context rules checked on 2010-19.
+- `audit_code_2026-10-12.md`: code audit.
+- `audit_bestpractices_ai_2026-10-12.md`: best practices and the Python/AI question.
+
+**Older sections below use profile names that no longer exist.** If an older section disagrees with this one, this one wins.
+
+### Profiles now: Ultra (default), WR70Plus, Durable, Custom
+- **Removed:** MaxSharpe, WinRate70, MaxPlus, MaxPlus2, Core, MaxTrades, and NQMaster's Gold profile (gold runs in GoldMaster.cs). On the same real futures each later version beat the earlier ones (`hist_profiles.md`):
+
+  | Version | Sharpe 2020-26 |
+  |---|---|
+  | MaxSharpe | 2.60 |
+  | MaxPlus | 2.77 |
+  | MaxPlus2 | 2.90 |
+  | Ultra (old) | 3.43 |
+
+  No old system did better. **A saved chart/template/workspace that used a removed profile will not load the strategy: remove it and add NQMaster again.**
+- **Ultra** changes:
+  - ENG10 and LATEFH are off by default (`UseEng10` / `UseLateFh` still exist). The audit found them at chance level.
+  - The ORB90 "VWAP" and ORB60 "ATR" context boosts are removed. On 2010-19 data never used to choose them, they held in 1 of 4 periods and failed in 2015-19 and 2024-26.
+  - New `MinStopAtr` 0.10: structure trades with a stop narrower than 0.10 x daily ATR are skipped (win rate +0.4-0.8 points in all 4 periods).
+- **WR70Plus:** the same two boosts removed, plus the same minimum stop.
+- **Durable (new):** the 6 modules that held up on 16 years of real futures (ORB60, ORB90, MSEQS, CRT11, VOLB 2R, NF05). This is the fallback if the edge monitor alarms.
+- **Custom:** every switch applies. MOM1130 and RSI2 are only available here.
+
+Real NQ futures, 1 base contract, $1.90 + 1 tick per side:
+
+| Profile | 2010-14 PF* | 2015-19 PF* | 2020-23 WR / PF / Sharpe / $ per month | 2024-26 WR / PF / Sharpe / $ per month | 2024-26 max DD / worst month |
+|---|---|---|---|---|---|
+| Ultra (old) | 1.01 | 1.12 | 66.6% / 1.48 / 3.53 / $1,912 | 64.9% / 1.46 / 3.52 / $2,395 | $5,871 / -$3,635 |
+| **Ultra (new)** | 1.02 | 1.13 | 66.9% / 1.47 / 3.38 / $1,717 | **65.7% / 1.50 / 3.65** / $2,304 | **$4,570 / -$2,670** |
+| WR70Plus (old) | 0.98 | 1.07 | 71.8% / 1.59 / 3.68 / $1,440 | 68.8% / 1.46 / 3.17 / $1,581 | $4,059 / -$2,950 |
+| **WR70Plus (new)** | 0.98 | 1.09 | **72.2%** / 1.57 / 3.59 / $1,359 | **69.4%** / 1.48 / 3.30 / $1,567 | $3,893 / -$2,885 |
+| Durable | 1.18 | 1.23 | 62.9% / 1.60 / 2.73 / $953 | 60.2% / 1.66 / 2.91 / $1,429 | $3,845 / -$2,504 |
+
+\* Cost-normalised; this data was never used to choose anything.
+
+August 2026 at 1 contract: Ultra old -$1,830 (PF 0.76), Ultra new -$1,210 (PF 0.83), WR70Plus -$2,950.
+
+### Risk layer (prop accounts) — the main change against months like August
+Losing months are not predictable:
+- Month-to-month autocorrelation is about 0.
+- Volatility, chop and VIX filters do not predict them.
+- 11 of 81 months lost money, which is what random ordering of the same trades gives (13.6% vs 15.6%).
+
+What breaks accounts is a few large-risk trades (VOLB, ORB60, MSEQ) while the cushion is small. So:
+- **`RiskCapPerContract` $300 (group 07):** while the cushion is below **`EvalRiskCapCushion` $1,200** (eval) or **`FundedRiskCapCushion` $2,000** (funded), trades risking more than $300 per base contract are skipped. Above those cushions, everything trades.
+- **`FundedCushionSafe` default is now 0.** The cap replaces the old SAFE gating.
+
+MyFundedFutures Rapid EOD 50K lifecycle, 1 contract, 1,000 resampled years:
+
+| Setup | $/month 2020-23 / 2024-26 | +1 tick | Accounts lost per year |
+|---|---|---|---|
+| Ultra old, no cap | $1,115 / $1,508 | $1,005 / $1,397 | 0.56 / 1.65 |
+| **Ultra new + cap** | $893 / $1,327 | $788 / $1,214 | 0.45 / **0.70** |
+| WR70Plus new + cap | $569 / $674 | $497 / $605 | 0.18 / 0.48 |
+
+Lucid Flex 50K: Ultra new + cap $690 / $882 per month with 0.94 / 1.32 accounts lost, vs old $843 / $1,025 with 1.16 / 3.06. **The trade-off: about 10-20% less money for about half the lost accounts in 2024-26.**
+
+### Honest answer on "never lose an account in a month like August"
+Every eval and funded account was started on every real day of summer 2026 (`stress_hist.py`), MFFU 50K, 1 contract:
+
+| Setup | Eval pass, starts Jun-Aug 2026 | Funded busted within 60 days |
+|---|---|---|
+| Ultra old | 16% | 88% |
+| **Ultra new** | 18% | **59%** |
+| WR70Plus old | 25% | 73% |
+| **WR70Plus new** | **33%** | **47%** |
+
+Over all of 2020-26 the new setup is equal or better: eval pass 80.8% / 75.5% vs 80.6% / 72.8%, and funded 60-day busts 11.9% / 18.0% vs 16.2% / 31.4%.
+
+Summer 2026 had a daily ATR of 530-600 (normal ~340) and a drawdown of $3,671 at 1 contract. A $2,000 trailing drawdown cannot absorb that.
+
+Rejected because they cost more than they saved (2020-23 history and resampling):
+- **High-volatility guard** (the cap at any cushion when ATR > 1.2-1.5 x its 250-day median, `stress_vol.py`): -$150 to -$500 per month.
+- **Intraday "stop before liquidation" buffer** ($100-400 above the threshold, `liqbuf.py`): no gain.
+
+What protects you in practice:
+1. The risk cap.
+2. Staggering account starts so they do not all sit on a small cushion together.
+3. WR70Plus in the funded account if you prefer fewer busts over money.
+4. The edge monitor with recalibrated thresholds:
+
+   | Profile | k | h |
+   |---|---|---|
+   | Ultra | 0.0758 | 18.57 |
+   | WR70Plus | 0.0577 | 12.18 |
+   | Durable | 0.0458 | 10.71 |
+
+   Ultra's false-alarm rate is 0.5% per year.
+
+### Operations layer (code audit) — group "10. Operations (safety)"
+- **Account sync guard** (on):
+  - If the account position and the strategy position differ for 2 bars (firm auto-close, manual flatten, restart with a real position, overfill), the strategy flattens that instrument on the account, raises an alert and stops.
+  - **Never trade MNQ/MGC by hand on an account where the strategy runs.** If you must, turn this off first.
+- **Skip holiday / half-day sessions** (on):
+  - The real session end is read from NinjaTrader's trading hours.
+  - No entries in early-close sessions; flat 5 minutes before an early close.
+  - All entries are cancelled at every session start.
+  - No entries on a bar that arrives more than 2 minutes late.
+  - In the 2025-26 NT run, these sessions lost $1,367 on 51 trades.
+- **Max open contracts** (20) for the whole account (MNQ + MGC): Lucid 50K funded 20, MFFU 50K 30. The validated peak is 11 MNQ at 1 contract.
+- **Roll guard** (on):
+  - No new entries from the roll date of the chart's contract (MNQ Dec-26: 2026-12-10).
+  - Roll: after 16:00 ET on that day, disable both strategies, enable them on the next contract with the same settings, and keep "Merge back adjusted".
+- **Log file** (on): `Documents\NinjaTrader 8\nqmaster_logs\<account>_<date>.txt`. Alerts for target reached, drawdown guard, edge alarm, rejections, stale orders and mismatches.
+- **Other fixes:**
+  - 2027 CPI/NFP and the missing 2026-10-02 NFP are in the news list. A warning appears when the list ends within 35 days.
+  - Unreadable dates are printed.
+  - Realtime stale orders keep blocking the opposite side.
+  - Multi-lot exits are tracked per lot.
+  - A mid-session restart uses the saved day start for the cushion.
+  - 2 rejections stop a module for the session; "liquidation / disabled / margin" rejections stop new entries.
+- **GoldMaster:** flatten at **16:00 ET** (was 16:51: MFFU closes at 16:10, Lucid at 16:45). The research re-price is neutral; see GOLDMASTER_GUIA.md.
+
+### Recommended settings (unchanged firms, new defaults)
+- **MyFundedFutures Rapid EOD 50K**
+  - Eval: Profile Ultra, Contracts 1, PropMode Eval, EvalProfitStop 800, MaxOpenContracts 30.
+  - Funded: PropMode Funded, Contracts 1, withdraw down to $4,100 profit. Step-up (FundedStepUpCushion 3000) is optional: more money, more variance.
+  - GoldMaster Robust 1 contract with FlattenTime 1600.
+- **Lucid Flex 50K:** the same, with EvalProfitStop **1350** (not 1400 / 700, see the 2026-10-13 section) and MaxOpenContracts 20. Presets set all of this.
+- **Prefer fewer busts over money:** WR70Plus in the funded account.
+
+### What you need to do
+1. Copy `NQMaster.cs` and `GoldMaster.cs` to `Documents\NinjaTrader 8\bin\Custom\Strategies` and press **F5**. They were type-checked here against an NT8 API stub, not compiled; if F5 shows an error, send it to me.
+2. Remove old NQMaster instances that used removed profiles and add them again.
+3. Run the Strategy Analyzer on MNQ 1m from 2025-01-04 with Profile Ultra, Contracts 1 and default settings. Send the trades CSV.
+   - Expect fewer trades than the 2026-10-09 run (2,221): ENG10/LATEFH are off, holiday sessions are skipped, and the minimum stop applies.
+4. Paste the backtest numbers into the chat before going live.
+
+---
+
+
 `NQMaster.cs` está compilada e instalada. En NinjaTrader abre el NinjaScript Editor y pulsa **F5**. Reemplaza las 11 instancias anteriores.
 
 ## Cómo usarla
@@ -184,7 +444,7 @@ Ciclo completo de 12 meses por cuenta, con el costo de cada evaluación ($105) d
 - **Fondeada:**
   - NQMaster: **Contracts 2**, PropMode Funded, FundedCushionSafe 750, FundedCushionFull 1500, cobro a **$4.000**.
   - GoldMaster: WinRate, **Contracts 2**.
-- **Límites de Lucid:** el máximo de contratos abiertos a la vez sería ~20 micros en el peor día (16 en el 99% de los días). Entra en el límite de la evaluación (30) y en el de la fondeada inicial (20). Con 3 contratos se pasaría.
+- **Límites de Lucid:** el máximo de contratos abiertos a la vez sería ~20 micros en el peor día (16 en el 99% de los días). Entra en el límite de la evaluación (30) y en el de la fondeada inicial (20). Con 3 contratos se pasaría. **(Desactualizado 2026-10-12:** con los módulos nocturnos y VW13 x2 el máximo validado es 11 MNQ a 1 contrato = 22 micros a 2 contratos; desde 2026-10-12 la propiedad *Max open contracts* (20 por defecto) lo limita.)
 
 | $/mes por cuenta | Historia | Costo +1 tick | Monte Carlo |
 |---|---|---|---|

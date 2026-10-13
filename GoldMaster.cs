@@ -56,6 +56,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public bool Done, InTrade; public Order Entry; public int Dir; public int EntryBar = -1; public int ExpireMin = -1;
 			public double Sl, Tp;
 			public bool Def; public double DPx; public int Q = 1;		// parked stop setup (blocked by an opposite position / order)
+			public int OpenQty, RejToday;	// lots still open, rejected orders this session
 			public Order SeenOrd, CancelOrd; public int SeenBar = -1, CancelBar = -1;	// stale-order watchdog (PurgeStaleEntries)
 		}
 		private Mod od, e0408, svw, e0610, asia, e0206, late;
@@ -65,7 +66,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		#region Fields
 		private TimeZoneInfo etZone; private SimpleFont dashFont; private bool badTimeframe; private HashSet<int> fomc;
 		// Tier-1 news for MyFundedFutures Rapid funded accounts (same list as NQMaster): flat and no orders 2 min around the release
-		private const string BuiltinNews = "2024-01-03 14:00,2024-01-05 08:30,2024-01-11 08:30,2024-02-02 08:30,2024-02-13 08:30,2024-02-21 14:00,2024-03-08 08:30,2024-03-12 08:30,2024-04-05 08:30,2024-04-10 08:30,2024-04-10 14:00,2024-05-03 08:30,2024-05-15 08:30,2024-05-22 14:00,2024-06-07 08:30,2024-06-12 08:30,2024-07-03 14:00,2024-07-05 08:30,2024-07-11 08:30,2024-08-02 08:30,2024-08-14 08:30,2024-08-21 14:00,2024-09-06 08:30,2024-09-11 08:30,2024-10-04 08:30,2024-10-09 14:00,2024-10-10 08:30,2024-11-01 08:30,2024-11-13 08:30,2024-11-28 14:00,2024-12-06 08:30,2024-12-11 08:30,2025-01-08 14:00,2025-01-10 08:30,2025-01-15 08:30,2025-02-07 08:30,2025-02-12 08:30,2025-02-19 14:00,2025-03-07 08:30,2025-03-12 08:30,2025-04-04 08:30,2025-04-09 14:00,2025-04-10 08:30,2025-05-02 08:30,2025-05-13 08:30,2025-05-28 14:00,2025-06-06 08:30,2025-06-11 08:30,2025-07-03 08:30,2025-07-09 14:00,2025-07-15 08:30,2025-08-01 08:30,2025-08-12 08:30,2025-08-20 14:00,2025-09-05 08:30,2025-09-11 08:30,2025-10-03 08:30,2025-10-08 14:00,2025-10-24 08:30,2025-11-19 14:00,2025-11-20 08:30,2025-12-16 08:30,2025-12-18 08:30,2025-12-31 14:00,2026-01-09 08:30,2026-01-13 08:30,2026-02-11 08:30,2026-02-13 08:30,2026-02-18 14:00,2026-03-06 08:30,2026-03-11 08:30,2026-04-03 08:30,2026-04-08 14:00,2026-04-10 08:30,2026-05-08 08:30,2026-05-12 08:30,2026-05-20 14:00,2026-06-05 08:30,2026-06-10 08:30,2026-07-02 08:30,2026-07-08 14:00,2026-07-14 08:30,2026-08-07 08:30,2026-08-12 08:30,2026-08-19 14:00,2026-09-04 08:30,2026-09-11 08:30,2026-10-07 14:00,2026-10-14 08:30,2026-11-06 08:30,2026-11-10 08:30,2026-11-18 14:00,2026-12-04 08:30,2026-12-10 08:30,2026-12-30 14:00,2027-02-17 14:00,2027-04-07 14:00,2027-05-19 14:00,2027-06-30 14:00,2027-08-18 14:00,2027-10-06 14:00,2027-11-17 14:00,2027-12-29 14:00";
+		private const string BuiltinNews = "2024-01-03 14:00,2024-01-05 08:30,2024-01-11 08:30,2024-02-02 08:30,2024-02-13 08:30,2024-02-21 14:00,2024-03-08 08:30,2024-03-12 08:30,2024-04-05 08:30,2024-04-10 08:30,2024-04-10 14:00,2024-05-03 08:30,2024-05-15 08:30,2024-05-22 14:00,2024-06-07 08:30,2024-06-12 08:30,2024-07-03 14:00,2024-07-05 08:30,2024-07-11 08:30,2024-08-02 08:30,2024-08-14 08:30,2024-08-21 14:00,2024-09-06 08:30,2024-09-11 08:30,2024-10-04 08:30,2024-10-09 14:00,2024-10-10 08:30,2024-11-01 08:30,2024-11-13 08:30,2024-11-28 14:00,2024-12-06 08:30,2024-12-11 08:30,2025-01-08 14:00,2025-01-10 08:30,2025-01-15 08:30,2025-02-07 08:30,2025-02-12 08:30,2025-02-19 14:00,2025-03-07 08:30,2025-03-12 08:30,2025-04-04 08:30,2025-04-09 14:00,2025-04-10 08:30,2025-05-02 08:30,2025-05-13 08:30,2025-05-28 14:00,2025-06-06 08:30,2025-06-11 08:30,2025-07-03 08:30,2025-07-09 14:00,2025-07-15 08:30,2025-08-01 08:30,2025-08-12 08:30,2025-08-20 14:00,2025-09-05 08:30,2025-09-11 08:30,2025-10-03 08:30,2025-10-08 14:00,2025-10-24 08:30,2025-11-19 14:00,2025-11-20 08:30,2025-12-16 08:30,2025-12-18 08:30,2025-12-31 14:00,2026-01-09 08:30,2026-01-13 08:30,2026-02-11 08:30,2026-02-13 08:30,2026-02-18 14:00,2026-03-06 08:30,2026-03-11 08:30,2026-04-03 08:30,2026-04-08 14:00,2026-04-10 08:30,2026-05-08 08:30,2026-05-12 08:30,2026-05-20 14:00,2026-06-05 08:30,2026-06-10 08:30,2026-07-02 08:30,2026-07-08 14:00,2026-07-14 08:30,2026-08-07 08:30,2026-08-12 08:30,2026-08-19 14:00,2026-09-04 08:30,2026-09-11 08:30,2026-10-07 14:00,2026-10-14 08:30,2026-11-06 08:30,2026-11-10 08:30,2026-11-18 14:00,2026-12-04 08:30,2026-12-10 08:30,2026-12-30 14:00,2027-02-17 14:00,2027-04-07 14:00,2027-05-19 14:00,2027-06-30 14:00,2027-08-18 14:00,2027-10-06 14:00,2027-11-17 14:00,2027-12-29 14:00,2026-10-02 08:30,2027-01-08 08:30,2027-01-13 08:30,2027-02-05 08:30,2027-02-11 08:30,2027-03-05 08:30,2027-03-10 08:30,2027-04-02 08:30,2027-04-13 08:30,2027-05-07 08:30,2027-05-12 08:30,2027-06-04 08:30,2027-06-10 08:30,2027-07-02 08:30,2027-07-14 08:30,2027-08-06 08:30,2027-08-11 08:30,2027-09-03 08:30,2027-09-14 08:30,2027-10-08 08:30,2027-10-14 08:30,2027-11-05 08:30,2027-11-10 08:30,2027-12-03 08:30,2027-12-10 08:30";
 		private List<DateTime> newsEt;
 		private int prevSm = -1; private bool fomcToday; private int sessionDate;
 		// RTH statistics
@@ -78,6 +79,113 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double asH, asL; private bool asHas, asBroken; private int asFirst, rthDays;
 		private Mod pendMod; private int pendBar = -1;
 		private int flattenBar = -1; private string status = "waiting";
+
+		// ---- operations layer (2026-10-12 code audit, research/mine/audit_code_2026-10-12.md) ----
+		private SessionIterator sessIt; private int sessEndMin = 17 * 60; private bool shortSession, syncArmed, desyncHalt, rejectHalt, rollHalt;
+		private int desyncBars, capLogBar = -1, capCuts; private List<Order> rtZombies = new List<Order>();
+		private static int SignedQty(NinjaTrader.Cbi.Position p) { return p == null || p.MarketPosition == MarketPosition.Flat ? 0 : (p.MarketPosition == MarketPosition.Long ? p.Quantity : -p.Quantity); }
+		// H1: the firm's auto-close, a manual flatten, a restart with a real position or an overfill leave the account and the strategy
+		// apart; an exit sent then opens a reverse, unprotected position. 2 bars apart -> flatten this instrument, alert, stop.
+		private void CheckAccountSync()
+		{
+			if (!AccountSyncGuard || State != State.Realtime || desyncHalt) return;
+			int acct, strat;
+			try { acct = SignedQty(PositionAccount); strat = SignedQty(Position); } catch { return; }
+			if (!syncArmed) { if (strat != 0) return; syncArmed = true; }	// WaitUntilFlat: compare once the simulated history position is closed
+			if (acct == strat) { desyncBars = 0; return; }
+			if (++desyncBars < 2) return;
+			desyncHalt = true;
+			try { Account.Flatten(new[] { Instrument }); } catch (Exception ex) { Print("GoldMaster | account flatten failed: " + ex.Message); }
+			Warn("gold_desync", string.Format("GoldMaster | ACCOUNT / STRATEGY POSITION MISMATCH for 2 bars: account {0}, strategy {1} ({2}). The account position and orders of this instrument were closed and the strategy stops. Check the Positions / Orders tabs, then enable it again.", acct, strat, Instrument.FullName));
+			try { SetState(State.Terminated); } catch { }
+		}
+		// H2: real session end (holidays / half days end at 13:00-13:15 ET; NinjaTrader's trading-hours template knows them)
+		private void SessionBounds()
+		{
+			sessEndMin = 17 * 60; shortSession = false;
+			try
+			{
+				if (sessIt == null) sessIt = new SessionIterator(Bars);
+				sessIt.GetNextSession(Time[0], true);
+				DateTime se = ToEt(sessIt.ActualSessionEnd);
+				sessEndMin = se.Hour * 60 + se.Minute;
+				shortSession = sessEndMin >= 9 * 60 && sessEndMin < 16 * 60;
+			}
+			catch { }
+			if (shortSession) Log(string.Format("short session (holiday / half day): the market closes {0:00}:{1:00} ET{2}", sessEndMin / 60, sessEndMin % 60, SkipShortSessions ? " - no new entries this session" : ""));
+			rollHalt = State == State.Realtime && RollDue();
+			if (rollHalt) Warn("gold_roll", "GoldMaster | ROLL DATE reached for " + Instrument.FullName + ": no new entries. Move the strategy to the next contract (same settings).");
+		}
+		private bool RollDue()
+		{
+			if (!RollGuard) return false;
+			try
+			{
+				if (Instrument.MasterInstrument.InstrumentType != InstrumentType.Future) return false;
+				DateTime ex = Instrument.Expiry; if (ex.Year < 2000) return false;
+				return ToEt(Core.Globals.Now).Date >= new DateTime(ex.Year, ex.Month, 1).AddDays(-7);
+			}
+			catch { return false; }
+		}
+		private int FlatMin { get { int f = FlattenTime > 0 ? Hm(FlattenTime) : 24 * 60; return shortSession ? Math.Min(f, sessEndMin - 5) : f; } }
+		private bool LateBar(DateTime barTime) { try { return State == State.Realtime && (Core.Globals.Now - barTime).TotalSeconds > 120; } catch { return false; } }
+		// H3: open + working contracts (realtime: every instrument of the account, so MNQ and MGC together) never above MaxOpenContracts
+		private int OpenAndWorking(object self)
+		{
+			int n = Position.MarketPosition == MarketPosition.Flat ? 0 : Position.Quantity;
+			foreach (Mod m in mods) if ((object)m != self && Working(m.Entry) && !zombies.Contains(m.Entry)) n += Math.Max(0, m.Entry.Quantity - m.Entry.Filled);
+			if (State == State.Realtime)
+			{
+				try { lock (Account.Positions) foreach (NinjaTrader.Cbi.Position p in Account.Positions) if (p.Instrument != Instrument && p.MarketPosition != MarketPosition.Flat) n += p.Quantity; } catch { }
+			}
+			return n;
+		}
+		private int CapQty(object self, string who, int q)
+		{
+			if (MaxOpenContracts <= 0 || q <= 0) return q;
+			int room = MaxOpenContracts - OpenAndWorking(self);
+			if (q <= room) return q;
+			int nq = Math.Max(0, room); capCuts++;
+			if (capLogBar != CurrentBar) { capLogBar = CurrentBar; Log(string.Format("{0} size {1} -> {2} (max open contracts {3})", who, q, nq, MaxOpenContracts)); }
+			return nq;
+		}
+		// M2: in realtime an order the watchdog gave up on may still rest at the exchange -> it keeps blocking the opposite direction
+		private bool RtZombieOpp(int d)
+		{
+			foreach (Order z in rtZombies) if (Working(z) && (z.OrderAction == OrderAction.Buy ? 1 : -1) == -d) return true;
+			return false;
+		}
+		private void RejectSeen(string nativeError)
+		{
+			string ne = (nativeError ?? "").ToLowerInvariant();
+			if (!rejectHalt && (ne.Contains("liquidat") || ne.Contains("disabled") || ne.Contains("margin") || ne.Contains("not allowed") || ne.Contains("locked")))
+			{ rejectHalt = true; Warn("gold_rejhalt", "GoldMaster | the account refuses orders (" + nativeError + "): no new entries this session."); }
+		}
+		// M6: important events also go to an alert and to Documents\NinjaTrader 8\nqmaster_logs\<account>_<date>.txt
+		private void LogFile(string line)
+		{
+			if (!LogToFile || State != State.Realtime) return;
+			try
+			{
+				string dir = Path.Combine(Core.Globals.UserDataDir, "nqmaster_logs"); Directory.CreateDirectory(dir);
+				File.AppendAllText(Path.Combine(dir, (Account != null ? Account.Name : "acct") + "_" + DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture) + ".txt"),
+					DateTime.Now.ToString("HH:mm:ss", CultureInfo.InvariantCulture) + " " + line + Environment.NewLine);
+			}
+			catch { }
+		}
+		private void Warn(string id, string msg)
+		{
+			Print(msg);
+			if (State != State.Realtime) return;
+			LogFile(msg);
+			try { Alert(id, Priority.High, msg, NinjaTrader.Core.Globals.InstallDir + @"\sounds\Alert1.wav", 60, Brushes.Red, Brushes.White); } catch { }
+		}
+		private void NewsListCheck()
+		{
+			if (!NewsBlackout || newsEt == null) return;
+			DateTime last = DateTime.MinValue; foreach (DateTime e in newsEt) if (e.Hour == 8 && e > last) last = e;
+			if ((last - ToEt(Core.Globals.Now)).TotalDays < 35) Warn("gold_news", "GoldMaster | NEWS LIST ends " + last.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + ": add the next CPI / NFP times (bls.gov) in 'Extra Tier-1 times'.");
+		}
 		private double dayStartPnl, acctDayStart = double.NaN; private bool dayStopped, acctStopped;
 		private double evDayStart = double.NaN, evBestDay = double.NaN; private bool targetHit;
 		private int tradesProcessed, totalTrades, totalWins; private double grossWin, grossLoss, netPnl;
@@ -108,7 +216,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Profile = GoldMasterProfile.WinRate;
 				UseOd = true; UseEng0408 = true; UseSvwap = true; UseEng0610 = true; UseAsia = true; UseEng0206 = true; UseLate = false;
 				UseEng0610 = false;
-				Contracts = 1; FlattenTime = 1651; SkipFomc = true; FomcDates = "";
+				Contracts = 1; FlattenTime = 1600; SkipFomc = true; FomcDates = "";	// 1600: MFFU auto-closes at 16:10 ET, Lucid at 16:45 (was 1651)
+				AccountSyncGuard = true; SkipShortSessions = true; MaxOpenContracts = 20; RollGuard = true; LogToFile = true;
 				WarmupDays = 60; DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; NewsBlackout = false; NewsTimes = ""; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 8; EvalLateGoal = 2100; EvalLateContracts = 2; EvalLateMinCushion = 1000;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
@@ -119,17 +228,21 @@ namespace NinjaTrader.NinjaScript.Strategies
 				try { etZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"); } catch { etZone = null; }
 				badTimeframe = !(BarsPeriod.BarsPeriodType == BarsPeriodType.Minute && BarsPeriod.Value == 1);
 				if (badTimeframe) Print("GoldMaster | Needs a 1-MINUTE MGC chart.");
+				if (etZone == null) { badTimeframe = true; Print("GoldMaster | Windows time zone 'Eastern Standard Time' not found: the strategy does not trade."); }
+				try { sessIt = new SessionIterator(Bars); } catch { sessIt = null; }
 				fomc = new HashSet<int>();
 				foreach (string raw in (BuiltinFomc + "," + (FomcDates ?? "")).Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))
 				{
 					DateTime d;
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
+					else Print("GoldMaster | FOMC dates: cannot read '" + raw.Trim() + "' (format yyyy-MM-dd)");
 				}
 				newsEt = new List<DateTime>();
 				foreach (string raw in (BuiltinNews + "," + (NewsTimes ?? "")).Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
 				{
 					DateTime nt;
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out nt)) newsEt.Add(nt);
+					else Print("GoldMaster | news times: cannot read '" + raw.Trim() + "' (format yyyy-MM-dd HH:mm, 24 h, e.g. 2027-01-08 08:30)");
 				}
 				BuildModules();
 			}
@@ -156,7 +269,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 				}
 				catch { }
 				acctStopped = false; dayStopped = false; dayStartPnl = netPnl;
-				if (rthDays < WarmupDays) Print("GoldMaster | WARNING: only " + rthDays + " RTH days loaded, warm-up needs " + WarmupDays + " - set Days to load >= " + (2 * WarmupDays) + " or lower 'Warm-up days'.");
+				if (rthDays < WarmupDays) Warn("gold_warmup", "GoldMaster | WARNING: only " + rthDays + " RTH days loaded, warm-up needs " + WarmupDays + " - set Days to load >= " + (2 * WarmupDays) + " or lower 'Warm-up days'.");
+				syncArmed = false; desyncBars = 0; NewsListCheck();
+				rollHalt = RollDue(); if (rollHalt) Warn("gold_roll", "GoldMaster | ROLL DATE reached for " + Instrument.FullName + ": no new entries. Move the strategy to the next contract (same settings).");
+				if (FlattenTime > 1609) Warn("gold_flat", "GoldMaster | Flatten time " + FlattenTime + " ET is after MyFundedFutures' 16:10 auto-close: use 1600.");
 			}
 			else if (State == State.Terminated)
 			{
@@ -194,6 +310,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 			ProcessClosedTrades();
 			PurgeStaleEntries();
+			CheckAccountSync();
+			if (desyncHalt) return;
 			if (prevSm < 0 || sm < prevSm) NewSession(etOpen);
 			prevSm = sm;
 
@@ -236,7 +354,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			DailyLossCheck();
 			if (NewsBlackout && InNews(etClose)) { FlattenAll("news blackout (Tier-1 release)"); UpdateDashboard(); return; }
 			// ---- exits: flatten, time exits, expiries
-			if (FlattenTime > 0 && closeMin >= Hm(FlattenTime) && closeMin < 18 * 60) { FlattenAll("end of day"); UpdateDashboard(); return; }
+			if (closeMin >= FlatMin && closeMin < 18 * 60) { FlattenAll(shortSession ? "early close (holiday / half day)" : "end of day"); UpdateDashboard(); return; }
 			foreach (Mod m in mods)
 			{
 				if (m.InTrade && m.EntryBar >= 0 && CurrentBar - m.EntryBar >= m.MaxHold) ExitModule(m, "time exit");
@@ -245,6 +363,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			// the opposite side broke first -> no trade today
 			if (asia.On && Working(asia.Entry) && asia.Dir != 0 && asFirst != 0 && asFirst != asia.Dir) { CancelEntry(asia); asBroken = true; }
 			if (!CanTrade()) { CancelAllEntries(); UpdateDashboard(); return; }
+			if (LateBar(Time[0])) { Log("bar processed late (session break / data gap): no new entries on it"); UpdateDashboard(); return; }
 			if (pendMod != null)
 			{
 				Mod pm = pendMod;
@@ -275,6 +394,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 		#region Session / daily statistics
 		private void NewSession(DateTime etOpen)
 		{
+			CancelAllEntries();                                  // nothing from the last session survives (half days)
+			foreach (Order z in rtZombies) { try { if (Working(z)) CancelOrder(z); } catch { } }
+			rtZombies.Clear(); rejectHalt = false;
+			foreach (Mod m in mods) m.RejToday = 0;
+			SessionBounds();
 			EdgeDayClose();
 			// finalize the previous RTH day (ATR: EWM 1/14 of RTH true ranges; trend: prior close vs SMA20 of RTH closes)
 			if (rthHas)
@@ -464,7 +588,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (!edgeAlarm && edgeS > h)
 				{
 					edgeAlarm = true; edgePaused = EdgeMonitorPause;
-					Print(string.Format("GoldMaster | EDGE MONITOR ALARM {0}: live results no longer consistent with the backtested gold edge ({1} days). {2}", sessionDate, edgeDays,
+					Warn("gold_edge", string.Format("GoldMaster | EDGE MONITOR ALARM {0}: live results no longer consistent with the backtested gold edge ({1} days). {2}", sessionDate, edgeDays,
 						EdgeMonitorPause ? "New entries paused." : "Alert only (pause is off)."));
 				}
 			}
@@ -472,7 +596,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 		#region Orders
 		private bool OppPos(int d) { return Position.MarketPosition == (d == 1 ? MarketPosition.Short : MarketPosition.Long); }
-		private bool OppWork(int d, Mod self) { foreach (Mod o in mods) if (o != self && Working(o.Entry) && o.Dir == -d) return true; return false; }
+		private bool OppWork(int d, Mod self) { foreach (Mod o in mods) if (o != self && Working(o.Entry) && o.Dir == -d) return true; return RtZombieOpp(d); }
 		private void Park(Mod o)
 		{
 			if (o.Entry.OrderType == OrderType.StopMarket) { o.Def = true; o.DPx = o.Entry.StopPrice; Log(o.Sig + " stop order parked (opposite trade)"); }
@@ -496,7 +620,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			SetStopLoss(m.Sig, CalculationMode.Price, m.Sl, false);
 			SetProfitTarget(m.Sig, CalculationMode.Price, m.Tp);
-			m.Q = Qty();
+			m.Q = m.RejToday >= 2 ? 0 : CapQty(m, m.Sig, Qty());
+			if (m.Q <= 0) { Log(m.Sig + " skipped (contract cap / rejections)"); m.Q = 1; return; }
 			Order o = m.Dir == 1 ? EnterLong(m.Q, m.Sig) : EnterShort(m.Q, m.Sig);
 			if (o != null) m.Entry = o;
 			Log(string.Format("{0} {1} market | SL {2} TP {3}", m.Sig, m.Dir == 1 ? "BUY" : "SELL", Fmt(m.Sl), Fmt(m.Tp)));
@@ -516,19 +641,22 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			SetStopLoss(m.Sig, CalculationMode.Price, sl, false);
 			SetProfitTarget(m.Sig, CalculationMode.Price, tp);
-			m.Q = Qty();
+			m.Q = m.RejToday >= 2 ? 0 : CapQty(m, m.Sig, Qty());
+			if (m.Q <= 0) { Log(m.Sig + " skipped (contract cap / rejections)"); m.Q = 1; return; }
 			Order o = d == 1 ? EnterLongStopMarket(0, true, m.Q, px, m.Sig) : EnterShortStopMarket(0, true, m.Q, px, m.Sig);
 			if (o != null) m.Entry = o;
 			Log(string.Format("{0} {1} STOP @ {2} | SL {3} TP {4}", m.Sig, d == 1 ? "BUY" : "SELL", Fmt(px), Fmt(sl), Fmt(tp)));
 		}
 		private void ExitModule(Mod m, string why)
 		{
+			if (desyncHalt) return;
 			if (m.Dir == 1) ExitLong(0, Math.Max(1, m.Q), m.Sig + "X", m.Sig); else if (m.Dir == -1) ExitShort(0, Math.Max(1, m.Q), m.Sig + "X", m.Sig);
 			m.EntryBar = -1; Log(m.Sig + " exit: " + why);
 		}
 		private void FlattenAll(string why)
 		{
 			CancelAllEntries();
+			if (desyncHalt) return;
 			if (Position.MarketPosition == MarketPosition.Flat || flattenBar == CurrentBar) return;
 			flattenBar = CurrentBar;
 			if (Position.MarketPosition == MarketPosition.Long) ExitLong(); else ExitShort();
@@ -563,9 +691,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 				int age = CurrentBar - m.SeenBar;
 				OrderState s = e.OrderState;
 				string why = null;
-				if (m.CancelOrd == e && CurrentBar - m.CancelBar >= 2) why = "cancel never confirmed";
-				else if (age >= 2 && (s == OrderState.Initialized || s == OrderState.Submitted)) why = "never accepted";
-				else if (age >= 2 && e.OrderType == OrderType.Market && s != OrderState.PartFilled) why = "market entry never filled";
+				int lim = State == State.Realtime ? 5 : 2;
+				if (m.CancelOrd == e && CurrentBar - m.CancelBar >= lim) why = "cancel never confirmed";
+				else if (age >= lim && (s == OrderState.Initialized || s == OrderState.Submitted)) why = "never accepted";
+				else if (age >= lim && e.OrderType == OrderType.Market && s != OrderState.PartFilled) why = "market entry never filled";
 				if (why == null) continue;
 				DropStale(m, why, true);
 			}
@@ -576,6 +705,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			OrderState s = e.OrderState;
 			if (cancel) { try { CancelOrder(e); } catch { } }
 			zombies.Add(e); zombieCount++;
+			if (State == State.Realtime) { rtZombies.Add(e); Warn("gold_stale", "GoldMaster | STALE ORDER in realtime: " + m.Sig + " " + e.OrderAction + " " + e.OrderType + " - check the Orders tab; it keeps blocking the opposite direction while it may be live."); }
 			m.Entry = null; m.SeenOrd = null; m.CancelOrd = null;
 			Print(string.Format("{0} | GoldMaster | STALE ORDER dropped ({1}): {2} {3} {4} x{5} @ {6}, state {7} - the module and the opposite direction trade again",
 				Time[0].ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), why, m.Sig, e.OrderAction, e.OrderType, e.Quantity,
@@ -590,7 +720,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (m != null && !zombies.Contains(order) && (m.Entry == null || m.Entry == order || !Working(m.Entry))) m.Entry = order;
 			if (orderState == OrderState.Rejected)
 			{
-				Print(string.Format("GoldMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
+				Warn("gold_rej", string.Format("GoldMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
+				if (m != null && ++m.RejToday == 2) Log(m.Sig + " off for the rest of the session (2 rejected orders)");
+				RejectSeen(nativeError);
 				Mod f = m == null && (order.Name == "Stop loss" || order.Name == "Profit target") ? BySig(order.FromEntrySignal) : null;
 				if (f != null && f.InTrade) ExitModule(f, "protective order rejected");
 				else if (m != null && !m.InTrade) { m.Dir = 0; m.ExpireMin = -1; m.Def = false; if (pendMod == m) pendMod = null; }
@@ -606,6 +738,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (m != null)
 			{
 				if (execution.Order.Filled <= 0) return;
+				m.OpenQty += quantity;
 				if (m.InTrade) return;			// further partial fills of the same entry
 				m.InTrade = true; m.EntryBar = CurrentBar; m.Def = false;
 				double f = execution.Order.AverageFillPrice;
@@ -617,8 +750,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 				return;
 			}
 			Mod from = BySig(execution.Order.FromEntrySignal);
-			if (from != null && execution.Order.OrderState == OrderState.Filled) { from.InTrade = false; from.EntryBar = -1; }
-			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.EntryBar = -1; }
+			if (from != null)
+			{
+				from.OpenQty = Math.Max(0, from.OpenQty - quantity); if (from.OpenQty == 0) { from.InTrade = false; from.EntryBar = -1; }
+				Log(string.Format("{0} exit fill: {1} x{2} @ {3}", from.Sig, execution.Order.Name, quantity, Fmt(price)));
+			}
+			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.EntryBar = -1; x.OpenQty = 0; }
 		}
 		#endregion
 
@@ -637,7 +774,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (double.IsNaN(evDayStart)) { evDayStart = bal; if (double.IsNaN(evBestDay)) evBestDay = EvalBestDaySoFar; }
 			double need = EvalTarget;
 			if (ConsistencyPct > 0) need = Math.Max(need, Math.Max(evBestDay, eq - evDayStart) * 100.0 / ConsistencyPct);
-			if (!targetHit && eq - StartBalance >= need) { targetHit = true; FlattenAll("eval target"); Print(string.Format("GoldMaster | EVAL TARGET REACHED (+{0:0}, needed {1:0}) - trading stopped.", eq - StartBalance, need)); }
+			if (!targetHit && eq - StartBalance >= need) { targetHit = true; FlattenAll("eval target"); Warn("gold_target", string.Format("GoldMaster | EVAL TARGET REACHED (+{0:0}, needed {1:0}) - trading stopped.", eq - StartBalance, need)); }
 			else if (targetHit && Position.MarketPosition == MarketPosition.Flat && Math.Abs(eq - bal) < 0.01)
 			{
 				double needF = EvalTarget;
@@ -662,6 +799,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 		private bool CanTrade()
 		{
+			if (desyncHalt) { status = "ACCOUNT / STRATEGY POSITION MISMATCH - see Output"; return false; }
+			if (rejectHalt) { status = "the account refuses orders - see Output"; return false; }
+			if (SkipShortSessions && shortSession) { status = "holiday / half-day session: no trading"; return false; }
+			if (rollHalt) { status = "ROLL DATE: move the strategy to the next contract"; return false; }
 			if (fomcToday) { status = "FOMC day: no trading"; return false; }
 			if (dayStopped) { status = "daily loss limit"; return false; }
 			if (acctStopped) { status = "account daily stop"; return false; }
@@ -681,7 +822,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (pnl > 0) { totalWins++; grossWin += pnl; } else grossLoss -= pnl;
 			}
 			tradesProcessed = count;
-			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.EntryBar = -1; }
+			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.EntryBar = -1; x.OpenQty = 0; }
 		}
 		private bool PauseActive()
 		{
@@ -698,7 +839,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private static int S(int hhmm) { return ((hhmm / 100) * 60 + hhmm % 100 - 1080 + 1440) % 1440; }
 		private static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100; }
 		private string Fmt(double p) { return Instrument.MasterInstrument.FormatPrice(p); }
-		private void Log(string m) { if (PrintLog) Print(string.Format("{0} | GOLD | {1}", Time[0].ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), m)); }
+		private void Log(string m)
+		{
+			string line = string.Format("{0} | GOLD | {1}", Time[0].ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), m);
+			if (PrintLog) Print(line);
+			LogFile(line);
+		}
 		private void UpdateDashboard()
 		{
 			if (!ShowDashboard || (State == State.Historical && CurrentBar < Count - 2)) return;
@@ -709,6 +855,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Profile, status, trendDir == 1 ? "UP" : trendDir == -1 ? "DOWN" : "-", atr, mm.ToString(), totalTrades,
 				totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
 			if (zombieCount > 0) txt += string.Format("\nStale orders dropped: {0} (see Output)", zombieCount);
+			if (capCuts > 0) txt += string.Format("\nMax open contracts {0}: {1} entries cut", MaxOpenContracts, capCuts);
+			if (shortSession) txt += string.Format("\nShort session: closes {0:00}:{1:00} ET", sessEndMin / 60, sessEndMin % 60);
 			if (EdgeMonitor && edgeDays > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / (Profile == GoldMasterProfile.Robust ? 8.992 : 3.861), edgeDays, edgeAlarm ? " | ALARM" : "");
 			Draw.TextFixed(this, "GM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
 		}
@@ -724,7 +872,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "ENG0206 on (Robust / Custom)", Order = 6, GroupName = "01. Modules (Custom uses all switches)")] public bool UseEng0206 { get; set; }
 		[NinjaScriptProperty][Display(Name = "LATE on (Custom only)", Order = 7, GroupName = "01. Modules (Custom uses all switches)")] public bool UseLate { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Contracts per module", Order = 1, GroupName = "02. Risk / account")] public int Contracts { get; set; }
-		[NinjaScriptProperty][Range(1000, 1659)][Display(Name = "Flatten time (ET HHmm)", Order = 2, GroupName = "02. Risk / account")] public int FlattenTime { get; set; }
+		[NinjaScriptProperty][Range(1000, 1659)][Display(Name = "Flatten time (ET HHmm; 1600 - MFFU closes at 16:10, Lucid at 16:45)", Order = 2, GroupName = "02. Risk / account")] public int FlattenTime { get; set; }
+		[NinjaScriptProperty][Display(Name = "Account sync guard: account and strategy position apart 2 bars -> flatten this instrument and stop (off if anything else trades it on this account)", Order = 1, GroupName = "06. Operations (safety)")] public bool AccountSyncGuard { get; set; }
+		[NinjaScriptProperty][Display(Name = "Skip holiday / half-day sessions (early close)", Order = 2, GroupName = "06. Operations (safety)")] public bool SkipShortSessions { get; set; }
+		[NinjaScriptProperty][Range(0, 500)][Display(Name = "Max open contracts, whole account (Lucid 50K funded 20, MFFU 50K 30; 0 = off)", Order = 3, GroupName = "06. Operations (safety)")] public int MaxOpenContracts { get; set; }
+		[NinjaScriptProperty][Display(Name = "Roll guard: no new entries from the roll date of the chart's contract", Order = 4, GroupName = "06. Operations (safety)")] public bool RollGuard { get; set; }
+		[NinjaScriptProperty][Display(Name = "Log file (Documents\\NinjaTrader 8\\nqmaster_logs, realtime)", Order = 5, GroupName = "06. Operations (safety)")] public bool LogToFile { get; set; }
 		[NinjaScriptProperty][Display(Name = "Skip FOMC days", Order = 3, GroupName = "02. Risk / account")] public bool SkipFomc { get; set; }
 		[NinjaScriptProperty][Display(Name = "Extra FOMC dates (yyyy-MM-dd list)", Order = 4, GroupName = "02. Risk / account")] public string FomcDates { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Daily loss limit $ (0 = off)", Order = 5, GroupName = "02. Risk / account")] public double DailyLossLimit { get; set; }

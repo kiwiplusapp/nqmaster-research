@@ -1,0 +1,9950 @@
+{
+ "MFFU Rapid EOD 50K": {
+  "rules": {
+   "target": 3000,
+   "dd": 2000,
+   "cons": 0.3,
+   "mind": 4,
+   "dll": 0,
+   "fee": 157
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "Estable",
+   "f": 0.5,
+   "T1": {
+    "p22": 20.9,
+    "pass_ever": 83.9,
+    "bust": 5.6,
+    "median_days": 35.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 29.1,
+    "pass_ever": 79.9,
+    "bust": 19.2,
+    "median_days": 30.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "Estable",
+   "f": 0.5,
+   "T1": {
+    "p22": 19.3,
+    "pass_ever": 80.0,
+    "bust": 10.0,
+    "median_days": 36.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 27.7,
+    "pass_ever": 75.4,
+    "bust": 20.9,
+    "median_days": 29.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 21.2,
+    "pass_ever": 82.4,
+    "bust": 17.6,
+    "median_days": 33.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 29.7,
+    "pass_ever": 76.4,
+    "bust": 23.6,
+    "median_days": 29.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 21.2,
+     "pass_ever": 82.4,
+     "bust": 17.6,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.7,
+     "pass_ever": 76.4,
+     "bust": 23.6,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 20.8,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.8,
+     "pass_ever": 80.6,
+     "bust": 19.4,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 20.0,
+     "pass_ever": 82.1,
+     "bust": 17.7,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.1,
+     "pass_ever": 79.1,
+     "bust": 19.2,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 16.1,
+     "pass_ever": 81.4,
+     "bust": 18.6,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 22.2,
+     "pass_ever": 73.8,
+     "bust": 10.1,
+     "median_days": 36.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 6.9,
+     "pass_ever": 69.2,
+     "bust": 20.5,
+     "median_days": 50.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 12.2,
+     "pass_ever": 64.6,
+     "bust": 9.4,
+     "median_days": 51.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 21.2,
+     "pass_ever": 82.4,
+     "bust": 17.6,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.7,
+     "pass_ever": 76.4,
+     "bust": 23.6,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 20.8,
+     "pass_ever": 80.5,
+     "bust": 19.5,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 30.9,
+     "pass_ever": 79.6,
+     "bust": 20.4,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 20.3,
+     "pass_ever": 80.6,
+     "bust": 19.4,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.4,
+     "pass_ever": 79.8,
+     "bust": 20.2,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 18.8,
+     "pass_ever": 79.6,
+     "bust": 20.1,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 24.4,
+     "pass_ever": 87.4,
+     "bust": 12.6,
+     "median_days": 46.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 12.7,
+     "pass_ever": 76.3,
+     "bust": 21.3,
+     "median_days": 40.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.8,
+     "pass_ever": 90.4,
+     "bust": 8.9,
+     "median_days": 48.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 21.2,
+     "pass_ever": 82.4,
+     "bust": 17.6,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.7,
+     "pass_ever": 76.4,
+     "bust": 23.6,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 21.2,
+     "pass_ever": 80.5,
+     "bust": 19.5,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.7,
+     "pass_ever": 76.8,
+     "bust": 23.2,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 21.0,
+     "pass_ever": 80.9,
+     "bust": 19.1,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.3,
+     "pass_ever": 78.4,
+     "bust": 21.6,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 20.7,
+     "pass_ever": 81.8,
+     "bust": 18.0,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.6,
+     "pass_ever": 78.7,
+     "bust": 21.3,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 20.1,
+     "pass_ever": 79.7,
+     "bust": 20.2,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.0,
+     "pass_ever": 82.9,
+     "bust": 17.1,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 21.2,
+     "pass_ever": 82.4,
+     "bust": 17.6,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.7,
+     "pass_ever": 76.4,
+     "bust": 23.6,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 21.0,
+     "pass_ever": 79.0,
+     "bust": 20.7,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 30.9,
+     "pass_ever": 74.5,
+     "bust": 25.5,
+     "median_days": 27.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 20.9,
+     "pass_ever": 83.9,
+     "bust": 5.6,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.1,
+     "pass_ever": 79.9,
+     "bust": 19.2,
+     "median_days": 30.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 17.5,
+     "pass_ever": 83.9,
+     "bust": 1.0,
+     "median_days": 39.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 23.4,
+     "pass_ever": 57.2,
+     "bust": 20.1,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 7.3,
+     "pass_ever": 64.6,
+     "bust": 0.8,
+     "median_days": 52.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 14.7,
+     "pass_ever": 73.6,
+     "bust": 5.9,
+     "median_days": 51.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 20.1,
+     "pass_ever": 78.8,
+     "bust": 21.2,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.1,
+     "pass_ever": 73.1,
+     "bust": 26.9,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 19.7,
+     "pass_ever": 77.8,
+     "bust": 21.9,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.3,
+     "pass_ever": 79.6,
+     "bust": 20.4,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 18.6,
+     "pass_ever": 80.6,
+     "bust": 19.4,
+     "median_days": 37.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.7,
+     "pass_ever": 78.9,
+     "bust": 19.4,
+     "median_days": 32.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 15.6,
+     "pass_ever": 76.9,
+     "bust": 23.1,
+     "median_days": 39.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 21.5,
+     "pass_ever": 67.2,
+     "bust": 10.6,
+     "median_days": 34.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 5.2,
+     "pass_ever": 71.4,
+     "bust": 23.1,
+     "median_days": 57.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 11.7,
+     "pass_ever": 60.4,
+     "bust": 9.4,
+     "median_days": 53.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 20.1,
+     "pass_ever": 78.8,
+     "bust": 21.2,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.1,
+     "pass_ever": 73.1,
+     "bust": 26.9,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 19.7,
+     "pass_ever": 78.8,
+     "bust": 21.0,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.3,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 19.2,
+     "pass_ever": 79.3,
+     "bust": 20.5,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.1,
+     "pass_ever": 78.7,
+     "bust": 21.3,
+     "median_days": 32.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 17.9,
+     "pass_ever": 77.0,
+     "bust": 23.0,
+     "median_days": 37.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 23.2,
+     "pass_ever": 75.7,
+     "bust": 23.7,
+     "median_days": 38.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 11.7,
+     "pass_ever": 74.5,
+     "bust": 25.3,
+     "median_days": 43.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.6,
+     "pass_ever": 89.5,
+     "bust": 8.7,
+     "median_days": 51.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 20.1,
+     "pass_ever": 78.8,
+     "bust": 21.2,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.1,
+     "pass_ever": 73.1,
+     "bust": 26.9,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 20.1,
+     "pass_ever": 78.8,
+     "bust": 21.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.1,
+     "pass_ever": 75.9,
+     "bust": 24.1,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 19.9,
+     "pass_ever": 79.1,
+     "bust": 20.3,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.7,
+     "pass_ever": 75.0,
+     "bust": 25.0,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 19.9,
+     "pass_ever": 79.5,
+     "bust": 20.4,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.2,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 30.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 18.8,
+     "pass_ever": 78.2,
+     "bust": 21.0,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 24.4,
+     "pass_ever": 81.0,
+     "bust": 19.0,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 20.1,
+     "pass_ever": 78.8,
+     "bust": 21.2,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.1,
+     "pass_ever": 73.1,
+     "bust": 26.9,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 20.3,
+     "pass_ever": 77.7,
+     "bust": 21.9,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.3,
+     "pass_ever": 73.6,
+     "bust": 26.4,
+     "median_days": 27.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 19.3,
+     "pass_ever": 80.0,
+     "bust": 10.0,
+     "median_days": 36.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.7,
+     "pass_ever": 75.4,
+     "bust": 20.9,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 16.6,
+     "pass_ever": 75.6,
+     "bust": 2.5,
+     "median_days": 39.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 22.9,
+     "pass_ever": 56.0,
+     "bust": 24.1,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 6.5,
+     "pass_ever": 63.3,
+     "bust": 0.8,
+     "median_days": 55.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 13.4,
+     "pass_ever": 66.5,
+     "bust": 5.9,
+     "median_days": 47.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "MFFU Rapid EOD 25K*": {
+  "rules": {
+   "target": 1500,
+   "dd": 1000,
+   "cons": 0.3,
+   "mind": 4,
+   "dll": 0,
+   "fee": 100
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "UltraR200",
+   "f": 0.75,
+   "T1": {
+    "p22": 44.4,
+    "pass_ever": 61.8,
+    "bust": 38.2,
+    "median_days": 17.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 41.0,
+    "pass_ever": 56.4,
+    "bust": 43.6,
+    "median_days": 14.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "UltraR200",
+   "f": 0.75,
+   "T1": {
+    "p22": 41.1,
+    "pass_ever": 57.6,
+    "bust": 42.4,
+    "median_days": 17.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 40.1,
+    "pass_ever": 53.9,
+    "bust": 46.1,
+    "median_days": 14.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 43.6,
+    "pass_ever": 49.9,
+    "bust": 50.1,
+    "median_days": 13.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 46.1,
+    "pass_ever": 51.5,
+    "bust": 48.5,
+    "median_days": 11.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 43.6,
+     "pass_ever": 49.9,
+     "bust": 50.1,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.1,
+     "pass_ever": 51.5,
+     "bust": 48.5,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 43.2,
+     "pass_ever": 53.6,
+     "bust": 46.4,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.0,
+     "pass_ever": 49.7,
+     "bust": 50.3,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 41.9,
+     "pass_ever": 58.8,
+     "bust": 41.2,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.9,
+     "pass_ever": 52.7,
+     "bust": 47.3,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 38.0,
+     "pass_ever": 57.0,
+     "bust": 43.0,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.8,
+     "pass_ever": 51.1,
+     "bust": 48.2,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 29.6,
+     "pass_ever": 61.4,
+     "bust": 38.6,
+     "median_days": 23.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.9,
+     "pass_ever": 56.9,
+     "bust": 36.8,
+     "median_days": 23.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 43.6,
+     "pass_ever": 49.9,
+     "bust": 50.1,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.1,
+     "pass_ever": 51.5,
+     "bust": 48.5,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 43.7,
+     "pass_ever": 53.1,
+     "bust": 46.9,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.1,
+     "pass_ever": 51.5,
+     "bust": 48.5,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 45.1,
+     "pass_ever": 54.0,
+     "bust": 46.0,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 42.2,
+     "pass_ever": 51.1,
+     "bust": 48.9,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 44.4,
+     "pass_ever": 61.8,
+     "bust": 38.2,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.0,
+     "pass_ever": 56.4,
+     "bust": 43.6,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 39.2,
+     "pass_ever": 63.2,
+     "bust": 36.8,
+     "median_days": 19.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 39.4,
+     "pass_ever": 63.5,
+     "bust": 36.5,
+     "median_days": 17.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 43.6,
+     "pass_ever": 49.9,
+     "bust": 50.1,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.1,
+     "pass_ever": 51.5,
+     "bust": 48.5,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 43.6,
+     "pass_ever": 49.9,
+     "bust": 50.1,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.9,
+     "pass_ever": 52.4,
+     "bust": 47.6,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 43.8,
+     "pass_ever": 51.5,
+     "bust": 48.5,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 47.5,
+     "pass_ever": 55.7,
+     "bust": 44.3,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 43.4,
+     "pass_ever": 52.1,
+     "bust": 47.9,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.2,
+     "pass_ever": 56.7,
+     "bust": 43.3,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 41.8,
+     "pass_ever": 50.6,
+     "bust": 49.4,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.6,
+     "pass_ever": 57.2,
+     "bust": 42.8,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 43.6,
+     "pass_ever": 49.9,
+     "bust": 50.1,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.1,
+     "pass_ever": 51.5,
+     "bust": 48.5,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 42.9,
+     "pass_ever": 52.8,
+     "bust": 47.2,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.9,
+     "pass_ever": 50.1,
+     "bust": 49.9,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 40.9,
+     "pass_ever": 58.3,
+     "bust": 41.7,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.7,
+     "pass_ever": 42.1,
+     "bust": 57.9,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 34.6,
+     "pass_ever": 68.7,
+     "bust": 30.6,
+     "median_days": 22.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.6,
+     "pass_ever": 44.9,
+     "bust": 55.1,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 27.3,
+     "pass_ever": 65.4,
+     "bust": 34.5,
+     "median_days": 27.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.7,
+     "pass_ever": 44.3,
+     "bust": 55.7,
+     "median_days": 15.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 41.0,
+     "pass_ever": 47.6,
+     "bust": 52.4,
+     "median_days": 13.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 43.1,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 40.7,
+     "pass_ever": 51.6,
+     "bust": 48.4,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 42.6,
+     "pass_ever": 46.9,
+     "bust": 53.1,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 39.6,
+     "pass_ever": 57.7,
+     "bust": 42.3,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 38.4,
+     "pass_ever": 41.9,
+     "bust": 58.1,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 35.7,
+     "pass_ever": 55.0,
+     "bust": 45.0,
+     "median_days": 18.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 49.7,
+     "bust": 49.0,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 60.0,
+     "bust": 40.0,
+     "median_days": 25.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.9,
+     "pass_ever": 47.1,
+     "bust": 47.6,
+     "median_days": 18.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 41.0,
+     "pass_ever": 47.6,
+     "bust": 52.4,
+     "median_days": 13.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 43.1,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 41.0,
+     "pass_ever": 50.7,
+     "bust": 49.3,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 43.1,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 42.5,
+     "pass_ever": 53.1,
+     "bust": 46.9,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 39.3,
+     "pass_ever": 46.1,
+     "bust": 53.9,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 41.1,
+     "pass_ever": 57.6,
+     "bust": 42.4,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.1,
+     "pass_ever": 53.9,
+     "bust": 46.1,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 36.0,
+     "pass_ever": 61.8,
+     "bust": 38.2,
+     "median_days": 20.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.3,
+     "pass_ever": 60.6,
+     "bust": 39.4,
+     "median_days": 18.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 41.0,
+     "pass_ever": 47.6,
+     "bust": 52.4,
+     "median_days": 13.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 43.1,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 41.0,
+     "pass_ever": 47.6,
+     "bust": 52.4,
+     "median_days": 13.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.0,
+     "pass_ever": 49.7,
+     "bust": 50.3,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 41.9,
+     "pass_ever": 48.5,
+     "bust": 51.5,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.0,
+     "pass_ever": 49.9,
+     "bust": 50.1,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 41.2,
+     "pass_ever": 49.6,
+     "bust": 50.4,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.0,
+     "pass_ever": 52.9,
+     "bust": 47.1,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 39.5,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.0,
+     "pass_ever": 54.1,
+     "bust": 45.9,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 41.0,
+     "pass_ever": 47.6,
+     "bust": 52.4,
+     "median_days": 13.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 43.1,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 40.1,
+     "pass_ever": 50.4,
+     "bust": 49.6,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 43.5,
+     "pass_ever": 47.5,
+     "bust": 52.5,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 37.4,
+     "pass_ever": 57.9,
+     "bust": 42.1,
+     "median_days": 18.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.9,
+     "pass_ever": 38.7,
+     "bust": 61.3,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 32.0,
+     "pass_ever": 65.9,
+     "bust": 33.5,
+     "median_days": 23.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 41.0,
+     "bust": 59.0,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 23.1,
+     "pass_ever": 62.6,
+     "bust": 36.9,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.7,
+     "pass_ever": 40.7,
+     "bust": 59.3,
+     "median_days": 14.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "Lucid Flex 50K": {
+  "rules": {
+   "target": 3000,
+   "dd": 2000,
+   "cons": 0.5,
+   "mind": 0,
+   "dll": 0,
+   "fee": 146
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 26.6,
+    "pass_ever": 82.7,
+    "bust": 17.3,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 36.8,
+    "pass_ever": 79.8,
+    "bust": 20.2,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 25.4,
+    "pass_ever": 79.1,
+    "bust": 20.9,
+    "median_days": 33.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 35.4,
+    "pass_ever": 75.2,
+    "bust": 24.8,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 26.6,
+    "pass_ever": 82.7,
+    "bust": 17.3,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 36.8,
+    "pass_ever": 79.8,
+    "bust": 20.2,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 26.6,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 79.8,
+     "bust": 20.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.6,
+     "pass_ever": 80.5,
+     "bust": 19.5,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.9,
+     "pass_ever": 83.9,
+     "bust": 16.1,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.4,
+     "pass_ever": 82.2,
+     "bust": 17.8,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.9,
+     "pass_ever": 81.8,
+     "bust": 16.6,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 19.6,
+     "pass_ever": 83.9,
+     "bust": 16.1,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.8,
+     "pass_ever": 74.3,
+     "bust": 10.1,
+     "median_days": 31.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 8.8,
+     "pass_ever": 72.7,
+     "bust": 19.4,
+     "median_days": 51.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 12.0,
+     "pass_ever": 59.7,
+     "bust": 9.4,
+     "median_days": 50.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 26.6,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 79.8,
+     "bust": 20.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 26.4,
+     "pass_ever": 81.1,
+     "bust": 18.7,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 38.2,
+     "pass_ever": 82.5,
+     "bust": 17.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 25.3,
+     "pass_ever": 81.0,
+     "bust": 18.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.8,
+     "pass_ever": 81.7,
+     "bust": 18.3,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 23.2,
+     "pass_ever": 80.5,
+     "bust": 19.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.7,
+     "pass_ever": 87.6,
+     "bust": 12.4,
+     "median_days": 39.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 14.3,
+     "pass_ever": 75.5,
+     "bust": 21.8,
+     "median_days": 39.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 17.8,
+     "pass_ever": 90.2,
+     "bust": 8.9,
+     "median_days": 48.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 26.6,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 79.8,
+     "bust": 20.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 26.6,
+     "pass_ever": 81.0,
+     "bust": 19.0,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 80.1,
+     "bust": 19.9,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 26.6,
+     "pass_ever": 81.3,
+     "bust": 18.7,
+     "median_days": 31.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 79.6,
+     "bust": 20.4,
+     "median_days": 24.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 26.1,
+     "pass_ever": 82.2,
+     "bust": 17.8,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.2,
+     "pass_ever": 79.9,
+     "bust": 20.1,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 21.9,
+     "pass_ever": 79.8,
+     "bust": 20.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.3,
+     "pass_ever": 83.9,
+     "bust": 16.1,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 26.6,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 79.8,
+     "bust": 20.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 26.5,
+     "pass_ever": 78.9,
+     "bust": 20.9,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 38.0,
+     "pass_ever": 77.0,
+     "bust": 23.0,
+     "median_days": 23.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 25.4,
+     "pass_ever": 85.7,
+     "bust": 6.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 82.2,
+     "bust": 17.3,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 20.8,
+     "pass_ever": 84.2,
+     "bust": 1.0,
+     "median_days": 36.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.2,
+     "pass_ever": 58.3,
+     "bust": 19.2,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 9.8,
+     "pass_ever": 66.7,
+     "bust": 0.8,
+     "median_days": 47.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.6,
+     "pass_ever": 76.4,
+     "bust": 4.9,
+     "median_days": 46.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.4,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 75.2,
+     "bust": 24.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 24.3,
+     "pass_ever": 77.9,
+     "bust": 22.0,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.1,
+     "pass_ever": 82.5,
+     "bust": 17.5,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 22.9,
+     "pass_ever": 81.3,
+     "bust": 18.7,
+     "median_days": 35.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.5,
+     "pass_ever": 81.2,
+     "bust": 17.3,
+     "median_days": 27.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 19.0,
+     "pass_ever": 77.8,
+     "bust": 22.2,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 24.6,
+     "pass_ever": 70.9,
+     "bust": 10.3,
+     "median_days": 34.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 7.9,
+     "pass_ever": 72.6,
+     "bust": 22.4,
+     "median_days": 56.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 11.2,
+     "pass_ever": 59.2,
+     "bust": 9.4,
+     "median_days": 53.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.4,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 75.2,
+     "bust": 24.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.1,
+     "pass_ever": 79.4,
+     "bust": 20.6,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.6,
+     "pass_ever": 81.8,
+     "bust": 18.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.1,
+     "pass_ever": 79.6,
+     "bust": 20.2,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 79.4,
+     "bust": 20.6,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 21.9,
+     "pass_ever": 77.4,
+     "bust": 22.6,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.1,
+     "pass_ever": 77.7,
+     "bust": 22.0,
+     "median_days": 34.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 12.0,
+     "pass_ever": 72.8,
+     "bust": 26.8,
+     "median_days": 43.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 17.3,
+     "pass_ever": 89.7,
+     "bust": 8.7,
+     "median_days": 52.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.4,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 75.2,
+     "bust": 24.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.4,
+     "pass_ever": 79.6,
+     "bust": 20.4,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 25.4,
+     "pass_ever": 79.9,
+     "bust": 20.1,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 74.5,
+     "bust": 25.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 24.8,
+     "pass_ever": 79.7,
+     "bust": 20.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 31.9,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 26.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 21.0,
+     "pass_ever": 77.7,
+     "bust": 21.5,
+     "median_days": 35.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.2,
+     "pass_ever": 81.5,
+     "bust": 18.5,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.4,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 75.2,
+     "bust": 24.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.4,
+     "pass_ever": 77.1,
+     "bust": 22.7,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 76.1,
+     "bust": 23.9,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.1,
+     "pass_ever": 82.2,
+     "bust": 10.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.7,
+     "pass_ever": 75.6,
+     "bust": 21.6,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 19.4,
+     "pass_ever": 76.6,
+     "bust": 2.5,
+     "median_days": 37.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.7,
+     "pass_ever": 59.7,
+     "bust": 22.3,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 9.1,
+     "pass_ever": 64.3,
+     "bust": 0.8,
+     "median_days": 51.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.2,
+     "pass_ever": 70.3,
+     "bust": 4.9,
+     "median_days": 44.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "Lucid Flex 25K": {
+  "rules": {
+   "target": 1250,
+   "dd": 1000,
+   "cons": 0.5,
+   "mind": 0,
+   "dll": 0,
+   "fee": 89
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "Estable",
+   "f": 0.25,
+   "T1": {
+    "p22": 54.5,
+    "pass_ever": 61.5,
+    "bust": 38.5,
+    "median_days": 11.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 49.4,
+    "pass_ever": 51.7,
+    "bust": 48.3,
+    "median_days": 8.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "Estable",
+   "f": 0.25,
+   "T1": {
+    "p22": 50.4,
+    "pass_ever": 58.6,
+    "bust": 41.4,
+    "median_days": 11.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 46.6,
+    "pass_ever": 49.6,
+    "bust": 50.4,
+    "median_days": 8.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 53.3,
+    "pass_ever": 56.2,
+    "bust": 43.8,
+    "median_days": 10.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 49.6,
+    "pass_ever": 52.0,
+    "bust": 48.0,
+    "median_days": 8.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 56.2,
+     "bust": 43.8,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.6,
+     "pass_ever": 52.0,
+     "bust": 48.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 53.1,
+     "pass_ever": 59.7,
+     "bust": 40.3,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.9,
+     "pass_ever": 51.1,
+     "bust": 48.9,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 63.9,
+     "bust": 36.1,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.4,
+     "pass_ever": 54.6,
+     "bust": 45.4,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 45.3,
+     "pass_ever": 58.1,
+     "bust": 41.9,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.3,
+     "pass_ever": 52.2,
+     "bust": 47.3,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 37.8,
+     "pass_ever": 63.8,
+     "bust": 36.2,
+     "median_days": 18.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 31.9,
+     "pass_ever": 54.6,
+     "bust": 40.0,
+     "median_days": 17.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 56.2,
+     "bust": 43.8,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.6,
+     "pass_ever": 52.0,
+     "bust": 48.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 54.4,
+     "pass_ever": 60.4,
+     "bust": 39.6,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 50.1,
+     "pass_ever": 52.5,
+     "bust": 47.5,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 52.9,
+     "pass_ever": 58.0,
+     "bust": 42.0,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 47.6,
+     "pass_ever": 54.6,
+     "bust": 45.4,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 51.1,
+     "pass_ever": 64.5,
+     "bust": 35.5,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.8,
+     "pass_ever": 57.2,
+     "bust": 42.8,
+     "median_days": 10.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 47.1,
+     "pass_ever": 66.8,
+     "bust": 33.2,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.4,
+     "pass_ever": 69.1,
+     "bust": 30.9,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 56.2,
+     "bust": 43.8,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.6,
+     "pass_ever": 52.0,
+     "bust": 48.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 54.4,
+     "pass_ever": 57.2,
+     "bust": 42.8,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 50.6,
+     "pass_ever": 53.1,
+     "bust": 46.9,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 53.4,
+     "pass_ever": 56.1,
+     "bust": 43.9,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 53.4,
+     "pass_ever": 57.6,
+     "bust": 42.4,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 51.1,
+     "pass_ever": 55.4,
+     "bust": 44.6,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.3,
+     "pass_ever": 59.7,
+     "bust": 40.3,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 50.8,
+     "pass_ever": 56.3,
+     "bust": 43.7,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 53.6,
+     "pass_ever": 60.0,
+     "bust": 40.0,
+     "median_days": 9.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 56.2,
+     "bust": 43.8,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.6,
+     "pass_ever": 52.0,
+     "bust": 48.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 54.5,
+     "pass_ever": 61.5,
+     "bust": 38.5,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.4,
+     "pass_ever": 51.7,
+     "bust": 48.3,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 53.1,
+     "pass_ever": 62.0,
+     "bust": 38.0,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.5,
+     "pass_ever": 46.2,
+     "bust": 53.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 46.0,
+     "pass_ever": 71.4,
+     "bust": 28.6,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 43.1,
+     "pass_ever": 49.6,
+     "bust": 50.4,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 35.0,
+     "pass_ever": 71.2,
+     "bust": 28.8,
+     "median_days": 23.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.3,
+     "pass_ever": 52.4,
+     "bust": 47.6,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 49.4,
+     "pass_ever": 53.0,
+     "bust": 47.0,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.4,
+     "pass_ever": 49.7,
+     "bust": 50.3,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 49.4,
+     "pass_ever": 56.4,
+     "bust": 43.6,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.1,
+     "pass_ever": 49.0,
+     "bust": 51.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 50.0,
+     "pass_ever": 60.2,
+     "bust": 39.8,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 42.2,
+     "pass_ever": 46.1,
+     "bust": 53.9,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 44.1,
+     "pass_ever": 58.8,
+     "bust": 41.2,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.3,
+     "pass_ever": 52.0,
+     "bust": 47.5,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 34.1,
+     "pass_ever": 62.1,
+     "bust": 37.9,
+     "median_days": 20.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 30.5,
+     "pass_ever": 51.8,
+     "bust": 43.3,
+     "median_days": 17.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 49.4,
+     "pass_ever": 53.0,
+     "bust": 47.0,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.4,
+     "pass_ever": 49.7,
+     "bust": 50.3,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 49.7,
+     "pass_ever": 56.3,
+     "bust": 43.7,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.9,
+     "pass_ever": 50.6,
+     "bust": 49.4,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 49.7,
+     "pass_ever": 57.2,
+     "bust": 42.8,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.2,
+     "pass_ever": 49.2,
+     "bust": 50.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 48.0,
+     "pass_ever": 58.2,
+     "bust": 41.8,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.3,
+     "pass_ever": 58.5,
+     "bust": 41.5,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 45.5,
+     "pass_ever": 64.6,
+     "bust": 35.4,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.5,
+     "pass_ever": 66.0,
+     "bust": 34.0,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 49.4,
+     "pass_ever": 53.0,
+     "bust": 47.0,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.4,
+     "pass_ever": 49.7,
+     "bust": 50.3,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 49.4,
+     "pass_ever": 53.0,
+     "bust": 47.0,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 47.5,
+     "pass_ever": 51.3,
+     "bust": 48.7,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 50.0,
+     "pass_ever": 53.8,
+     "bust": 46.2,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 50.4,
+     "pass_ever": 55.0,
+     "bust": 45.0,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 48.6,
+     "pass_ever": 54.5,
+     "bust": 45.5,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 50.6,
+     "pass_ever": 55.8,
+     "bust": 44.2,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 48.5,
+     "pass_ever": 53.9,
+     "bust": 46.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.4,
+     "pass_ever": 55.5,
+     "bust": 44.5,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 49.4,
+     "pass_ever": 53.0,
+     "bust": 47.0,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.4,
+     "pass_ever": 49.7,
+     "bust": 50.3,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 50.4,
+     "pass_ever": 58.6,
+     "bust": 41.4,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.6,
+     "pass_ever": 49.6,
+     "bust": 50.4,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 49.3,
+     "pass_ever": 62.3,
+     "bust": 37.7,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 42.6,
+     "pass_ever": 44.7,
+     "bust": 55.3,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 43.2,
+     "pass_ever": 65.6,
+     "bust": 34.4,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 39.6,
+     "pass_ever": 46.2,
+     "bust": 53.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 31.6,
+     "pass_ever": 66.7,
+     "bust": 33.3,
+     "median_days": 24.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.1,
+     "pass_ever": 50.1,
+     "bust": 49.9,
+     "median_days": 12.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "Lucid Pro 50K": {
+  "rules": {
+   "target": 3000,
+   "dd": 2000,
+   "cons": 0,
+   "mind": 0,
+   "dll": 0,
+   "fee": 192
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 27.4,
+    "pass_ever": 82.7,
+    "bust": 17.3,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 36.5,
+    "pass_ever": 78.5,
+    "bust": 21.5,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 25.9,
+    "pass_ever": 79.1,
+    "bust": 20.9,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 35.4,
+    "pass_ever": 74.2,
+    "bust": 25.8,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 27.4,
+    "pass_ever": 82.7,
+    "bust": 17.3,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 36.5,
+    "pass_ever": 78.5,
+    "bust": 21.5,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 26.4,
+     "pass_ever": 80.7,
+     "bust": 19.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.7,
+     "pass_ever": 83.6,
+     "bust": 16.4,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.9,
+     "pass_ever": 82.2,
+     "bust": 17.8,
+     "median_days": 33.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 82.0,
+     "bust": 16.6,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 20.3,
+     "pass_ever": 83.9,
+     "bust": 16.1,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.5,
+     "pass_ever": 75.6,
+     "bust": 9.9,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 9.9,
+     "pass_ever": 72.8,
+     "bust": 19.4,
+     "median_days": 51.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 12.4,
+     "pass_ever": 59.5,
+     "bust": 9.4,
+     "median_days": 49.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.3,
+     "pass_ever": 81.3,
+     "bust": 18.5,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.9,
+     "pass_ever": 81.7,
+     "bust": 18.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 26.3,
+     "pass_ever": 81.0,
+     "bust": 18.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 80.6,
+     "bust": 19.4,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 23.9,
+     "pass_ever": 80.5,
+     "bust": 19.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.4,
+     "pass_ever": 88.0,
+     "bust": 12.0,
+     "median_days": 39.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 15.2,
+     "pass_ever": 75.5,
+     "bust": 21.8,
+     "median_days": 39.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 18.2,
+     "pass_ever": 90.2,
+     "bust": 8.9,
+     "median_days": 47.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 81.2,
+     "bust": 18.8,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.9,
+     "bust": 21.1,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 27.1,
+     "pass_ever": 81.3,
+     "bust": 18.7,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.1,
+     "pass_ever": 78.7,
+     "bust": 21.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 26.4,
+     "pass_ever": 82.2,
+     "bust": 17.8,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.7,
+     "pass_ever": 79.9,
+     "bust": 20.1,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 22.1,
+     "pass_ever": 79.8,
+     "bust": 20.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.4,
+     "pass_ever": 83.8,
+     "bust": 16.2,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.3,
+     "pass_ever": 78.9,
+     "bust": 20.9,
+     "median_days": 30.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.9,
+     "pass_ever": 75.7,
+     "bust": 24.3,
+     "median_days": 22.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 26.0,
+     "pass_ever": 85.7,
+     "bust": 6.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 81.5,
+     "bust": 17.8,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 21.7,
+     "pass_ever": 84.2,
+     "bust": 1.0,
+     "median_days": 36.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.8,
+     "pass_ever": 57.8,
+     "bust": 19.4,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 10.2,
+     "pass_ever": 66.7,
+     "bust": 0.8,
+     "median_days": 47.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.1,
+     "pass_ever": 74.5,
+     "bust": 5.6,
+     "median_days": 46.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 24.9,
+     "pass_ever": 77.9,
+     "bust": 22.0,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 81.5,
+     "bust": 18.5,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 23.4,
+     "pass_ever": 81.3,
+     "bust": 18.7,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.0,
+     "pass_ever": 81.3,
+     "bust": 17.1,
+     "median_days": 27.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 19.7,
+     "pass_ever": 77.8,
+     "bust": 22.2,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.1,
+     "pass_ever": 72.3,
+     "bust": 10.1,
+     "median_days": 34.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 8.8,
+     "pass_ever": 72.8,
+     "bust": 22.4,
+     "median_days": 55.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 11.3,
+     "pass_ever": 59.3,
+     "bust": 9.4,
+     "median_days": 52.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.5,
+     "pass_ever": 79.4,
+     "bust": 20.6,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 80.8,
+     "bust": 19.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.5,
+     "pass_ever": 79.6,
+     "bust": 20.2,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.7,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 22.9,
+     "pass_ever": 77.4,
+     "bust": 22.6,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.9,
+     "pass_ever": 77.7,
+     "bust": 22.0,
+     "median_days": 33.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 12.8,
+     "pass_ever": 72.8,
+     "bust": 26.8,
+     "median_days": 42.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 17.6,
+     "pass_ever": 89.5,
+     "bust": 8.7,
+     "median_days": 52.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.6,
+     "bust": 20.4,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 25.6,
+     "pass_ever": 79.9,
+     "bust": 20.1,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.1,
+     "pass_ever": 73.8,
+     "bust": 26.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 25.3,
+     "pass_ever": 79.7,
+     "bust": 20.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 21.1,
+     "pass_ever": 77.7,
+     "bust": 21.5,
+     "median_days": 35.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.5,
+     "pass_ever": 81.5,
+     "bust": 18.5,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 77.1,
+     "bust": 22.7,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 74.7,
+     "bust": 25.3,
+     "median_days": 23.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.5,
+     "pass_ever": 82.2,
+     "bust": 10.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 74.9,
+     "bust": 22.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 20.4,
+     "pass_ever": 76.2,
+     "bust": 2.5,
+     "median_days": 37.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.1,
+     "pass_ever": 58.5,
+     "bust": 22.5,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 9.6,
+     "pass_ever": 64.3,
+     "bust": 0.8,
+     "median_days": 51.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.1,
+     "pass_ever": 68.6,
+     "bust": 5.8,
+     "median_days": 45.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "Lucid Pro 25K": {
+  "rules": {
+   "target": 1250,
+   "dd": 1000,
+   "cons": 0,
+   "mind": 0,
+   "dll": 0,
+   "fee": 123
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "Estable",
+   "f": 0.5,
+   "T1": {
+    "p22": 56.4,
+    "pass_ever": 65.5,
+    "bust": 34.5,
+    "median_days": 11.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 46.2,
+    "pass_ever": 48.5,
+    "bust": 51.5,
+    "median_days": 7.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "Estable",
+   "f": 0.5,
+   "T1": {
+    "p22": 54.2,
+    "pass_ever": 66.6,
+    "bust": 33.4,
+    "median_days": 12.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 44.2,
+    "pass_ever": 46.4,
+    "bust": 53.6,
+    "median_days": 7.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 55.4,
+    "pass_ever": 57.6,
+    "bust": 42.4,
+    "median_days": 9.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 54.1,
+    "pass_ever": 56.7,
+    "bust": 43.3,
+    "median_days": 7.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 55.4,
+     "pass_ever": 57.6,
+     "bust": 42.4,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.1,
+     "pass_ever": 56.7,
+     "bust": 43.3,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 55.2,
+     "pass_ever": 58.2,
+     "bust": 41.8,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 50.8,
+     "pass_ever": 53.4,
+     "bust": 46.6,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 55.8,
+     "pass_ever": 65.0,
+     "bust": 35.0,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.4,
+     "pass_ever": 52.7,
+     "bust": 47.3,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 47.8,
+     "pass_ever": 59.9,
+     "bust": 40.1,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.0,
+     "pass_ever": 58.1,
+     "bust": 41.4,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 39.6,
+     "pass_ever": 63.9,
+     "bust": 36.1,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.2,
+     "pass_ever": 56.4,
+     "bust": 38.4,
+     "median_days": 16.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 55.4,
+     "pass_ever": 57.6,
+     "bust": 42.4,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.1,
+     "pass_ever": 56.7,
+     "bust": 43.3,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 56.5,
+     "pass_ever": 58.9,
+     "bust": 41.1,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 53.9,
+     "pass_ever": 56.5,
+     "bust": 43.5,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 54.6,
+     "pass_ever": 59.3,
+     "bust": 40.7,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.9,
+     "pass_ever": 52.5,
+     "bust": 47.5,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 53.5,
+     "pass_ever": 67.2,
+     "bust": 32.8,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.9,
+     "pass_ever": 53.6,
+     "bust": 46.4,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 49.0,
+     "pass_ever": 67.1,
+     "bust": 32.9,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 47.5,
+     "pass_ever": 69.8,
+     "bust": 30.2,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 55.4,
+     "pass_ever": 57.6,
+     "bust": 42.4,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.1,
+     "pass_ever": 56.7,
+     "bust": 43.3,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 56.5,
+     "pass_ever": 58.7,
+     "bust": 41.3,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.5,
+     "pass_ever": 57.1,
+     "bust": 42.9,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 55.7,
+     "pass_ever": 57.9,
+     "bust": 42.1,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 56.0,
+     "pass_ever": 60.2,
+     "bust": 39.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 53.6,
+     "pass_ever": 57.0,
+     "bust": 43.0,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 56.5,
+     "pass_ever": 61.4,
+     "bust": 38.6,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 53.7,
+     "pass_ever": 58.0,
+     "bust": 42.0,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.3,
+     "pass_ever": 61.1,
+     "bust": 38.9,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 55.4,
+     "pass_ever": 57.6,
+     "bust": 42.4,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.1,
+     "pass_ever": 56.7,
+     "bust": 43.3,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 56.8,
+     "pass_ever": 60.3,
+     "bust": 39.7,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 51.5,
+     "pass_ever": 54.1,
+     "bust": 45.9,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 56.4,
+     "pass_ever": 65.5,
+     "bust": 34.5,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.2,
+     "pass_ever": 48.5,
+     "bust": 51.5,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 49.4,
+     "pass_ever": 75.1,
+     "bust": 24.9,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 42.8,
+     "pass_ever": 49.2,
+     "bust": 50.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 37.5,
+     "pass_ever": 74.6,
+     "bust": 25.4,
+     "median_days": 22.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.1,
+     "pass_ever": 55.7,
+     "bust": 44.3,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 56.3,
+     "bust": 43.7,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.7,
+     "pass_ever": 52.7,
+     "bust": 47.3,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 53.2,
+     "pass_ever": 56.7,
+     "bust": 43.3,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.3,
+     "pass_ever": 51.1,
+     "bust": 48.9,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 54.1,
+     "pass_ever": 62.8,
+     "bust": 37.2,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.9,
+     "pass_ever": 48.5,
+     "bust": 51.5,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 46.0,
+     "pass_ever": 60.9,
+     "bust": 39.1,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.5,
+     "pass_ever": 54.1,
+     "bust": 45.2,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 36.9,
+     "pass_ever": 62.8,
+     "bust": 37.2,
+     "median_days": 18.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.6,
+     "pass_ever": 52.9,
+     "bust": 42.4,
+     "median_days": 15.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 56.3,
+     "bust": 43.7,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.7,
+     "pass_ever": 52.7,
+     "bust": 47.3,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 53.5,
+     "pass_ever": 56.6,
+     "bust": 43.4,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.4,
+     "pass_ever": 52.9,
+     "bust": 47.1,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 53.1,
+     "pass_ever": 58.0,
+     "bust": 42.0,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 47.3,
+     "pass_ever": 50.4,
+     "bust": 49.6,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 51.0,
+     "pass_ever": 60.5,
+     "bust": 39.5,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.9,
+     "pass_ever": 59.0,
+     "bust": 41.0,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 46.3,
+     "pass_ever": 65.5,
+     "bust": 34.5,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.7,
+     "pass_ever": 66.5,
+     "bust": 33.5,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 56.3,
+     "bust": 43.7,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.7,
+     "pass_ever": 52.7,
+     "bust": 47.3,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 56.3,
+     "bust": 43.7,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.9,
+     "pass_ever": 53.4,
+     "bust": 46.6,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 53.9,
+     "pass_ever": 56.8,
+     "bust": 43.2,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.9,
+     "pass_ever": 57.6,
+     "bust": 42.4,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 51.8,
+     "pass_ever": 56.7,
+     "bust": 43.3,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.7,
+     "pass_ever": 57.4,
+     "bust": 42.6,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 51.8,
+     "pass_ever": 56.6,
+     "bust": 43.4,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 51.7,
+     "pass_ever": 57.1,
+     "bust": 42.9,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 56.3,
+     "bust": 43.7,
+     "median_days": 9.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.7,
+     "pass_ever": 52.7,
+     "bust": 47.3,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 54.4,
+     "pass_ever": 58.9,
+     "bust": 41.1,
+     "median_days": 10.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.9,
+     "pass_ever": 51.8,
+     "bust": 48.2,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 54.2,
+     "pass_ever": 66.6,
+     "bust": 33.4,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.2,
+     "pass_ever": 46.4,
+     "bust": 53.6,
+     "median_days": 7.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 46.4,
+     "pass_ever": 69.6,
+     "bust": 30.4,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.3,
+     "pass_ever": 46.4,
+     "bust": 53.6,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 33.9,
+     "pass_ever": 70.3,
+     "bust": 29.7,
+     "median_days": 24.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 38.7,
+     "pass_ever": 53.1,
+     "bust": 46.9,
+     "median_days": 11.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "FundedNext Rapid Pro 50K": {
+  "rules": {
+   "target": 3000,
+   "dd": 2000,
+   "cons": 0,
+   "mind": 0,
+   "dll": 0,
+   "fee": 150
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 27.4,
+    "pass_ever": 82.7,
+    "bust": 17.3,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 36.5,
+    "pass_ever": 78.5,
+    "bust": 21.5,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 25.9,
+    "pass_ever": 79.1,
+    "bust": 20.9,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 35.4,
+    "pass_ever": 74.2,
+    "bust": 25.8,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 27.4,
+    "pass_ever": 82.7,
+    "bust": 17.3,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 36.5,
+    "pass_ever": 78.5,
+    "bust": 21.5,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 26.4,
+     "pass_ever": 80.7,
+     "bust": 19.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.7,
+     "pass_ever": 83.6,
+     "bust": 16.4,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.9,
+     "pass_ever": 82.2,
+     "bust": 17.8,
+     "median_days": 33.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 82.0,
+     "bust": 16.6,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 20.3,
+     "pass_ever": 83.9,
+     "bust": 16.1,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.5,
+     "pass_ever": 75.6,
+     "bust": 9.9,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 9.9,
+     "pass_ever": 72.8,
+     "bust": 19.4,
+     "median_days": 51.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 12.4,
+     "pass_ever": 59.5,
+     "bust": 9.4,
+     "median_days": 49.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.3,
+     "pass_ever": 81.3,
+     "bust": 18.5,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.9,
+     "pass_ever": 81.7,
+     "bust": 18.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 26.3,
+     "pass_ever": 81.0,
+     "bust": 18.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 80.6,
+     "bust": 19.4,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 23.9,
+     "pass_ever": 80.5,
+     "bust": 19.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.4,
+     "pass_ever": 88.0,
+     "bust": 12.0,
+     "median_days": 39.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 15.2,
+     "pass_ever": 75.5,
+     "bust": 21.8,
+     "median_days": 39.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 18.2,
+     "pass_ever": 90.2,
+     "bust": 8.9,
+     "median_days": 47.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 81.2,
+     "bust": 18.8,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.9,
+     "bust": 21.1,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 27.1,
+     "pass_ever": 81.3,
+     "bust": 18.7,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.1,
+     "pass_ever": 78.7,
+     "bust": 21.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 26.4,
+     "pass_ever": 82.2,
+     "bust": 17.8,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.7,
+     "pass_ever": 79.9,
+     "bust": 20.1,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 22.1,
+     "pass_ever": 79.8,
+     "bust": 20.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.4,
+     "pass_ever": 83.8,
+     "bust": 16.2,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.3,
+     "pass_ever": 78.9,
+     "bust": 20.9,
+     "median_days": 30.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.9,
+     "pass_ever": 75.7,
+     "bust": 24.3,
+     "median_days": 22.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 26.0,
+     "pass_ever": 85.7,
+     "bust": 6.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 81.5,
+     "bust": 17.8,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 21.7,
+     "pass_ever": 84.2,
+     "bust": 1.0,
+     "median_days": 36.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.8,
+     "pass_ever": 57.8,
+     "bust": 19.4,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 10.2,
+     "pass_ever": 66.7,
+     "bust": 0.8,
+     "median_days": 47.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.1,
+     "pass_ever": 74.5,
+     "bust": 5.6,
+     "median_days": 46.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 24.9,
+     "pass_ever": 77.9,
+     "bust": 22.0,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 81.5,
+     "bust": 18.5,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 23.4,
+     "pass_ever": 81.3,
+     "bust": 18.7,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.0,
+     "pass_ever": 81.3,
+     "bust": 17.1,
+     "median_days": 27.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 19.7,
+     "pass_ever": 77.8,
+     "bust": 22.2,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.1,
+     "pass_ever": 72.3,
+     "bust": 10.1,
+     "median_days": 34.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 8.8,
+     "pass_ever": 72.8,
+     "bust": 22.4,
+     "median_days": 55.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 11.3,
+     "pass_ever": 59.3,
+     "bust": 9.4,
+     "median_days": 52.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.5,
+     "pass_ever": 79.4,
+     "bust": 20.6,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 80.8,
+     "bust": 19.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.5,
+     "pass_ever": 79.6,
+     "bust": 20.2,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.7,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 22.9,
+     "pass_ever": 77.4,
+     "bust": 22.6,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.9,
+     "pass_ever": 77.7,
+     "bust": 22.0,
+     "median_days": 33.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 12.8,
+     "pass_ever": 72.8,
+     "bust": 26.8,
+     "median_days": 42.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 17.6,
+     "pass_ever": 89.5,
+     "bust": 8.7,
+     "median_days": 52.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.6,
+     "bust": 20.4,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 25.6,
+     "pass_ever": 79.9,
+     "bust": 20.1,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.1,
+     "pass_ever": 73.8,
+     "bust": 26.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 25.3,
+     "pass_ever": 79.7,
+     "bust": 20.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 21.1,
+     "pass_ever": 77.7,
+     "bust": 21.5,
+     "median_days": 35.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.5,
+     "pass_ever": 81.5,
+     "bust": 18.5,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 77.1,
+     "bust": 22.7,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 74.7,
+     "bust": 25.3,
+     "median_days": 23.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.5,
+     "pass_ever": 82.2,
+     "bust": 10.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 74.9,
+     "bust": 22.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 20.4,
+     "pass_ever": 76.2,
+     "bust": 2.5,
+     "median_days": 37.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.1,
+     "pass_ever": 58.5,
+     "bust": 22.5,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 9.6,
+     "pass_ever": 64.3,
+     "bust": 0.8,
+     "median_days": 51.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.1,
+     "pass_ever": 68.6,
+     "bust": 5.8,
+     "median_days": 45.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "FundedNext Rapid Pro 25K": {
+  "rules": {
+   "target": 1500,
+   "dd": 1000,
+   "cons": 0,
+   "mind": 0,
+   "dll": 0,
+   "fee": 80
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.5,
+   "T1": {
+    "p22": 50.1,
+    "pass_ever": 62.8,
+    "bust": 37.2,
+    "median_days": 14.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 44.5,
+    "pass_ever": 49.6,
+    "bust": 50.4,
+    "median_days": 8.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "UltraR150",
+   "f": 0.5,
+   "T1": {
+    "p22": 47.7,
+    "pass_ever": 60.1,
+    "bust": 39.9,
+    "median_days": 14.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 41.4,
+    "pass_ever": 46.2,
+    "bust": 53.8,
+    "median_days": 8.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 49.7,
+    "pass_ever": 54.9,
+    "bust": 45.1,
+    "median_days": 11.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 49.7,
+    "pass_ever": 53.2,
+    "bust": 46.8,
+    "median_days": 8.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 49.7,
+     "pass_ever": 54.9,
+     "bust": 45.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.7,
+     "pass_ever": 53.2,
+     "bust": 46.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 49.7,
+     "pass_ever": 55.5,
+     "bust": 44.5,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 47.1,
+     "pass_ever": 51.0,
+     "bust": 49.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 50.1,
+     "pass_ever": 62.8,
+     "bust": 37.2,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.5,
+     "pass_ever": 49.6,
+     "bust": 50.4,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 43.4,
+     "pass_ever": 58.5,
+     "bust": 41.5,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.3,
+     "pass_ever": 56.2,
+     "bust": 43.3,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 35.2,
+     "pass_ever": 63.0,
+     "bust": 37.0,
+     "median_days": 20.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 30.9,
+     "pass_ever": 53.9,
+     "bust": 40.7,
+     "median_days": 19.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 49.7,
+     "pass_ever": 54.9,
+     "bust": 45.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.7,
+     "pass_ever": 53.2,
+     "bust": 46.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 50.4,
+     "pass_ever": 56.2,
+     "bust": 43.8,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.9,
+     "pass_ever": 53.4,
+     "bust": 46.6,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 48.0,
+     "pass_ever": 57.0,
+     "bust": 43.0,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.2,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 47.1,
+     "pass_ever": 65.2,
+     "bust": 34.8,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.9,
+     "pass_ever": 49.0,
+     "bust": 51.0,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 41.9,
+     "pass_ever": 64.8,
+     "bust": 35.2,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.2,
+     "pass_ever": 66.0,
+     "bust": 34.0,
+     "median_days": 16.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 49.7,
+     "pass_ever": 54.9,
+     "bust": 45.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.7,
+     "pass_ever": 53.2,
+     "bust": 46.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 50.5,
+     "pass_ever": 55.9,
+     "bust": 44.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 50.4,
+     "pass_ever": 53.9,
+     "bust": 46.1,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 50.0,
+     "pass_ever": 55.0,
+     "bust": 45.0,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 51.3,
+     "pass_ever": 56.2,
+     "bust": 43.8,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 48.3,
+     "pass_ever": 55.0,
+     "bust": 45.0,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 51.3,
+     "pass_ever": 58.3,
+     "bust": 41.7,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 46.4,
+     "pass_ever": 54.8,
+     "bust": 45.2,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.4,
+     "pass_ever": 57.4,
+     "bust": 42.6,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 49.7,
+     "pass_ever": 54.9,
+     "bust": 45.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.7,
+     "pass_ever": 53.2,
+     "bust": 46.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 51.1,
+     "pass_ever": 57.6,
+     "bust": 42.4,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 47.3,
+     "pass_ever": 50.8,
+     "bust": 49.2,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 49.5,
+     "pass_ever": 63.5,
+     "bust": 36.5,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 43.1,
+     "pass_ever": 46.4,
+     "bust": 53.6,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 40.8,
+     "pass_ever": 72.3,
+     "bust": 27.4,
+     "median_days": 20.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 38.6,
+     "pass_ever": 46.4,
+     "bust": 53.6,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 31.4,
+     "pass_ever": 70.6,
+     "bust": 29.2,
+     "median_days": 26.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.6,
+     "pass_ever": 48.5,
+     "bust": 51.5,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 46.9,
+     "pass_ever": 52.9,
+     "bust": 47.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.2,
+     "pass_ever": 49.0,
+     "bust": 51.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 46.8,
+     "pass_ever": 53.4,
+     "bust": 46.6,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.5,
+     "pass_ever": 48.7,
+     "bust": 51.3,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 47.7,
+     "pass_ever": 60.1,
+     "bust": 39.9,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.4,
+     "pass_ever": 46.2,
+     "bust": 53.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 41.2,
+     "pass_ever": 58.9,
+     "bust": 41.1,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 51.8,
+     "bust": 47.5,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 31.4,
+     "pass_ever": 61.7,
+     "bust": 38.3,
+     "median_days": 22.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.3,
+     "pass_ever": 49.7,
+     "bust": 45.5,
+     "median_days": 18.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 46.9,
+     "pass_ever": 52.9,
+     "bust": 47.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.2,
+     "pass_ever": 49.0,
+     "bust": 51.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 47.2,
+     "pass_ever": 53.2,
+     "bust": 46.8,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.9,
+     "pass_ever": 49.0,
+     "bust": 51.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 46.3,
+     "pass_ever": 54.5,
+     "bust": 45.5,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 43.8,
+     "pass_ever": 46.2,
+     "bust": 53.8,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 43.8,
+     "pass_ever": 58.3,
+     "bust": 41.7,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.0,
+     "pass_ever": 56.0,
+     "bust": 44.0,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 38.6,
+     "pass_ever": 62.8,
+     "bust": 37.2,
+     "median_days": 18.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 38.9,
+     "pass_ever": 62.7,
+     "bust": 37.3,
+     "median_days": 16.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 46.9,
+     "pass_ever": 52.9,
+     "bust": 47.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.2,
+     "pass_ever": 49.0,
+     "bust": 51.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 46.9,
+     "pass_ever": 52.9,
+     "bust": 47.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.4,
+     "pass_ever": 49.6,
+     "bust": 50.4,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 47.7,
+     "pass_ever": 53.7,
+     "bust": 46.3,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.0,
+     "pass_ever": 53.2,
+     "bust": 46.8,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 45.8,
+     "pass_ever": 53.8,
+     "bust": 46.2,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.0,
+     "pass_ever": 53.8,
+     "bust": 46.2,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 43.8,
+     "pass_ever": 52.1,
+     "bust": 47.9,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.9,
+     "pass_ever": 54.1,
+     "bust": 45.9,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 46.9,
+     "pass_ever": 52.9,
+     "bust": 47.1,
+     "median_days": 11.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.2,
+     "pass_ever": 49.0,
+     "bust": 51.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 47.8,
+     "pass_ever": 55.8,
+     "bust": 44.2,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.7,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 46.1,
+     "pass_ever": 63.9,
+     "bust": 36.1,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.2,
+     "pass_ever": 44.0,
+     "bust": 56.0,
+     "median_days": 8.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 37.9,
+     "pass_ever": 65.9,
+     "bust": 34.0,
+     "median_days": 19.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 43.5,
+     "bust": 56.5,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 27.3,
+     "pass_ever": 65.2,
+     "bust": 33.5,
+     "median_days": 27.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.0,
+     "pass_ever": 45.9,
+     "bust": 54.1,
+     "median_days": 12.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "Tradeify Select 25K": {
+  "rules": {
+   "target": 1500,
+   "dd": 1000,
+   "cons": 0.4,
+   "mind": 3,
+   "dll": 0,
+   "fee": 109
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.5,
+   "T1": {
+    "p22": 46.3,
+    "pass_ever": 61.3,
+    "bust": 38.7,
+    "median_days": 15.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 41.0,
+    "pass_ever": 51.1,
+    "bust": 48.9,
+    "median_days": 11.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "UltraR150",
+   "f": 0.5,
+   "T1": {
+    "p22": 44.7,
+    "pass_ever": 58.6,
+    "bust": 41.4,
+    "median_days": 15.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 37.7,
+    "pass_ever": 43.3,
+    "bust": 56.7,
+    "median_days": 10.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 46.1,
+    "pass_ever": 53.1,
+    "bust": 46.9,
+    "median_days": 12.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 45.2,
+    "pass_ever": 48.3,
+    "bust": 51.7,
+    "median_days": 10.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 46.1,
+     "pass_ever": 53.1,
+     "bust": 46.9,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.2,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 46.2,
+     "pass_ever": 56.6,
+     "bust": 43.4,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.5,
+     "pass_ever": 48.2,
+     "bust": 51.8,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 46.3,
+     "pass_ever": 61.3,
+     "bust": 38.7,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.0,
+     "pass_ever": 51.1,
+     "bust": 48.9,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 40.4,
+     "pass_ever": 55.9,
+     "bust": 44.1,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.5,
+     "pass_ever": 49.9,
+     "bust": 49.6,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 30.1,
+     "pass_ever": 60.5,
+     "bust": 39.5,
+     "median_days": 23.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.0,
+     "pass_ever": 52.4,
+     "bust": 41.9,
+     "median_days": 19.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 46.1,
+     "pass_ever": 53.1,
+     "bust": 46.9,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.2,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 46.3,
+     "pass_ever": 56.1,
+     "bust": 43.9,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.5,
+     "pass_ever": 48.9,
+     "bust": 51.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 46.2,
+     "pass_ever": 55.8,
+     "bust": 44.2,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 42.8,
+     "pass_ever": 49.7,
+     "bust": 50.3,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 43.9,
+     "pass_ever": 62.2,
+     "bust": 37.8,
+     "median_days": 15.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.1,
+     "pass_ever": 51.5,
+     "bust": 48.5,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 39.9,
+     "pass_ever": 63.6,
+     "bust": 36.4,
+     "median_days": 18.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.0,
+     "pass_ever": 66.0,
+     "bust": 34.0,
+     "median_days": 17.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 46.1,
+     "pass_ever": 53.1,
+     "bust": 46.9,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.2,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 46.3,
+     "pass_ever": 54.1,
+     "bust": 45.9,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.1,
+     "pass_ever": 49.2,
+     "bust": 50.8,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 46.8,
+     "pass_ever": 53.6,
+     "bust": 46.4,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.2,
+     "pass_ever": 53.6,
+     "bust": 46.4,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 44.4,
+     "pass_ever": 52.3,
+     "bust": 47.7,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.2,
+     "pass_ever": 56.2,
+     "bust": 43.8,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 43.8,
+     "pass_ever": 52.7,
+     "bust": 47.3,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 47.3,
+     "pass_ever": 56.0,
+     "bust": 44.0,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 46.1,
+     "pass_ever": 53.1,
+     "bust": 46.9,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 45.2,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 45.5,
+     "pass_ever": 58.8,
+     "bust": 41.2,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.9,
+     "pass_ever": 48.3,
+     "bust": 51.7,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 44.6,
+     "pass_ever": 60.7,
+     "bust": 39.3,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.5,
+     "pass_ever": 42.6,
+     "bust": 57.4,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 39.3,
+     "pass_ever": 68.5,
+     "bust": 31.2,
+     "median_days": 20.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.3,
+     "pass_ever": 45.9,
+     "bust": 54.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 28.6,
+     "pass_ever": 67.9,
+     "bust": 32.0,
+     "median_days": 27.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.8,
+     "pass_ever": 49.6,
+     "bust": 50.4,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 43.8,
+     "pass_ever": 50.5,
+     "bust": 49.5,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.4,
+     "pass_ever": 45.9,
+     "bust": 54.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 43.9,
+     "pass_ever": 54.7,
+     "bust": 45.3,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.4,
+     "pass_ever": 45.9,
+     "bust": 54.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 44.7,
+     "pass_ever": 58.6,
+     "bust": 41.4,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.7,
+     "pass_ever": 43.3,
+     "bust": 56.7,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 39.2,
+     "pass_ever": 57.1,
+     "bust": 42.9,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 30.5,
+     "pass_ever": 48.9,
+     "bust": 50.4,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 27.0,
+     "pass_ever": 58.5,
+     "bust": 41.5,
+     "median_days": 24.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.2,
+     "pass_ever": 49.2,
+     "bust": 45.9,
+     "median_days": 19.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 43.8,
+     "pass_ever": 50.5,
+     "bust": 49.5,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.4,
+     "pass_ever": 45.9,
+     "bust": 54.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 44.3,
+     "pass_ever": 54.1,
+     "bust": 45.9,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.9,
+     "pass_ever": 46.9,
+     "bust": 53.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 44.4,
+     "pass_ever": 55.2,
+     "bust": 44.8,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 40.0,
+     "pass_ever": 46.1,
+     "bust": 53.9,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 42.3,
+     "pass_ever": 56.4,
+     "bust": 43.6,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.7,
+     "pass_ever": 52.2,
+     "bust": 47.8,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 37.3,
+     "pass_ever": 61.9,
+     "bust": 38.1,
+     "median_days": 19.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.9,
+     "pass_ever": 63.4,
+     "bust": 36.6,
+     "median_days": 17.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 43.8,
+     "pass_ever": 50.5,
+     "bust": 49.5,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.4,
+     "pass_ever": 45.9,
+     "bust": 54.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 43.8,
+     "pass_ever": 50.5,
+     "bust": 49.5,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 42.4,
+     "pass_ever": 47.5,
+     "bust": 52.5,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 44.8,
+     "pass_ever": 51.6,
+     "bust": 48.4,
+     "median_days": 12.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.2,
+     "pass_ever": 50.6,
+     "bust": 49.4,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 43.9,
+     "pass_ever": 51.9,
+     "bust": 48.1,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.3,
+     "pass_ever": 52.4,
+     "bust": 47.6,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 42.7,
+     "pass_ever": 51.2,
+     "bust": 48.8,
+     "median_days": 13.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.7,
+     "pass_ever": 52.7,
+     "bust": 47.3,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 43.8,
+     "pass_ever": 50.5,
+     "bust": 49.5,
+     "median_days": 12.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.4,
+     "pass_ever": 45.9,
+     "bust": 54.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 44.6,
+     "pass_ever": 56.7,
+     "bust": 43.3,
+     "median_days": 14.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.9,
+     "pass_ever": 46.4,
+     "bust": 53.6,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 41.9,
+     "pass_ever": 61.3,
+     "bust": 38.7,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 38.4,
+     "pass_ever": 40.0,
+     "bust": 60.0,
+     "median_days": 9.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 36.2,
+     "pass_ever": 62.7,
+     "bust": 37.2,
+     "median_days": 19.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.7,
+     "pass_ever": 41.9,
+     "bust": 58.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 25.8,
+     "pass_ever": 62.4,
+     "bust": 36.5,
+     "median_days": 28.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 30.9,
+     "pass_ever": 45.2,
+     "bust": 54.8,
+     "median_days": 14.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "Tradeify Growth 50K": {
+  "rules": {
+   "target": 3000,
+   "dd": 2000,
+   "cons": 0,
+   "mind": 1,
+   "dll": 0,
+   "fee": 150
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 27.4,
+    "pass_ever": 82.7,
+    "bust": 17.3,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 36.5,
+    "pass_ever": 78.5,
+    "bust": 21.5,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 25.9,
+    "pass_ever": 79.1,
+    "bust": 20.9,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 35.4,
+    "pass_ever": 74.2,
+    "bust": 25.8,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 27.4,
+    "pass_ever": 82.7,
+    "bust": 17.3,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 36.5,
+    "pass_ever": 78.5,
+    "bust": 21.5,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 26.4,
+     "pass_ever": 80.7,
+     "bust": 19.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.7,
+     "pass_ever": 83.6,
+     "bust": 16.4,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.9,
+     "pass_ever": 82.2,
+     "bust": 17.8,
+     "median_days": 33.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 82.0,
+     "bust": 16.6,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 20.3,
+     "pass_ever": 83.9,
+     "bust": 16.1,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.5,
+     "pass_ever": 75.6,
+     "bust": 9.9,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 9.9,
+     "pass_ever": 72.8,
+     "bust": 19.4,
+     "median_days": 51.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 12.4,
+     "pass_ever": 59.5,
+     "bust": 9.4,
+     "median_days": 49.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.3,
+     "pass_ever": 81.3,
+     "bust": 18.5,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.9,
+     "pass_ever": 81.7,
+     "bust": 18.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 26.3,
+     "pass_ever": 81.0,
+     "bust": 18.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 80.6,
+     "bust": 19.4,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 23.9,
+     "pass_ever": 80.5,
+     "bust": 19.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.4,
+     "pass_ever": 88.0,
+     "bust": 12.0,
+     "median_days": 39.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 15.2,
+     "pass_ever": 75.5,
+     "bust": 21.8,
+     "median_days": 39.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 18.2,
+     "pass_ever": 90.2,
+     "bust": 8.9,
+     "median_days": 47.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 81.2,
+     "bust": 18.8,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.9,
+     "bust": 21.1,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 27.1,
+     "pass_ever": 81.3,
+     "bust": 18.7,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.1,
+     "pass_ever": 78.7,
+     "bust": 21.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 26.4,
+     "pass_ever": 82.2,
+     "bust": 17.8,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.7,
+     "pass_ever": 79.9,
+     "bust": 20.1,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 22.1,
+     "pass_ever": 79.8,
+     "bust": 20.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 28.4,
+     "pass_ever": 83.8,
+     "bust": 16.2,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 82.7,
+     "bust": 17.3,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.3,
+     "pass_ever": 78.9,
+     "bust": 20.9,
+     "median_days": 30.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.9,
+     "pass_ever": 75.7,
+     "bust": 24.3,
+     "median_days": 22.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 26.0,
+     "pass_ever": 85.7,
+     "bust": 6.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 81.5,
+     "bust": 17.8,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 21.7,
+     "pass_ever": 84.2,
+     "bust": 1.0,
+     "median_days": 36.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.8,
+     "pass_ever": 57.8,
+     "bust": 19.4,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 10.2,
+     "pass_ever": 66.7,
+     "bust": 0.8,
+     "median_days": 47.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.1,
+     "pass_ever": 74.5,
+     "bust": 5.6,
+     "median_days": 46.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 24.9,
+     "pass_ever": 77.9,
+     "bust": 22.0,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.5,
+     "pass_ever": 81.5,
+     "bust": 18.5,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 23.4,
+     "pass_ever": 81.3,
+     "bust": 18.7,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.0,
+     "pass_ever": 81.3,
+     "bust": 17.1,
+     "median_days": 27.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 19.7,
+     "pass_ever": 77.8,
+     "bust": 22.2,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.1,
+     "pass_ever": 72.3,
+     "bust": 10.1,
+     "median_days": 34.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 8.8,
+     "pass_ever": 72.8,
+     "bust": 22.4,
+     "median_days": 55.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 11.3,
+     "pass_ever": 59.3,
+     "bust": 9.4,
+     "median_days": 52.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.5,
+     "pass_ever": 79.4,
+     "bust": 20.6,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 80.8,
+     "bust": 19.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.5,
+     "pass_ever": 79.6,
+     "bust": 20.2,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.7,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 22.9,
+     "pass_ever": 77.4,
+     "bust": 22.6,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.9,
+     "pass_ever": 77.7,
+     "bust": 22.0,
+     "median_days": 33.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 12.8,
+     "pass_ever": 72.8,
+     "bust": 26.8,
+     "median_days": 42.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 17.6,
+     "pass_ever": 89.5,
+     "bust": 8.7,
+     "median_days": 52.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.6,
+     "bust": 20.4,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 25.6,
+     "pass_ever": 79.9,
+     "bust": 20.1,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.1,
+     "pass_ever": 73.8,
+     "bust": 26.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 25.3,
+     "pass_ever": 79.7,
+     "bust": 20.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.5,
+     "pass_ever": 78.5,
+     "bust": 21.5,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 21.1,
+     "pass_ever": 77.7,
+     "bust": 21.5,
+     "median_days": 35.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.5,
+     "pass_ever": 81.5,
+     "bust": 18.5,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 79.1,
+     "bust": 20.9,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 74.2,
+     "bust": 25.8,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 77.1,
+     "bust": 22.7,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 74.7,
+     "bust": 25.3,
+     "median_days": 23.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.5,
+     "pass_ever": 82.2,
+     "bust": 10.1,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.4,
+     "pass_ever": 74.9,
+     "bust": 22.2,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 20.4,
+     "pass_ever": 76.2,
+     "bust": 2.5,
+     "median_days": 37.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.1,
+     "pass_ever": 58.5,
+     "bust": 22.5,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 9.6,
+     "pass_ever": 64.3,
+     "bust": 0.8,
+     "median_days": 51.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.1,
+     "pass_ever": 68.6,
+     "bust": 5.8,
+     "median_days": 45.0,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "Bulenox Opt2 50K": {
+  "rules": {
+   "target": 3000,
+   "dd": 2500,
+   "cons": 0,
+   "mind": 0,
+   "dll": 1100,
+   "fee": 175
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "UltraR300",
+   "f": 0.5,
+   "T1": {
+    "p22": 27.3,
+    "pass_ever": 86.6,
+    "bust": 13.0,
+    "median_days": 33.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 36.8,
+    "pass_ever": 83.4,
+    "bust": 16.6,
+    "median_days": 25.0,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "UltraR300",
+   "f": 0.5,
+   "T1": {
+    "p22": 25.8,
+    "pass_ever": 83.5,
+    "bust": 15.9,
+    "median_days": 34.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 35.6,
+    "pass_ever": 83.2,
+    "bust": 16.8,
+    "median_days": 26.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 27.4,
+    "pass_ever": 83.0,
+    "bust": 16.8,
+    "median_days": 32.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 37.2,
+    "pass_ever": 78.7,
+    "bust": 21.3,
+    "median_days": 24.0,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 83.0,
+     "bust": 16.8,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.2,
+     "pass_ever": 78.7,
+     "bust": 21.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 85.8,
+     "bust": 13.8,
+     "median_days": 32.5,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.0,
+     "pass_ever": 84.5,
+     "bust": 15.5,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 26.3,
+     "pass_ever": 85.4,
+     "bust": 14.6,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.6,
+     "pass_ever": 86.7,
+     "bust": 9.2,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 22.6,
+     "pass_ever": 85.7,
+     "bust": 13.0,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 24.3,
+     "pass_ever": 73.8,
+     "bust": 8.9,
+     "median_days": 33.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 7.3,
+     "pass_ever": 69.7,
+     "bust": 11.7,
+     "median_days": 54.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 10.8,
+     "pass_ever": 58.6,
+     "bust": 1.9,
+     "median_days": 54.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 83.0,
+     "bust": 16.8,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.2,
+     "pass_ever": 78.7,
+     "bust": 21.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 85.7,
+     "bust": 13.7,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.2,
+     "pass_ever": 85.0,
+     "bust": 15.0,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 26.8,
+     "pass_ever": 85.2,
+     "bust": 14.6,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.6,
+     "pass_ever": 85.7,
+     "bust": 14.3,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 25.3,
+     "pass_ever": 83.5,
+     "bust": 10.0,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 25.3,
+     "pass_ever": 91.8,
+     "bust": 8.2,
+     "median_days": 42.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 12.6,
+     "pass_ever": 74.2,
+     "bust": 15.6,
+     "median_days": 41.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.9,
+     "pass_ever": 90.8,
+     "bust": 8.4,
+     "median_days": 48.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 83.0,
+     "bust": 16.8,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.2,
+     "pass_ever": 78.7,
+     "bust": 21.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 83.0,
+     "bust": 17.0,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.2,
+     "pass_ever": 78.9,
+     "bust": 21.1,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 27.3,
+     "pass_ever": 86.6,
+     "bust": 13.0,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.8,
+     "pass_ever": 83.4,
+     "bust": 16.6,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 26.4,
+     "pass_ever": 85.2,
+     "bust": 14.4,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.6,
+     "pass_ever": 85.0,
+     "bust": 15.0,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 22.0,
+     "pass_ever": 78.0,
+     "bust": 19.1,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 27.6,
+     "pass_ever": 90.1,
+     "bust": 9.9,
+     "median_days": 33.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 83.0,
+     "bust": 16.8,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.2,
+     "pass_ever": 78.7,
+     "bust": 21.3,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 27.4,
+     "pass_ever": 86.1,
+     "bust": 8.7,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.2,
+     "pass_ever": 86.9,
+     "bust": 13.1,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 27.1,
+     "pass_ever": 82.4,
+     "bust": 1.1,
+     "median_days": 32.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.3,
+     "pass_ever": 86.6,
+     "bust": 6.6,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 24.1,
+     "pass_ever": 81.8,
+     "bust": 0.5,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.4,
+     "pass_ever": 74.2,
+     "bust": 6.8,
+     "median_days": 32.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 7.7,
+     "pass_ever": 63.3,
+     "bust": 0.0,
+     "median_days": 52.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.1,
+     "pass_ever": 72.4,
+     "bust": 5.4,
+     "median_days": 49.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 80.6,
+     "bust": 19.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 84.1,
+     "bust": 15.5,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.8,
+     "pass_ever": 86.7,
+     "bust": 13.3,
+     "median_days": 27.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 24.8,
+     "pass_ever": 82.7,
+     "bust": 16.0,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.2,
+     "pass_ever": 87.8,
+     "bust": 9.6,
+     "median_days": 29.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 21.5,
+     "pass_ever": 78.0,
+     "bust": 19.2,
+     "median_days": 38.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 23.0,
+     "pass_ever": 72.6,
+     "bust": 9.2,
+     "median_days": 36.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 6.4,
+     "pass_ever": 70.6,
+     "bust": 18.2,
+     "median_days": 61.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 9.9,
+     "pass_ever": 57.8,
+     "bust": 8.4,
+     "median_days": 53.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 80.6,
+     "bust": 19.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 81.1,
+     "bust": 18.8,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 83.8,
+     "bust": 16.2,
+     "median_days": 25.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 25.2,
+     "pass_ever": 80.5,
+     "bust": 19.5,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.4,
+     "pass_ever": 84.6,
+     "bust": 14.5,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 23.7,
+     "pass_ever": 80.9,
+     "bust": 15.7,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 23.6,
+     "pass_ever": 90.4,
+     "bust": 8.4,
+     "median_days": 47.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 10.0,
+     "pass_ever": 72.1,
+     "bust": 19.2,
+     "median_days": 44.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 16.2,
+     "pass_ever": 90.2,
+     "bust": 5.4,
+     "median_days": 53.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 80.6,
+     "bust": 19.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 81.1,
+     "bust": 18.8,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 25.8,
+     "pass_ever": 83.5,
+     "bust": 15.9,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 35.6,
+     "pass_ever": 83.2,
+     "bust": 16.8,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 25.1,
+     "pass_ever": 83.9,
+     "bust": 15.1,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 30.5,
+     "pass_ever": 85.0,
+     "bust": 15.0,
+     "median_days": 31.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 21.2,
+     "pass_ever": 76.0,
+     "bust": 19.7,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 26.2,
+     "pass_ever": 82.9,
+     "bust": 17.1,
+     "median_days": 33.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 80.6,
+     "bust": 19.2,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 24.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 25.9,
+     "pass_ever": 81.3,
+     "bust": 14.4,
+     "median_days": 33.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 36.0,
+     "pass_ever": 86.0,
+     "bust": 14.0,
+     "median_days": 26.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 25.3,
+     "pass_ever": 80.8,
+     "bust": 3.9,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 34.0,
+     "pass_ever": 86.0,
+     "bust": 6.1,
+     "median_days": 27.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 22.0,
+     "pass_ever": 75.2,
+     "bust": 0.5,
+     "median_days": 34.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 24.3,
+     "pass_ever": 71.4,
+     "bust": 7.0,
+     "median_days": 36.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 6.6,
+     "pass_ever": 59.9,
+     "bust": 0.0,
+     "median_days": 54.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 15.9,
+     "pass_ever": 66.0,
+     "bust": 5.6,
+     "median_days": 45.5,
+     "n": 573
+    }
+   }
+  ]
+ },
+ "Bulenox Opt2 25K": {
+  "rules": {
+   "target": 1500,
+   "dd": 1500,
+   "cons": 0,
+   "mind": 0,
+   "dll": 500,
+   "fee": 175
+  },
+  "pick": {
+   "cost1tick": false,
+   "low": "UltraR300",
+   "f": 0.25,
+   "T1": {
+    "p22": 58.7,
+    "pass_ever": 81.6,
+    "bust": 18.4,
+    "median_days": 16.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 54.1,
+    "pass_ever": 63.9,
+    "bust": 36.1,
+    "median_days": 10.5,
+    "n": 573
+   }
+  },
+  "pick_plus1tick": {
+   "cost1tick": true,
+   "low": "UltraR300",
+   "f": 0.25,
+   "T1": {
+    "p22": 55.6,
+    "pass_ever": 76.0,
+    "bust": 24.0,
+    "median_days": 16.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 52.9,
+    "pass_ever": 59.7,
+    "bust": 40.3,
+    "median_days": 10.0,
+    "n": 573
+   }
+  },
+  "no_gating": {
+   "cost1tick": false,
+   "low": "UltraR150",
+   "f": 0.0,
+   "T1": {
+    "p22": 57.6,
+    "pass_ever": 76.0,
+    "bust": 24.0,
+    "median_days": 15.0,
+    "n": 942
+   },
+   "T2": {
+    "p22": 54.1,
+    "pass_ever": 63.9,
+    "bust": 36.1,
+    "median_days": 10.5,
+    "n": 573
+   }
+  },
+  "all": [
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 57.6,
+     "pass_ever": 76.0,
+     "bust": 24.0,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.1,
+     "pass_ever": 63.9,
+     "bust": 36.1,
+     "median_days": 10.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 58.1,
+     "pass_ever": 80.9,
+     "bust": 19.1,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 55.1,
+     "pass_ever": 66.1,
+     "bust": 33.9,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 54.8,
+     "pass_ever": 79.5,
+     "bust": 20.5,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 47.8,
+     "pass_ever": 73.8,
+     "bust": 23.9,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 43.3,
+     "pass_ever": 81.5,
+     "bust": 18.5,
+     "median_days": 21.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 33.3,
+     "pass_ever": 69.1,
+     "bust": 25.8,
+     "median_days": 24.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 32.7,
+     "pass_ever": 84.1,
+     "bust": 15.9,
+     "median_days": 29.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 24.6,
+     "pass_ever": 75.9,
+     "bust": 13.1,
+     "median_days": 39.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 57.6,
+     "pass_ever": 76.0,
+     "bust": 24.0,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.1,
+     "pass_ever": 63.9,
+     "bust": 36.1,
+     "median_days": 10.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 58.3,
+     "pass_ever": 79.9,
+     "bust": 20.1,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 55.5,
+     "pass_ever": 65.3,
+     "bust": 34.7,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 56.6,
+     "pass_ever": 83.0,
+     "bust": 17.0,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 53.1,
+     "pass_ever": 69.8,
+     "bust": 30.2,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 51.0,
+     "pass_ever": 83.8,
+     "bust": 16.2,
+     "median_days": 18.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.9,
+     "pass_ever": 74.3,
+     "bust": 25.7,
+     "median_days": 16.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 41.5,
+     "pass_ever": 80.1,
+     "bust": 19.9,
+     "median_days": 22.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 38.6,
+     "pass_ever": 85.7,
+     "bust": 13.8,
+     "median_days": 25.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 57.6,
+     "pass_ever": 76.0,
+     "bust": 24.0,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.1,
+     "pass_ever": 63.9,
+     "bust": 36.1,
+     "median_days": 10.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 58.7,
+     "pass_ever": 81.6,
+     "bust": 18.4,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.1,
+     "pass_ever": 63.9,
+     "bust": 36.1,
+     "median_days": 10.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 57.2,
+     "pass_ever": 82.5,
+     "bust": 17.5,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.5,
+     "pass_ever": 66.3,
+     "bust": 33.7,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 56.4,
+     "pass_ever": 83.2,
+     "bust": 16.8,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 50.3,
+     "pass_ever": 64.9,
+     "bust": 35.1,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 51.3,
+     "pass_ever": 82.9,
+     "bust": 17.1,
+     "median_days": 18.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.9,
+     "pass_ever": 68.6,
+     "bust": 31.4,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 57.6,
+     "pass_ever": 76.0,
+     "bust": 24.0,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.1,
+     "pass_ever": 63.9,
+     "bust": 36.1,
+     "median_days": 10.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 58.6,
+     "pass_ever": 81.7,
+     "bust": 18.3,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 54.3,
+     "pass_ever": 62.5,
+     "bust": 37.5,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 56.1,
+     "pass_ever": 86.7,
+     "bust": 13.3,
+     "median_days": 18.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.2,
+     "pass_ever": 63.2,
+     "bust": 36.8,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 46.7,
+     "pass_ever": 90.8,
+     "bust": 5.9,
+     "median_days": 21.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 41.2,
+     "pass_ever": 70.0,
+     "bust": 27.2,
+     "median_days": 16.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": false,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 28.0,
+     "pass_ever": 82.3,
+     "bust": 3.6,
+     "median_days": 31.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.1,
+     "pass_ever": 72.8,
+     "bust": 15.9,
+     "median_days": 28.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.0,
+    "T1": {
+     "p22": 54.6,
+     "pass_ever": 71.5,
+     "bust": 28.5,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.7,
+     "pass_ever": 59.7,
+     "bust": 40.3,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.25,
+    "T1": {
+     "p22": 55.0,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.5,
+     "pass_ever": 59.5,
+     "bust": 40.5,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.5,
+    "T1": {
+     "p22": 52.1,
+     "pass_ever": 78.8,
+     "bust": 21.2,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 46.1,
+     "pass_ever": 73.8,
+     "bust": 25.1,
+     "median_days": 14.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 0.75,
+    "T1": {
+     "p22": 39.2,
+     "pass_ever": 79.7,
+     "bust": 20.3,
+     "median_days": 23.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 32.5,
+     "pass_ever": 69.1,
+     "bust": 26.2,
+     "median_days": 25.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR150",
+    "f": 1.0,
+    "T1": {
+     "p22": 29.6,
+     "pass_ever": 78.0,
+     "bust": 22.0,
+     "median_days": 30.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 23.0,
+     "pass_ever": 69.1,
+     "bust": 13.3,
+     "median_days": 38.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.0,
+    "T1": {
+     "p22": 54.6,
+     "pass_ever": 71.5,
+     "bust": 28.5,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.7,
+     "pass_ever": 59.7,
+     "bust": 40.3,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.25,
+    "T1": {
+     "p22": 55.0,
+     "pass_ever": 75.6,
+     "bust": 24.4,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.9,
+     "pass_ever": 60.0,
+     "bust": 40.0,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.5,
+    "T1": {
+     "p22": 54.0,
+     "pass_ever": 81.0,
+     "bust": 19.0,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 51.5,
+     "pass_ever": 66.0,
+     "bust": 34.0,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 0.75,
+    "T1": {
+     "p22": 47.5,
+     "pass_ever": 80.6,
+     "bust": 19.4,
+     "median_days": 19.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 44.2,
+     "pass_ever": 62.1,
+     "bust": 37.9,
+     "median_days": 13.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR200",
+    "f": 1.0,
+    "T1": {
+     "p22": 37.6,
+     "pass_ever": 76.6,
+     "bust": 23.4,
+     "median_days": 23.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 37.2,
+     "pass_ever": 73.5,
+     "bust": 25.0,
+     "median_days": 22.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.0,
+    "T1": {
+     "p22": 54.6,
+     "pass_ever": 71.5,
+     "bust": 28.5,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.7,
+     "pass_ever": 59.7,
+     "bust": 40.3,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.25,
+    "T1": {
+     "p22": 55.6,
+     "pass_ever": 76.0,
+     "bust": 24.0,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.9,
+     "pass_ever": 59.7,
+     "bust": 40.3,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.5,
+    "T1": {
+     "p22": 54.5,
+     "pass_ever": 76.3,
+     "bust": 23.7,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 53.1,
+     "pass_ever": 64.0,
+     "bust": 36.0,
+     "median_days": 11.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 0.75,
+    "T1": {
+     "p22": 52.3,
+     "pass_ever": 76.6,
+     "bust": 23.4,
+     "median_days": 16.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.9,
+     "pass_ever": 62.7,
+     "bust": 37.3,
+     "median_days": 12.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "UltraR300",
+    "f": 1.0,
+    "T1": {
+     "p22": 47.8,
+     "pass_ever": 71.7,
+     "bust": 28.3,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 48.3,
+     "pass_ever": 67.0,
+     "bust": 33.0,
+     "median_days": 14.5,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.0,
+    "T1": {
+     "p22": 54.6,
+     "pass_ever": 71.5,
+     "bust": 28.5,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.7,
+     "pass_ever": 59.7,
+     "bust": 40.3,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.25,
+    "T1": {
+     "p22": 55.3,
+     "pass_ever": 72.7,
+     "bust": 27.3,
+     "median_days": 15.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 52.9,
+     "pass_ever": 59.9,
+     "bust": 40.1,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.5,
+    "T1": {
+     "p22": 53.3,
+     "pass_ever": 80.3,
+     "bust": 19.7,
+     "median_days": 17.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 49.4,
+     "pass_ever": 57.4,
+     "bust": 42.6,
+     "median_days": 10.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 0.75,
+    "T1": {
+     "p22": 41.5,
+     "pass_ever": 89.0,
+     "bust": 10.8,
+     "median_days": 25.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 42.4,
+     "pass_ever": 69.3,
+     "bust": 29.0,
+     "median_days": 16.0,
+     "n": 573
+    }
+   },
+   {
+    "cost1tick": true,
+    "low": "Estable",
+    "f": 1.0,
+    "T1": {
+     "p22": 25.3,
+     "pass_ever": 78.9,
+     "bust": 6.7,
+     "median_days": 35.0,
+     "n": 942
+    },
+    "T2": {
+     "p22": 29.5,
+     "pass_ever": 66.0,
+     "bust": 26.5,
+     "median_days": 28.0,
+     "n": 573
+    }
+   }
+  ]
+ }
+}

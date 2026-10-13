@@ -1,0 +1,42 @@
+{
+ "Ultra (new)": {
+  "k": 0.0758,
+  "h": 18.57,
+  "h_sd": 27.0,
+  "mean_z": 0.1517,
+  "P_false_1y": 0.005,
+  "P_false_3y": 0.023,
+  "median_days_to_detect_dead_edge": 188.0,
+  "median_days_negative_edge": 109.0
+ },
+ "Durable": {
+  "k": 0.0458,
+  "h": 10.71,
+  "h_sd": 21.5,
+  "mean_z": 0.0915,
+  "P_false_1y": 0.045,
+  "P_false_3y": 0.192,
+  "median_days_to_detect_dead_edge": 155.0,
+  "median_days_negative_edge": 97.0
+ },
+ "WR70Plus (new)": {
+  "k": 0.0577,
+  "h": 12.18,
+  "h_sd": 23.0,
+  "mean_z": 0.1153,
+  "P_false_1y": 0.012,
+  "P_false_3y": 0.056,
+  "median_days_to_detect_dead_edge": 159.0,
+  "median_days_negative_edge": 93.0
+ },
+ "Ultra (old, check)": {
+  "k": 0.0818,
+  "h": 16.52,
+  "h_sd": 22.5,
+  "mean_z": 0.1635,
+  "P_false_1y": 0.012,
+  "P_false_3y": 0.07,
+  "median_days_to_detect_dead_edge": 148.0,
+  "median_days_negative_edge": 87.0
+ }
+}

@@ -1,0 +1,336 @@
+<title>NQMaster System Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column (max 1060px) of report sections; tables scroll inside their own boxes; one SVG chart. */
+:root {
+  --bg: #f5f6f3;
+  --panel: #ffffff;
+  --ink: #141a18;
+  --ink-2: #4a524e;
+  --ink-3: #6f7772;
+  --rule: #dfe3de;
+  --accent: #0d6b62;
+  --accent-soft: #e3f0ed;
+  --series-1: #2a78d6;
+  --muted-bar: #b9bfba;
+  --good: #1f7a3a; --good-bg: #e4f2e7;
+  --warn: #8a5a00; --warn-bg: #fbf0d6;
+  --bad: #b3261e; --bad-bg: #fbe5e3;
+  --neutral-bg: #eceeea;
+  --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121615; --panel: #1a1f1d; --ink: #eef1ee; --ink-2: #bcc4bf; --ink-3: #8f9893; --rule: #2c3330;
+    --accent: #55c2b4; --accent-soft: #19322e; --series-1: #3987e5; --muted-bar: #4d5551;
+    --good: #6ccf88; --good-bg: #17301f; --warn: #e6b450; --warn-bg: #33290f; --bad: #f08a83; --bad-bg: #3a1a18; --neutral-bg: #252b29;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121615; --panel: #1a1f1d; --ink: #eef1ee; --ink-2: #bcc4bf; --ink-3: #8f9893; --rule: #2c3330;
+  --accent: #55c2b4; --accent-soft: #19322e; --series-1: #3987e5; --muted-bar: #4d5551;
+  --good: #6ccf88; --good-bg: #17301f; --warn: #e6b450; --warn-bg: #33290f; --bad: #f08a83; --bad-bg: #3a1a18; --neutral-bg: #252b29;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1060px; margin: 0 auto; padding-inline: 20px; padding-block: 32px 64px; display: flex; flex-direction: column; gap: 40px; }
+header { display: flex; flex-direction: column; gap: 10px; border-bottom: 2px solid var(--ink); padding-bottom: 20px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 6vw, 52px); line-height: 1.02; margin: 0; letter-spacing: 0.01em; text-wrap: balance; }
+h2 { font-family: var(--display); font-weight: 600; font-size: 28px; line-height: 1.1; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--body); font-weight: 600; font-size: 16px; margin: 0; }
+p { margin: 0; max-width: 72ch; }
+.lede { font-size: 17px; color: var(--ink-2); max-width: 70ch; }
+section { display: flex; flex-direction: column; gap: 16px; }
+.sec-head { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--rule); padding-top: 18px; }
+.verdicts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.verdict { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.verdict .q { font-size: 13px; color: var(--ink-3); }
+.verdict .a { font-family: var(--display); font-size: 22px; font-weight: 600; line-height: 1.15; }
+.verdict .d { font-size: 13.5px; color: var(--ink-2); }
+.tbl { overflow-x: auto; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: 600; color: var(--ink-2); font-size: 12px; letter-spacing: 0.03em; text-transform: uppercase; white-space: nowrap; }
+td.n, th.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+tr.hl td { background: var(--accent-soft); }
+tr.dim td { color: var(--ink-3); }
+.note { font-size: 13px; color: var(--ink-3); max-width: 80ch; }
+.chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip.good { color: var(--good); background: var(--good-bg); }
+.chip.warn { color: var(--warn); background: var(--warn-bg); }
+.chip.bad { color: var(--bad); background: var(--bad-bg); }
+.chip.neu { color: var(--ink-2); background: var(--neutral-bg); }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.card { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+li { max-width: 78ch; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--neutral-bg); padding: 1px 5px; border-radius: 3px; }
+.chart { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; position: relative; }
+.chart svg { display: block; width: 100%; height: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--ink-2); margin-bottom: 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 12.5px; padding: 6px 9px; border-radius: 4px; white-space: nowrap; font-family: var(--mono); }
+.arch { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.arch .box { border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; background: var(--panel); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.arch .box.main { border: 2px solid var(--accent); }
+.arch .box .t { font-family: var(--display); font-weight: 600; font-size: 19px; }
+.steps { counter-reset: s; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; }
+.steps li::before { content: counter(s); font-family: var(--display); font-weight: 700; font-size: 20px; color: var(--accent); line-height: 1.2; }
+footer { font-size: 12.5px; color: var(--ink-3); border-top: 1px solid var(--rule); padding-top: 14px; }
+@media (max-width: 520px) { .wrap { padding-inline: 16px; } th, td { padding: 7px 9px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">NQMaster · GoldMaster · audit of 2026-10-12 · real Databento NQ futures 2010-2026</div>
+  <h1>NQMaster System Audit</h1>
+  <p class="lede">Federico asked for a full audit: best practices, a cleanup of the profiles, a check of whether earlier systems tested better, more robustness against months like August 2026, and an answer on moving to a Python system with machine learning and an AI brain. Every number here comes from a script in <code>research/mine/</code>, run on real futures with $1.90 commission and 1 tick of slippage per side.</p>
+</header>
+
+<section>
+  <div class="verdicts">
+    <div class="verdict"><div class="q">Did an older system test better?</div><div class="a">No</div><div class="d">Each version beat the one before it on the same data. Sharpe 2020-26: MaxSharpe 2.60 → Ultra 3.43.</div></div>
+    <div class="verdict"><div class="q">Profiles kept</div><div class="a">Ultra · WR70Plus · Durable · Custom</div><div class="d">Seven removed. Durable is new: the 6 modules that held up for 16 years.</div></div>
+    <div class="verdict"><div class="q">Can August be predicted?</div><div class="a">No</div><div class="d">Losing months behave like random draws. What breaks accounts is a few large-risk trades at a small cushion.</div></div>
+    <div class="verdict"><div class="q">Main fix</div><div class="a">Risk cap + operations layer</div><div class="d">Funded accounts lost per year 1.65 → 0.70 (MFFU 2024-26), plus 11 code-audit fixes.</div></div>
+    <div class="verdict"><div class="q">Python + AI brain?</div><div class="a">Partly</div><div class="d">Python as the operations and research layer: yes. A self-improving AI that trades live: no.</div></div>
+  </div>
+</section>
+
+<section id="history">
+  <div class="sec-head"><div class="eyebrow">1 · Earlier systems</div><h2>Every version beat the one before it</h2></div>
+  <p>All 14 profile versions since September were rebuilt as they were coded at the time and run on the same real futures (<code>hist_profiles.py</code>). Sharpe ratio for 2020-2026 at 1 base contract:</p>
+  <div class="chart" id="sharpeChart">
+    <div class="legend"><span><i style="background:var(--series-1)"></i>Kept as a profile</span><span><i style="background:var(--muted-bar)"></i>Removed</span></div>
+    <svg viewBox="0 0 640 400" role="img" aria-labelledby="shT shD"><title id="shT">Sharpe ratio 2020-2026 by profile version</title><desc id="shD">Horizontal bars, one per version, in date order. Ultra of 2026-10-08 has the highest Sharpe, 3.43.</desc><g id="bars"></g></svg>
+    <div class="tip" id="tip" hidden></div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Version</th><th>Date</th><th class="n">Trades/day</th><th class="n">Win rate</th><th class="n">PF</th><th class="n">$/month</th><th class="n">Max DD</th><th class="n">PF 2010-14*</th><th class="n">PF 2015-19*</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr class="dim"><td>MaxSharpe</td><td>09-28</td><td class="n">3.72</td><td class="n">66.0%</td><td class="n">1.29</td><td class="n">$748</td><td class="n">$2,965</td><td class="n">0.96</td><td class="n">0.97</td><td><span class="chip neu">Removed</span></td></tr>
+      <tr class="dim"><td>WinRate70</td><td>09-28</td><td class="n">2.93</td><td class="n">69.8%</td><td class="n">1.32</td><td class="n">$604</td><td class="n">$3,190</td><td class="n">0.99</td><td class="n">0.98</td><td><span class="chip neu">Removed</span></td></tr>
+      <tr class="dim"><td>MaxPlus</td><td>09-29</td><td class="n">3.82</td><td class="n">65.6%</td><td class="n">1.35</td><td class="n">$1,054</td><td class="n">$3,146</td><td class="n">0.98</td><td class="n">0.99</td><td><span class="chip neu">Removed</span></td></tr>
+      <tr class="dim"><td>MaxPlus2</td><td>10-02</td><td class="n">3.83</td><td class="n">66.3%</td><td class="n">1.40</td><td class="n">$1,363</td><td class="n">$4,160</td><td class="n">0.97</td><td class="n">1.00</td><td><span class="chip neu">Removed</span></td></tr>
+      <tr class="dim"><td>Core</td><td>10-03</td><td class="n">1.86</td><td class="n">58.0%</td><td class="n">1.43</td><td class="n">$855</td><td class="n">$3,699</td><td class="n">1.07</td><td class="n">1.23</td><td><span class="chip neu">Replaced by Durable</span></td></tr>
+      <tr><td>Ultra (as of 10-08)</td><td>10-08</td><td class="n">5.10</td><td class="n">65.9%</td><td class="n">1.47</td><td class="n">$2,040</td><td class="n">$5,871</td><td class="n">1.01</td><td class="n">1.12</td><td><span class="chip good">Kept, revised</span></td></tr>
+      <tr><td>WR70Plus</td><td>10-08</td><td class="n">3.22</td><td class="n">70.5%</td><td class="n">1.52</td><td class="n">$1,448</td><td class="n">$4,059</td><td class="n">0.98</td><td class="n">1.07</td><td><span class="chip good">Kept, revised</span></td></tr>
+      <tr><td>Durable (6 modules)</td><td>10-09</td><td class="n">1.43</td><td class="n">61.7%</td><td class="n">1.63</td><td class="n">$1,148</td><td class="n">$3,845</td><td class="n">1.18</td><td class="n">1.23</td><td><span class="chip good">New profile</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">* Cost-normalised (0.345% of daily ATR), 2010-2019. No profile was chosen on these years, so they are the only truly unseen test. Before 2020, only Durable and Core show a clear edge: the full portfolio's edge is mostly a post-2020 regime. MaxTrades and the NQMaster Gold profile were also removed (gold runs in GoldMaster).</p>
+</section>
+
+<section id="changes">
+  <div class="sec-head"><div class="eyebrow">2 · PF and win rate</div><h2>What changed inside the profiles</h2></div>
+  <p>Each change had to hold on 2010-2019 data that was never used to choose anything (<code>rules16_check.py</code>, <code>cand16.py</code>):</p>
+  <ul>
+    <li><b>ENG10 and LATEFH off by default.</b> Both were rated chance-level in the overfitting audit.</li>
+    <li><b>Two context boosts removed</b> (ORB90 after a VWAP condition, ORB60 after an ATR condition). They held in only 1 of 4 periods. Removing them cut the 2024-26 max drawdown from $5,871 to $5,221.</li>
+    <li><b>Minimum stop of 0.10 × daily ATR</b> on structure trades (ORB, VOLB, MSEQ, CRT11, ICT, LON). Win rate rose 0.4-0.8 points in all four periods.</li>
+  </ul>
+  <div class="tbl"><table>
+    <thead><tr><th>Profile</th><th class="n">2020-23 WR</th><th class="n">PF</th><th class="n">Sharpe</th><th class="n">$/mo</th><th class="n">2024-26 WR</th><th class="n">PF</th><th class="n">Sharpe</th><th class="n">$/mo</th><th class="n">Max DD</th><th class="n">Worst month</th></tr></thead>
+    <tbody>
+      <tr class="dim"><td>Ultra, before</td><td class="n">66.6%</td><td class="n">1.48</td><td class="n">3.53</td><td class="n">$1,912</td><td class="n">64.9%</td><td class="n">1.46</td><td class="n">3.52</td><td class="n">$2,395</td><td class="n">$5,871</td><td class="n">−$3,635</td></tr>
+      <tr class="hl"><td><b>Ultra, now</b></td><td class="n">66.9%</td><td class="n">1.47</td><td class="n">3.38</td><td class="n">$1,717</td><td class="n">65.7%</td><td class="n">1.50</td><td class="n">3.65</td><td class="n">$2,304</td><td class="n">$4,570</td><td class="n">−$2,670</td></tr>
+      <tr class="dim"><td>WR70Plus, before</td><td class="n">71.8%</td><td class="n">1.59</td><td class="n">3.68</td><td class="n">$1,440</td><td class="n">68.8%</td><td class="n">1.46</td><td class="n">3.17</td><td class="n">$1,581</td><td class="n">$4,059</td><td class="n">−$2,950</td></tr>
+      <tr class="hl"><td><b>WR70Plus, now</b></td><td class="n">72.2%</td><td class="n">1.57</td><td class="n">3.59</td><td class="n">$1,359</td><td class="n">69.4%</td><td class="n">1.48</td><td class="n">3.30</td><td class="n">$1,567</td><td class="n">$3,893</td><td class="n">−$2,885</td></tr>
+      <tr><td>Durable</td><td class="n">62.9%</td><td class="n">1.60</td><td class="n">2.73</td><td class="n">$953</td><td class="n">60.2%</td><td class="n">1.66</td><td class="n">2.91</td><td class="n">$1,429</td><td class="n">$3,845</td><td class="n">−$2,504</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">1 base contract, real NQ futures, MNQ dollars. 2020-23 gives up some money because the removed boosts happened to work in those years. 2024-26 and 2010-19 improve. The search for new high-PF, high-win-rate strategies (53,486 configurations on 16 years, 9 October) found nothing that survives all periods. A higher PF now comes from removing weak parts, not from adding new ones.</p>
+</section>
+
+<section id="august">
+  <div class="sec-head"><div class="eyebrow">3 · Months like August</div><h2>August cannot be predicted, but the damage can be capped</h2></div>
+  <div class="two">
+    <div class="card"><h3>What the data says</h3>
+      <ul>
+        <li>11 of 81 months lost money. Shuffling the same trades at random gives 15.6% losing months, against 13.6% in history.</li>
+        <li>The correlation between one month and the next is about 0. Filters on volatility, chop and VIX do not predict bad months.</li>
+        <li>The tail comes from 151 trades that each lost $300 or more, mostly VOLB, ORB60 and MSEQ.</li>
+        <li>Summer 2026: daily range 530-600 points (normal is about 340). Drawdown at 1 contract was $3,671, nearly twice the $2,000 trailing limit.</li>
+      </ul></div>
+    <div class="card"><h3>The fix: a risk cap while the cushion is small</h3>
+      <ul>
+        <li>While the cushion over the firm's liquidation level is below <b>$1,200 in an eval</b> or <b>$2,000 in a funded account</b>, trades risking more than <b>$300 per contract</b> are skipped.</li>
+        <li>Above those levels, every module trades as before.</li>
+        <li>It replaces the old SAFE mode in funded accounts.</li>
+      </ul></div>
+  </div>
+  <h3>Account lifecycle, MyFundedFutures Rapid EOD 50K, 1 contract (1,000 resampled years)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Setup</th><th class="n">$/month 2020-23</th><th class="n">$/month 2024-26</th><th class="n">With +1 tick</th><th class="n">Accounts lost/year</th><th class="n">Losing year</th></tr></thead>
+    <tbody>
+      <tr class="dim"><td>Ultra before, no cap</td><td class="n">$1,115</td><td class="n">$1,508</td><td class="n">$1,005 / $1,397</td><td class="n">0.56 / 1.65</td><td class="n">2.3% / 2.4%</td></tr>
+      <tr class="hl"><td><b>Ultra now + cap</b></td><td class="n">$893</td><td class="n">$1,327</td><td class="n">$788 / $1,214</td><td class="n">0.45 / 0.70</td><td class="n">5.0% / 3.4%</td></tr>
+      <tr><td>WR70Plus now + cap</td><td class="n">$569</td><td class="n">$674</td><td class="n">$497 / $605</td><td class="n">0.18 / 0.48</td><td class="n">7.6% / 9.8%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Lucid Flex 50K: Ultra now + cap earns $690 / $882 a month and loses 0.94 / 1.32 accounts a year, against $843 / $1,025 and 1.16 / 3.06 before. The trade: 10-20% less money for about half as many lost accounts in 2024-26.</p>
+  <h3>Stress test: an account started on every trading day of summer 2026</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Setup (MFFU 50K, 1 contract)</th><th class="n">Eval passed, starts Jun-Aug 2026</th><th class="n">Funded busted within 60 days</th><th class="n">Eval passed, all 2024-26 starts</th><th class="n">Funded busted, all 2024-26</th></tr></thead>
+    <tbody>
+      <tr class="dim"><td>Ultra before</td><td class="n">16%</td><td class="n">88%</td><td class="n">72.8%</td><td class="n">31.4%</td></tr>
+      <tr class="hl"><td><b>Ultra now</b></td><td class="n">18%</td><td class="n">59%</td><td class="n">75.5%</td><td class="n">18.0%</td></tr>
+      <tr class="dim"><td>WR70Plus before</td><td class="n">25%</td><td class="n">73%</td><td class="n">77.4%</td><td class="n">24.5%</td></tr>
+      <tr class="hl"><td><b>WR70Plus now</b></td><td class="n">33%</td><td class="n">47%</td><td class="n">82.9%</td><td class="n">9.0%</td></tr>
+    </tbody>
+  </table></div>
+  <p>Summer 2026 still breaks most accounts that start inside it: a $2,000 trailing limit cannot absorb a $3,700 drawdown. Two more protections were tested and rejected because they cost more than they saved:</p>
+  <ul>
+    <li>A volatility guard that keeps the cap on at any cushion when the daily ATR is 1.2-1.5× its yearly median: −$150 to −$500 a month in 2020-23, with no consistent gain.</li>
+    <li>An intraday stop $100-400 above the liquidation level: no gain in either period.</li>
+  </ul>
+  <p>What protects you in practice:</p>
+  <ul>
+    <li>The cap.</li>
+    <li>Starting accounts on different weeks, so they don't all sit on a small cushion at the same time.</li>
+    <li>WR70Plus in funded accounts, if you value fewer busts over income.</li>
+    <li>The edge monitor, recalibrated to a 0.5% false-alarm rate per year for Ultra.</li>
+  </ul>
+</section>
+
+<section id="code">
+  <div class="sec-head"><div class="eyebrow">4 · Code audit</div><h2>11 operational problems fixed in both strategies</h2></div>
+  <p>A separate audit read NQMaster.cs and GoldMaster.cs line by line against the validated NinjaTrader exports and the firms' rules (<code>audit_code_2026-10-12.md</code>). All fixes are in <code>patch_audit.py</code>.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Level</th><th>Problem</th><th>Fix</th><th>State</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip bad">Critical</span></td><td>GoldMaster closed trades at 16:51 ET. MFFU auto-closes at 16:10 and Lucid requires flat by 16:45, so GoldMaster's later exit could open a reverse, unprotected position after hours. 25 of 332 validated trades were exposed.</td><td>Flatten at 16:00 ET. Re-priced in research: neutral (Robust PF 1.37 → 1.37 on real MGC).</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip warn">High</span></td><td>The strategy never compared its position with the account's. A firm auto-close, a manual flatten or a restart could leave them apart.</td><td>Account sync guard: if they differ for 2 bars, flatten that instrument, alert, stop the strategy.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip warn">High</span></td><td>Holiday and half-day sessions were not handled. NinjaTrader's exit 30 seconds before the close was the only flatten. These sessions lost $1,367 on 51 trades.</td><td>Real session end read from the trading hours. No entries in short sessions, flat 5 min before an early close, all entries cancelled at each session start.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip warn">High</span></td><td>No cap on total open contracts. The validated peak is 11 MNQ at 1 contract, i.e. 22 micros at 2, above Lucid's 20.</td><td><code>Max open contracts</code> (20), counted across the whole account including MGC.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip neu">Medium</span></td><td>News list missing the 2026-10-02 NFP and all of 2027. No warning when it runs out.</td><td>2027 CPI/NFP added. Warning 35 days before the list ends; unreadable dates are printed.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip neu">Medium</span></td><td>In live trading, an order the watchdog gave up on could still fill while the opposite side was allowed again.</td><td>It keeps blocking while live; 5 bars before giving up in realtime.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip neu">Medium</span></td><td>Multi-lot entries: the first lot's exit marked the module as flat, so the other lots lost their time exits.</td><td>Open lots tracked per module.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip neu">Medium</span></td><td>A mid-session restart treated intraday cash as the end-of-day peak.</td><td>Uses the saved day start.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip neu">Medium</span></td><td>No guard for contract rollover.</td><td>No new entries from the roll date (MNQ Dec-26: Dec 10); the guide has the roll steps.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip neu">Medium</span></td><td>Alarms only went to the Output window, lost on restart.</td><td>NinjaTrader alerts plus a daily log file in <code>Documents\NinjaTrader 8\nqmaster_logs</code>.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip neu">Low</span></td><td>Rejected orders were resent every bar. A bar that arrives late (data gap, session break) could trigger entries.</td><td>2 rejections switch a module off for the session; "liquidation / disabled" rejections stop entries; no entries on bars more than 2 min late.</td><td><span class="chip good">Fixed</span></td></tr>
+      <tr><td><span class="chip neu">Medium</span></td><td>Edge-monitor state is rebuilt from simulated history on every restart. The account state file is per PC.</td><td>Documented: set the prop overrides after switching PCs.</td><td><span class="chip warn">Open</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Both files type-check with the C# compiler against a stub of the NinjaTrader API; the older, NinjaTrader-compiled versions pass the same check. They still need F5 on your PC.</p>
+</section>
+
+<section id="practices">
+  <div class="sec-head"><div class="eyebrow">5 · Best practices</div><h2>Research is near institutional standard; operations were the gap</h2></div>
+  <p>34 practices from the quant-trading literature (López de Prado, Harvey &amp; Liu, Bailey et al., Carver, Chan, Pardo, Davey, the FIA and SEC guidance) were scored against this project. Before today: 15 done, 16 partly, 3 missing.</p>
+  <div class="two">
+    <div class="card"><h3>Strong</h3><ul>
+      <li>Deflated Sharpe, PBO and haircuts. Ultra passes at 300,000 trials.</li>
+      <li>16 years of real futures. Costs stress-tested up to +4 ticks.</li>
+      <li>NinjaTrader matched to the research on 96% of trades.</li>
+      <li>Look-ahead bugs actively hunted and fixed.</li>
+      <li>CUSUM edge monitor.</li>
+    </ul></div>
+    <div class="card"><h3>Still to do</h3><ul>
+      <li><b>Freeze version 1.0 and paper-trade it 4-8 weeks.</b> The test periods have been looked at hundreds of times. From 2026-10-13 on, results are the only clean evidence.</li>
+      <li>One Strategy Analyzer run with High order-fill resolution, to check fills inside the minute.</li>
+      <li>Test a disconnect and a restart on Sim, then choose the connection-loss setting on purpose.</li>
+      <li>UPS, backup internet, a one-page incident runbook.</li>
+      <li>Ask Lucid and MFFU in writing about VPS use and MFFU's news rule.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="python">
+  <div class="sec-head"><div class="eyebrow">6 · Your question</div><h2>Can all this move to a Python system with machine learning, live news and a self-improving AI brain?</h2></div>
+  <p><b>Partly, and the part that matters most is the operations layer, not a new brain.</b></p>
+  <div class="arch">
+    <div class="box main"><div class="t">NinjaTrader executes</div><div>NQMaster and GoldMaster keep every order, stop, rule guard and position. This is the only order route both firms support. MFFU has no order API for your own code; at Lucid it would need Rithmic's conformance test plus Lucid's written approval.</div></div>
+    <div class="box"><div class="t">Python watches</div><div>It reads the log files and a heartbeat. It sends phone alerts, reconciles each day's live fills against the research replica, tracks slippage and keeps the news calendar.</div></div>
+    <div class="box"><div class="t">Python researches</div><div>Offline retraining on a schedule, a registry of every test, and challenger versions run in shadow mode. Nothing goes live without passing fixed gates and your approval.</div></div>
+  </div>
+  <div class="two">
+    <div class="card"><h3>Why not a self-improving AI that trades</h3><ul>
+      <li>Every adaptive layer tried here failed out of sample: ML meta-labeling three times, walk-forward rotation, equity-curve switching, optimised weights, context mining, order-flow sizing.</li>
+      <li>Telling a +0.3 Sharpe improvement from luck takes years of live data. A system that changes itself cannot know whether a change helped.</li>
+      <li>News: index futures price a release in about 5 milliseconds. Our own tick test lost the edge at 50 ms. At retail speed, news is a risk filter, not a source of profit.</li>
+      <li>LLM sentiment signals have look-ahead and memorisation bias, and their published returns decay.</li>
+    </ul></div>
+    <div class="card"><h3>Phased plan</h3><ol class="steps">
+      <li><div><b>2 weeks.</b> Freeze v1.0, compile, run the regression backtest, start on Sim or one eval. Get the firms' answers in writing. UPS and backup line.</div></li>
+      <li><div><b>1-2 months, ~40-80 h.</b> Python operations sidecar: alerts, daily reconciliation, slippage log, automatic news calendar.</div></li>
+      <li><div><b>2-6 months, ~80-150 h.</b> Research platform: test registry, purged cross-validation for any ML, champion/challenger in shadow.</div></li>
+      <li><div><b>Optional, after 6+ months live.</b> Python execution only for your own brokerage account. You would need about $41k per base contract at a 20% volatility target, and the losses would be yours.</div></li>
+    </ol></div>
+  </div>
+</section>
+
+<section id="next">
+  <div class="sec-head"><div class="eyebrow">7 · Next steps</div><h2>What to do on the PC</h2></div>
+  <ol class="steps">
+    <li><div>Copy <code>NQMaster.cs</code> and <code>GoldMaster.cs</code> to <code>Documents\NinjaTrader 8\bin\Custom\Strategies</code> and press <b>F5</b>. Send me any compile error.</div></li>
+    <li><div>Remove old NQMaster instances that used a removed profile, then add the strategy again.</div></li>
+    <li><div>Strategy Analyzer: MNQ 1-minute from 2025-01-04, Profile Ultra, Contracts 1, defaults. Send the trades CSV. Expect fewer trades than the 2,221 of October 9: ENG10 and LATEFH are off, holiday sessions are skipped and the minimum stop applies.</div></li>
+    <li><div>Settings for MFFU Rapid EOD 50K:<ul><li>Eval: Ultra, PropMode Eval, EvalProfitStop 800, Max open contracts 30.</li><li>Funded: PropMode Funded, withdraw down to $4,100 profit.</li><li>GoldMaster Robust with Flatten time 1600.</li></ul>For Lucid Flex 50K: EvalProfitStop 1400 and Max open contracts 20.</div></li>
+    <li><div>Never trade MNQ or MGC by hand on an account where the strategy runs: the sync guard will flatten and stop it. In an emergency, use the pause file first.</div></li>
+  </ol>
+</section>
+
+<footer>Branch <code>claude/ninjatrader-short-trades-blocked-7n4n3g</code>, commit 03de2a2 (PR #3). Guides: the 2026-10-12 section at the top of NQMASTER_GUIA.md, and GOLDMASTER_GUIA.md. Research files: research/mine/hist_profiles.md, cand16*.py, robust2_*.py, stress_*.py, liqbuf.py, gold_flat1600.py, audit_code_2026-10-12.md, audit_bestpractices_ai_2026-10-12.md.</footer>
+</div>
+
+<script>
+(function () {
+  var data = [
+    ["MaxSharpe", "09-28", 2.60, 0], ["WinRate70", "09-28", 2.58, 0], ["MaxPlus", "09-29", 2.77, 0], ["MaxPlus2", "10-02", 2.90, 0],
+    ["Core", "10-03", 2.34, 0], ["Ultra v1", "10-03", 2.94, 0], ["Ultra ampliado", "10-06", 3.00, 0], ["Ultra night", "10-07", 3.16, 0],
+    ["Ultra (10-08)", "10-08", 3.43, 1], ["UltraLean", "10-08", 3.36, 0], ["WR70Plus", "10-08", 3.35, 1], ["Durable", "10-09", 2.78, 1]
+  ];
+  var g = document.getElementById("bars"), ns = "http://www.w3.org/2000/svg";
+  var left = 132, right = 600, top = 10, rowH = 30, max = 3.5;
+  var x = function (v) { return left + (right - left) * v / max; };
+  for (var t = 0; t <= 3.5; t += 0.5) {
+    var ln = document.createElementNS(ns, "line");
+    ln.setAttribute("x1", x(t)); ln.setAttribute("x2", x(t)); ln.setAttribute("y1", top); ln.setAttribute("y2", top + rowH * data.length);
+    ln.setAttribute("stroke", "var(--rule)"); ln.setAttribute("stroke-width", "1"); g.appendChild(ln);
+    var tl = document.createElementNS(ns, "text");
+    tl.setAttribute("x", x(t)); tl.setAttribute("y", top + rowH * data.length + 16); tl.setAttribute("text-anchor", "middle");
+    tl.setAttribute("fill", "var(--ink-3)"); tl.setAttribute("font-size", "11"); tl.setAttribute("font-family", "IBM Plex Mono, monospace");
+    tl.textContent = t.toFixed(1); g.appendChild(tl);
+  }
+  var tip = document.getElementById("tip"), box = document.getElementById("sharpeChart");
+  data.forEach(function (d, i) {
+    var y = top + i * rowH;
+    var lab = document.createElementNS(ns, "text");
+    lab.setAttribute("x", left - 8); lab.setAttribute("y", y + rowH / 2 + 4); lab.setAttribute("text-anchor", "end");
+    lab.setAttribute("fill", d[3] ? "var(--ink)" : "var(--ink-2)"); lab.setAttribute("font-size", "12.5"); lab.setAttribute("font-family", "IBM Plex Sans, sans-serif");
+    lab.textContent = d[0]; g.appendChild(lab);
+    var w = x(d[2]) - left, h = 16, by = y + (rowH - h) / 2;
+    var p = document.createElementNS(ns, "path");
+    p.setAttribute("d", "M" + left + "," + by + " h" + (w - 4) + " a4,4 0 0 1 4,4 v" + (h - 8) + " a4,4 0 0 1 -4,4 h" + (-(w - 4)) + " z");
+    p.setAttribute("fill", d[3] ? "var(--series-1)" : "var(--muted-bar)"); g.appendChild(p);
+    var val = document.createElementNS(ns, "text");
+    val.setAttribute("x", x(d[2]) + 6); val.setAttribute("y", y + rowH / 2 + 4); val.setAttribute("fill", "var(--ink-2)");
+    val.setAttribute("font-size", "11.5"); val.setAttribute("font-family", "IBM Plex Mono, monospace"); val.textContent = d[2].toFixed(2); g.appendChild(val);
+    var hit = document.createElementNS(ns, "rect");
+    hit.setAttribute("x", 0); hit.setAttribute("y", y); hit.setAttribute("width", 640); hit.setAttribute("height", rowH); hit.setAttribute("fill", "transparent");
+    hit.addEventListener("mousemove", function (ev) {
+      var r = box.getBoundingClientRect();
+      tip.textContent = d[0] + " · " + d[1] + " · Sharpe " + d[2].toFixed(2) + (d[3] ? " · kept" : " · removed");
+      tip.hidden = false;
+      var tx = Math.min(ev.clientX - r.left + 12, r.width - tip.offsetWidth - 8);
+      tip.style.left = tx + "px"; tip.style.top = (ev.clientY - r.top - 34) + "px";
+    });
+    hit.addEventListener("mouseleave", function () { tip.hidden = true; });
+    g.appendChild(hit);
+  });
+})();
+</script>

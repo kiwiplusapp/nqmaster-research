@@ -1,0 +1,114 @@
+{
+ "base": {
+  "mu_day": 94,
+  "sd_day": 426,
+  "Lucid Flex 25K": [
+   69.0,
+   72.0
+  ],
+  "Lucid Flex 50K": [
+   28.3,
+   42.8
+  ],
+  "Bulenox Opt2 25K": [
+   62.3,
+   65.6
+  ]
+ },
+ "no x2 boosts": {
+  "mu_day": 76,
+  "sd_day": 365,
+  "Lucid Flex 25K": [
+   62.9,
+   66.6
+  ],
+  "Lucid Flex 50K": [
+   19.3,
+   31.9
+  ],
+  "Bulenox Opt2 25K": [
+   52.5,
+   61.1
+  ]
+ },
+ "no VOLB": {
+  "mu_day": 74,
+  "sd_day": 332,
+  "Lucid Flex 25K": [
+   60.0,
+   69.2
+  ],
+  "Lucid Flex 50K": [
+   18.4,
+   28.8
+  ],
+  "Bulenox Opt2 25K": [
+   53.2,
+   54.1
+  ]
+ },
+ "no LON": {
+  "mu_day": 89,
+  "sd_day": 415,
+  "Lucid Flex 25K": [
+   65.4,
+   76.8
+  ],
+  "Lucid Flex 50K": [
+   27.5,
+   41.8
+  ],
+  "Bulenox Opt2 25K": [
+   61.4,
+   64.7
+  ]
+ },
+ "no ICT": {
+  "mu_day": 92,
+  "sd_day": 418,
+  "Lucid Flex 25K": [
+   69.0,
+   69.5
+  ],
+  "Lucid Flex 50K": [
+   26.4,
+   42.3
+  ],
+  "Bulenox Opt2 25K": [
+   62.1,
+   68.6
+  ]
+ },
+ "no VOLB+LON": {
+  "mu_day": 70,
+  "sd_day": 320,
+  "Lucid Flex 25K": [
+   58.9,
+   66.7
+  ],
+  "Lucid Flex 50K": [
+   17.2,
+   27.1
+  ],
+  "Bulenox Opt2 25K": [
+   50.8,
+   52.1
+  ]
+ },
+ "no boosts + no VOLB": {
+  "mu_day": 57,
+  "sd_day": 263,
+  "Lucid Flex 25K": [
+   49.6,
+   56.3
+  ],
+  "Lucid Flex 50K": [
+   10.1,
+   16.3
+  ],
+  "Bulenox Opt2 25K": [
+   42.2,
+   42.0
+  ]
+ }
+}

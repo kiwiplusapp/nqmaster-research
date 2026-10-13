@@ -1,0 +1,1514 @@
+{
+ "MFFU | Ultra | fixed": {
+  "2020-23": {
+   "per_month": 1115,
+   "p10_month": 417,
+   "evals": 1.54,
+   "passes": 1.21,
+   "funded_busts": 0.23,
+   "payouts": 17.5,
+   "accounts_lost": 0.56,
+   "p_neg_year": 2.3
+  },
+  "2020-23 +1tick": {
+   "per_month": 1005,
+   "p10_month": 288,
+   "evals": 1.66,
+   "passes": 1.25,
+   "funded_busts": 0.28,
+   "payouts": 15.8,
+   "accounts_lost": 0.69,
+   "p_neg_year": 3.8
+  },
+  "2024-26": {
+   "per_month": 1508,
+   "p10_month": 480,
+   "evals": 2.57,
+   "passes": 1.72,
+   "funded_busts": 0.8,
+   "payouts": 21.6,
+   "accounts_lost": 1.65,
+   "p_neg_year": 2.4
+  },
+  "2024-26 +1tick": {
+   "per_month": 1397,
+   "p10_month": 376,
+   "evals": 2.72,
+   "passes": 1.78,
+   "funded_busts": 0.87,
+   "payouts": 20.2,
+   "accounts_lost": 1.81,
+   "p_neg_year": 3.1
+  }
+ },
+ "MFFU | Ultra | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 1092,
+   "p10_month": 391,
+   "evals": 1.43,
+   "passes": 1.18,
+   "funded_busts": 0.19,
+   "payouts": 17.1,
+   "accounts_lost": 0.44,
+   "p_neg_year": 2.6
+  },
+  "2020-23 +1tick": {
+   "per_month": 978,
+   "p10_month": 274,
+   "evals": 1.55,
+   "passes": 1.22,
+   "funded_busts": 0.24,
+   "payouts": 15.4,
+   "accounts_lost": 0.57,
+   "p_neg_year": 4.1
+  },
+  "2024-26": {
+   "per_month": 1465,
+   "p10_month": 443,
+   "evals": 2.05,
+   "passes": 1.5,
+   "funded_busts": 0.56,
+   "payouts": 20.8,
+   "accounts_lost": 1.11,
+   "p_neg_year": 3.1
+  },
+  "2024-26 +1tick": {
+   "per_month": 1348,
+   "p10_month": 345,
+   "evals": 2.2,
+   "passes": 1.54,
+   "funded_busts": 0.6,
+   "payouts": 19.4,
+   "accounts_lost": 1.27,
+   "p_neg_year": 4.2
+  }
+ },
+ "MFFU | Ultra | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 1044,
+   "p10_month": 315,
+   "evals": 1.44,
+   "passes": 1.18,
+   "funded_busts": 0.19,
+   "payouts": 16.3,
+   "accounts_lost": 0.45,
+   "p_neg_year": 3.5
+  },
+  "2020-23 +1tick": {
+   "per_month": 927,
+   "p10_month": 216,
+   "evals": 1.56,
+   "passes": 1.23,
+   "funded_busts": 0.24,
+   "payouts": 14.6,
+   "accounts_lost": 0.58,
+   "p_neg_year": 5.1
+  },
+  "2024-26": {
+   "per_month": 1417,
+   "p10_month": 409,
+   "evals": 1.85,
+   "passes": 1.37,
+   "funded_busts": 0.41,
+   "payouts": 20.1,
+   "accounts_lost": 0.89,
+   "p_neg_year": 3.2
+  },
+  "2024-26 +1tick": {
+   "per_month": 1300,
+   "p10_month": 323,
+   "evals": 1.99,
+   "passes": 1.41,
+   "funded_busts": 0.45,
+   "payouts": 18.5,
+   "accounts_lost": 1.03,
+   "p_neg_year": 4.6
+  }
+ },
+ "MFFU | UltraR | fixed": {
+  "2020-23": {
+   "per_month": 947,
+   "p10_month": 293,
+   "evals": 1.55,
+   "passes": 1.22,
+   "funded_busts": 0.23,
+   "payouts": 15.5,
+   "accounts_lost": 0.56,
+   "p_neg_year": 3.8
+  },
+  "2020-23 +1tick": {
+   "per_month": 847,
+   "p10_month": 159,
+   "evals": 1.67,
+   "passes": 1.26,
+   "funded_busts": 0.28,
+   "payouts": 13.9,
+   "accounts_lost": 0.69,
+   "p_neg_year": 5.9
+  },
+  "2024-26": {
+   "per_month": 1462,
+   "p10_month": 531,
+   "evals": 2.11,
+   "passes": 1.5,
+   "funded_busts": 0.55,
+   "payouts": 21.7,
+   "accounts_lost": 1.16,
+   "p_neg_year": 2.3
+  },
+  "2024-26 +1tick": {
+   "per_month": 1360,
+   "p10_month": 444,
+   "evals": 2.31,
+   "passes": 1.55,
+   "funded_busts": 0.61,
+   "payouts": 20.2,
+   "accounts_lost": 1.36,
+   "p_neg_year": 3.6
+  }
+ },
+ "MFFU | UltraR | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 935,
+   "p10_month": 286,
+   "evals": 1.41,
+   "passes": 1.16,
+   "funded_busts": 0.17,
+   "payouts": 15.2,
+   "accounts_lost": 0.42,
+   "p_neg_year": 3.7
+  },
+  "2020-23 +1tick": {
+   "per_month": 829,
+   "p10_month": 161,
+   "evals": 1.54,
+   "passes": 1.21,
+   "funded_busts": 0.23,
+   "payouts": 13.6,
+   "accounts_lost": 0.56,
+   "p_neg_year": 6.2
+  },
+  "2024-26": {
+   "per_month": 1395,
+   "p10_month": 464,
+   "evals": 1.79,
+   "passes": 1.34,
+   "funded_busts": 0.39,
+   "payouts": 20.7,
+   "accounts_lost": 0.83,
+   "p_neg_year": 2.7
+  },
+  "2024-26 +1tick": {
+   "per_month": 1291,
+   "p10_month": 355,
+   "evals": 1.91,
+   "passes": 1.37,
+   "funded_busts": 0.42,
+   "payouts": 19.1,
+   "accounts_lost": 0.95,
+   "p_neg_year": 3.5
+  }
+ },
+ "MFFU | UltraR | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 893,
+   "p10_month": 209,
+   "evals": 1.44,
+   "passes": 1.17,
+   "funded_busts": 0.18,
+   "payouts": 14.5,
+   "accounts_lost": 0.45,
+   "p_neg_year": 5.0
+  },
+  "2020-23 +1tick": {
+   "per_month": 788,
+   "p10_month": 111,
+   "evals": 1.55,
+   "passes": 1.21,
+   "funded_busts": 0.23,
+   "payouts": 12.9,
+   "accounts_lost": 0.57,
+   "p_neg_year": 7.2
+  },
+  "2024-26": {
+   "per_month": 1327,
+   "p10_month": 402,
+   "evals": 1.68,
+   "passes": 1.27,
+   "funded_busts": 0.29,
+   "payouts": 19.7,
+   "accounts_lost": 0.7,
+   "p_neg_year": 3.4
+  },
+  "2024-26 +1tick": {
+   "per_month": 1214,
+   "p10_month": 251,
+   "evals": 1.83,
+   "passes": 1.32,
+   "funded_busts": 0.35,
+   "payouts": 18.0,
+   "accounts_lost": 0.86,
+   "p_neg_year": 5.0
+  }
+ },
+ "MFFU | UltraR-ON | fixed": {
+  "2020-23": {
+   "per_month": 896,
+   "p10_month": 257,
+   "evals": 1.56,
+   "passes": 1.23,
+   "funded_busts": 0.24,
+   "payouts": 14.6,
+   "accounts_lost": 0.57,
+   "p_neg_year": 4.4
+  },
+  "2020-23 +1tick": {
+   "per_month": 804,
+   "p10_month": 136,
+   "evals": 1.68,
+   "passes": 1.26,
+   "funded_busts": 0.28,
+   "payouts": 13.2,
+   "accounts_lost": 0.71,
+   "p_neg_year": 6.8
+  },
+  "2024-26": {
+   "per_month": 1400,
+   "p10_month": 519,
+   "evals": 2.06,
+   "passes": 1.45,
+   "funded_busts": 0.49,
+   "payouts": 20.8,
+   "accounts_lost": 1.1,
+   "p_neg_year": 2.6
+  },
+  "2024-26 +1tick": {
+   "per_month": 1305,
+   "p10_month": 417,
+   "evals": 2.22,
+   "passes": 1.52,
+   "funded_busts": 0.57,
+   "payouts": 19.4,
+   "accounts_lost": 1.27,
+   "p_neg_year": 3.1
+  }
+ },
+ "MFFU | UltraR-ON | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 880,
+   "p10_month": 229,
+   "evals": 1.44,
+   "passes": 1.17,
+   "funded_busts": 0.18,
+   "payouts": 14.3,
+   "accounts_lost": 0.46,
+   "p_neg_year": 4.3
+  },
+  "2020-23 +1tick": {
+   "per_month": 784,
+   "p10_month": 108,
+   "evals": 1.55,
+   "passes": 1.2,
+   "funded_busts": 0.22,
+   "payouts": 12.9,
+   "accounts_lost": 0.57,
+   "p_neg_year": 7.0
+  },
+  "2024-26": {
+   "per_month": 1338,
+   "p10_month": 426,
+   "evals": 1.66,
+   "passes": 1.27,
+   "funded_busts": 0.3,
+   "payouts": 19.8,
+   "accounts_lost": 0.68,
+   "p_neg_year": 2.9
+  },
+  "2024-26 +1tick": {
+   "per_month": 1245,
+   "p10_month": 331,
+   "evals": 1.78,
+   "passes": 1.31,
+   "funded_busts": 0.36,
+   "payouts": 18.4,
+   "accounts_lost": 0.82,
+   "p_neg_year": 3.7
+  }
+ },
+ "MFFU | UltraR-ON | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 845,
+   "p10_month": 188,
+   "evals": 1.45,
+   "passes": 1.17,
+   "funded_busts": 0.19,
+   "payouts": 13.8,
+   "accounts_lost": 0.46,
+   "p_neg_year": 5.8
+  },
+  "2020-23 +1tick": {
+   "per_month": 746,
+   "p10_month": 35,
+   "evals": 1.55,
+   "passes": 1.2,
+   "funded_busts": 0.22,
+   "payouts": 12.3,
+   "accounts_lost": 0.58,
+   "p_neg_year": 8.4
+  },
+  "2024-26": {
+   "per_month": 1280,
+   "p10_month": 371,
+   "evals": 1.57,
+   "passes": 1.21,
+   "funded_busts": 0.23,
+   "payouts": 19.0,
+   "accounts_lost": 0.59,
+   "p_neg_year": 2.9
+  },
+  "2024-26 +1tick": {
+   "per_month": 1188,
+   "p10_month": 297,
+   "evals": 1.64,
+   "passes": 1.24,
+   "funded_busts": 0.26,
+   "payouts": 17.6,
+   "accounts_lost": 0.66,
+   "p_neg_year": 3.4
+  }
+ },
+ "MFFU | UltraWR | fixed": {
+  "2020-23": {
+   "per_month": 840,
+   "p10_month": 181,
+   "evals": 1.56,
+   "passes": 1.22,
+   "funded_busts": 0.24,
+   "payouts": 13.7,
+   "accounts_lost": 0.58,
+   "p_neg_year": 5.2
+  },
+  "2020-23 +1tick": {
+   "per_month": 757,
+   "p10_month": 77,
+   "evals": 1.67,
+   "passes": 1.26,
+   "funded_busts": 0.29,
+   "payouts": 12.4,
+   "accounts_lost": 0.7,
+   "p_neg_year": 7.5
+  },
+  "2024-26": {
+   "per_month": 1289,
+   "p10_month": 476,
+   "evals": 1.87,
+   "passes": 1.36,
+   "funded_busts": 0.39,
+   "payouts": 19.6,
+   "accounts_lost": 0.9,
+   "p_neg_year": 2.2
+  },
+  "2024-26 +1tick": {
+   "per_month": 1203,
+   "p10_month": 384,
+   "evals": 1.98,
+   "passes": 1.39,
+   "funded_busts": 0.43,
+   "payouts": 18.3,
+   "accounts_lost": 1.02,
+   "p_neg_year": 2.9
+  }
+ },
+ "MFFU | UltraWR | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 823,
+   "p10_month": 194,
+   "evals": 1.39,
+   "passes": 1.15,
+   "funded_busts": 0.16,
+   "payouts": 13.4,
+   "accounts_lost": 0.41,
+   "p_neg_year": 5.3
+  },
+  "2020-23 +1tick": {
+   "per_month": 739,
+   "p10_month": 92,
+   "evals": 1.49,
+   "passes": 1.17,
+   "funded_busts": 0.2,
+   "payouts": 12.1,
+   "accounts_lost": 0.53,
+   "p_neg_year": 7.6
+  },
+  "2024-26": {
+   "per_month": 1186,
+   "p10_month": 292,
+   "evals": 1.67,
+   "passes": 1.28,
+   "funded_busts": 0.31,
+   "payouts": 18.0,
+   "accounts_lost": 0.7,
+   "p_neg_year": 4.6
+  },
+  "2024-26 +1tick": {
+   "per_month": 1094,
+   "p10_month": 184,
+   "evals": 1.77,
+   "passes": 1.33,
+   "funded_busts": 0.37,
+   "payouts": 16.7,
+   "accounts_lost": 0.81,
+   "p_neg_year": 5.8
+  }
+ },
+ "MFFU | UltraWR | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 794,
+   "p10_month": 162,
+   "evals": 1.39,
+   "passes": 1.14,
+   "funded_busts": 0.16,
+   "payouts": 13.0,
+   "accounts_lost": 0.4,
+   "p_neg_year": 6.4
+  },
+  "2020-23 +1tick": {
+   "per_month": 709,
+   "p10_month": 64,
+   "evals": 1.5,
+   "passes": 1.18,
+   "funded_busts": 0.2,
+   "payouts": 11.6,
+   "accounts_lost": 0.52,
+   "p_neg_year": 8.4
+  },
+  "2024-26": {
+   "per_month": 1131,
+   "p10_month": 276,
+   "evals": 1.59,
+   "passes": 1.23,
+   "funded_busts": 0.26,
+   "payouts": 17.3,
+   "accounts_lost": 0.62,
+   "p_neg_year": 4.3
+  },
+  "2024-26 +1tick": {
+   "per_month": 1028,
+   "p10_month": 141,
+   "evals": 1.72,
+   "passes": 1.29,
+   "funded_busts": 0.33,
+   "payouts": 15.7,
+   "accounts_lost": 0.76,
+   "p_neg_year": 6.4
+  }
+ },
+ "MFFU | WR70Plus | fixed": {
+  "2020-23": {
+   "per_month": 726,
+   "p10_month": 249,
+   "evals": 1.17,
+   "passes": 1.08,
+   "funded_busts": 0.08,
+   "payouts": 13.0,
+   "accounts_lost": 0.17,
+   "p_neg_year": 2.2
+  },
+  "2020-23 +1tick": {
+   "per_month": 655,
+   "p10_month": 181,
+   "evals": 1.21,
+   "passes": 1.1,
+   "funded_busts": 0.1,
+   "payouts": 11.8,
+   "accounts_lost": 0.22,
+   "p_neg_year": 3.6
+  },
+  "2024-26": {
+   "per_month": 855,
+   "p10_month": 192,
+   "evals": 1.88,
+   "passes": 1.36,
+   "funded_busts": 0.4,
+   "payouts": 14.1,
+   "accounts_lost": 0.93,
+   "p_neg_year": 5.3
+  },
+  "2024-26 +1tick": {
+   "per_month": 779,
+   "p10_month": 98,
+   "evals": 2.06,
+   "passes": 1.42,
+   "funded_busts": 0.48,
+   "payouts": 13.0,
+   "accounts_lost": 1.12,
+   "p_neg_year": 6.8
+  }
+ },
+ "MFFU | WR70Plus | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 671,
+   "p10_month": 147,
+   "evals": 1.19,
+   "passes": 1.09,
+   "funded_busts": 0.09,
+   "payouts": 12.0,
+   "accounts_lost": 0.19,
+   "p_neg_year": 4.9
+  },
+  "2020-23 +1tick": {
+   "per_month": 594,
+   "p10_month": 58,
+   "evals": 1.24,
+   "passes": 1.1,
+   "funded_busts": 0.12,
+   "payouts": 10.7,
+   "accounts_lost": 0.26,
+   "p_neg_year": 8.0
+  },
+  "2024-26": {
+   "per_month": 757,
+   "p10_month": 29,
+   "evals": 1.68,
+   "passes": 1.25,
+   "funded_busts": 0.29,
+   "payouts": 12.5,
+   "accounts_lost": 0.72,
+   "p_neg_year": 8.8
+  },
+  "2024-26 +1tick": {
+   "per_month": 682,
+   "p10_month": -26,
+   "evals": 1.82,
+   "passes": 1.28,
+   "funded_busts": 0.34,
+   "payouts": 11.4,
+   "accounts_lost": 0.89,
+   "p_neg_year": 11.6
+  }
+ },
+ "MFFU | WR70Plus | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 603,
+   "p10_month": 41,
+   "evals": 1.2,
+   "passes": 1.09,
+   "funded_busts": 0.1,
+   "payouts": 10.8,
+   "accounts_lost": 0.21,
+   "p_neg_year": 8.4
+  },
+  "2020-23 +1tick": {
+   "per_month": 527,
+   "p10_month": -13,
+   "evals": 1.25,
+   "passes": 1.1,
+   "funded_busts": 0.12,
+   "payouts": 9.5,
+   "accounts_lost": 0.27,
+   "p_neg_year": 11.5
+  },
+  "2024-26": {
+   "per_month": 692,
+   "p10_month": -13,
+   "evals": 1.54,
+   "passes": 1.16,
+   "funded_busts": 0.18,
+   "payouts": 11.4,
+   "accounts_lost": 0.56,
+   "p_neg_year": 10.8
+  },
+  "2024-26 +1tick": {
+   "per_month": 620,
+   "p10_month": -26,
+   "evals": 1.64,
+   "passes": 1.17,
+   "funded_busts": 0.21,
+   "payouts": 10.4,
+   "accounts_lost": 0.69,
+   "p_neg_year": 13.4
+  }
+ },
+ "MFFU | WR70R | fixed": {
+  "2020-23": {
+   "per_month": 661,
+   "p10_month": 198,
+   "evals": 1.17,
+   "passes": 1.08,
+   "funded_busts": 0.09,
+   "payouts": 12.1,
+   "accounts_lost": 0.17,
+   "p_neg_year": 3.6
+  },
+  "2020-23 +1tick": {
+   "per_month": 593,
+   "p10_month": 127,
+   "evals": 1.22,
+   "passes": 1.1,
+   "funded_busts": 0.11,
+   "payouts": 10.9,
+   "accounts_lost": 0.22,
+   "p_neg_year": 4.9
+  },
+  "2024-26": {
+   "per_month": 842,
+   "p10_month": 206,
+   "evals": 1.67,
+   "passes": 1.28,
+   "funded_busts": 0.31,
+   "payouts": 14.1,
+   "accounts_lost": 0.7,
+   "p_neg_year": 4.6
+  },
+  "2024-26 +1tick": {
+   "per_month": 770,
+   "p10_month": 117,
+   "evals": 1.79,
+   "passes": 1.33,
+   "funded_busts": 0.37,
+   "payouts": 13.0,
+   "accounts_lost": 0.82,
+   "p_neg_year": 6.2
+  }
+ },
+ "MFFU | WR70R | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 625,
+   "p10_month": 133,
+   "evals": 1.16,
+   "passes": 1.07,
+   "funded_busts": 0.07,
+   "payouts": 11.4,
+   "accounts_lost": 0.17,
+   "p_neg_year": 5.1
+  },
+  "2020-23 +1tick": {
+   "per_month": 551,
+   "p10_month": 42,
+   "evals": 1.22,
+   "passes": 1.09,
+   "funded_busts": 0.1,
+   "payouts": 10.2,
+   "accounts_lost": 0.23,
+   "p_neg_year": 8.1
+  },
+  "2024-26": {
+   "per_month": 743,
+   "p10_month": 83,
+   "evals": 1.54,
+   "passes": 1.19,
+   "funded_busts": 0.22,
+   "payouts": 12.5,
+   "accounts_lost": 0.57,
+   "p_neg_year": 7.9
+  },
+  "2024-26 +1tick": {
+   "per_month": 669,
+   "p10_month": -26,
+   "evals": 1.62,
+   "passes": 1.21,
+   "funded_busts": 0.26,
+   "payouts": 11.3,
+   "accounts_lost": 0.67,
+   "p_neg_year": 11.4
+  }
+ },
+ "MFFU | WR70R | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 569,
+   "p10_month": 62,
+   "evals": 1.17,
+   "passes": 1.08,
+   "funded_busts": 0.09,
+   "payouts": 10.4,
+   "accounts_lost": 0.18,
+   "p_neg_year": 7.6
+  },
+  "2020-23 +1tick": {
+   "per_month": 497,
+   "p10_month": -13,
+   "evals": 1.23,
+   "passes": 1.09,
+   "funded_busts": 0.11,
+   "payouts": 9.2,
+   "accounts_lost": 0.24,
+   "p_neg_year": 10.2
+  },
+  "2024-26": {
+   "per_month": 674,
+   "p10_month": 12,
+   "evals": 1.45,
+   "passes": 1.12,
+   "funded_busts": 0.15,
+   "payouts": 11.3,
+   "accounts_lost": 0.48,
+   "p_neg_year": 9.8
+  },
+  "2024-26 +1tick": {
+   "per_month": 605,
+   "p10_month": -26,
+   "evals": 1.51,
+   "passes": 1.15,
+   "funded_busts": 0.18,
+   "payouts": 10.3,
+   "accounts_lost": 0.55,
+   "p_neg_year": 13.3
+  }
+ },
+ "Lucid | Ultra | fixed": {
+  "2020-23": {
+   "per_month": 843,
+   "p10_month": 432,
+   "evals": 2.79,
+   "passes": 2.1,
+   "funded_busts": 0.47,
+   "payouts": 5.8,
+   "accounts_lost": 1.16,
+   "p_neg_year": 1.3
+  },
+  "2020-23 +1tick": {
+   "per_month": 777,
+   "p10_month": 282,
+   "evals": 2.88,
+   "passes": 2.07,
+   "funded_busts": 0.55,
+   "payouts": 5.4,
+   "accounts_lost": 1.36,
+   "p_neg_year": 2.9
+  },
+  "2024-26": {
+   "per_month": 1025,
+   "p10_month": 547,
+   "evals": 4.79,
+   "passes": 3.1,
+   "funded_busts": 1.39,
+   "payouts": 7.1,
+   "accounts_lost": 3.06,
+   "p_neg_year": 1.4
+  },
+  "2024-26 +1tick": {
+   "per_month": 961,
+   "p10_month": 406,
+   "evals": 4.9,
+   "passes": 3.08,
+   "funded_busts": 1.45,
+   "payouts": 6.7,
+   "accounts_lost": 3.27,
+   "p_neg_year": 1.9
+  }
+ },
+ "Lucid | Ultra | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 818,
+   "p10_month": 432,
+   "evals": 2.56,
+   "passes": 1.97,
+   "funded_busts": 0.36,
+   "payouts": 5.6,
+   "accounts_lost": 0.95,
+   "p_neg_year": 2.0
+  },
+  "2020-23 +1tick": {
+   "per_month": 750,
+   "p10_month": 282,
+   "evals": 2.69,
+   "passes": 1.96,
+   "funded_busts": 0.48,
+   "payouts": 5.2,
+   "accounts_lost": 1.2,
+   "p_neg_year": 3.3
+  },
+  "2024-26": {
+   "per_month": 971,
+   "p10_month": 536,
+   "evals": 3.73,
+   "passes": 2.6,
+   "funded_busts": 0.89,
+   "payouts": 6.7,
+   "accounts_lost": 2.02,
+   "p_neg_year": 2.1
+  },
+  "2024-26 +1tick": {
+   "per_month": 908,
+   "p10_month": 415,
+   "evals": 3.79,
+   "passes": 2.58,
+   "funded_busts": 0.95,
+   "payouts": 6.3,
+   "accounts_lost": 2.16,
+   "p_neg_year": 3.1
+  }
+ },
+ "Lucid | Ultra | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 760,
+   "p10_month": 291,
+   "evals": 2.5,
+   "passes": 1.91,
+   "funded_busts": 0.37,
+   "payouts": 5.2,
+   "accounts_lost": 0.96,
+   "p_neg_year": 2.9
+  },
+  "2020-23 +1tick": {
+   "per_month": 696,
+   "p10_month": 274,
+   "evals": 2.59,
+   "passes": 1.87,
+   "funded_busts": 0.45,
+   "payouts": 4.8,
+   "accounts_lost": 1.18,
+   "p_neg_year": 4.1
+  },
+  "2024-26": {
+   "per_month": 926,
+   "p10_month": 432,
+   "evals": 3.33,
+   "passes": 2.35,
+   "funded_busts": 0.61,
+   "payouts": 6.4,
+   "accounts_lost": 1.59,
+   "p_neg_year": 2.0
+  },
+  "2024-26 +1tick": {
+   "per_month": 872,
+   "p10_month": 406,
+   "evals": 3.45,
+   "passes": 2.33,
+   "funded_busts": 0.68,
+   "payouts": 6.0,
+   "accounts_lost": 1.81,
+   "p_neg_year": 2.9
+  }
+ },
+ "Lucid | UltraR | fixed": {
+  "2020-23": {
+   "per_month": 758,
+   "p10_month": 415,
+   "evals": 2.65,
+   "passes": 1.97,
+   "funded_busts": 0.46,
+   "payouts": 5.2,
+   "accounts_lost": 1.14,
+   "p_neg_year": 2.0
+  },
+  "2020-23 +1tick": {
+   "per_month": 702,
+   "p10_month": 274,
+   "evals": 2.73,
+   "passes": 1.95,
+   "funded_busts": 0.52,
+   "payouts": 4.8,
+   "accounts_lost": 1.3,
+   "p_neg_year": 3.5
+  },
+  "2024-26": {
+   "per_month": 1028,
+   "p10_month": 565,
+   "evals": 4.17,
+   "passes": 2.86,
+   "funded_busts": 1.1,
+   "payouts": 7.1,
+   "accounts_lost": 2.41,
+   "p_neg_year": 1.1
+  },
+  "2024-26 +1tick": {
+   "per_month": 968,
+   "p10_month": 424,
+   "evals": 4.22,
+   "passes": 2.85,
+   "funded_busts": 1.17,
+   "payouts": 6.7,
+   "accounts_lost": 2.54,
+   "p_neg_year": 1.5
+  }
+ },
+ "Lucid | UltraR | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 743,
+   "p10_month": 291,
+   "evals": 2.44,
+   "passes": 1.85,
+   "funded_busts": 0.34,
+   "payouts": 5.1,
+   "accounts_lost": 0.93,
+   "p_neg_year": 2.5
+  },
+  "2020-23 +1tick": {
+   "per_month": 677,
+   "p10_month": 265,
+   "evals": 2.51,
+   "passes": 1.81,
+   "funded_busts": 0.4,
+   "payouts": 4.7,
+   "accounts_lost": 1.1,
+   "p_neg_year": 4.4
+  },
+  "2024-26": {
+   "per_month": 950,
+   "p10_month": 565,
+   "evals": 3.32,
+   "passes": 2.38,
+   "funded_busts": 0.65,
+   "payouts": 6.5,
+   "accounts_lost": 1.58,
+   "p_neg_year": 1.5
+  },
+  "2024-26 +1tick": {
+   "per_month": 885,
+   "p10_month": 415,
+   "evals": 3.4,
+   "passes": 2.4,
+   "funded_busts": 0.74,
+   "payouts": 6.1,
+   "accounts_lost": 1.75,
+   "p_neg_year": 2.4
+  }
+ },
+ "Lucid | UltraR | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 690,
+   "p10_month": 282,
+   "evals": 2.39,
+   "passes": 1.8,
+   "funded_busts": 0.35,
+   "payouts": 4.7,
+   "accounts_lost": 0.94,
+   "p_neg_year": 3.4
+  },
+  "2020-23 +1tick": {
+   "per_month": 635,
+   "p10_month": 132,
+   "evals": 2.43,
+   "passes": 1.73,
+   "funded_busts": 0.39,
+   "payouts": 4.4,
+   "accounts_lost": 1.08,
+   "p_neg_year": 4.5
+  },
+  "2024-26": {
+   "per_month": 882,
+   "p10_month": 424,
+   "evals": 3.02,
+   "passes": 2.21,
+   "funded_busts": 0.51,
+   "payouts": 6.1,
+   "accounts_lost": 1.32,
+   "p_neg_year": 1.9
+  },
+  "2024-26 +1tick": {
+   "per_month": 822,
+   "p10_month": 274,
+   "evals": 3.09,
+   "passes": 2.18,
+   "funded_busts": 0.57,
+   "payouts": 5.7,
+   "accounts_lost": 1.48,
+   "p_neg_year": 3.4
+  }
+ },
+ "Lucid | UltraR-ON | fixed": {
+  "2020-23": {
+   "per_month": 730,
+   "p10_month": 282,
+   "evals": 2.62,
+   "passes": 1.94,
+   "funded_busts": 0.46,
+   "payouts": 5.0,
+   "accounts_lost": 1.14,
+   "p_neg_year": 3.0
+  },
+  "2020-23 +1tick": {
+   "per_month": 674,
+   "p10_month": 264,
+   "evals": 2.7,
+   "passes": 1.9,
+   "funded_busts": 0.52,
+   "payouts": 4.7,
+   "accounts_lost": 1.31,
+   "p_neg_year": 4.6
+  },
+  "2024-26": {
+   "per_month": 1000,
+   "p10_month": 565,
+   "evals": 3.94,
+   "passes": 2.73,
+   "funded_busts": 0.99,
+   "payouts": 6.9,
+   "accounts_lost": 2.21,
+   "p_neg_year": 1.5
+  },
+  "2024-26 +1tick": {
+   "per_month": 946,
+   "p10_month": 424,
+   "evals": 3.98,
+   "passes": 2.72,
+   "funded_busts": 1.05,
+   "payouts": 6.5,
+   "accounts_lost": 2.31,
+   "p_neg_year": 1.5
+  }
+ },
+ "Lucid | UltraR-ON | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 711,
+   "p10_month": 282,
+   "evals": 2.4,
+   "passes": 1.79,
+   "funded_busts": 0.34,
+   "payouts": 4.9,
+   "accounts_lost": 0.94,
+   "p_neg_year": 3.4
+  },
+  "2020-23 +1tick": {
+   "per_month": 657,
+   "p10_month": 141,
+   "evals": 2.44,
+   "passes": 1.75,
+   "funded_busts": 0.4,
+   "payouts": 4.5,
+   "accounts_lost": 1.09,
+   "p_neg_year": 5.0
+  },
+  "2024-26": {
+   "per_month": 922,
+   "p10_month": 441,
+   "evals": 3.07,
+   "passes": 2.25,
+   "funded_busts": 0.55,
+   "payouts": 6.3,
+   "accounts_lost": 1.37,
+   "p_neg_year": 1.8
+  },
+  "2024-26 +1tick": {
+   "per_month": 869,
+   "p10_month": 415,
+   "evals": 3.19,
+   "passes": 2.25,
+   "funded_busts": 0.62,
+   "payouts": 6.0,
+   "accounts_lost": 1.56,
+   "p_neg_year": 2.5
+  }
+ },
+ "Lucid | UltraR-ON | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 672,
+   "p10_month": 274,
+   "evals": 2.33,
+   "passes": 1.75,
+   "funded_busts": 0.33,
+   "payouts": 4.6,
+   "accounts_lost": 0.91,
+   "p_neg_year": 4.0
+  },
+  "2020-23 +1tick": {
+   "per_month": 616,
+   "p10_month": 132,
+   "evals": 2.36,
+   "passes": 1.69,
+   "funded_busts": 0.38,
+   "payouts": 4.2,
+   "accounts_lost": 1.05,
+   "p_neg_year": 5.4
+  },
+  "2024-26": {
+   "per_month": 860,
+   "p10_month": 432,
+   "evals": 2.84,
+   "passes": 2.08,
+   "funded_busts": 0.41,
+   "payouts": 5.9,
+   "accounts_lost": 1.17,
+   "p_neg_year": 1.5
+  },
+  "2024-26 +1tick": {
+   "per_month": 806,
+   "p10_month": 282,
+   "evals": 2.85,
+   "passes": 2.04,
+   "funded_busts": 0.45,
+   "payouts": 5.5,
+   "accounts_lost": 1.27,
+   "p_neg_year": 2.6
+  }
+ },
+ "Lucid | UltraWR | fixed": {
+  "2020-23": {
+   "per_month": 703,
+   "p10_month": 282,
+   "evals": 2.54,
+   "passes": 1.87,
+   "funded_busts": 0.43,
+   "payouts": 4.8,
+   "accounts_lost": 1.1,
+   "p_neg_year": 3.5
+  },
+  "2020-23 +1tick": {
+   "per_month": 651,
+   "p10_month": 256,
+   "evals": 2.6,
+   "passes": 1.83,
+   "funded_busts": 0.5,
+   "payouts": 4.5,
+   "accounts_lost": 1.26,
+   "p_neg_year": 5.3
+  },
+  "2024-26": {
+   "per_month": 948,
+   "p10_month": 547,
+   "evals": 3.49,
+   "passes": 2.5,
+   "funded_busts": 0.82,
+   "payouts": 6.5,
+   "accounts_lost": 1.81,
+   "p_neg_year": 1.1
+  },
+  "2024-26 +1tick": {
+   "per_month": 903,
+   "p10_month": 424,
+   "evals": 3.58,
+   "passes": 2.45,
+   "funded_busts": 0.84,
+   "payouts": 6.2,
+   "accounts_lost": 1.98,
+   "p_neg_year": 1.9
+  }
+ },
+ "Lucid | UltraWR | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 680,
+   "p10_month": 282,
+   "evals": 2.29,
+   "passes": 1.73,
+   "funded_busts": 0.3,
+   "payouts": 4.7,
+   "accounts_lost": 0.86,
+   "p_neg_year": 3.8
+  },
+  "2020-23 +1tick": {
+   "per_month": 629,
+   "p10_month": 132,
+   "evals": 2.33,
+   "passes": 1.68,
+   "funded_busts": 0.34,
+   "payouts": 4.3,
+   "accounts_lost": 0.98,
+   "p_neg_year": 5.8
+  },
+  "2024-26": {
+   "per_month": 831,
+   "p10_month": 282,
+   "evals": 2.95,
+   "passes": 2.12,
+   "funded_busts": 0.53,
+   "payouts": 5.7,
+   "accounts_lost": 1.36,
+   "p_neg_year": 3.2
+  },
+  "2024-26 +1tick": {
+   "per_month": 779,
+   "p10_month": 274,
+   "evals": 3.01,
+   "passes": 2.12,
+   "funded_busts": 0.62,
+   "payouts": 5.4,
+   "accounts_lost": 1.52,
+   "p_neg_year": 4.0
+  }
+ },
+ "Lucid | UltraWR | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 653,
+   "p10_month": 274,
+   "evals": 2.21,
+   "passes": 1.66,
+   "funded_busts": 0.28,
+   "payouts": 4.5,
+   "accounts_lost": 0.82,
+   "p_neg_year": 4.2
+  },
+  "2020-23 +1tick": {
+   "per_month": 593,
+   "p10_month": 132,
+   "evals": 2.26,
+   "passes": 1.64,
+   "funded_busts": 0.35,
+   "payouts": 4.1,
+   "accounts_lost": 0.98,
+   "p_neg_year": 6.9
+  },
+  "2024-26": {
+   "per_month": 767,
+   "p10_month": 282,
+   "evals": 2.7,
+   "passes": 1.96,
+   "funded_busts": 0.41,
+   "payouts": 5.3,
+   "accounts_lost": 1.16,
+   "p_neg_year": 2.7
+  },
+  "2024-26 +1tick": {
+   "per_month": 716,
+   "p10_month": 264,
+   "evals": 2.76,
+   "passes": 1.95,
+   "funded_busts": 0.5,
+   "payouts": 4.9,
+   "accounts_lost": 1.31,
+   "p_neg_year": 4.1
+  }
+ },
+ "Lucid | WR70Plus | fixed": {
+  "2020-23": {
+   "per_month": 655,
+   "p10_month": 291,
+   "evals": 1.89,
+   "passes": 1.51,
+   "funded_busts": 0.14,
+   "payouts": 4.5,
+   "accounts_lost": 0.53,
+   "p_neg_year": 1.2
+  },
+  "2020-23 +1tick": {
+   "per_month": 610,
+   "p10_month": 282,
+   "evals": 1.88,
+   "passes": 1.47,
+   "funded_busts": 0.18,
+   "payouts": 4.2,
+   "accounts_lost": 0.59,
+   "p_neg_year": 3.1
+  },
+  "2024-26": {
+   "per_month": 696,
+   "p10_month": 265,
+   "evals": 3.17,
+   "passes": 2.19,
+   "funded_busts": 0.82,
+   "payouts": 4.8,
+   "accounts_lost": 1.81,
+   "p_neg_year": 3.5
+  },
+  "2024-26 +1tick": {
+   "per_month": 654,
+   "p10_month": 132,
+   "evals": 3.25,
+   "passes": 2.14,
+   "funded_busts": 0.86,
+   "payouts": 4.5,
+   "accounts_lost": 1.97,
+   "p_neg_year": 5.3
+  }
+ },
+ "Lucid | WR70Plus | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 598,
+   "p10_month": 253,
+   "evals": 1.81,
+   "passes": 1.44,
+   "funded_busts": 0.15,
+   "payouts": 4.1,
+   "accounts_lost": 0.53,
+   "p_neg_year": 3.6
+  },
+  "2020-23 +1tick": {
+   "per_month": 552,
+   "p10_month": 132,
+   "evals": 1.81,
+   "passes": 1.39,
+   "funded_busts": 0.19,
+   "payouts": 3.8,
+   "accounts_lost": 0.61,
+   "p_neg_year": 6.5
+  },
+  "2024-26": {
+   "per_month": 605,
+   "p10_month": 124,
+   "evals": 2.53,
+   "passes": 1.79,
+   "funded_busts": 0.47,
+   "payouts": 4.2,
+   "accounts_lost": 1.21,
+   "p_neg_year": 7.2
+  },
+  "2024-26 +1tick": {
+   "per_month": 560,
+   "p10_month": 106,
+   "evals": 2.61,
+   "passes": 1.72,
+   "funded_busts": 0.51,
+   "payouts": 3.9,
+   "accounts_lost": 1.39,
+   "p_neg_year": 9.0
+  }
+ },
+ "Lucid | WR70Plus | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 529,
+   "p10_month": 132,
+   "evals": 1.7,
+   "passes": 1.34,
+   "funded_busts": 0.15,
+   "payouts": 3.6,
+   "accounts_lost": 0.5,
+   "p_neg_year": 6.8
+  },
+  "2020-23 +1tick": {
+   "per_month": 478,
+   "p10_month": -9,
+   "evals": 1.68,
+   "passes": 1.3,
+   "funded_busts": 0.18,
+   "payouts": 3.3,
+   "accounts_lost": 0.56,
+   "p_neg_year": 10.4
+  },
+  "2024-26": {
+   "per_month": 545,
+   "p10_month": 124,
+   "evals": 2.18,
+   "passes": 1.51,
+   "funded_busts": 0.26,
+   "payouts": 3.8,
+   "accounts_lost": 0.93,
+   "p_neg_year": 7.9
+  },
+  "2024-26 +1tick": {
+   "per_month": 501,
+   "p10_month": -9,
+   "evals": 2.25,
+   "passes": 1.5,
+   "funded_busts": 0.32,
+   "payouts": 3.5,
+   "accounts_lost": 1.07,
+   "p_neg_year": 10.8
+  }
+ },
+ "Lucid | WR70R | fixed": {
+  "2020-23": {
+   "per_month": 617,
+   "p10_month": 282,
+   "evals": 1.82,
+   "passes": 1.45,
+   "funded_busts": 0.15,
+   "payouts": 4.2,
+   "accounts_lost": 0.52,
+   "p_neg_year": 2.2
+  },
+  "2020-23 +1tick": {
+   "per_month": 575,
+   "p10_month": 141,
+   "evals": 1.81,
+   "passes": 1.4,
+   "funded_busts": 0.18,
+   "payouts": 3.9,
+   "accounts_lost": 0.59,
+   "p_neg_year": 4.1
+  },
+  "2024-26": {
+   "per_month": 699,
+   "p10_month": 274,
+   "evals": 2.78,
+   "passes": 2.01,
+   "funded_busts": 0.61,
+   "payouts": 4.8,
+   "accounts_lost": 1.38,
+   "p_neg_year": 3.2
+  },
+  "2024-26 +1tick": {
+   "per_month": 655,
+   "p10_month": 265,
+   "evals": 2.85,
+   "passes": 2.0,
+   "funded_busts": 0.69,
+   "payouts": 4.5,
+   "accounts_lost": 1.54,
+   "p_neg_year": 4.6
+  }
+ },
+ "Lucid | WR70R | cap300 e1200 f1500": {
+  "2020-23": {
+   "per_month": 582,
+   "p10_month": 282,
+   "evals": 1.76,
+   "passes": 1.37,
+   "funded_busts": 0.13,
+   "payouts": 4.0,
+   "accounts_lost": 0.52,
+   "p_neg_year": 4.0
+  },
+  "2020-23 +1tick": {
+   "per_month": 532,
+   "p10_month": 132,
+   "evals": 1.72,
+   "passes": 1.31,
+   "funded_busts": 0.16,
+   "payouts": 3.6,
+   "accounts_lost": 0.56,
+   "p_neg_year": 6.4
+  },
+  "2024-26": {
+   "per_month": 602,
+   "p10_month": 132,
+   "evals": 2.35,
+   "passes": 1.7,
+   "funded_busts": 0.4,
+   "payouts": 4.1,
+   "accounts_lost": 1.05,
+   "p_neg_year": 6.3
+  },
+  "2024-26 +1tick": {
+   "per_month": 553,
+   "p10_month": 115,
+   "evals": 2.42,
+   "passes": 1.66,
+   "funded_busts": 0.43,
+   "payouts": 3.8,
+   "accounts_lost": 1.19,
+   "p_neg_year": 8.7
+  }
+ },
+ "Lucid | WR70R | cap300 e1200 f2000": {
+  "2020-23": {
+   "per_month": 529,
+   "p10_month": 141,
+   "evals": 1.65,
+   "passes": 1.29,
+   "funded_busts": 0.12,
+   "payouts": 3.6,
+   "accounts_lost": 0.47,
+   "p_neg_year": 6.3
+  },
+  "2020-23 +1tick": {
+   "per_month": 478,
+   "p10_month": 124,
+   "evals": 1.63,
+   "passes": 1.26,
+   "funded_busts": 0.15,
+   "payouts": 3.3,
+   "accounts_lost": 0.52,
+   "p_neg_year": 9.0
+  },
+  "2024-26": {
+   "per_month": 541,
+   "p10_month": 132,
+   "evals": 2.07,
+   "passes": 1.49,
+   "funded_busts": 0.24,
+   "payouts": 3.7,
+   "accounts_lost": 0.82,
+   "p_neg_year": 8.2
+  },
+  "2024-26 +1tick": {
+   "per_month": 493,
+   "p10_month": -9,
+   "evals": 2.09,
+   "passes": 1.47,
+   "funded_busts": 0.28,
+   "payouts": 3.4,
+   "accounts_lost": 0.91,
+   "p_neg_year": 11.1
+  }
+ }
+}

@@ -45,6 +45,7 @@ research/tmp/
 /research/data/xau_long_utc.pkl
 /research/mine/combo_paths.pkl
 /research/mine/daytype_trades.pkl
+/research/mine/hist_profiles_trades.pkl
 /research/mine/trades_db_old.pkl
 /research/mine/trades_goldlongnorm.pkl
 # <<< big originals
