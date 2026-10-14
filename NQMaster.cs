@@ -8,6 +8,12 @@
 //               another module open the same way), ON07, REV06, LON, VW13 wide, VOLB 2R, LATE15, night fades NF05 / LF06 / LF0430;
 //               ENG10 / LATEFH off since 2026-10-12. Real NQ futures 2020-23 / 2024-26: WR 66.9 / 65.7%, PF 1.47 / 1.50,
 //               Sharpe 3.38 / 3.65, ~4.7 trades/day, $1,700-2,300 per month per contract.
+//   UltraQ    : 2026-10-14 quality build = Ultra without ON07, LON, ICT and without the wide VW13 lot (VW13 only at >= 0.30 ATR).
+//               Real NQ 2020-23 / 2024-26: WR 70.2 / 68.3% (Ultra 66.9 / 65.7), PF 1.51 / 1.53 (1.47 / 1.50), lower max drawdown,
+//               ~3.9 trades/day, ~8% less $; win rate AND profit factor higher in all four periods incl. 2010-14 / 2015-19.
+//   CPI09     : (Ultra, UltraQ, WR70Plus) on US CPI days only: at 09:30 fade the 08:30 -> 09:29 move if >= 0.05 ATR, stop 0.35 ATR,
+//               0.5R, 60 min. 2010-14 / 2015-19 / 2020-23 / 2024-26 PF 1.58 / 1.13 / 1.94 / 2.62, WR ~78-81% since 2020; the same
+//               rule on ordinary days loses (research/mine/cpi_lab.py). ~12 trades a year.
 //   WR70Plus  : >= 70% win rate build: ORB60 0.75R, ORB90, MSEQ, MSEQS, CRT11, ICT x2, MOM11, REV06, VW13 wide, VOLB with the
 //               trend at 0.5R, LATE15 (+ night fades with NightOnWr70). WR 72.2 / 69.4%, PF 1.57 / 1.48, ~3.3 trades/day.
 //   Durable   : the 6 modules that held up on 16 years of real futures (2010-2026): ORB60, ORB90, MSEQS, CRT11, VOLB 2R, NF05.
@@ -38,7 +44,7 @@ using NinjaTrader.NinjaScript.DrawingTools;
 
 namespace NinjaTrader.NinjaScript.Strategies
 {
-	public enum NQMasterProfile { Ultra, WR70Plus, Durable, Custom }
+	public enum NQMasterProfile { Ultra, UltraQ, WR70Plus, Durable, Custom }
 	public enum NQMasterPropMode { Off, Eval, Funded }
 	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K }
 	public enum NQMasterSafeSet { Classic, Estable }
@@ -62,6 +68,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public bool PriceTarget;
 			public bool BaseOn; public bool FhCheck;
 			public bool Retry;
+			public bool CpiOnly;	// CPI09: only on US CPI release days
 			public int Anchor = -1; public double AnchorPx = double.NaN;	// Lookback -5: open of the bar at the anchor time (ET minutes)
 			public bool Parked, ParkLimit, ParkHit; public double ParkPx; public int ParkQty;	// entry cancelled for an opposite trade, re-placed when free
 			public Order SeenOrd, CancelOrd; public int SeenBar = -1, CancelBar = -1;	// stale-order watchdog (PurgeStaleEntries)
@@ -83,7 +90,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private TimeZoneInfo etZone;
 		private SimpleFont dashFont;
 		private bool badTimeframe;
-		private HashSet<int> fomc;
+		private HashSet<int> fomc, cpiDays; private bool cpiToday;
+		// US CPI release days (BLS schedule) for CPI09; add later years with the CpiDates parameter
+		private const string BuiltinCpi = "2024-01-11,2024-02-13,2024-03-12,2024-04-10,2024-05-15,2024-06-12,2024-07-11,2024-08-14,2024-09-11,2024-10-10,2024-11-13,2024-12-11," +
+			"2025-01-15,2025-02-12,2025-03-12,2025-04-10,2025-05-13,2025-06-11,2025-07-15,2025-08-12,2025-09-11,2025-10-24,2025-12-18," +
+			"2026-01-13,2026-02-13,2026-03-11,2026-04-10,2026-05-12,2026-06-10,2026-07-14,2026-08-12,2026-09-11,2026-10-14,2026-11-10,2026-12-10," +
+			"2027-01-13,2027-02-11,2027-03-10,2027-04-13,2027-05-12,2027-06-10,2027-07-14,2027-08-11,2027-09-14,2027-10-14,2027-11-10,2027-12-10";
 		// Tier-1 news (MyFundedFutures: CPI, Employment Report 08:30 ET, FOMC minutes 14:00 ET; FOMC days are skipped anyway).
 		// CPI / NFP from the BLS schedules (2024 - Dec 2027; 2027 schedule published 2026-10-09), minutes = decision + 21 days.
 		private const string BuiltinNews = "2024-01-03 14:00,2024-01-05 08:30,2024-01-11 08:30,2024-02-02 08:30,2024-02-13 08:30,2024-02-21 14:00,2024-03-08 08:30,2024-03-12 08:30,2024-04-05 08:30,2024-04-10 08:30,2024-04-10 14:00,2024-05-03 08:30,2024-05-15 08:30,2024-05-22 14:00,2024-06-07 08:30,2024-06-12 08:30,2024-07-03 14:00,2024-07-05 08:30,2024-07-11 08:30,2024-08-02 08:30,2024-08-14 08:30,2024-08-21 14:00,2024-09-06 08:30,2024-09-11 08:30,2024-10-04 08:30,2024-10-09 14:00,2024-10-10 08:30,2024-11-01 08:30,2024-11-13 08:30,2024-11-28 14:00,2024-12-06 08:30,2024-12-11 08:30,2025-01-08 14:00,2025-01-10 08:30,2025-01-15 08:30,2025-02-07 08:30,2025-02-12 08:30,2025-02-19 14:00,2025-03-07 08:30,2025-03-12 08:30,2025-04-04 08:30,2025-04-09 14:00,2025-04-10 08:30,2025-05-02 08:30,2025-05-13 08:30,2025-05-28 14:00,2025-06-06 08:30,2025-06-11 08:30,2025-07-03 08:30,2025-07-09 14:00,2025-07-15 08:30,2025-08-01 08:30,2025-08-12 08:30,2025-08-20 14:00,2025-09-05 08:30,2025-09-11 08:30,2025-10-03 08:30,2025-10-08 14:00,2025-10-24 08:30,2025-11-19 14:00,2025-11-20 08:30,2025-12-16 08:30,2025-12-18 08:30,2025-12-31 14:00,2026-01-09 08:30,2026-01-13 08:30,2026-02-11 08:30,2026-02-13 08:30,2026-02-18 14:00,2026-03-06 08:30,2026-03-11 08:30,2026-04-03 08:30,2026-04-08 14:00,2026-04-10 08:30,2026-05-08 08:30,2026-05-12 08:30,2026-05-20 14:00,2026-06-05 08:30,2026-06-10 08:30,2026-07-02 08:30,2026-07-08 14:00,2026-07-14 08:30,2026-08-07 08:30,2026-08-12 08:30,2026-08-19 14:00,2026-09-04 08:30,2026-09-11 08:30,2026-10-07 14:00,2026-10-14 08:30,2026-11-06 08:30,2026-11-10 08:30,2026-11-18 14:00,2026-12-04 08:30,2026-12-10 08:30,2026-12-30 14:00,2027-02-17 14:00,2027-04-07 14:00,2027-05-19 14:00,2027-06-30 14:00,2027-08-18 14:00,2027-10-06 14:00,2027-11-17 14:00,2027-12-29 14:00,2026-10-02 08:30,2027-01-08 08:30,2027-01-13 08:30,2027-02-05 08:30,2027-02-11 08:30,2027-03-05 08:30,2027-03-10 08:30,2027-04-02 08:30,2027-04-13 08:30,2027-05-07 08:30,2027-05-12 08:30,2027-06-04 08:30,2027-06-10 08:30,2027-07-02 08:30,2027-07-14 08:30,2027-08-06 08:30,2027-08-11 08:30,2027-09-03 08:30,2027-09-14 08:30,2027-10-08 08:30,2027-10-14 08:30,2027-11-05 08:30,2027-11-10 08:30,2027-12-03 08:30,2027-12-10 08:30";
@@ -288,7 +300,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseOrb = true; OrbRangeMin = 60; OrbTargetR = 0.6; OrbPullbackFilter = true; PullbackMaxRet = 0.44; StopCapAtr = 0.35;
 				UseMseq = true; UseCrt = true; UseMom11 = true; UseMom1130 = true; UseRsi2 = true; UseOrb90 = true; UseMseqShort = true; UseMom13 = true; UseMom1030 = true; UseOn07 = true; UseRev06 = true; UseLon = true; UseIct = true;
 				Contracts = 1; FlattenTime = 1556; SkipFomc = true;
-				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = false; UseLateFh = false; Vw13Wide = true; UseNf05 = true; UseLf0315 = false; UseLf06 = true; UseLf0430 = true; NightOnWr70 = false;
+				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = false; UseLateFh = false; Vw13Wide = true; UseNf05 = true; UseLf0315 = false; UseLf06 = true; UseLf0430 = true; NightOnWr70 = false; UseCpi09 = true; CpiDates = "";
 				FomcDates = "2024-01-31,2024-03-20,2024-05-01,2024-06-12,2024-07-31,2024-09-18,2024-11-07,2024-12-18,2025-01-29,2025-03-19,2025-05-07,2025-06-18,2025-07-30,2025-09-17,2025-10-29,2025-12-10,2026-01-28,2026-03-18,2026-04-29,2026-06-17,2026-07-29,2026-09-16,2026-10-28,2026-12-09";
 				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250; DailyLossLimit = 0; MinAtrPoints = 150;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3; EvalLateMinCushion = 0;
@@ -322,6 +334,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 					DateTime d;
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
 					else Print("NQMaster | FOMC dates: cannot read '" + raw.Trim() + "' (format yyyy-MM-dd)");
+				}
+				cpiDays = new HashSet<int>();
+				foreach (string raw in (BuiltinCpi + "," + (CpiDates ?? "")).Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					DateTime d;
+					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) cpiDays.Add(d.Year * 10000 + d.Month * 100 + d.Day);
+					else Print("NQMaster | CPI dates: cannot read '" + raw.Trim() + "' (format yyyy-MM-dd)");
 				}
 				ApplyPreset();
 				newsEt = new List<DateTime>();
@@ -368,7 +387,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 		private void BuildModules()
 		{
-			bool w7 = Profile == NQMasterProfile.WR70Plus, ul = Profile == NQMasterProfile.Ultra, du = Profile == NQMasterProfile.Durable, custom = Profile == NQMasterProfile.Custom;
+			bool w7 = Profile == NQMasterProfile.WR70Plus, uq = Profile == NQMasterProfile.UltraQ, ul = Profile == NQMasterProfile.Ultra || uq, du = Profile == NQMasterProfile.Durable, custom = Profile == NQMasterProfile.Custom;
 			profUltra = ul;
 			mods = new List<Mod>(); timeMods = new List<Mod>();
 			orb = new Mod(); orb.Sig = "ORB60"; orb.Kind = 0;
@@ -382,21 +401,23 @@ namespace NinjaTrader.NinjaScript.Strategies
 			mseq = NewMod("MSEQ", (custom ? UseMseq : (ul || w7) && UseMseq), 0.5); mseq.PriceTarget = true;
 			mseqs = NewMod("MSEQS", (custom ? UseMseqShort : (ul || w7 || du) && UseMseqShort), 0.75); mseqs.PriceTarget = true;
 			crt = NewMod("CRT11", UseCrt, 2.0); crt.PriceTarget = true;
-			lon = NewMod("LON", (custom ? UseLon : ul && UseLon), 2.0); lon.PriceTarget = true;
-			ict = NewMod("ICT", (custom ? UseIct : (ul || w7) && UseIct), 1.0); ict.PriceTarget = true;
+			lon = NewMod("LON", (custom ? UseLon : ul && !uq && UseLon), 2.0); lon.PriceTarget = true;
+			ict = NewMod("ICT", (custom ? UseIct : ((ul && !uq) || w7) && UseIct), 1.0); ict.PriceTarget = true;
 			AddTime("MOM11", (custom ? UseMom11 : (ul || w7) && UseMom11), 1100, -2, false, 0.25, 0.3, 0, false, true);
 			AddTime("MOM13", (custom ? UseMom13 : ul && UseMom13), 1300, -2, false, 0.20, 1.0, 240, true, false);
 			AddTime("MOM1030", (custom ? UseMom1030 : ul && UseMom1030), 1030, -2, false, 0.20, 0.3, 60, true, false);
-			AddTime("ON07", (custom ? UseOn07 : ul && UseOn07), 700, 30, false, 0.20, 1.0, 60, true, false);
+			AddTime("ON07", (custom ? UseOn07 : ul && !uq && UseOn07), 700, 30, false, 0.20, 1.0, 60, true, false);
 			AddTime("REV06", (custom ? UseRev06 : (ul || w7) && UseRev06), 600, 30, true, 0.20, 0.3, 240, true, false);
 			AddTime("MOM1130", custom && UseMom1130, 1130, -2, false, 0.25, 0.3, 0, false, true);
-			Mod vw13 = AddTime("VW13", (custom ? UseVw13 : (ul || w7) && UseVw13), 1301, -3, false, 0.15, 0.5, 120, true, false); bool vwWide = w7 || ((ul || custom) && Vw13Wide); vw13.MinDist = vwWide ? 0.15 : 0.30; vw13.DoubleDist = vwWide ? 0.30 : 0;
+			Mod vw13 = AddTime("VW13", (custom ? UseVw13 : (ul || w7) && UseVw13), 1301, -3, false, 0.15, 0.5, 120, true, false); bool vwWide = w7 || ((ul || custom) && !uq && Vw13Wide); vw13.MinDist = vwWide ? 0.15 : 0.30; vw13.DoubleDist = vwWide ? 0.30 : 0;
 			Mod late15 = AddTime("LATE15", (custom ? UseLate15 : (ul || w7) && UseLate15), 1500, -4, false, 0.30, 0.5, 0, true, false); late15.MinDist = 0.5;
 			Mod latefh = AddTime("LATEFH", (custom ? UseLateFh : ul && UseLateFh), 1500, -4, false, 0.20, 0.5, 0, false, false); latefh.MinDist = 0.25; latefh.FhCheck = true;
 			Mod nf05 = AddTime("NF05", (custom ? UseNf05 : (ul || du || (w7 && NightOnWr70)) && UseNf05), 500, -5, true, 0.20, 2.0, 240, false, false); nf05.MinDist = 0.35; nf05.Anchor = 20 * 60;
 			Mod lf0315 = AddTime("LF0315", (custom ? UseLf0315 : ul && UseLf0315), 315, -5, true, 0.20, 2.0, 600, false, false); lf0315.MinDist = 0.10; lf0315.Anchor = 3 * 60;
 			Mod lf06 = AddTime("LF06", (custom ? UseLf06 : (ul || (w7 && NightOnWr70)) && UseLf06), 600, -5, true, 0.20, 0.5, 240, false, false); lf06.MinDist = 0.20; lf06.Anchor = 4 * 60;
 			Mod lf0430 = AddTime("LF0430", (custom ? UseLf0430 : (ul || (w7 && NightOnWr70)) && UseLf0430), 430, -5, true, 0.35, 0.5, 240, true, false); lf0430.MinDist = 0.10; lf0430.Anchor = 4 * 60;
+			// research/mine/cpi_lab.py (2026-10-14): CPI days, fade the 08:30 release move at the 09:30 open (16 years, 4 periods PF > 1)
+			Mod cpi09 = AddTime("CPI09", (custom ? UseCpi09 : (ul || w7) && UseCpi09), 930, -5, true, 0.35, 0.5, 60, false, false); cpi09.MinDist = 0.05; cpi09.Anchor = 8 * 60 + 30; cpi09.CpiOnly = true;
 			eng10 = NewMod("ENG10", (custom ? UseEng10 : ul && UseEng10), 0.5); eng10.PriceTarget = true; eng10.MaxHold = 400;
 			volb = NewMod("VOLB", (custom ? UseVolBreak : (ul || w7 || du) && UseVolBreak), w7 ? 0.5 : 2.0); volb.PriceTarget = true; volb.MaxHold = 400; volbTrendOnly = w7; volbTrendBase = volbTrendOnly; volbRBase = volb.R;
 			rsi = NewMod("RSI2", custom && UseRsi2, 0.3); rsi.StopAtr = 0.15; rsi.MaxHold = 120;
@@ -443,6 +464,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				DateTime tradeDay = etOpen.Hour >= 18 ? etOpen.Date.AddDays(1) : etOpen.Date;
 				prevSessDay = curSessDay; curSessDay = tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day;
 				fomcToday = SkipFomc && fomc.Contains(tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day);
+				cpiToday = cpiDays != null && cpiDays.Contains(tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day);
 				EvalSessionStart(tradeDay);
 				edgeDayQty = Qty(); edgeDayTradable = !fomcToday; edgeDayDate = tradeDay;
 				NewSession();
@@ -733,6 +755,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			lastDeferred = false;
 			if (atrCount < AtrMin || double.IsNaN(atrDaily) || m.InTrade) return;
+			if (m.CpiOnly && !cpiToday) return;
 			double reference = double.NaN;
 			if (m.Lookback == -1) reference = sessOpen;
 			else if (m.Lookback == -2) reference = rthOpenPx;
@@ -1127,6 +1150,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				case NQMasterProfile.WR70Plus: k = 0.0577; h = 12.18; break;		// research/mine/monitor_recal.py (2026-10-12, real NQ 2020-26)
 				case NQMasterProfile.Durable: k = 0.0458; h = 10.71; break;
+				case NQMasterProfile.UltraQ: k = 0.0696; h = 20.87; break;		// research/mine/ultraq_build.py (2026-10-14)
 				default: k = 0.0758; h = 18.57; break;			// Ultra (Custom uses the Ultra calibration)
 			}
 			edgeK = EdgeK > 0 ? EdgeK : k; edgeH = EdgeH > 0 ? EdgeH : h;
@@ -1706,6 +1730,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "LF06 on (06:00 fade of the move since 04:00; Ultra)", Order = 24, GroupName = "01. Module switches (any profile)")] public bool UseLf06 { get; set; }
 		[NinjaScriptProperty][Display(Name = "LF0430 on (04:30 fade with the trend of the move since 04:00; Ultra)", Order = 25, GroupName = "01. Module switches (any profile)")] public bool UseLf0430 { get; set; }
 		[NinjaScriptProperty][Display(Name = "Night modules also in WR70Plus (NF05 / LF06 / LF0430)", Order = 26, GroupName = "01. Module switches (any profile)")] public bool NightOnWr70 { get; set; }
+		[NinjaScriptProperty][Display(Name = "CPI09 on (CPI days: 09:30 fade of the 08:30 release move; Ultra / UltraQ / WR70Plus)", Order = 27, GroupName = "01. Module switches (any profile)")] public bool UseCpi09 { get; set; }
+		[NinjaScriptProperty][Display(Name = "Extra CPI release dates (yyyy-MM-dd list; built in 2024-2027)", Order = 28, GroupName = "01. Module switches (any profile)")] public string CpiDates { get; set; }
 		[NinjaScriptProperty][Range(-5.0, 5.0)][Display(Name = "Pullback max prior-day move (x ATRd)", Order = 20, GroupName = "02. Edge")] public double PullbackMaxRet { get; set; }
 		[NinjaScriptProperty][Range(0.05, 1.0)][Display(Name = "ORB stop cap (x ATRd)", Order = 21, GroupName = "02. Edge")] public double StopCapAtr { get; set; }
 		[NinjaScriptProperty][Range(-1.0, 2.0)][Display(Name = "ORB: breakout must clear the prior close by x ATR (0.10; -1 = off)", Order = 22, GroupName = "02. Edge")] public double OrbPriorCloseAtr { get; set; }

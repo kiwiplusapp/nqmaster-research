@@ -1,5 +1,57 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★ 2026-10-14: higher win rate AND profit factor — profile UltraQ + CPI09 (English) — READ THIS FIRST
+
+Scripts: `research/news_hist.py` (CPI calendar 2009-2019 from the BLS archive; 2020-26 was already in `news.py`), `research/mine/cpi_lab.py` (CPI strategies), `research/mine/ultra_q2.py` (levers screened on 4 periods), `research/mine/ultraq_build.py` (UltraQ trades + edge-monitor calibration), `research/mine/patch_cpi09.py` (code). Backup `NQMaster_backup_pre_cpi09.cs`.
+
+Data: real Databento NQ 1-minute futures, 2010-06 to 2026-10. Four periods: 2010-14 and 2015-19 cost-normalised (cost 0.345% of ATR); 2020-23 and 2024-26 real $ per MNQ ($1.90 + 1 tick per side).
+
+**1. CPI method (`cpi_lab.py`, 4,968 settings, CPI days only, 211 releases).**
+- Most CPI rules lose. The median PF is 0.81-0.92 in every period, and choosing on 2020-23 did not predict 2024-26.
+- One family holds in all four periods: **fade the CPI move at the 09:30 open**. Measure the move from the 08:30 bar open to 09:29; if it is at least 0.05 ATR, trade against it at the 09:30 open. Stop 0.35 ATR, target 0.5R, exit after 60 minutes.
+
+| CPI09 | 2010-14 | 2015-19 | 2020-23 | 2024-26 |
+|---|---|---|---|---|
+| Trades | 42 | 45 | 41 | 27 |
+| PF | 1.58 | 1.13 | 1.94 | 2.62 |
+| Win rate | — | — | 78% | 81.5% |
+
+- With 4 ticks of slippage per side, the 2024-26 PF is still 2.55.
+- The same rule on ordinary days loses (PF 0.82-0.93), so the effect is specific to CPI days. On NFP days it does not hold (2015-19 PF 0.6-0.9).
+- The neighbouring settings agree: entering 30 or 60 minutes after the release with a minimum move of 0-0.2 ATR all stay above PF 1.
+- Entering right after the release (08:31-08:45) works in 2024-26 but **loses in 2020-23**, because CPI moves trended in 2021-23. So no early entry is used.
+- **Caveats:**
+  - It trades only about 12 times a year, so it adds roughly $25-50 per month.
+  - The samples are small: 18 of 4,968 settings passed, about what chance alone would give. The case for it is the CPI-only control and the stable neighbouring settings.
+- It is now module **CPI09**, on by default in Ultra, UltraQ and WR70Plus.
+- Effect on WR70Plus: win rate +0.03..0.14 and PF +0.005..0.01 in 3 of 4 periods; in 2015-19 the win rate is -0.03 and PF +0.001, i.e. flat.
+
+**2. Ultra levers (`ultra_q2.py`, list fixed before looking).**
+- Tested: drop REV06 / ON07 / the wide VW13 lot / MOM11 / LON / ICT, skip CPI mornings, skip CPI days, skip NFP mornings, and add CPI09.
+- No single change raises both win rate and PF in all four periods. The high-win-rate modules (REV06, MOM11) have low PF, and the high-PF modules (LON, ICT, ON07) have low win rates.
+- The combination that does raise both everywhere is **UltraQ** = Ultra without ON07, LON, ICT and without the wide VW13 lot, plus CPI09:
+
+| | 2010-14 | 2015-19 | 2020-23 | 2024-26 |
+|---|---|---|---|---|
+| WR Ultra → UltraQ | 59.7 → 63.5 | 61.5 → 64.6 | 66.9 → 70.2 | 65.7 → 68.3 |
+| PF Ultra → UltraQ | 1.023 → 1.068 | 1.133 → 1.142 | 1.470 → 1.510 | 1.499 → 1.531 |
+| $ per month (real) | | | 1,610 → 1,478 | 2,301 → 2,103 |
+| Max drawdown (real) | | | 3,470 → 3,390 | 4,570 → 3,985 |
+
+- PF is equal or higher in every year 2020-26: 1.41, 1.52, 1.77, 1.29, 1.40, 1.52, 1.68.
+- The win rate is +2-4 points every year.
+- About 3.9 trades a day.
+- Sharpe is about equal: +0.38 / -0.02 / -0.04 / -0.06 versus Ultra.
+- **The cost: about 8% less money.** For prop lifecycle income, Ultra stays slightly ahead.
+- The changes were picked after seeing all four periods (10 combinations compared). Expect part of the gain to shrink live.
+
+**How to use:**
+- Profile **UltraQ** (new) with Contracts 1. CPI09 is on automatically (UseCpi09).
+- The CPI dates for 2024-2027 are built in. Add later years in "Extra CPI release dates".
+- Edge monitor for UltraQ: k 0.0696, h 20.87.
+- To validate in NinjaTrader, export the UltraQ run's trades and run `python nt_compare.py <trades.csv> --set ultra_q`.
+- Not compiled in NinjaTrader yet; the stub type-check passes. **Press F5 on the PC.**
+
 ## ★★★★★ 2026-10-13 (night): ONE eval, no second purchase, >= 70% pass (English) — READ THIS FIRST
 
 Scripts: `research/mine/single70.py` (wide grid of 22,000 settings; its Bulenox rows wrongly allowed running without the mandatory DLL, and its "robust" view mixed periods, so do not use it for decisions) and **`research/mine/single70b.py`** (the clean protocol) -> `single70b.json`. Each setting is chosen on 2020-23 starts and checked on 2024-26 starts. It runs on real Databento NQ futures, at 1 contract, with $1.90 + 1 tick per side. Each start is a single attempt with no restarts. "Within N days" counts listed trading days.
