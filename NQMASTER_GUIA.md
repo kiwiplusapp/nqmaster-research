@@ -1,5 +1,36 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★ 2026-10-14 (later): 16-year robustness table + yearly module review (English)
+
+Script: `research/mine/robust16.py` -> `robust16.json`. Years 2013-19 are cost-normalised (cost 0.345% of ATR per trade); 2020-26 are real $ per MNQ, 1 contract.
+
+| Year | Ultra PF / WR | UltraQ PF / WR | Durable PF / WR | Ultra $ | UltraQ $ | Durable $ |
+|---|---|---|---|---|---|---|
+| 2013 | 0.89 / 59 | 0.95 / 63 | 0.99 / 56 | | | |
+| 2014 | 1.15 / 63 | 1.19 / 66 | 1.54 / 62 | | | |
+| 2015 | 0.95 / 59 | 0.99 / 62 | 1.03 / 55 | | | |
+| 2016 | 1.25 / 64 | 1.28 / 67 | 1.29 / 58 | | | |
+| 2017 | 1.18 / 62 | 1.14 / 64 | 1.26 / 59 | | | |
+| 2018 | 1.21 / 63 | 1.23 / 66 | 1.46 / 61 | | | |
+| 2019 | 1.10 / 60 | 1.08 / 64 | 1.34 / 62 | | | |
+| 2020 | 1.41 / 67 | 1.41 / 69 | 1.46 / 60 | 15,551 | 13,632 | 8,099 |
+| 2021 | 1.42 / 66 | 1.52 / 71 | 1.49 / 63 | 13,933 | 14,110 | 7,432 |
+| 2022 | 1.72 / 70 | 1.77 / 73 | 1.94 / 68 | 37,400 | 32,670 | 21,219 |
+| 2023 | 1.27 / 64 | 1.29 / 67 | 1.41 / 64 | 11,693 | 10,552 | 6,923 |
+| 2024 | 1.40 / 64 | 1.40 / 67 | 1.52 / 62 | 19,190 | 16,740 | 11,148 |
+| 2025 | 1.51 / 68 | 1.52 / 70 | 1.68 / 62 | 27,731 | 24,145 | 16,679 |
+| 2026 to Oct 8 | 1.61 / 66 | 1.68 / 68 | 2.12 / 62 | 30,569 | 28,514 | 20,906 |
+
+- Durable's six modules were chosen with 2010-26 in view, so its old years are not out of sample.
+- 2013 and 2015 were losing years for Ultra and UltraQ: the edge is mostly a post-2020 regime.
+
+**Yearly module review (new rule, tested walk-forward):**
+- Each January, switch off any module whose last-5-year cost-normalised PF is ≤ 1.05.
+- The rule uses only past data. From 2013 to 2026 it gave 13 of 14 positive years, and in 2013-19 it switched off the modules that later failed.
+- In 2020-21 it switched the newly working modules back on late, which cost about $18k versus Ultra in 2020-23. In 2024-26 it was equal to Ultra.
+- **Decision for January 2027: switch REV06 off** (UseRev06 = false). REV06's PF is 1.01 on 2024-26 research and 1.03 in the NinjaTrader run.
+- Re-run `python robust16.py` every January for the next year's list.
+
 ## ★★★★★★ 2026-10-14: higher win rate AND profit factor — profile UltraQ + CPI09 (English) — READ THIS FIRST
 
 Scripts: `research/news_hist.py` (CPI calendar 2009-2019 from the BLS archive; 2020-26 was already in `news.py`), `research/mine/cpi_lab.py` (CPI strategies), `research/mine/ultra_q2.py` (levers screened on 4 periods), `research/mine/ultraq_build.py` (UltraQ trades + edge-monitor calibration), `research/mine/patch_cpi09.py` (code). Backup `NQMaster_backup_pre_cpi09.cs`.
