@@ -1,8 +1,11 @@
 import numpy as np, pandas as pd
 def load_nt(path):
-    t = pd.read_csv(path, sep=";", dtype=str).dropna(subset=["Trade number"])
-    # numbers: '1.234,56 $' or '-$1234,56' (both exports seen); times: 24 h or 12 h with 'a m' / 'p m' (Spanish Windows locale)
-    num = lambda s: s.str.replace("$", "", regex=False).str.strip().str.replace(".", "", regex=False).str.replace(",", ".", regex=False).astype(float)
+    with open(path, encoding="utf-8-sig") as f: head = f.readline()
+    t = pd.read_csv(path, sep=";" if head.count(";") > head.count(",") else ",", dtype=str).dropna(subset=["Trade number"])
+    # numbers: '1.234,56 $', '-$1234,56' or '-$1234.56' / '$1,234.56' (comma-separated export); times: 24 h or 12 h with 'a m' / 'p m'
+    dot = t["Profit"].str.replace("$", "", regex=False).str.strip().str.contains(r"\.\d{2}$", regex=True).all()
+    if dot: num = lambda s: s.str.replace("$", "", regex=False).str.strip().str.replace(",", "", regex=False).astype(float)
+    else: num = lambda s: s.str.replace("$", "", regex=False).str.strip().str.replace(".", "", regex=False).str.replace(",", ".", regex=False).astype(float)
     t["pnl"] = num(t["Profit"]); t["qty"] = t["Qty"].astype(int)
     def tm(s):
         s = s.str.replace("a m", "AM", regex=False).str.replace("p m", "PM", regex=False).str.replace("a. m.", "AM", regex=False).str.replace("p. m.", "PM", regex=False)
