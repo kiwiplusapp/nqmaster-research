@@ -1,5 +1,45 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★★ 2026-10-16: auditoría completa (en español)
+
+Informe: `Conocimiento/Auditoria 16-oct-2026.md`. Operación diaria: `RUNBOOK_OPERACION.md` (manda sobre esta guía si se contradicen).
+
+Cambios en `NQMaster.cs` (stub OK, **falta F5**). Backups: `NQMaster_backup_pre_ops16.cs` y `NQMaster_backup_pre_review16.cs`.
+
+- **Monitor de borde recalibrado** para los ×4 de MOM1030/CPI09. Con los valores viejos daba una falsa alarma el 2024-03-18.
+
+  | Perfil | k | h | aviso |
+  |---|---|---|---|
+  | Ultra | 0,085 | 24,44 | 9,12 |
+  | UltraQ | 0,0773 | 26,08 | 9,04 |
+  | WR70Plus | 0,0634 | 12,07 | 6,86 |
+  | Durable | sin cambios | sin cambios | 6,98 |
+
+  - El nuevo nivel de **aviso** solo alerta.
+  - El estado del monitor se guarda en `nqmaster_edge_<cuenta>.txt` y sobrevive reinicios.
+- **Preset Mffu50K, fondeada:** sube a 2 contratos desde un cushion de $4.000 (`FundedStepUpCushion` 4000) y retira por encima de $6.100 (`FundedPayoutAt` 6600). Base: `c4_cushion.py` y `final_dist16.py`.
+- **Grupo 10, nuevas propiedades:**
+  - `InactivityAlarm`: avisa si un módulo no opera más de 1,5× su máximo histórico, o si pasan 12 días sin shorts o sin longs.
+  - `CrossAccountGuard` y `HedgeGroup`: no abren NQ opuesto a otra cuenta de la misma PC (prohibición de hedging en Lucid y MFFU).
+- **Arreglos de la revisión de código** (`research/mine/audit_code_2026-10-16.md`):
+  - F1: el risk cap mide MOM1030/CPI09 por lote.
+  - F2: el objetivo de evaluación ya no corta las fondeadas.
+  - F3: estado del monitor persistido.
+  - F5: el ×8 de evaluación es el total de lotes.
+  - F6: aviso cuando la tabla de fallback se queda sin años.
+  - F8: el informe de salud no llama a Log al terminar.
+  - F9: los días de roll o pausa no cuentan en el monitor.
+- **Log de tamaño en cada entrada:** muestra base → pedido → enviado.
+
+Herramientas:
+
+- `research/mine/parity_check.py`: compuerta de paridad con NinjaTrader; correr antes de cada cambio de código.
+- `research/mine/impl_gap.py`: brecha de implementación en vivo.
+- `tools/check_guards.py`: guardas de importación.
+- `tools/nt8_stub/check.sh`: verificación de sintaxis.
+
+Descartado: risk parity/HRP, apagar ICT/REV06/ON07 y apagar módulos redundantes (`Conocimiento/Descartado/Auditoria 16-oct ...`).
+
 ## ★★★★★★★★★★ 2026-10-15 (night): the operating system, as one design (English)
 
 Playbook page: `research/mine/os_playbook.html` (published as the "NQMaster Operating System" artifact). Research: `research/mine/os_adapt.py` -> `os_adapt.json`. Patches: `patch_fallback.py`, plus a fix to the Mffu50K preset (below).
