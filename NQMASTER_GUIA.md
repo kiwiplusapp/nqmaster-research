@@ -1,5 +1,60 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★ 2026-10-15 (later): "big size when an 80% strategy fires, to pass the eval fast" + update (English)
+
+Scripts: `research/mine/sniper_eval.py`, `sniper_uniform.py`, `sniper_life.py` (-> `.json` / `.csv`). Code patches: `patch_evalhw.py`, `patch_report.py`.
+
+Setup of every test:
+- Data: real Databento NQ minute paths 2020-26, Ultra after the 10-12 overhaul + CPI09.
+- Costs: +1 tick per side; firm rules as `month80.py`; daily profit stop 0.9 × consistency × target.
+- Choose on starts 2020-03..2023-10 (T1), check on starts 2024-26 (T2). "Pass ≤ 1 month" = within 20 listed days (about 22 trading days).
+
+**1. The idea as asked: any module that won ≥ 80% over the past year → big size.**
+- Walk-forward flag: the module's own trades of the previous 365 days, at least 20 of them, with win rate ≥ 80%. Mostly MOM11, REV06 and MOM1030, about 4.8 trades per week.
+- Those trades win 79.6% but average **+$46 per win vs −$132 per loss**, PF 1.34. That is lower than the full system's PF (~1.5).
+- One loss at 10 contracts is about −$1,300, which is most of a 50K trailing drawdown.
+- Lucid Pro 50K, 1 contract base, sniper trades at 8 contracts: single-eval pass ≤ 1 month 38/39% (T1/T2), but **busts 57/42%**.
+- Thresholds of 75%, 85% and a 2-year window behave the same. Sniper-only (no other trades): worse.
+- Compared with simply trading 2-4 contracts on everything, it is worse: Lucid Pro 50K at 2c passes 47/47% with 46/49% busts.
+- **Verdict: not a good idea.** A high win rate with small targets does not mean a big edge. Size there adds variance, not edge.
+
+**2. What does work: the two fixed ~80% modules (MOM1030, CPI09) at ×8 during the eval only.** 1 contract base, single eval.
+
+| 50K eval, 1 contract | MOM1030/CPI09 ×1 | ×4 (default) | **×8** |
+|---|---|---|---|
+| Lucid Pro 50K, pass ≤ 1 month T1 / T2 | 24.6 / 35.1% | 27.7 / 41.3% | **33.5 / 46.4%** |
+| — busts T1 / T2 | 18 / 24% | 19 / 23% | 27 / 24% |
+| — 35% less edge, pass ≤ 1 month | 19.3 / 21.4% | 21.3 / 26.5% | **24.7 / 33.1%** |
+| Lucid Flex 50K, pass ≤ 1 month | 24.3 / 34.8% | 27.3 / 40.3% | **33.6 / 47.8%** |
+| MFFU Rapid EOD 50K, pass ≤ 1 month | 20.0 / 26.5% | 22.4 / 33.4% | **28.5 / 40.9%** |
+| Peak open micros | 10 | 10 | 17 |
+
+- **Lifecycle per 50K seat** (eval with restarts → funded → payouts), $ per month T1 / T2, 35% less edge in brackets:
+
+  | Seat | ×1 / ×1 | ×4 / ×4 (today) | **eval ×8 / funded ×4** | ×8 / ×8 |
+  |---|---|---|---|---|
+  | MFFU | 1,064 / 1,583 (502 / 768) | 1,324 / 1,865 (708 / 1,008) | **1,351 / 1,903 (852 / 1,107)** | 1,602 / 2,168 |
+  | Lucid Flex | 875 / 1,066 (448 / 644) | 939 / 1,230 (563 / 663) | **980 / 1,322 (656 / 686)** | 1,073 / 1,380 |
+
+  - Accounts lost per year: about the same for eval ×8 / funded ×4 as for ×4/×4.
+  - ×8 in the funded account roughly doubles funded busts (MFFU 1.2 vs 0.3-0.4 a year), so it stays eval-only.
+- Whole portfolio at ×8: PF still rises, but Sharpe peaks at ×4-×6 and the drawdown grows (2020-23: $6.2k vs $4.6k). Outside evals ×4 stays the setting.
+- 25K accounts ($1,000 drawdown): ×8 is too big (Lucid Pro 25K, 2020-23 pass 45 vs 53%). Keep the 25K presets (2 contracts, ×4).
+- Fastest single eval is still more contracts on everything: Lucid Pro 50K 3c passes about 44% within a month and about 38-43% within 10 days.
+
+**3. Implemented in NQMaster (stub compile OK, NOT compiled in NinjaTrader: F5).**
+- `EvalHighWrMultiplier` (group 07, 0-8, default 0 = normal ×4). In PropMode Eval it replaces the MOM1030/CPI09 multiplier.
+  - **Presets Lucid50K and Mffu50K set it to 8** in Eval; the preset printout shows it.
+  - Funded accounts keep ×4; the SAFE gear (noBoost) still removes it.
+  - Backup: `NQMaster_backup_pre_evalhw.cs`.
+- `ModuleHealthReport` (group 10, default on). The Output window and log file list per module: trades, win rate, PF and net, for the whole run and the last 365 days.
+  - It marks modules at ≥ 80% last year and modules losing last year (review).
+  - It prints when the strategy goes live (loaded history) and at the end of a backtest.
+  - It is for the yearly review, not for sizing.
+- `DisableModules` (group 10, comma list, any profile). Switches modules off by name, e.g. `REV06`, which the walk-forward yearly review (`robust16.py`) flags for 2027. Backup: `NQMaster_backup_pre_report.cs`.
+
+**Settings for a 50K eval now:** Profile Ultra, Contracts 1, PropMode Eval, PropPreset Lucid50K or Mffu50K (sets ×8). Funded: same preset with PropMode Funded (×4).
+
 ## ★★★★★★★★ 2026-10-15: "80%+ setups at 4 contracts" (English)
 
 Scripts: `research/mine/wr80_lab.py` -> `wr80_lab.json` / `wr80_lab.csv`, and `research/mine/size_q.py`.

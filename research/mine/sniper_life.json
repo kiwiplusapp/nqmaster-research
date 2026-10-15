@@ -1,0 +1,642 @@
+{
+ "MFFU 50K | eval x1 funded x1 | edge-0%": {
+  "T1": {
+   "per_month": 1064,
+   "p10_month": 347,
+   "accounts_lost": 0.14,
+   "funded_busts": 0.04,
+   "neg_year_pct": 4.3
+  },
+  "T2": {
+   "per_month": 1583,
+   "p10_month": 926,
+   "accounts_lost": 0.42,
+   "funded_busts": 0.07,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x1 funded x1 | edge-0%": {
+  "T1": {
+   "per_month": 875,
+   "p10_month": 426,
+   "accounts_lost": 0.86,
+   "funded_busts": 0.23,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1066,
+   "p10_month": 714,
+   "accounts_lost": 1.69,
+   "funded_busts": 0.75,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x1 funded x1 | edge-35%": {
+  "T1": {
+   "per_month": 502,
+   "p10_month": -52,
+   "accounts_lost": 1.62,
+   "funded_busts": 0.76,
+   "neg_year_pct": 31.7
+  },
+  "T2": {
+   "per_month": 768,
+   "p10_month": 66,
+   "accounts_lost": 1.51,
+   "funded_busts": 0.36,
+   "neg_year_pct": 3.4
+  }
+ },
+ "Lucid Flex 50K | eval x1 funded x1 | edge-35%": {
+  "T1": {
+   "per_month": 448,
+   "p10_month": -51,
+   "accounts_lost": 2.61,
+   "funded_busts": 1.32,
+   "neg_year_pct": 19.4
+  },
+  "T2": {
+   "per_month": 644,
+   "p10_month": 239,
+   "accounts_lost": 2.62,
+   "funded_busts": 0.57,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x4 funded x4 | edge-0%": {
+  "T1": {
+   "per_month": 1324,
+   "p10_month": 419,
+   "accounts_lost": 0.2,
+   "funded_busts": 0.06,
+   "neg_year_pct": 2.9
+  },
+  "T2": {
+   "per_month": 1865,
+   "p10_month": 1152,
+   "accounts_lost": 0.36,
+   "funded_busts": 0.07,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x4 funded x4 | edge-0%": {
+  "T1": {
+   "per_month": 939,
+   "p10_month": 426,
+   "accounts_lost": 1.21,
+   "funded_busts": 0.4,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1230,
+   "p10_month": 824,
+   "accounts_lost": 1.39,
+   "funded_busts": 0.63,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x4 funded x4 | edge-35%": {
+  "T1": {
+   "per_month": 708,
+   "p10_month": -52,
+   "accounts_lost": 2.07,
+   "funded_busts": 1.03,
+   "neg_year_pct": 26.6
+  },
+  "T2": {
+   "per_month": 1008,
+   "p10_month": 383,
+   "accounts_lost": 1.11,
+   "funded_busts": 0.56,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x4 funded x4 | edge-35%": {
+  "T1": {
+   "per_month": 563,
+   "p10_month": -49,
+   "accounts_lost": 2.43,
+   "funded_busts": 0.96,
+   "neg_year_pct": 22.3
+  },
+  "T2": {
+   "per_month": 663,
+   "p10_month": 551,
+   "accounts_lost": 3.49,
+   "funded_busts": 1.73,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x4 funded x1 | edge-0%": {
+  "T1": {
+   "per_month": 1111,
+   "p10_month": 374,
+   "accounts_lost": 0.15,
+   "funded_busts": 0.02,
+   "neg_year_pct": 1.4
+  },
+  "T2": {
+   "per_month": 1618,
+   "p10_month": 926,
+   "accounts_lost": 0.37,
+   "funded_busts": 0.08,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x4 funded x1 | edge-0%": {
+  "T1": {
+   "per_month": 896,
+   "p10_month": 426,
+   "accounts_lost": 0.98,
+   "funded_busts": 0.21,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1148,
+   "p10_month": 851,
+   "accounts_lost": 1.7,
+   "funded_busts": 0.83,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x4 funded x1 | edge-35%": {
+  "T1": {
+   "per_month": 532,
+   "p10_month": -52,
+   "accounts_lost": 1.61,
+   "funded_busts": 0.71,
+   "neg_year_pct": 25.9
+  },
+  "T2": {
+   "per_month": 857,
+   "p10_month": 90,
+   "accounts_lost": 1.28,
+   "funded_busts": 0.46,
+   "neg_year_pct": 2.2
+  }
+ },
+ "Lucid Flex 50K | eval x4 funded x1 | edge-35%": {
+  "T1": {
+   "per_month": 496,
+   "p10_month": -61,
+   "accounts_lost": 2.41,
+   "funded_busts": 1.16,
+   "neg_year_pct": 18.7
+  },
+  "T2": {
+   "per_month": 647,
+   "p10_month": 364,
+   "accounts_lost": 2.74,
+   "funded_busts": 1.17,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x1 funded x4 | edge-0%": {
+  "T1": {
+   "per_month": 1272,
+   "p10_month": 387,
+   "accounts_lost": 0.19,
+   "funded_busts": 0.07,
+   "neg_year_pct": 4.3
+  },
+  "T2": {
+   "per_month": 1817,
+   "p10_month": 1152,
+   "accounts_lost": 0.42,
+   "funded_busts": 0.07,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x1 funded x4 | edge-0%": {
+  "T1": {
+   "per_month": 923,
+   "p10_month": 423,
+   "accounts_lost": 1.03,
+   "funded_busts": 0.4,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1139,
+   "p10_month": 701,
+   "accounts_lost": 1.75,
+   "funded_busts": 0.96,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x1 funded x4 | edge-35%": {
+  "T1": {
+   "per_month": 649,
+   "p10_month": -52,
+   "accounts_lost": 2.21,
+   "funded_busts": 1.06,
+   "neg_year_pct": 31.7
+  },
+  "T2": {
+   "per_month": 993,
+   "p10_month": 374,
+   "accounts_lost": 1.02,
+   "funded_busts": 0.13,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x1 funded x4 | edge-35%": {
+  "T1": {
+   "per_month": 547,
+   "p10_month": -39,
+   "accounts_lost": 2.14,
+   "funded_busts": 0.82,
+   "neg_year_pct": 23.0
+  },
+  "T2": {
+   "per_month": 667,
+   "p10_month": 401,
+   "accounts_lost": 3.31,
+   "funded_busts": 0.88,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x2 funded x2 | edge-0%": {
+  "T1": {
+   "per_month": 1148,
+   "p10_month": 391,
+   "accounts_lost": 0.18,
+   "funded_busts": 0.06,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1676,
+   "p10_month": 1002,
+   "accounts_lost": 0.38,
+   "funded_busts": 0.07,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x2 funded x2 | edge-0%": {
+  "T1": {
+   "per_month": 896,
+   "p10_month": 426,
+   "accounts_lost": 1.09,
+   "funded_busts": 0.32,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1154,
+   "p10_month": 834,
+   "accounts_lost": 1.52,
+   "funded_busts": 0.74,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x2 funded x2 | edge-35%": {
+  "T1": {
+   "per_month": 586,
+   "p10_month": -52,
+   "accounts_lost": 1.78,
+   "funded_busts": 0.86,
+   "neg_year_pct": 25.9
+  },
+  "T2": {
+   "per_month": 801,
+   "p10_month": 102,
+   "accounts_lost": 1.49,
+   "funded_busts": 0.42,
+   "neg_year_pct": 2.2
+  }
+ },
+ "Lucid Flex 50K | eval x2 funded x2 | edge-35%": {
+  "T1": {
+   "per_month": 482,
+   "p10_month": -51,
+   "accounts_lost": 2.47,
+   "funded_busts": 1.21,
+   "neg_year_pct": 20.9
+  },
+  "T2": {
+   "per_month": 624,
+   "p10_month": 362,
+   "accounts_lost": 3.96,
+   "funded_busts": 1.42,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x2 funded x1 | edge-0%": {
+  "T1": {
+   "per_month": 1081,
+   "p10_month": 374,
+   "accounts_lost": 0.15,
+   "funded_busts": 0.04,
+   "neg_year_pct": 3.6
+  },
+  "T2": {
+   "per_month": 1603,
+   "p10_month": 926,
+   "accounts_lost": 0.39,
+   "funded_busts": 0.08,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x2 funded x1 | edge-0%": {
+  "T1": {
+   "per_month": 885,
+   "p10_month": 426,
+   "accounts_lost": 0.97,
+   "funded_busts": 0.24,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1088,
+   "p10_month": 714,
+   "accounts_lost": 1.64,
+   "funded_busts": 0.7,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x2 funded x1 | edge-35%": {
+  "T1": {
+   "per_month": 520,
+   "p10_month": -52,
+   "accounts_lost": 1.57,
+   "funded_busts": 0.75,
+   "neg_year_pct": 29.5
+  },
+  "T2": {
+   "per_month": 768,
+   "p10_month": 79,
+   "accounts_lost": 1.53,
+   "funded_busts": 0.4,
+   "neg_year_pct": 3.4
+  }
+ },
+ "Lucid Flex 50K | eval x2 funded x1 | edge-35%": {
+  "T1": {
+   "per_month": 462,
+   "p10_month": -49,
+   "accounts_lost": 2.37,
+   "funded_busts": 1.19,
+   "neg_year_pct": 19.4
+  },
+  "T2": {
+   "per_month": 649,
+   "p10_month": 364,
+   "accounts_lost": 2.57,
+   "funded_busts": 0.64,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x8 funded x4 | edge-0%": {
+  "T1": {
+   "per_month": 1351,
+   "p10_month": 436,
+   "accounts_lost": 0.36,
+   "funded_busts": 0.06,
+   "neg_year_pct": 2.2
+  },
+  "T2": {
+   "per_month": 1903,
+   "p10_month": 1152,
+   "accounts_lost": 0.29,
+   "funded_busts": 0.06,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x8 funded x4 | edge-0%": {
+  "T1": {
+   "per_month": 980,
+   "p10_month": 426,
+   "accounts_lost": 1.57,
+   "funded_busts": 0.37,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1322,
+   "p10_month": 1014,
+   "accounts_lost": 1.26,
+   "funded_busts": 0.49,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x8 funded x4 | edge-35%": {
+  "T1": {
+   "per_month": 852,
+   "p10_month": -52,
+   "accounts_lost": 2.05,
+   "funded_busts": 0.86,
+   "neg_year_pct": 19.4
+  },
+  "T2": {
+   "per_month": 1107,
+   "p10_month": 529,
+   "accounts_lost": 1.12,
+   "funded_busts": 0.55,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x8 funded x4 | edge-35%": {
+  "T1": {
+   "per_month": 656,
+   "p10_month": -49,
+   "accounts_lost": 2.56,
+   "funded_busts": 0.81,
+   "neg_year_pct": 17.3
+  },
+  "T2": {
+   "per_month": 686,
+   "p10_month": 539,
+   "accounts_lost": 3.49,
+   "funded_busts": 1.82,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x8 funded x8 | edge-0%": {
+  "T1": {
+   "per_month": 1602,
+   "p10_month": 437,
+   "accounts_lost": 1.18,
+   "funded_busts": 0.44,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 2168,
+   "p10_month": 1451,
+   "accounts_lost": 1.16,
+   "funded_busts": 0.6,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x8 funded x8 | edge-0%": {
+  "T1": {
+   "per_month": 1073,
+   "p10_month": 414,
+   "accounts_lost": 1.91,
+   "funded_busts": 0.72,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1380,
+   "p10_month": 1115,
+   "accounts_lost": 2.04,
+   "funded_busts": 1.06,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x8 funded x8 | edge-35%": {
+  "T1": {
+   "per_month": 967,
+   "p10_month": -39,
+   "accounts_lost": 2.68,
+   "funded_busts": 1.29,
+   "neg_year_pct": 15.8
+  },
+  "T2": {
+   "per_month": 1384,
+   "p10_month": 842,
+   "accounts_lost": 2.04,
+   "funded_busts": 0.76,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x8 funded x8 | edge-35%": {
+  "T1": {
+   "per_month": 690,
+   "p10_month": -36,
+   "accounts_lost": 2.87,
+   "funded_busts": 1.11,
+   "neg_year_pct": 11.5
+  },
+  "T2": {
+   "per_month": 806,
+   "p10_month": 551,
+   "accounts_lost": 3.39,
+   "funded_busts": 1.81,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x8 funded x1 | edge-0%": {
+  "T1": {
+   "per_month": 1137,
+   "p10_month": 380,
+   "accounts_lost": 0.29,
+   "funded_busts": 0.02,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1658,
+   "p10_month": 926,
+   "accounts_lost": 0.36,
+   "funded_busts": 0.12,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x8 funded x1 | edge-0%": {
+  "T1": {
+   "per_month": 915,
+   "p10_month": 435,
+   "accounts_lost": 1.38,
+   "funded_busts": 0.17,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1241,
+   "p10_month": 864,
+   "accounts_lost": 1.61,
+   "funded_busts": 0.79,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x8 funded x1 | edge-35%": {
+  "T1": {
+   "per_month": 667,
+   "p10_month": -52,
+   "accounts_lost": 1.58,
+   "funded_busts": 0.6,
+   "neg_year_pct": 20.1
+  },
+  "T2": {
+   "per_month": 907,
+   "p10_month": 106,
+   "accounts_lost": 1.4,
+   "funded_busts": 0.52,
+   "neg_year_pct": 2.2
+  }
+ },
+ "Lucid Flex 50K | eval x8 funded x1 | edge-35%": {
+  "T1": {
+   "per_month": 609,
+   "p10_month": -61,
+   "accounts_lost": 2.68,
+   "funded_busts": 0.77,
+   "neg_year_pct": 14.4
+  },
+  "T2": {
+   "per_month": 656,
+   "p10_month": 352,
+   "accounts_lost": 2.54,
+   "funded_busts": 1.22,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x6 funded x4 | edge-0%": {
+  "T1": {
+   "per_month": 1333,
+   "p10_month": 436,
+   "accounts_lost": 0.29,
+   "funded_busts": 0.06,
+   "neg_year_pct": 2.9
+  },
+  "T2": {
+   "per_month": 1892,
+   "p10_month": 1152,
+   "accounts_lost": 0.31,
+   "funded_busts": 0.06,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x6 funded x4 | edge-0%": {
+  "T1": {
+   "per_month": 961,
+   "p10_month": 426,
+   "accounts_lost": 1.46,
+   "funded_busts": 0.37,
+   "neg_year_pct": 0.0
+  },
+  "T2": {
+   "per_month": 1263,
+   "p10_month": 824,
+   "accounts_lost": 1.45,
+   "funded_busts": 0.56,
+   "neg_year_pct": 0.0
+  }
+ },
+ "MFFU 50K | eval x6 funded x4 | edge-35%": {
+  "T1": {
+   "per_month": 772,
+   "p10_month": -52,
+   "accounts_lost": 2.12,
+   "funded_busts": 0.88,
+   "neg_year_pct": 23.0
+  },
+  "T2": {
+   "per_month": 1015,
+   "p10_month": 335,
+   "accounts_lost": 1.18,
+   "funded_busts": 0.63,
+   "neg_year_pct": 0.0
+  }
+ },
+ "Lucid Flex 50K | eval x6 funded x4 | edge-35%": {
+  "T1": {
+   "per_month": 596,
+   "p10_month": -49,
+   "accounts_lost": 2.58,
+   "funded_busts": 0.96,
+   "neg_year_pct": 18.7
+  },
+  "T2": {
+   "per_month": 671,
+   "p10_month": 401,
+   "accounts_lost": 3.22,
+   "funded_busts": 1.76,
+   "neg_year_pct": 0.0
+  }
+ }
+}
