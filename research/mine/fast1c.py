@@ -21,6 +21,7 @@ KEYS = [k for k in KEYS if k not in ("U:ICT", "U1:ICT", "WR:ICT", "WR1:ICT", "C6
 GROUPS = {}
 for k in KEYS: GROUPS.setdefault(base(k), []).append(k)
 DATA = {}
+# guard-ok: read-only load of the dense grids into DATA (gate*.py use DATA / KEYS)
 for per in PERS:
     z = Z(per); Ls = {}; Cs = {}
     for k in KEYS:

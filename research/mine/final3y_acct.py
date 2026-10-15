@@ -9,6 +9,7 @@ from final3y import day_vectors
 from mffu_rapid import ev_m, fu_m, life_m, eval_stats
 from numba import njit
 
+# guard-ok: read-only minute paths; final3y_conf.py / final3y_haircut.py use evarr / fuarr / nd
 PATHS, GL, GX = pickle.load(open("/tmp/claude-0/-home-user-nqmaster-research/c6cc5ef6-fbab-51d6-8437-b8f6d9d1ef6e/scratchpad/final3y_paths.pkl", "rb"))
 nd = len(GL["Robust"][0]); NMC = 600
 VEC = {"U": ("Ultra", "Robust"), "UL": ("UltraLean", "Robust"), "W": ("WR70Plus", "WinRate"), "UH": ("Ultra", "WinRate x2"), "EL": ("Estable", "WinRate x2")}

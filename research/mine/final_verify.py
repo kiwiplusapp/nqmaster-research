@@ -5,7 +5,7 @@ sys.path.insert(0, ".")
 import prof_grid_lib
 from acct_life import CFG
 from acct_policy import vec
-from acct_lab import Z
+from acct_lab import Z, dense_key
 from acct_size import life_g
 T, D, Q, CAP, FEE = 3000.0, 2000.0, 150.0, 2000.0, 105.2
 CAND = {  # name: (eval cfg, eval profit stop $, funded cfgs (SAFE, NOB, FULL), c1, c2, k, X)
@@ -18,8 +18,7 @@ CAND = {  # name: (eval cfg, eval profit stop $, funded cfgs (SAFE, NOB, FULL), 
 def exits(per, cfg):
     z = Z(per); n = len(z["days"]); out = np.zeros(n)
     for m in CFG[cfg]:
-        if m + "|R" not in z.files: continue
-        R = z[m + "|R"]; ch = (np.abs(np.diff(R, axis=1)) > 1e-6).sum(1); out += ch * (2.0 if m.startswith("G:") else 1.0)
+        R = z[dense_key(per, m) + "|R"]          # a missing key raises KeyError (was skipped silently); ch = (np.abs(np.diff(R, axis=1)) > 1e-6).sum(1); out += ch * (2.0 if m.startswith("G:") else 1.0)
     return out
 rows = []
 for per in ("IS", "C24", "REAL"):

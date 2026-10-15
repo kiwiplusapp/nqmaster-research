@@ -12,6 +12,7 @@ from numba import njit
 
 TICK, SLIP, PV, COMM = 0.25, 0.25, 2.0, 1.0
 DATA = os.environ.get("NQ_DATA", "nq_1m.npz")
+# guard-ok: read-only price load; crt2.py / variants*.py / build_timeline.py use these arrays
 z = np.load("data/" + DATA)
 EP, OM, DATE, DAY = z["epoch"], z["om"].astype(np.int64), z["date"], z["dayid"].astype(np.int64)
 O, H, L, C = z["o"], z["h"], z["l"], z["c"]
@@ -30,6 +31,7 @@ def daily_trend_atr():
     return (pd.Series(atr).reindex(dates).fillna(0).to_numpy(), pd.Series(t).reindex(dates).fillna(0).to_numpy().astype(np.int64))
 
 
+# guard-ok: read-only daily ATR / trend (crt2.py uses ATRD, TREND)
 ATRD, TREND = daily_trend_atr()
 
 

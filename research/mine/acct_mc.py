@@ -8,6 +8,7 @@ import os, sys, pickle, numpy as np, pandas as pd
 sys.path.insert(0, ".")
 from acct_life import life, CFG, stack, hiatr
 from acct_lab import Z, META
+# guard-ok: read-only trade loads used by counts() / arrays() (acct_kmc.py, acct_multi.py)
 T = pickle.load(open("robust_trades.pkl", "rb")); GC = pickle.load(open("gold_curated_trades.pkl", "rb"))
 PROT = {"HOY": ((("ULTRA",) * 3, 0, 0, 0.0), (("ULTRA",) * 3, 0, 0, 0.0), 0.0, 5000.0),
         "APROBACION": ((("SAFE", "SAFE", "FULL"), 900, 900, 700.0), (("SAFE", "SAFE", "NOB"), 1500, 1500, 0.0), 1.15, 6000.0),

@@ -12,6 +12,7 @@ import fast1c as F
 from gate84 import vecs
 PERS = F.PERS
 SETS = {}
+# guard-ok: reads the small gate84_sets.txt; importers use SETS
 for line in open("gate84_sets.txt"):
     nm, ks = line.split(":", 1); SETS[nm.split(" ")[0]] = ks.split()
 

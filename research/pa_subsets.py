@@ -1,7 +1,9 @@
 import pickle, numpy as np, pandas as pd
 from life25 import pa_run
 from evalfast import run as eval_run
-T = pickle.load(open("feat_trades2.pkl", "rb"))
+if __name__ == "__main__":      # used by the script below only (importers use build() / life2())
+    T = pickle.load(open("feat_trades2.pkl", "rb"))
+# guard-ok: runs the import lines of minute_path.py (imports + read-only modpnl.pkl)
 exec(open("minute_path.py").read().split("def build(")[0])      # imports
 from ict import load
 def sm(om): return (np.asarray(om) - 1080) % 1440

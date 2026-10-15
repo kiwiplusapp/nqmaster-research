@@ -10,6 +10,7 @@
 Output: audit_wf.csv, audit_loo.csv, audit_mc.csv, audit_haircut.csv"""
 import os, sys, pickle, numpy as np, pandas as pd
 sys.path.insert(0, ".")
+# guard-ok: read-only audit_trades.pkl; daily() / pf1519() use it (audit_final.py)
 A = pickle.load(open("audit_trades.pkl", "rb")); P = A["prof"]; L = A["L1519"]
 rng = np.random.default_rng(11)
 def daily(F, days, extra=0.0): return ((F.u - extra) * F.w).groupby(F.date).sum().reindex(days, fill_value=0.0)

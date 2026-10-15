@@ -8,6 +8,7 @@ import os, sys, json, pickle, numpy as np, pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 from mffu_rapid import ev_m, fu_m, life_m
 SP = "/tmp/claude-0/-home-user-nqmaster-research/c6cc5ef6-fbab-51d6-8437-b8f6d9d1ef6e/scratchpad"
+# guard-ok: read-only minute paths; robust2_mc.py uses P / days
 days, P = pickle.load(open(os.path.join(SP, "robust2_paths.pkl"), "rb"))
 N = len(days); idx = np.arange(N)
 PERIODS = {"2020-23": (days >= 20200101) & (days < 20240101), "2024-26": days >= 20240101}

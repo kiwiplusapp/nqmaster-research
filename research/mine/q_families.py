@@ -53,11 +53,13 @@ ASSET_FILES = {"nq_1m.npz": {"ES": "es_hd.npz", "EUR": "eur_hd.npz", "XAU": "xau
 # ------------------------------------------------------------------ NYSE trading calendar (CME keeps partial sessions on most holidays)
 from pandas.tseries.holiday import (AbstractHolidayCalendar, Holiday, nearest_workday, sunday_to_monday, USMartinLutherKingJr, USPresidentsDay,
                                     GoodFriday, USMemorialDay, USLaborDay, USThanksgivingDay)
+# guard-ok-begin: NYSE holiday calendar (pure, cheap); the families use NYSE_HOL
 class _NYSE(AbstractHolidayCalendar):
     rules = [Holiday("NY", month=1, day=1, observance=sunday_to_monday), USMartinLutherKingJr, USPresidentsDay, GoodFriday, USMemorialDay,
              Holiday("J19", month=6, day=19, start_date="2022-01-01", observance=nearest_workday), Holiday("J4", month=7, day=4, observance=nearest_workday),
              USLaborDay, USThanksgivingDay, Holiday("XM", month=12, day=25, observance=nearest_workday)]
 NYSE_HOL = {int(x.strftime("%Y%m%d")) for x in _NYSE().holidays("2010-01-01", "2027-12-31")} | {20181205, 20250109}
+# guard-ok-end
 
 
 # ------------------------------------------------------------------ shared per-dataset features (cached on D)

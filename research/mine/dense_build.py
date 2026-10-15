@@ -10,7 +10,8 @@ from core import Data, run_events
 from families4 import FAMILIES4
 from news import NEWS
 FOMC = set(NEWS["FOMC"]); OUT = os.path.join(RES, "tmp", "dense"); os.makedirs(OUT, exist_ok=True)
-T = pickle.load(open("robust_trades.pkl", "rb")); GC = pickle.load(open("gold_curated_trades.pkl", "rb"))
+if __name__ == "__main__":      # trade inputs of the build only (importers use dense())
+    T = pickle.load(open("robust_trades.pkl", "rb")); GC = pickle.load(open("gold_curated_trades.pkl", "rb"))
 SRC = {("nq", "IS"): "nq_1m.npz", ("nq", "C24"): "nq_1m.npz", ("nq", "REAL"): "mnq_fut.npz", ("gold", "IS"): "xau_long.npz", ("gold", "C24"): "xau_long.npz", ("gold", "REAL"): "mgc_fut.npz"}
 PV = {"nq": 2.0, "gold": 4.0}
 _L = {}

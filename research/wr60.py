@@ -10,6 +10,7 @@ from numba import njit
 
 TICK, SLIP, PV, COMM = 0.25, 0.25, 2.0, 1.0
 import os
+# guard-ok: read-only price load; importers use build() / sim()
 z = np.load("data/" + os.environ.get("NQ_DATA", "nq_1m.npz"))
 EP, OM, DATE, DAY = z["epoch"], z["om"], z["date"], z["dayid"]
 O, H, L, C, V = z["o"], z["h"], z["l"], z["c"], z["v"]

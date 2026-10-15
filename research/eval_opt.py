@@ -5,8 +5,10 @@ import itertools, sys
 import numpy as np, pandas as pd
 from numba import njit
 from common import Ctx
+# guard-ok-begin: read-only Ctx + eval_trades.pkl load; eval_opt2.py uses DAYS / T
 cx = Ctx(); DAYS = np.array(cx.rth_days)
 T = pd.read_pickle("eval_trades.pkl")
+# guard-ok-end
 
 @njit(cache=True)
 def evals(tot, mn, mx, target, dd, maxdays, s0, s1):

@@ -5,6 +5,7 @@ import os, sys, pickle, numpy as np, pandas as pd
 sys.path.insert(0, ".")
 from dense_build import dense
 from gold_port import conflict_filter
+# guard-ok: read-only trade loads used by ictf(); the dense rebuild below stays under __main__
 T = pickle.load(open("robust_trades.pkl", "rb")); K = pd.read_pickle("ict_fix_trades.pkl")
 RES = os.path.dirname(os.getcwd()); DN = os.path.join(RES, "tmp", "dense")
 def ictf(per, w):

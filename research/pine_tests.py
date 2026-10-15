@@ -9,6 +9,7 @@ from numba import njit
 
 TICK, SLIP, PV, COMM = 0.25, 0.25, 2.0, 1.0
 
+# guard-ok: read-only price load; zigzag_pa.py uses bars() / stats()
 z = np.load("data/nq_1m.npz")
 EP = z["epoch"]; O, H, L, C, V = z["o"], z["h"], z["l"], z["c"], z["v"]; DAYID = z["dayid"]; DATE = z["date"]
 

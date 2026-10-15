@@ -1,6 +1,8 @@
 import pickle, numpy as np, pandas as pd, itertools
+# guard-ok-begin: read-only modpnl.pkl + sim() from apex_policy.py; minute_path.py imports apply()
 M = pickle.load(open("modpnl.pkl", "rb"))
 ap = open("apex_policy.py").read(); exec(ap[ap.index("def sim("):ap.index("POL = {")])
+# guard-ok-end
 def apply(F, K=99, dl=None, dp=None, same=99, w=None):
     keep = []; wt = []
     for d, g in F.groupby("date", sort=False):

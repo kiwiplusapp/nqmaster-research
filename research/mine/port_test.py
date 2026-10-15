@@ -2,10 +2,12 @@
 positions), per period IS (CFD 2020-23) / C24 (CFD 2024-26) / REAL (MNQ 2024-26). Costs: $1.90 RT, 1-tick slippage."""
 import os, sys, pickle, numpy as np, pandas as pd
 RES = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, RES)
+# guard-ok-begin: runs the import part of conflict.py (cwd restored) + read-only load; importers use conflict_filter / metrics / base
 cwd = os.getcwd(); os.chdir(RES)
 exec(open(os.path.join(RES, "conflict.py")).read().split("for tag, lo, split")[0])
 T = pickle.load(open(os.path.join(RES, "feat_trades2.pkl"), "rb"))
 os.chdir(cwd)
+# guard-ok-end
 from news import NEWS
 def base(per):
     F, days = T[per]; F = F.copy()

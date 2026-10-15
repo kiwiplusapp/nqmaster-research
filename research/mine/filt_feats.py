@@ -3,7 +3,8 @@ import os, sys, pickle, numpy as np, pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from core import Data, S
 RES = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-T = pickle.load(open(os.path.join(RES, "feat_trades2.pkl"), "rb"))
+if __name__ == "__main__":      # used by the build below only (importers use feats())
+    T = pickle.load(open(os.path.join(RES, "feat_trades2.pkl"), "rb"))
 def feats(D, F):
     F = F.copy()
     dd = pd.Series(np.arange(D.nd), index=D.daydate).groupby(level=0).last()
