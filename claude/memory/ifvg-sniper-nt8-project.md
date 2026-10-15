@@ -221,7 +221,7 @@ Rejected: IFVG, FVG/Silver Bullet, sweeps, gap fade, last-half-hour, London ORB,
     - ModuleHealthReport (group 10, default on): per-module trades / WR / PF / net, all + last 365 days, flags >= 80% / losing; printed at go-live and end of backtest; for the yearly review, not sizing.
     - DisableModules (group 10, comma list, any profile; e.g. REV06 per the robust16 2027 review).
   - Stub compile OK; NOT compiled in NT.
-- 2026-10-15 (night) "best system ever" -> operating-system design (6 layers: edge / size / account / protection / adaptation / feedback); playbook research/mine/os_playbook.html published as artifact "NQMaster Operating System".
+- 2026-10-15 (night) "best system ever" -> operating-system design (6 layers: edge / size / account / protection / adaptation / feedback); playbook research/mine/os_playbook.html published as artifact "NQMaster Operating System" https://claude.ai/artifact/KzoU2HB3pk2LzfLbiLcDKh.
   - os_adapt.py (-> os_adapt.json), what to do on an edge-monitor alarm. Test: 2013-19 cost-normalised, out of sample for the monitor calibration (Ultra k .0758 h 18.57 never fires in 2020-26; fires 9 times 2011-19).
     - Alert only: Sharpe 0.88, DD $1,519, 3 losing years.
     - Pause 63/126/252 days: WORSE, 0.73/0.69/0.86.
