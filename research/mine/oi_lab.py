@@ -16,13 +16,20 @@ OI = "/tmp/claude-0/-home-user-nqmaster-research/c6cc5ef6-fbab-51d6-8437-b8f6d9d
 
 
 def load():
-    d = db.DBNStore.from_file(os.path.join(OI, "nq_opt_definition.dbn.zst")).to_df().reset_index()
+    import glob
+    defs = []
+    for f in sorted(glob.glob(os.path.join(OI, "chunks", "def_*.dbn.zst"))) + [os.path.join(OI, "nq_opt_definition.dbn.zst")]:
+        try: defs.append(db.DBNStore.from_file(f).to_df().reset_index())
+        except Exception as e: print("skip", f, e)
+    d = pd.concat(defs, ignore_index=True)
     d = d[d.instrument_class.isin(["C", "P"])].drop_duplicates("instrument_id", keep="last")[["instrument_id", "instrument_class", "strike_price", "expiration", "underlying"]]
-    s = db.DBNStore.from_file(os.path.join(OI, "nq_opt_statistics.dbn.zst")).to_df().reset_index()
-    s = s[s.stat_type == 9][["ts_ref", "ts_event", "instrument_id", "quantity"]]
-    s["day"] = pd.to_datetime(s.ts_ref if s.ts_ref.notna().all() else s.ts_event, utc=True).dt.tz_convert("America/New_York").dt.date
+    st = []
+    for f in sorted(glob.glob(os.path.join(OI, "chunks", "stat_*.dbn.zst"))):
+        x = db.DBNStore.from_file(f).to_df().reset_index(); st.append(x[x.stat_type == 9][["ts_ref", "ts_event", "instrument_id", "quantity"]])
+    s = pd.concat(st, ignore_index=True)
+    s["day"] = pd.to_datetime(s.ts_ref, utc=True).dt.tz_convert("America/New_York").dt.date
     s = s.sort_values("ts_event").drop_duplicates(["instrument_id", "day"], keep="last")
-    s = s.merge(d, on="instrument_id")
+    n0 = len(s); s = s.merge(d, on="instrument_id"); print("OI rows with a definition", len(s), "of", n0)
     s["exp"] = pd.to_datetime(s.expiration, utc=True).dt.tz_convert("America/New_York").dt.date
     return s
 
