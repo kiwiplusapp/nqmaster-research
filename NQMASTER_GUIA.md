@@ -13,11 +13,13 @@ Cambios en `NQMaster.cs` (stub OK, **falta F5**). Backups: `NQMaster_backup_pre_
   | Ultra | 0,085 | 24,44 | 9,12 |
   | UltraQ | 0,0773 | 26,08 | 9,04 |
   | WR70Plus | 0,0634 | 12,07 | 6,86 |
-  | Durable | sin cambios | sin cambios | 6,98 |
+  | Durable | 0,0455 | 10,35 | 6,98 |
 
   - El nuevo nivel de **aviso** solo alerta.
   - El estado del monitor se guarda en `nqmaster_edge_<cuenta>.txt` y sobrevive reinicios.
-- **Preset Mffu50K, fondeada:** sube a 2 contratos desde un cushion de $4.000 (`FundedStepUpCushion` 4000) y retira por encima de $6.100 (`FundedPayoutAt` 6600). Base: `c4_cushion.py` y `final_dist16.py`.
+- **Preset Mffu50K, fondeada: sin escalón por defecto.** Pide el retiro al llegar a $4.600 de ganancia y deja $4.100.
+  - El escalón a 2 contratos (`FundedStepUpCushion` 4000, retiro a $6.600) es opcional: más ingreso mediano si el edge es real, pero duplica el tamaño y suma 6-7 puntos a P(año negativo) con 35% menos edge. Ver revisión adversarial.
+  - El panel ahora dice hasta cuánto retirar.
 - **Grupo 10, nuevas propiedades:**
   - `InactivityAlarm`: avisa si un módulo no opera más de 1,5× su máximo histórico, o si pasan 12 días sin shorts o sin longs.
   - `CrossAccountGuard` y `HedgeGroup`: no abren NQ opuesto a otra cuenta de la misma PC (prohibición de hedging en Lucid y MFFU).
@@ -38,7 +40,7 @@ Herramientas:
 - `tools/check_guards.py`: guardas de importación.
 - `tools/nt8_stub/check.sh`: verificación de sintaxis.
 
-Descartado: risk parity/HRP, apagar ICT/REV06/ON07 y apagar módulos redundantes (`Conocimiento/Descartado/Auditoria 16-oct ...`).
+Descartado: risk parity/HRP, apagar ICT/ON07 y apagar módulos redundantes (`Conocimiento/Descartado/Auditoria 16-oct ...`). REV06 queda en vigilancia: apagarlo mejora 3 de 4 períodos, pero toca la regla de confluencia y esa interacción no está probada.
 
 ## ★★★★★★★★★★ 2026-10-15 (night): the operating system, as one design (English)
 
