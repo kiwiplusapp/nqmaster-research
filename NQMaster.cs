@@ -8,6 +8,12 @@
 //               another module open the same way), ON07, REV06, LON, VW13 wide, VOLB 2R, LATE15, night fades NF05 / LF06 / LF0430;
 //               ENG10 / LATEFH off since 2026-10-12. Real NQ futures 2020-23 / 2024-26: WR 66.9 / 65.7%, PF 1.47 / 1.50,
 //               Sharpe 3.38 / 3.65, ~4.7 trades/day, $1,700-2,300 per month per contract.
+//   UltraQ    : 2026-10-14 quality build = Ultra without ON07, LON, ICT and without the wide VW13 lot (VW13 only at >= 0.30 ATR).
+//               Real NQ 2020-23 / 2024-26: WR 70.2 / 68.3% (Ultra 66.9 / 65.7), PF 1.51 / 1.53 (1.47 / 1.50), lower max drawdown,
+//               ~3.9 trades/day, ~8% less $; win rate AND profit factor higher in all four periods incl. 2010-14 / 2015-19.
+//   CPI09     : (Ultra, UltraQ, WR70Plus) on US CPI days only: at 09:30 fade the 08:30 -> 09:29 move if >= 0.05 ATR, stop 0.35 ATR,
+//               0.5R, 60 min. 2010-14 / 2015-19 / 2020-23 / 2024-26 PF 1.58 / 1.13 / 1.94 / 2.62, WR ~78-81% since 2020; the same
+//               rule on ordinary days loses (research/mine/cpi_lab.py). ~12 trades a year.
 //   WR70Plus  : >= 70% win rate build: ORB60 0.75R, ORB90, MSEQ, MSEQS, CRT11, ICT x2, MOM11, REV06, VW13 wide, VOLB with the
 //               trend at 0.5R, LATE15 (+ night fades with NightOnWr70). WR 72.2 / 69.4%, PF 1.57 / 1.48, ~3.3 trades/day.
 //   Durable   : the 6 modules that held up on 16 years of real futures (2010-2026): ORB60, ORB90, MSEQS, CRT11, VOLB 2R, NF05.
@@ -38,7 +44,7 @@ using NinjaTrader.NinjaScript.DrawingTools;
 
 namespace NinjaTrader.NinjaScript.Strategies
 {
-	public enum NQMasterProfile { Ultra, WR70Plus, Durable, Custom }
+	public enum NQMasterProfile { Ultra, UltraQ, WR70Plus, Durable, Custom }
 	public enum NQMasterPropMode { Off, Eval, Funded }
 	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K }
 	public enum NQMasterSafeSet { Classic, Estable }
@@ -62,6 +68,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public bool PriceTarget;
 			public bool BaseOn; public bool FhCheck;
 			public bool Retry;
+			public bool CpiOnly;	// CPI09: only on US CPI release days
 			public int Anchor = -1; public double AnchorPx = double.NaN;	// Lookback -5: open of the bar at the anchor time (ET minutes)
 			public bool Parked, ParkLimit, ParkHit; public double ParkPx; public int ParkQty;	// entry cancelled for an opposite trade, re-placed when free
 			public Order SeenOrd, CancelOrd; public int SeenBar = -1, CancelBar = -1;	// stale-order watchdog (PurgeStaleEntries)
@@ -83,7 +90,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private TimeZoneInfo etZone;
 		private SimpleFont dashFont;
 		private bool badTimeframe;
-		private HashSet<int> fomc;
+		private HashSet<int> fomc, cpiDays; private bool cpiToday;
+		// US CPI release days (BLS schedule) for CPI09; add later years with the CpiDates parameter
+		private const string BuiltinCpi = "2024-01-11,2024-02-13,2024-03-12,2024-04-10,2024-05-15,2024-06-12,2024-07-11,2024-08-14,2024-09-11,2024-10-10,2024-11-13,2024-12-11," +
+			"2025-01-15,2025-02-12,2025-03-12,2025-04-10,2025-05-13,2025-06-11,2025-07-15,2025-08-12,2025-09-11,2025-10-24,2025-12-18," +
+			"2026-01-13,2026-02-13,2026-03-11,2026-04-10,2026-05-12,2026-06-10,2026-07-14,2026-08-12,2026-09-11,2026-10-14,2026-11-10,2026-12-10," +
+			"2027-01-13,2027-02-11,2027-03-10,2027-04-13,2027-05-12,2027-06-10,2027-07-14,2027-08-11,2027-09-14,2027-10-14,2027-11-10,2027-12-10";
 		// Tier-1 news (MyFundedFutures: CPI, Employment Report 08:30 ET, FOMC minutes 14:00 ET; FOMC days are skipped anyway).
 		// CPI / NFP from the BLS schedules (2024 - Dec 2027; 2027 schedule published 2026-10-09), minutes = decision + 21 days.
 		private const string BuiltinNews = "2024-01-03 14:00,2024-01-05 08:30,2024-01-11 08:30,2024-02-02 08:30,2024-02-13 08:30,2024-02-21 14:00,2024-03-08 08:30,2024-03-12 08:30,2024-04-05 08:30,2024-04-10 08:30,2024-04-10 14:00,2024-05-03 08:30,2024-05-15 08:30,2024-05-22 14:00,2024-06-07 08:30,2024-06-12 08:30,2024-07-03 14:00,2024-07-05 08:30,2024-07-11 08:30,2024-08-02 08:30,2024-08-14 08:30,2024-08-21 14:00,2024-09-06 08:30,2024-09-11 08:30,2024-10-04 08:30,2024-10-09 14:00,2024-10-10 08:30,2024-11-01 08:30,2024-11-13 08:30,2024-11-28 14:00,2024-12-06 08:30,2024-12-11 08:30,2025-01-08 14:00,2025-01-10 08:30,2025-01-15 08:30,2025-02-07 08:30,2025-02-12 08:30,2025-02-19 14:00,2025-03-07 08:30,2025-03-12 08:30,2025-04-04 08:30,2025-04-09 14:00,2025-04-10 08:30,2025-05-02 08:30,2025-05-13 08:30,2025-05-28 14:00,2025-06-06 08:30,2025-06-11 08:30,2025-07-03 08:30,2025-07-09 14:00,2025-07-15 08:30,2025-08-01 08:30,2025-08-12 08:30,2025-08-20 14:00,2025-09-05 08:30,2025-09-11 08:30,2025-10-03 08:30,2025-10-08 14:00,2025-10-24 08:30,2025-11-19 14:00,2025-11-20 08:30,2025-12-16 08:30,2025-12-18 08:30,2025-12-31 14:00,2026-01-09 08:30,2026-01-13 08:30,2026-02-11 08:30,2026-02-13 08:30,2026-02-18 14:00,2026-03-06 08:30,2026-03-11 08:30,2026-04-03 08:30,2026-04-08 14:00,2026-04-10 08:30,2026-05-08 08:30,2026-05-12 08:30,2026-05-20 14:00,2026-06-05 08:30,2026-06-10 08:30,2026-07-02 08:30,2026-07-08 14:00,2026-07-14 08:30,2026-08-07 08:30,2026-08-12 08:30,2026-08-19 14:00,2026-09-04 08:30,2026-09-11 08:30,2026-10-07 14:00,2026-10-14 08:30,2026-11-06 08:30,2026-11-10 08:30,2026-11-18 14:00,2026-12-04 08:30,2026-12-10 08:30,2026-12-30 14:00,2027-02-17 14:00,2027-04-07 14:00,2027-05-19 14:00,2027-06-30 14:00,2027-08-18 14:00,2027-10-06 14:00,2027-11-17 14:00,2027-12-29 14:00,2026-10-02 08:30,2027-01-08 08:30,2027-01-13 08:30,2027-02-05 08:30,2027-02-11 08:30,2027-03-05 08:30,2027-03-10 08:30,2027-04-02 08:30,2027-04-13 08:30,2027-05-07 08:30,2027-05-12 08:30,2027-06-04 08:30,2027-06-10 08:30,2027-07-02 08:30,2027-07-14 08:30,2027-08-06 08:30,2027-08-11 08:30,2027-09-03 08:30,2027-09-14 08:30,2027-10-08 08:30,2027-10-14 08:30,2027-11-05 08:30,2027-11-10 08:30,2027-12-03 08:30,2027-12-10 08:30";
@@ -164,7 +176,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					break;
 				case NQMasterPropPreset.Lucid50K:
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 50;
-					if (ev) { EvalTarget = 3000; EvalProfitStop = 1350; EvalRiskCapCushion = 0; MaxOpenContracts = 40; }
+					if (ev) { EvalTarget = 3000; EvalProfitStop = 1350; EvalRiskCapCushion = 0; MaxOpenContracts = 40; EvalHighWrMultiplier = 8; }
 					else { RiskCapPerContract = 300; FundedRiskCapCushion = 1000; FundedPayoutAt = 4000; MaxOpenContracts = 20; FundedProfitStop = 0; }
 					break;
 				case NQMasterPropPreset.LucidPro25K:
@@ -177,12 +189,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 					break;
 				case NQMasterPropPreset.Mffu50K:
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 30;
-					if (ev) { EvalTarget = 3000; EvalProfitStop = 800; EvalRiskCapCushion = 0; MaxOpenContracts = 30; }
-					else { RiskCapPerContract = 300; FundedRiskCapCushion = 2000; FundedPayoutAt = 6600; MaxOpenContracts = 30; FundedProfitStop = 0; }
+					if (ev) { EvalTarget = 3000; EvalProfitStop = 800; EvalRiskCapCushion = 0; MaxOpenContracts = 30; EvalHighWrMultiplier = 8; }
+					else { RiskCapPerContract = 300; FundedRiskCapCushion = 2000; FundedPayoutAt = FundedStepUpCushion > 0 ? 6600 : 4600; MaxOpenContracts = 30; FundedProfitStop = 0; }
+					if (!ev) NewsBlackout = true;	// MFFU funded: no trades +-2 min around Tier-1 news (rule); payout 4,600 = keep $4,100 at 1 contract (smallacct_cushion.py), 6,600 with step-up
 					break;
 			}
-			Print(string.Format("NQMaster | preset {0} ({1}): balance {2:0}, trailing DD {3:0}, eval target {4:0}, profit stop {5:0}, consistency {6:0}%, risk cap {7:0} below cushion {8:0}, max open contracts {9}",
-				PropPreset, PropMode, StartBalance, PropTrailingDD, EvalTarget, EvalProfitStop, ConsistencyPct, RiskCapPerContract, ev ? EvalRiskCapCushion : FundedRiskCapCushion, MaxOpenContracts));
+			Print(string.Format("NQMaster | preset {0} ({1}): balance {2:0}, trailing DD {3:0}, eval target {4:0}, profit stop {5:0}, consistency {6:0}%, risk cap {7:0} below cushion {8:0}, max open contracts {9}, MOM1030/CPI09 x{10}",
+				PropPreset, PropMode, StartBalance, PropTrailingDD, EvalTarget, EvalProfitStop, ConsistencyPct, RiskCapPerContract, ev ? EvalRiskCapCushion : FundedRiskCapCushion, MaxOpenContracts, HwMult(Mom1030Multiplier)));
 		}
 		private bool RollDue()
 		{
@@ -288,19 +301,19 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseOrb = true; OrbRangeMin = 60; OrbTargetR = 0.6; OrbPullbackFilter = true; PullbackMaxRet = 0.44; StopCapAtr = 0.35;
 				UseMseq = true; UseCrt = true; UseMom11 = true; UseMom1130 = true; UseRsi2 = true; UseOrb90 = true; UseMseqShort = true; UseMom13 = true; UseMom1030 = true; UseOn07 = true; UseRev06 = true; UseLon = true; UseIct = true;
 				Contracts = 1; FlattenTime = 1556; SkipFomc = true;
-				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = false; UseLateFh = false; Vw13Wide = true; UseNf05 = true; UseLf0315 = false; UseLf06 = true; UseLf0430 = true; NightOnWr70 = false;
+				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = false; UseLateFh = false; Vw13Wide = true; UseNf05 = true; UseLf0315 = false; UseLf06 = true; UseLf0430 = true; NightOnWr70 = false; UseCpi09 = true; CpiDates = ""; Cpi09Multiplier = 4; Mom1030Multiplier = 4; EvalHighWrMultiplier = 0;
 				FomcDates = "2024-01-31,2024-03-20,2024-05-01,2024-06-12,2024-07-31,2024-09-18,2024-11-07,2024-12-18,2025-01-29,2025-03-19,2025-05-07,2025-06-18,2025-07-30,2025-09-17,2025-10-29,2025-12-10,2026-01-28,2026-03-18,2026-04-29,2026-06-17,2026-07-29,2026-09-16,2026-10-28,2026-12-09";
 				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250; DailyLossLimit = 0; MinAtrPoints = 150;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3; EvalLateMinCushion = 0;
 				PauseFile = "pause_trading.txt"; ShowDashboard = true; PrintLog = true;
-				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0;
+				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0; EdgeAlarmFallback = true; EdgeFallbackDays = 252; EdgeFallbackOff = "";
 				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 0; EvalDailyStop = 0; FundedCushionSafe = 0; FundedPayoutAt = 5000; FundedHighFull = true; FundedCushionFull = 0;
 				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400; EvalSafeSet = NQMasterSafeSet.Estable; FundedProfitStop = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
 				OrbPriorCloseAtr = 0.10; VolbBreakEven = true; MomAgreement = true; VolbTrendLastEntry = 1047; NewsBlackout = false; NewsTimes = "";
 				MinStopAtr = 0.10; RiskCapPerContract = 300; EvalRiskCapCushion = 1200; FundedRiskCapCushion = 2000;
 				WarmupDays = 15;
 				PropPreset = NQMasterPropPreset.Manual;
-				AccountSyncGuard = true; SkipShortSessions = true; MaxOpenContracts = 20; RollGuard = true; LogToFile = true;
+				AccountSyncGuard = true; SkipShortSessions = true; MaxOpenContracts = 20; RollGuard = true; LogToFile = true; ModuleHealthReport = true; DisableModules = "";
 				UseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;
 			}
 			else if (State == State.Configure)
@@ -323,6 +336,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) fomc.Add(d.Year * 10000 + d.Month * 100 + d.Day);
 					else Print("NQMaster | FOMC dates: cannot read '" + raw.Trim() + "' (format yyyy-MM-dd)");
 				}
+				cpiDays = new HashSet<int>();
+				foreach (string raw in (BuiltinCpi + "," + (CpiDates ?? "")).Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					DateTime d;
+					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) cpiDays.Add(d.Year * 10000 + d.Month * 100 + d.Day);
+					else Print("NQMaster | CPI dates: cannot read '" + raw.Trim() + "' (format yyyy-MM-dd)");
+				}
 				ApplyPreset();
 				newsEt = new List<DateTime>();
 				foreach (string raw in (BuiltinNews + "," + (NewsTimes ?? "")).Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
@@ -332,6 +352,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					else Print("NQMaster | news times: cannot read '" + raw.Trim() + "' (format yyyy-MM-dd HH:mm, 24 h, e.g. 2027-01-08 08:30)");
 				}
 				BuildModules();
+				ApplyDisableList();
 				foreach (Mod m in mods) m.BaseOn = m.On;
 				EdgeParams();
 			}
@@ -351,6 +372,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (atrCount < AtrMin || rthDaysSeen < WarmupDays) Warn("nqm_warmup", string.Format("NQMaster | WARNING: only {0} RTH days loaded, the warm-up needs {1}: modules stay idle until then (set Days to load >= 45).", rthDaysSeen, WarmupDays));
 				rollHalt = RollDue(); if (rollHalt) Warn("nqm_roll", "NQMaster | ROLL DATE reached for " + Instrument.FullName + ": no new entries. Move the strategy to the next contract (same settings).");
 				Log(string.Format("LIVE on {0} | profile {1} | contracts {2} | prop {3} | max open contracts {4} | account sync guard {5}", Instrument.FullName, Profile, Contracts, PropMode, MaxOpenContracts, AccountSyncGuard ? "on" : "off"));
+				wentLive = true; PrintModuleReport("loaded history");
 			}
 			else if (State == State.Terminated)
 			{
@@ -359,6 +381,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (UseOrderFlowBoost && mods != null)
 					Print(ofTicks == 0 ? "NQMaster | ORDER FLOW BOOST was on but NO TICK DATA arrived, so nothing was boosted. Backtests need Tick Replay: Tools > Options > Market data > 'Show Tick Replay', then tick 'Tick Replay' in the Strategy Analyzer data series."
 						: string.Format("NQMaster | order flow: {0:N0} trades read, {1} of {2} entries filled with the boost ({3:0.0}%; research Apr-Oct 2026: ~16%).", ofTicks, ofBoosted, ofEntries, ofEntries > 0 ? 100.0 * ofBoosted / ofEntries : 0));
+				if (mods != null && !wentLive) PrintModuleReport("end of run");
 				if (mods != null && totalTrades == 0 && rthDaysSeen < WarmupDays + 2)
 					Print(string.Format("NQMaster | 0 trades: only {0} RTH days loaded; needs {1} days of warm-up (property 'Warm-up days'). Start the test earlier or lower it.", rthDaysSeen, WarmupDays));
 			}
@@ -368,7 +391,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 		private void BuildModules()
 		{
-			bool w7 = Profile == NQMasterProfile.WR70Plus, ul = Profile == NQMasterProfile.Ultra, du = Profile == NQMasterProfile.Durable, custom = Profile == NQMasterProfile.Custom;
+			bool w7 = Profile == NQMasterProfile.WR70Plus, uq = Profile == NQMasterProfile.UltraQ, ul = Profile == NQMasterProfile.Ultra || uq, du = Profile == NQMasterProfile.Durable, custom = Profile == NQMasterProfile.Custom;
 			profUltra = ul;
 			mods = new List<Mod>(); timeMods = new List<Mod>();
 			orb = new Mod(); orb.Sig = "ORB60"; orb.Kind = 0;
@@ -382,21 +405,23 @@ namespace NinjaTrader.NinjaScript.Strategies
 			mseq = NewMod("MSEQ", (custom ? UseMseq : (ul || w7) && UseMseq), 0.5); mseq.PriceTarget = true;
 			mseqs = NewMod("MSEQS", (custom ? UseMseqShort : (ul || w7 || du) && UseMseqShort), 0.75); mseqs.PriceTarget = true;
 			crt = NewMod("CRT11", UseCrt, 2.0); crt.PriceTarget = true;
-			lon = NewMod("LON", (custom ? UseLon : ul && UseLon), 2.0); lon.PriceTarget = true;
-			ict = NewMod("ICT", (custom ? UseIct : (ul || w7) && UseIct), 1.0); ict.PriceTarget = true;
+			lon = NewMod("LON", (custom ? UseLon : ul && !uq && UseLon), 2.0); lon.PriceTarget = true;
+			ict = NewMod("ICT", (custom ? UseIct : ((ul && !uq) || w7) && UseIct), 1.0); ict.PriceTarget = true;
 			AddTime("MOM11", (custom ? UseMom11 : (ul || w7) && UseMom11), 1100, -2, false, 0.25, 0.3, 0, false, true);
 			AddTime("MOM13", (custom ? UseMom13 : ul && UseMom13), 1300, -2, false, 0.20, 1.0, 240, true, false);
 			AddTime("MOM1030", (custom ? UseMom1030 : ul && UseMom1030), 1030, -2, false, 0.20, 0.3, 60, true, false);
-			AddTime("ON07", (custom ? UseOn07 : ul && UseOn07), 700, 30, false, 0.20, 1.0, 60, true, false);
+			AddTime("ON07", (custom ? UseOn07 : ul && !uq && UseOn07), 700, 30, false, 0.20, 1.0, 60, true, false);
 			AddTime("REV06", (custom ? UseRev06 : (ul || w7) && UseRev06), 600, 30, true, 0.20, 0.3, 240, true, false);
 			AddTime("MOM1130", custom && UseMom1130, 1130, -2, false, 0.25, 0.3, 0, false, true);
-			Mod vw13 = AddTime("VW13", (custom ? UseVw13 : (ul || w7) && UseVw13), 1301, -3, false, 0.15, 0.5, 120, true, false); bool vwWide = w7 || ((ul || custom) && Vw13Wide); vw13.MinDist = vwWide ? 0.15 : 0.30; vw13.DoubleDist = vwWide ? 0.30 : 0;
+			Mod vw13 = AddTime("VW13", (custom ? UseVw13 : (ul || w7) && UseVw13), 1301, -3, false, 0.15, 0.5, 120, true, false); bool vwWide = w7 || ((ul || custom) && !uq && Vw13Wide); vw13.MinDist = vwWide ? 0.15 : 0.30; vw13.DoubleDist = vwWide ? 0.30 : 0;
 			Mod late15 = AddTime("LATE15", (custom ? UseLate15 : (ul || w7) && UseLate15), 1500, -4, false, 0.30, 0.5, 0, true, false); late15.MinDist = 0.5;
 			Mod latefh = AddTime("LATEFH", (custom ? UseLateFh : ul && UseLateFh), 1500, -4, false, 0.20, 0.5, 0, false, false); latefh.MinDist = 0.25; latefh.FhCheck = true;
 			Mod nf05 = AddTime("NF05", (custom ? UseNf05 : (ul || du || (w7 && NightOnWr70)) && UseNf05), 500, -5, true, 0.20, 2.0, 240, false, false); nf05.MinDist = 0.35; nf05.Anchor = 20 * 60;
 			Mod lf0315 = AddTime("LF0315", (custom ? UseLf0315 : ul && UseLf0315), 315, -5, true, 0.20, 2.0, 600, false, false); lf0315.MinDist = 0.10; lf0315.Anchor = 3 * 60;
 			Mod lf06 = AddTime("LF06", (custom ? UseLf06 : (ul || (w7 && NightOnWr70)) && UseLf06), 600, -5, true, 0.20, 0.5, 240, false, false); lf06.MinDist = 0.20; lf06.Anchor = 4 * 60;
 			Mod lf0430 = AddTime("LF0430", (custom ? UseLf0430 : (ul || (w7 && NightOnWr70)) && UseLf0430), 430, -5, true, 0.35, 0.5, 240, true, false); lf0430.MinDist = 0.10; lf0430.Anchor = 4 * 60;
+			// research/mine/cpi_lab.py (2026-10-14): CPI days, fade the 08:30 release move at the 09:30 open (16 years, 4 periods PF > 1)
+			Mod cpi09 = AddTime("CPI09", (custom ? UseCpi09 : (ul || w7) && UseCpi09), 930, -5, true, 0.35, 0.5, 60, false, false); cpi09.MinDist = 0.05; cpi09.Anchor = 8 * 60 + 30; cpi09.CpiOnly = true;
 			eng10 = NewMod("ENG10", (custom ? UseEng10 : ul && UseEng10), 0.5); eng10.PriceTarget = true; eng10.MaxHold = 400;
 			volb = NewMod("VOLB", (custom ? UseVolBreak : (ul || w7 || du) && UseVolBreak), w7 ? 0.5 : 2.0); volb.PriceTarget = true; volb.MaxHold = 400; volbTrendOnly = w7; volbTrendBase = volbTrendOnly; volbRBase = volb.R;
 			rsi = NewMod("RSI2", custom && UseRsi2, 0.3); rsi.StopAtr = 0.15; rsi.MaxHold = 120;
@@ -406,6 +431,53 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!custom && (OrbRangeMin != 60 || Math.Abs(OrbTargetR - 0.6) > 1e-9 || !OrbPullbackFilter))
 				Print("NQMaster | NOTE: ORB range / target R / pullback filter only apply with Profile = Custom. The profile values are being used.");
 		}
+		// 'Disable modules' (group 10): switch modules off by name in any profile (the yearly review, research/mine/robust16.py)
+		private void ApplyDisableList()
+		{
+			if (string.IsNullOrEmpty(DisableModules)) return;
+			foreach (string raw in DisableModules.Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+			{
+				string s = raw.Trim(); bool hit = false;
+				foreach (Mod m in mods) if (string.Equals(m.Sig, s, StringComparison.OrdinalIgnoreCase)) { hit = true; m.On = false; }
+				Print(hit ? "NQMaster | module " + s.ToUpperInvariant() + " switched off by 'Disable modules'" : "NQMaster | 'Disable modules': '" + s + "' is not a module name (names: ORB60 ORB90 MSEQ MSEQS CRT11 LON ICT MOM11 MOM13 MOM1030 ON07 REV06 VW13 LATE15 LATEFH NF05 LF06 LF0430 CPI09 ENG10 VOLB ...)");
+			}
+		}
+
+		// Module health report (group 10): trades / win rate / PF / net per module, whole run and last 365 days, from this strategy's own trades
+		private bool wentLive;
+		private void PrintModuleReport(string when)
+		{
+			if (!ModuleHealthReport) return;
+			try
+			{
+				if (SystemPerformance == null || SystemPerformance.AllTrades == null || SystemPerformance.AllTrades.Count == 0) return;
+				TradeCollection all = SystemPerformance.AllTrades;
+				DateTime last = all[all.Count - 1].Exit.Time, from = last.AddDays(-365);
+				Dictionary<string, double[]> st = new Dictionary<string, double[]>(); List<string> order = new List<string>();
+				foreach (Trade t in all)
+				{
+					string k = t.Entry != null && !string.IsNullOrEmpty(t.Entry.Name) ? t.Entry.Name : "?";
+					double[] a; if (!st.TryGetValue(k, out a)) { a = new double[8]; st[k] = a; order.Add(k); }
+					double p = t.ProfitCurrency; bool yr = t.Exit != null && t.Exit.Time >= from;
+					a[0] += 1; if (p > 0) { a[1] += 1; a[2] += p; } else a[3] -= p;
+					if (yr) { a[4] += 1; if (p > 0) { a[5] += 1; a[6] += p; } else a[7] -= p; }
+				}
+				order.Sort();
+				Print(string.Format("NQMaster | MODULE HEALTH ({0}; {1} trades, last exit {2:yyyy-MM-dd}; 'last 365 d' ends there)", when, all.Count, last));
+				foreach (string k in order)
+				{
+					double[] a = st[k];
+					string line = string.Format("  {0,-8} all: {1,5:0} tr  WR {2,5:0.0}%  PF {3,5}  net {4,9:$#,0;-$#,0}  | last 365 d: {5,4:0} tr  WR {6,5}  PF {7,5}  net {8,9:$#,0;-$#,0}{9}",
+						k, a[0], 100.0 * a[1] / a[0], a[3] > 0 ? (a[2] / a[3]).ToString("0.00") : "inf", a[2] - a[3],
+						a[4], a[4] > 0 ? (100.0 * a[5] / a[4]).ToString("0.0") + "%" : "-", a[7] > 0 ? (a[6] / a[7]).ToString("0.00") : (a[4] > 0 ? "inf" : "-"), a[6] - a[7],
+						a[4] >= 20 && a[5] >= 0.8 * a[4] ? "  <- >= 80% win rate last year" : (a[4] >= 20 && a[7] > 0 && a[6] / a[7] < 1.0 ? "  <- losing last year (review)" : ""));
+					Print(line); Log("health " + line.Trim());
+				}
+				Print("NQMaster | research: a >= 80% win-rate year does NOT predict the next trades better than the module's long-run rate (research/mine/sniper_eval.py, wr80_lab.py); use this list for the yearly review, not for sizing.");
+			}
+			catch (Exception e) { Print("NQMaster | module report skipped: " + e.Message); }
+		}
+
 		private Mod NewMod(string sig, bool on, double r) { Mod m = new Mod(); m.Sig = sig; m.On = on; m.R = r; m.Kind = 2; mods.Add(m); return m; }
 		private Mod AddTime(string sig, bool on, int t, int lb, bool rev, double sa, double r, int hold, bool trend, bool vwap)
 		{
@@ -443,6 +515,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				DateTime tradeDay = etOpen.Hour >= 18 ? etOpen.Date.AddDays(1) : etOpen.Date;
 				prevSessDay = curSessDay; curSessDay = tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day;
 				fomcToday = SkipFomc && fomc.Contains(tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day);
+				cpiToday = cpiDays != null && cpiDays.Contains(tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day);
 				EvalSessionStart(tradeDay);
 				edgeDayQty = Qty(); edgeDayTradable = !fomcToday; edgeDayDate = tradeDay;
 				NewSession();
@@ -723,6 +796,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Log(string.Format("ENG10 {0} @ {1} | SL {2}", e10d == 1 ? "BUY" : "SELL", Fmt(e10px), Fmt(e10sl)));
 		}
 		// price already at/through a stop-entry level? historical: bar close; realtime: current ask / bid (a stop there would be rejected)
+		// eval-only multiplier of the ~80% win-rate modules (MOM1030, CPI09): research/mine/sniper_uniform.py, sniper_life.py
+		private int HwMult(int normal) { return PropMode == NQMasterPropMode.Eval && EvalHighWrMultiplier > 0 ? EvalHighWrMultiplier : normal; }
 		private bool PastLevel(int d, double px)
 		{
 			if (State == State.Realtime) { try { return d == 1 ? GetCurrentAsk() >= px : GetCurrentBid() <= px; } catch { } }
@@ -733,6 +808,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			lastDeferred = false;
 			if (atrCount < AtrMin || double.IsNaN(atrDaily) || m.InTrade) return;
+			if (m.CpiOnly && !cpiToday) return;
 			double reference = double.NaN;
 			if (m.Lookback == -1) reference = sessOpen;
 			else if (m.Lookback == -2) reference = rthOpenPx;
@@ -770,6 +846,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			int st = Math.Max(4, (int)Math.Round(m.StopAtr * atrDaily / TickSize));
 			int tq = m.Sig == "MOM13" ? LateQty(d, Hm(m.Time)) : Qty();
+			// research/mine/size_q.py + wr80_lab.py (2026-10-15): the two ~80% win-rate modules; x4 raised Sharpe and PF in 2010-14 / 2015-19 / 2020-23 / 2024-26
+			if (!noBoost && m.Sig == "CPI09" && HwMult(Cpi09Multiplier) > 1) tq = HwMult(Cpi09Multiplier) * Qty();
+			if (!noBoost && m.Sig == "MOM1030" && HwMult(Mom1030Multiplier) > 1) tq = HwMult(Mom1030Multiplier) * Qty();
 			if (m.DoubleDist > 0 && !noBoost && Math.Abs(Close[0] - reference) >= m.DoubleDist * atrDaily) tq = 2 * Qty();
 			if (TooBig(m.Sig, st * TickSize, tq)) return;
 			if (!DirectionAllowed(d)) return;
@@ -1120,6 +1199,27 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// Days that cannot trade (FOMC, low ATR, sessions without RTH) are not counted. Counting starts at EdgeMonitorStart.
 		private double edgeS, edgeK = double.NaN, edgeH = double.NaN; private int edgeDays, edgeDayQty = 1; private bool edgeAlarm, edgePaused, edgeDayRth, edgeDayTradable;
 		private DateTime edgeDayDate = DateTime.MinValue;
+		// Edge-alarm fallback (research/mine/os_adapt.py): modules that failed the walk-forward review (cost-normalised PF <= 1.05 over the
+		// previous 5 years, robust16.py rule) as of January of each year. Update yearly from research (or set EdgeFallbackOff).
+		private int edgeFbLeft; private List<string> edgeFbOff;
+		private List<string> FallbackList(int year)
+		{
+			string s = EdgeFallbackOff;
+			if (string.IsNullOrEmpty(s))
+			{
+				if (year <= 2020) s = "LF0430 LF06 MOM11 MOM13 ON07 ORB60 ORB90 REV06 VW13";
+				else if (year == 2021) s = "LF0430 LF06 MOM11 MOM13 ON07 VW13";
+				else if (year == 2022) s = "LF0430 LF06 ON07 VW13";
+				else if (year == 2023) s = "LF06 ON07";
+				else if (year == 2024) s = "LF06 VW13";
+				else if (year <= 2026) s = "";
+				else s = "REV06";				// 2027 (research data through 2026-10); later years: re-run research/mine/robust16.py
+			}
+			List<string> r = new List<string>();
+			foreach (string x in s.Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)) r.Add(x.Trim().ToUpperInvariant());
+			return r;
+		}
+		private bool FallbackOff(string sig) { return edgeFbLeft > 0 && edgeFbOff != null && edgeFbOff.Contains(sig.ToUpperInvariant()); }
 		private void EdgeParams()
 		{
 			double k, h;
@@ -1127,6 +1227,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				case NQMasterProfile.WR70Plus: k = 0.0577; h = 12.18; break;		// research/mine/monitor_recal.py (2026-10-12, real NQ 2020-26)
 				case NQMasterProfile.Durable: k = 0.0458; h = 10.71; break;
+				case NQMasterProfile.UltraQ: k = 0.0696; h = 20.87; break;		// research/mine/ultraq_build.py (2026-10-14)
 				default: k = 0.0758; h = 18.57; break;			// Ultra (Custom uses the Ultra calibration)
 			}
 			edgeK = EdgeK > 0 ? EdgeK : k; edgeH = EdgeH > 0 ? EdgeH : h;
@@ -1139,14 +1240,28 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (counted && DateTime.TryParseExact(EdgeMonitorStart ?? "", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out st) && edgeDayDate >= st)
 			{
 				if (double.IsNaN(edgeK)) EdgeParams();
+				if (edgeFbLeft > 0)
+				{
+					// review-set fallback running: the monitor rests (research/mine/os_adapt.py), then resets and the full profile returns
+					edgeFbLeft--;
+					if (edgeFbLeft == 0) { edgeAlarm = false; edgeS = 0; edgeFbOff = null; Warn("nqm_edge_fb", "NQMaster | edge-monitor fallback finished: full profile again, CUSUM reset."); }
+					edgeDayRth = false; return;
+				}
 				double z = (netPnl - dayStartPnl) / Math.Max(1, edgeDayQty) / (2.0 * todayAtr);
 				edgeS = Math.Max(0.0, edgeS + edgeK - z); edgeDays++;
 				if (PrintLog) Print(string.Format("{0} | NQM | EDGE day {1}: z {2:0.000} | CUSUM {3:0.00} / {4:0.00} ({5:0}%)", edgeDayDate.ToString("yyyy-MM-dd"), edgeDays, z, edgeS, edgeH, 100 * edgeS / edgeH));
 				if (!edgeAlarm && edgeS > edgeH)
 				{
 					edgeAlarm = true; edgePaused = EdgeMonitorPause;
+					string act = EdgeMonitorPause ? "New entries paused. Review, then set a new 'Edge monitor start date' to resume." : "Alert only (pause and fallback are off).";
+					if (!EdgeMonitorPause && EdgeAlarmFallback && EdgeFallbackDays > 0)
+					{
+						edgeFbOff = FallbackList(edgeDayDate.Year); edgeFbLeft = EdgeFallbackDays; edgeS = 0;
+						act = edgeFbOff.Count == 0 ? string.Format("Fallback: the yearly review keeps every module, so nothing changes for {0} days (alert only)." , EdgeFallbackDays)
+							: string.Format("Fallback for {0} trading days: modules off = {1}; then the full profile returns.", EdgeFallbackDays, string.Join(" ", edgeFbOff.ToArray()));
+					}
 					Warn("nqm_edge", string.Format("NQMaster | EDGE MONITOR ALARM {0}: live results are no longer consistent with the backtested edge ({1} days counted). {2}",
-						edgeDayDate.ToString("yyyy-MM-dd"), edgeDays, EdgeMonitorPause ? "New entries paused. Review, then set a new 'Edge monitor start date' to resume." : "Alert only (pause is off)."));
+						edgeDayDate.ToString("yyyy-MM-dd"), edgeDays, act));
 				}
 			}
 			edgeDayRth = false;
@@ -1239,7 +1354,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			// ATR < 1.15 day: pass 92% / 83% / 96% (CFD 2024-26 / MNQ 2024-26 / CFD 2020-23) vs 57-65% / 75-76% / 95% without gating.
 			bool estable = PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable;
 			foreach (Mod m in mods)
-				m.On = m.BaseOn && (estable ? EstableSig(m.Sig)
+				m.On = m.BaseOn && !FallbackOff(m.Sig) && (estable ? EstableSig(m.Sig)
 					: !(gate == GateMode.Safe && (m.Sig == "VOLB" || m.Sig == "LON" || m.Sig == "MOM1030" || m.Sig == "MOM11")));
 			if (volb != null) { volbTrendOnly = estable || volbTrendBase; volb.R = estable ? 0.5 : volbRBase; }
 			atrStartRatio = double.NaN;
@@ -1575,7 +1690,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (capCuts > 0) txt += string.Format("\nMax open contracts {0}: {1} entries cut", MaxOpenContracts, capCuts);
 			if (shortSession) txt += string.Format("\nShort session: closes {0:00}:{1:00} ET", sessEndMin / 60, sessEndMin % 60);
 			if (UseOrderFlowBoost) txt += "\n" + OfStatus();
-			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / edgeH, edgeDays, edgeAlarm ? " | ALARM" : "");
+			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / edgeH, edgeDays, edgeFbLeft > 0 ? string.Format(" | FALLBACK {0} days left", edgeFbLeft) : (edgeAlarm ? " | ALARM" : ""));
 			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1}{4} | cushion ${2:0} (threshold ${3:0})", PropMode, gate, propCushion, propThr,
 				PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable ? " (Estable)" : "");
 			if (PropMode != NQMasterPropMode.Off && RiskCapPerContract > 0) txt += string.Format("\nRisk cap ${0:0}/contract: {1} (cushion ${2:0} vs ${3:0}) | skipped {4}", RiskCapPerContract,
@@ -1675,6 +1790,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, 500)][Display(Name = "Max open contracts, whole account (Lucid 50K funded 20, MFFU 50K 30; 0 = off)", Order = 3, GroupName = "10. Operations (safety)")] public int MaxOpenContracts { get; set; }
 		[NinjaScriptProperty][Display(Name = "Roll guard: no new entries from the roll date of the chart's contract", Order = 4, GroupName = "10. Operations (safety)")] public bool RollGuard { get; set; }
 		[NinjaScriptProperty][Display(Name = "Log file (Documents\\NinjaTrader 8\\nqmaster_logs, realtime)", Order = 5, GroupName = "10. Operations (safety)")] public bool LogToFile { get; set; }
+		[NinjaScriptProperty][Display(Name = "Module health report (Output window: win rate / PF per module, all + last 365 days)", Order = 6, GroupName = "10. Operations (safety)")] public bool ModuleHealthReport { get; set; }
+		[NinjaScriptProperty][Display(Name = "Disable modules (comma list, any profile; yearly review, e.g. REV06)", Order = 7, GroupName = "10. Operations (safety)")] public string DisableModules { get; set; }
 		[NinjaScriptProperty][Range(0.0, 1.0)][Display(Name = "Min stop for structure modules (x daily ATR; 0.10, 0 = off)", Order = 26, GroupName = "02. Edge")] public double MinStopAtr { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Risk cap: skip trades risking more than $ per base contract (300; 0 = off)", Order = 18, GroupName = "07. Prop account (cushion gating)")] public double RiskCapPerContract { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Risk cap active in Eval while cushion < $ (1200)", Order = 19, GroupName = "07. Prop account (cushion gating)")] public double EvalRiskCapCushion { get; set; }
@@ -1706,6 +1823,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "LF06 on (06:00 fade of the move since 04:00; Ultra)", Order = 24, GroupName = "01. Module switches (any profile)")] public bool UseLf06 { get; set; }
 		[NinjaScriptProperty][Display(Name = "LF0430 on (04:30 fade with the trend of the move since 04:00; Ultra)", Order = 25, GroupName = "01. Module switches (any profile)")] public bool UseLf0430 { get; set; }
 		[NinjaScriptProperty][Display(Name = "Night modules also in WR70Plus (NF05 / LF06 / LF0430)", Order = 26, GroupName = "01. Module switches (any profile)")] public bool NightOnWr70 { get; set; }
+		[NinjaScriptProperty][Display(Name = "CPI09 on (CPI days: 09:30 fade of the 08:30 release move; Ultra / UltraQ / WR70Plus)", Order = 27, GroupName = "01. Module switches (any profile)")] public bool UseCpi09 { get; set; }
+		[NinjaScriptProperty][Display(Name = "Extra CPI release dates (yyyy-MM-dd list; built in 2024-2027)", Order = 28, GroupName = "01. Module switches (any profile)")] public string CpiDates { get; set; }
+		[NinjaScriptProperty][Range(1, 4)][Display(Name = "CPI09 size multiplier (4 = validated: ~80% win-rate module)", Order = 29, GroupName = "01. Module switches (any profile)")] public int Cpi09Multiplier { get; set; }
+		[NinjaScriptProperty][Range(1, 4)][Display(Name = "MOM1030 size multiplier (4 = validated: ~80% win-rate module)", Order = 30, GroupName = "01. Module switches (any profile)")] public int Mom1030Multiplier { get; set; }
 		[NinjaScriptProperty][Range(-5.0, 5.0)][Display(Name = "Pullback max prior-day move (x ATRd)", Order = 20, GroupName = "02. Edge")] public double PullbackMaxRet { get; set; }
 		[NinjaScriptProperty][Range(0.05, 1.0)][Display(Name = "ORB stop cap (x ATRd)", Order = 21, GroupName = "02. Edge")] public double StopCapAtr { get; set; }
 		[NinjaScriptProperty][Range(-1.0, 2.0)][Display(Name = "ORB: breakout must clear the prior close by x ATR (0.10; -1 = off)", Order = 22, GroupName = "02. Edge")] public double OrbPriorCloseAtr { get; set; }
@@ -1748,6 +1869,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Edge monitor start date (yyyy-MM-dd)", Order = 3, GroupName = "06. Edge monitor")] public string EdgeMonitorStart { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "k (0 = profile calibration)", Order = 4, GroupName = "06. Edge monitor")] public double EdgeK { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "h (0 = profile calibration)", Order = 5, GroupName = "06. Edge monitor")] public double EdgeH { get; set; }
+		[NinjaScriptProperty][Display(Name = "On alarm: switch off the modules that failed the yearly review (pause must be off)", Order = 6, GroupName = "06. Edge monitor")] public bool EdgeAlarmFallback { get; set; }
+		[NinjaScriptProperty][Range(1, 1000)][Display(Name = "Fallback length (monitored trading days; 252 = 1 year)", Order = 7, GroupName = "06. Edge monitor")] public int EdgeFallbackDays { get; set; }
+		[NinjaScriptProperty][Display(Name = "Fallback modules off (empty = built-in yearly review table)", Order = 8, GroupName = "06. Edge monitor")] public string EdgeFallbackOff { get; set; }
 		[NinjaScriptProperty][Display(Name = "Prop mode (Off / Eval / Funded)", Order = 1, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropMode PropMode { get; set; }
 		[NinjaScriptProperty][Display(Name = "Account preset (Lucid 25K / Lucid 50K / MFFU 50K / LucidPro 25K + FundedNext 25K: eval 2 contracts, funded 1): fills balance, drawdown, target, profit stop, risk cap and contract cap for the chosen mode", Order = 0, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropPreset PropPreset { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Trailing drawdown $ (EOD, locks at start+100)", Order = 2, GroupName = "07. Prop account (cushion gating)")] public double PropTrailingDD { get; set; }
@@ -1767,6 +1891,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: stop the day at +$ (whole account; LucidPro 40% consistency: 500 with 2 contracts; 0 = off)", Order = 15, GroupName = "07. Prop account (cushion gating)")] public double FundedProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 16, GroupName = "07. Prop account (cushion gating)")] public double FundedStepUpCushion { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 17, GroupName = "07. Prop account (cushion gating)")] public int FundedStepUpContracts { get; set; }
+		[NinjaScriptProperty][Range(0, 8)][Display(Name = "Eval: MOM1030 / CPI09 multiplier (0 = normal x4; 8 on 50K evals at 1 contract; presets Lucid50K / Mffu50K set 8)", Order = 21, GroupName = "07. Prop account (cushion gating)")] public int EvalHighWrMultiplier { get; set; }
 		[NinjaScriptProperty][Display(Name = "Order-flow boost on (FAILED out-of-sample test: keep OFF; backtests need Tick Replay)", Order = 1, GroupName = "09. Order flow (experimental)")] public bool UseOrderFlowBoost { get; set; }
 		[NinjaScriptProperty][Range(0.0, 1.0)][Display(Name = "Session delta with the trade >= (0.015 = research top 20%)", Order = 2, GroupName = "09. Order flow (experimental)")] public double OrderFlowCvdMin { get; set; }
 		[NinjaScriptProperty][Range(1, 5)][Display(Name = "Size multiplier when the delta agrees", Order = 3, GroupName = "09. Order flow (experimental)")] public int OrderFlowBoost { get; set; }

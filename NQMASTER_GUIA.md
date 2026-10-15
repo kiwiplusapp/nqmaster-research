@@ -1,5 +1,250 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★ 2026-10-15 (night): the operating system, as one design (English)
+
+Playbook page: `research/mine/os_playbook.html` (published as the "NQMaster Operating System" artifact). Research: `research/mine/os_adapt.py` -> `os_adapt.json`. Patches: `patch_fallback.py`, plus a fix to the Mffu50K preset (below).
+
+**Six layers.**
+1. **Edge.** Profile Ultra.
+2. **Size.** 1 base contract, MOM1030/CPI09 ×4, ×8 in 50K evals.
+3. **Account.** Presets.
+4. **Protection.** FOMC, ATR, risk cap, guards.
+5. **Adaptation.** Edge monitor → fallback.
+6. **Feedback.** Health report, panel, log.
+
+**New: what the edge monitor does on an alarm (`os_adapt.py`).**
+- Test period: 2013-19 cost-normalised. It is out of sample for the monitor's calibration, which used 2020-26 and never fires there. Ultra's edge was weak in those years.
+
+| On alarm | Sharpe 2013-19 | Max DD | Losing years 2011-19 | 2020-23 real |
+|---|---|---|---|---|
+| Alert only (old default) | 0.88 | $1,519 | 3 | $78,579 |
+| Pause 63 / 126 / 252 days | 0.73 / 0.69 / 0.86 | $1,526-2,101 | 4 | $78,579 |
+| **Review-set fallback 252 days, yearly table (shipped)** | **1.05** | **$1,338** | **2** | $78,579 |
+| Review-set fallback, exact alarm date | 1.15 | $1,249 | 1 | $78,579 |
+| Yearly review always on (no monitor) | 1.52 | $709 | 1 | $60,870 |
+
+- **Pausing on an alarm is worse than doing nothing.** Keep `EdgeMonitorPause = false`.
+- The fallback switches off the modules that failed the 5-year review (cost-normalised PF ≤ 1.05) for 252 monitored trading days, then resets the CUSUM and returns to the full profile.
+- Yearly table built into the code:
+
+  | Year | Modules off |
+  |---|---|
+  | 2020 | LF0430 LF06 MOM11 MOM13 ON07 ORB60 ORB90 REV06 VW13 |
+  | 2021 | LF0430 LF06 MOM11 MOM13 ON07 VW13 |
+  | 2022 | LF0430 LF06 ON07 VW13 |
+  | 2023 | LF06 ON07 |
+  | 2024 | LF06 VW13 |
+  | 2025-26 | none |
+  | 2027 | REV06 |
+
+- The always-on yearly review would have cost $17.7k in 2020-23 because it keeps recovering modules off. **So REV06 stays on in 2027 unless the monitor fires.** This replaces the earlier "REV06 off for 2027" advice.
+- Evidence size: 9 alarms in 9 years. The gain held for every length tested (126 / 252 / 378 days: Sharpe 0.97 / 1.05 / 1.07 vs 0.88).
+- New properties in group 06: `EdgeAlarmFallback` (true), `EdgeFallbackDays` (252), `EdgeFallbackOff` (empty = built-in table). The panel shows "FALLBACK n days left". Backup: `NQMaster_backup_pre_fallback.cs`.
+
+**Fix: Mffu50K preset, funded.**
+- It withdrew only above $6,600 profit, a value meant for the 2-contract step-up, while step-up is off by default.
+- Now it requests the payout at $4,600 (keeps $4,100) when step-up is off, and at $6,600 when it is on.
+- Tested at 1 contract (`smallacct_cushion.py`): keeping $4k gives $1,029 / $1,538 a month vs $836-976 / $1,323-1,478 when keeping $5-7k.
+- The preset now also turns on the news blackout in the funded account (MFFU rule: flat ±2 min around Tier-1 news).
+
+**Settings, the whole system.**
+- MFFU 50K eval: Ultra, Contracts 1, PropMode Eval, PropPreset Mffu50K.
+- MFFU 50K funded: the same with PropMode Funded.
+- Lucid Pro 25K, fastest: PropPreset LucidPro25K; new eval the day after a bust.
+- GoldMaster Robust on MGC alongside.
+- Defaults for everything else: Days to load ≥ 45, edge monitor on, fallback on.
+
+Stub compile OK, NOT compiled in NinjaTrader: F5.
+
+## ★★★★★★★★★ 2026-10-15 (later): "big size when an 80% strategy fires, to pass the eval fast" + update (English)
+
+Scripts: `research/mine/sniper_eval.py`, `sniper_uniform.py`, `sniper_life.py` (-> `.json` / `.csv`). Code patches: `patch_evalhw.py`, `patch_report.py`.
+
+Setup of every test:
+- Data: real Databento NQ minute paths 2020-26, Ultra after the 10-12 overhaul + CPI09.
+- Costs: +1 tick per side; firm rules as `month80.py`; daily profit stop 0.9 × consistency × target.
+- Choose on starts 2020-03..2023-10 (T1), check on starts 2024-26 (T2). "Pass ≤ 1 month" = within 20 listed days (about 22 trading days).
+
+**1. The idea as asked: any module that won ≥ 80% over the past year → big size.**
+- Walk-forward flag: the module's own trades of the previous 365 days, at least 20 of them, with win rate ≥ 80%. Mostly MOM11, REV06 and MOM1030, about 4.8 trades per week.
+- Those trades win 79.6% but average **+$46 per win vs −$132 per loss**, PF 1.34. That is lower than the full system's PF (~1.5).
+- One loss at 10 contracts is about −$1,300, which is most of a 50K trailing drawdown.
+- Lucid Pro 50K, 1 contract base, sniper trades at 8 contracts: single-eval pass ≤ 1 month 38/39% (T1/T2), but **busts 57/42%**.
+- Thresholds of 75%, 85% and a 2-year window behave the same. Sniper-only (no other trades): worse.
+- Compared with simply trading 2-4 contracts on everything, it is worse: Lucid Pro 50K at 2c passes 47/47% with 46/49% busts.
+- **Verdict: not a good idea.** A high win rate with small targets does not mean a big edge. Size there adds variance, not edge.
+
+**2. What does work: the two fixed ~80% modules (MOM1030, CPI09) at ×8 during the eval only.** 1 contract base, single eval.
+
+| 50K eval, 1 contract | MOM1030/CPI09 ×1 | ×4 (default) | **×8** |
+|---|---|---|---|
+| Lucid Pro 50K, pass ≤ 1 month T1 / T2 | 24.6 / 35.1% | 27.7 / 41.3% | **33.5 / 46.4%** |
+| — busts T1 / T2 | 18 / 24% | 19 / 23% | 27 / 24% |
+| — 35% less edge, pass ≤ 1 month | 19.3 / 21.4% | 21.3 / 26.5% | **24.7 / 33.1%** |
+| Lucid Flex 50K, pass ≤ 1 month | 24.3 / 34.8% | 27.3 / 40.3% | **33.6 / 47.8%** |
+| MFFU Rapid EOD 50K, pass ≤ 1 month | 20.0 / 26.5% | 22.4 / 33.4% | **28.5 / 40.9%** |
+| Peak open micros | 10 | 10 | 17 |
+
+- **Lifecycle per 50K seat** (eval with restarts → funded → payouts), $ per month T1 / T2, 35% less edge in brackets:
+
+  | Seat | ×1 / ×1 | ×4 / ×4 (today) | **eval ×8 / funded ×4** | ×8 / ×8 |
+  |---|---|---|---|---|
+  | MFFU | 1,064 / 1,583 (502 / 768) | 1,324 / 1,865 (708 / 1,008) | **1,351 / 1,903 (852 / 1,107)** | 1,602 / 2,168 |
+  | Lucid Flex | 875 / 1,066 (448 / 644) | 939 / 1,230 (563 / 663) | **980 / 1,322 (656 / 686)** | 1,073 / 1,380 |
+
+  - Accounts lost per year: about the same for eval ×8 / funded ×4 as for ×4/×4.
+  - ×8 in the funded account roughly doubles funded busts (MFFU 1.2 vs 0.3-0.4 a year), so it stays eval-only.
+- Whole portfolio at ×8: PF still rises, but Sharpe peaks at ×4-×6 and the drawdown grows (2020-23: $6.2k vs $4.6k). Outside evals ×4 stays the setting.
+- 25K accounts ($1,000 drawdown): ×8 is too big (Lucid Pro 25K, 2020-23 pass 45 vs 53%). Keep the 25K presets (2 contracts, ×4).
+- Fastest single eval is still more contracts on everything: Lucid Pro 50K 3c passes about 44% within a month and about 38-43% within 10 days.
+
+**3. Implemented in NQMaster (stub compile OK, NOT compiled in NinjaTrader: F5).**
+- `EvalHighWrMultiplier` (group 07, 0-8, default 0 = normal ×4). In PropMode Eval it replaces the MOM1030/CPI09 multiplier.
+  - **Presets Lucid50K and Mffu50K set it to 8** in Eval; the preset printout shows it.
+  - Funded accounts keep ×4; the SAFE gear (noBoost) still removes it.
+  - Backup: `NQMaster_backup_pre_evalhw.cs`.
+- `ModuleHealthReport` (group 10, default on). The Output window and log file list per module: trades, win rate, PF and net, for the whole run and the last 365 days.
+  - It marks modules at ≥ 80% last year and modules losing last year (review).
+  - It prints when the strategy goes live (loaded history) and at the end of a backtest.
+  - It is for the yearly review, not for sizing.
+- `DisableModules` (group 10, comma list, any profile). Switches modules off by name, e.g. `REV06`, which the walk-forward yearly review (`robust16.py`) flags for 2027. Backup: `NQMaster_backup_pre_report.cs`.
+
+**Settings for a 50K eval now:** Profile Ultra, Contracts 1, PropMode Eval, PropPreset Lucid50K or Mffu50K (sets ×8). Funded: same preset with PropMode Funded (×4).
+
+## ★★★★★★★★ 2026-10-15: "80%+ setups at 4 contracts" (English)
+
+Scripts: `research/mine/wr80_lab.py` -> `wr80_lab.json` / `wr80_lab.csv`, and `research/mine/size_q.py`.
+
+**Question.** Can we know before the entry that a trade belongs to a group that wins 80% or more, and trade 4 contracts there?
+
+**Search.** Every Ultra trade from 2010 to 2026 (real Databento NQ) gets 19 features known before the entry:
+- trend, 5/20/60-day returns, ATR regime, stop size;
+- VWAP distance, gap, prior-day range and position;
+- overnight range, position in the day's range, last-30-minute move, volatility, weekday.
+
+Each candidate setup is one module × one feature × one quantile side. The protocol was fixed before looking:
+- Chosen on 2020-23 with win rate ≥ 80% and PF ≥ 1.5.
+- Must then hold in 2024-26: win rate ≥ 80% and PF ≥ 1.3.
+- And in 2010-19: win rate ≥ 75% and PF ≥ 1.1.
+
+**Result.**
+- 182 setups pass 2020-23 and 30 also pass 2024-26 and 2010-19.
+- **The same search with the features shuffled at random also gives about 34 survivors (maximum 44).** So no feature finds better trades than chance.
+- Every survivor is just **MOM1030**, a module whose normal win rate is already about 80%: 80% in 2020-23, 83% in 2024-26, 75-79% in 2010-19.
+- Conclusion: we cannot predict which individual trades will win 80%+. We can only pick the modules whose normal win rate is about 80%.
+
+**Implemented: 4 contracts on the two ~80% modules.**
+- MOM1030 win rate: 80-83% since 2020, 75-79% before.
+- CPI09 win rate: 78-81% since 2020.
+- New properties: `Mom1030Multiplier = 4` and `Cpi09Multiplier = 4`, group 01.
+
+| | Sharpe 2010-14 / 2015-19 / 2020-23 / 2024-26 | PF, same periods | $ 2020-23 / 2024-26 | Max drawdown 2020-23 / 2024-26 |
+|---|---|---|---|---|
+| Ultra (before) | 0.26 / 1.16 / 3.44 / 3.74 | 1.026 / 1.132 / 1.474 / 1.506 | 78.6k / 77.5k | 3,621 / 4,447 |
+| Ultra + MOM1030 x4 + CPI09 x4 | 0.42 / 1.23 / 3.54 / 3.96 | 1.042 / 1.139 / 1.481 / 1.529 | 86.3k / 86.2k | 4,582 / 3,661 |
+| UltraQ (before) | 0.61 / 1.14 / 3.36 / 3.59 | 1.068 / 1.142 / 1.510 / 1.531 | 71.0k / 69.4k | 3,390 / 3,985 |
+| UltraQ + x4 | 0.76 / 1.17 / 3.48 / 3.78 | 1.085 / 1.145 / 1.519 / 1.552 | 78.8k / 77.6k | 4,711 / 3,143 |
+
+- Sharpe and PF are higher in all four periods, and income rises about 10-11%.
+- The 2020-23 drawdown is about $1k larger.
+- Rejected: ORB60 x2 (higher PF but lower Sharpe and +$1.3k drawdown); MOM11 x2 (it lost money in 2010-19).
+- **ORB at 75%+ win rate:** it is a target choice, not a better setup. ORB60 at 0.4R wins 74-75% with PF 1.42-1.51; at 0.6R (the current setting) it wins 68-71% with PF 1.60-1.62. A higher win rate there means lower PF.
+
+**Options open interest (CME QuikStrike heatmap data), 2026-10-15** — `research/mine/oi_lab.py` -> `oi_lab.json`. This uses Databento NQ quarterly options (NQ.OPT, which does not include the weeklies), with OI as published the day before. It cost about $7.80 of free credit.
+
+| Test | 2024-25 | 2026 |
+|---|---|---|
+| Close nearer the biggest-OI strike than the open was (front expiry) | 44.6% (control strike 43.1%) | 38.5% (control 43.2%) |
+| First touch of a top-3 OI strike, 30 min later reversed | 46.6% (ordinary round number 50.2%) | 45.8% (round number 45.4%) |
+| Ultra trades with a big OI strike between entry and target (within 0.4%) | WR 65.0%, PF 1.42 vs 66.2%, 1.47 without | WR 63.0%, PF 1.51 vs 66.8%, 1.66 without |
+
+- No magnet effect and no support/resistance effect.
+- Trades with an OI wall ahead are slightly weaker, but they are still clearly profitable (PF 1.4-1.5). Skipping them would lose money.
+- **Verdict: the open-interest heatmap does not help NQMaster.** Nothing was implemented.
+
+## ★★★★★★★ 2026-10-14 (later): 16-year robustness table + yearly module review (English)
+
+Script: `research/mine/robust16.py` -> `robust16.json`. Years 2013-19 are cost-normalised (cost 0.345% of ATR per trade); 2020-26 are real $ per MNQ, 1 contract.
+
+| Year | Ultra PF / WR | UltraQ PF / WR | Durable PF / WR | Ultra $ | UltraQ $ | Durable $ |
+|---|---|---|---|---|---|---|
+| 2013 | 0.89 / 59 | 0.95 / 63 | 0.99 / 56 | | | |
+| 2014 | 1.15 / 63 | 1.19 / 66 | 1.54 / 62 | | | |
+| 2015 | 0.95 / 59 | 0.99 / 62 | 1.03 / 55 | | | |
+| 2016 | 1.25 / 64 | 1.28 / 67 | 1.29 / 58 | | | |
+| 2017 | 1.18 / 62 | 1.14 / 64 | 1.26 / 59 | | | |
+| 2018 | 1.21 / 63 | 1.23 / 66 | 1.46 / 61 | | | |
+| 2019 | 1.10 / 60 | 1.08 / 64 | 1.34 / 62 | | | |
+| 2020 | 1.41 / 67 | 1.41 / 69 | 1.46 / 60 | 15,551 | 13,632 | 8,099 |
+| 2021 | 1.42 / 66 | 1.52 / 71 | 1.49 / 63 | 13,933 | 14,110 | 7,432 |
+| 2022 | 1.72 / 70 | 1.77 / 73 | 1.94 / 68 | 37,400 | 32,670 | 21,219 |
+| 2023 | 1.27 / 64 | 1.29 / 67 | 1.41 / 64 | 11,693 | 10,552 | 6,923 |
+| 2024 | 1.40 / 64 | 1.40 / 67 | 1.52 / 62 | 19,190 | 16,740 | 11,148 |
+| 2025 | 1.51 / 68 | 1.52 / 70 | 1.68 / 62 | 27,731 | 24,145 | 16,679 |
+| 2026 to Oct 8 | 1.61 / 66 | 1.68 / 68 | 2.12 / 62 | 30,569 | 28,514 | 20,906 |
+
+- Durable's six modules were chosen with 2010-26 in view, so its old years are not out of sample.
+- 2013 and 2015 were losing years for Ultra and UltraQ: the edge is mostly a post-2020 regime.
+
+**Yearly module review (new rule, tested walk-forward):**
+- Each January, switch off any module whose last-5-year cost-normalised PF is ≤ 1.05.
+- The rule uses only past data. From 2013 to 2026 it gave 13 of 14 positive years, and in 2013-19 it switched off the modules that later failed.
+- In 2020-21 it switched the newly working modules back on late, which cost about $18k versus Ultra in 2020-23. In 2024-26 it was equal to Ultra.
+- **Decision for January 2027: switch REV06 off** (UseRev06 = false). REV06's PF is 1.01 on 2024-26 research and 1.03 in the NinjaTrader run.
+- Re-run `python robust16.py` every January for the next year's list.
+
+## ★★★★★★ 2026-10-14: higher win rate AND profit factor — profile UltraQ + CPI09 (English) — READ THIS FIRST
+
+Scripts: `research/news_hist.py` (CPI calendar 2009-2019 from the BLS archive; 2020-26 was already in `news.py`), `research/mine/cpi_lab.py` (CPI strategies), `research/mine/ultra_q2.py` (levers screened on 4 periods), `research/mine/ultraq_build.py` (UltraQ trades + edge-monitor calibration), `research/mine/patch_cpi09.py` (code). Backup `NQMaster_backup_pre_cpi09.cs`.
+
+Data: real Databento NQ 1-minute futures, 2010-06 to 2026-10. Four periods: 2010-14 and 2015-19 cost-normalised (cost 0.345% of ATR); 2020-23 and 2024-26 real $ per MNQ ($1.90 + 1 tick per side).
+
+**1. CPI method (`cpi_lab.py`, 4,968 settings, CPI days only, 211 releases).**
+- Most CPI rules lose. The median PF is 0.81-0.92 in every period, and choosing on 2020-23 did not predict 2024-26.
+- One family holds in all four periods: **fade the CPI move at the 09:30 open**. Measure the move from the 08:30 bar open to 09:29; if it is at least 0.05 ATR, trade against it at the 09:30 open. Stop 0.35 ATR, target 0.5R, exit after 60 minutes.
+
+| CPI09 | 2010-14 | 2015-19 | 2020-23 | 2024-26 |
+|---|---|---|---|---|
+| Trades | 42 | 45 | 41 | 27 |
+| PF | 1.58 | 1.13 | 1.94 | 2.62 |
+| Win rate | — | — | 78% | 81.5% |
+
+- With 4 ticks of slippage per side, the 2024-26 PF is still 2.55.
+- The same rule on ordinary days loses (PF 0.82-0.93), so the effect is specific to CPI days. On NFP days it does not hold (2015-19 PF 0.6-0.9).
+- The neighbouring settings agree: entering 30 or 60 minutes after the release with a minimum move of 0-0.2 ATR all stay above PF 1.
+- Entering right after the release (08:31-08:45) works in 2024-26 but **loses in 2020-23**, because CPI moves trended in 2021-23. So no early entry is used.
+- **Caveats:**
+  - It trades only about 12 times a year, so it adds roughly $25-50 per month.
+  - The samples are small: 18 of 4,968 settings passed, about what chance alone would give. The case for it is the CPI-only control and the stable neighbouring settings.
+- It is now module **CPI09**, on by default in Ultra, UltraQ and WR70Plus.
+- Effect on WR70Plus: win rate +0.03..0.14 and PF +0.005..0.01 in 3 of 4 periods; in 2015-19 the win rate is -0.03 and PF +0.001, i.e. flat.
+
+**2. Ultra levers (`ultra_q2.py`, list fixed before looking).**
+- Tested: drop REV06 / ON07 / the wide VW13 lot / MOM11 / LON / ICT, skip CPI mornings, skip CPI days, skip NFP mornings, and add CPI09.
+- No single change raises both win rate and PF in all four periods. The high-win-rate modules (REV06, MOM11) have low PF, and the high-PF modules (LON, ICT, ON07) have low win rates.
+- The combination that does raise both everywhere is **UltraQ** = Ultra without ON07, LON, ICT and without the wide VW13 lot, plus CPI09:
+
+| | 2010-14 | 2015-19 | 2020-23 | 2024-26 |
+|---|---|---|---|---|
+| WR Ultra → UltraQ | 59.7 → 63.5 | 61.5 → 64.6 | 66.9 → 70.2 | 65.7 → 68.3 |
+| PF Ultra → UltraQ | 1.023 → 1.068 | 1.133 → 1.142 | 1.470 → 1.510 | 1.499 → 1.531 |
+| $ per month (real) | | | 1,610 → 1,478 | 2,301 → 2,103 |
+| Max drawdown (real) | | | 3,470 → 3,390 | 4,570 → 3,985 |
+
+- PF is equal or higher in every year 2020-26: 1.41, 1.52, 1.77, 1.29, 1.40, 1.52, 1.68.
+- The win rate is +2-4 points every year.
+- About 3.9 trades a day.
+- Sharpe is about equal: +0.38 / -0.02 / -0.04 / -0.06 versus Ultra.
+- **The cost: about 8% less money.** For prop lifecycle income, Ultra stays slightly ahead.
+- The changes were picked after seeing all four periods (10 combinations compared). Expect part of the gain to shrink live.
+
+**How to use:**
+- Profile **UltraQ** (new) with Contracts 1. CPI09 is on automatically (UseCpi09).
+- The CPI dates for 2024-2027 are built in. Add later years in "Extra CPI release dates".
+- Edge monitor for UltraQ: k 0.0696, h 20.87.
+- To validate in NinjaTrader, export the UltraQ run's trades and run `python nt_compare.py <trades.csv> --set ultra_q`.
+- Not compiled in NinjaTrader yet; the stub type-check passes. **Press F5 on the PC.**
+
 ## ★★★★★ 2026-10-13 (night): ONE eval, no second purchase, >= 70% pass (English) — READ THIS FIRST
 
 Scripts: `research/mine/single70.py` (wide grid of 22,000 settings; its Bulenox rows wrongly allowed running without the mandatory DLL, and its "robust" view mixed periods, so do not use it for decisions) and **`research/mine/single70b.py`** (the clean protocol) -> `single70b.json`. Each setting is chosen on 2020-23 starts and checked on 2024-26 starts. It runs on real Databento NQ futures, at 1 contract, with $1.90 + 1 tick per side. Each start is a single attempt with no restarts. "Within N days" counts listed trading days.
