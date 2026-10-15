@@ -1,5 +1,44 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★ 2026-10-15: "80%+ setups at 4 contracts" (English)
+
+Scripts: `research/mine/wr80_lab.py` -> `wr80_lab.json` / `wr80_lab.csv`, and `research/mine/size_q.py`.
+
+**Question.** Can we know before the entry that a trade belongs to a group that wins 80% or more, and trade 4 contracts there?
+
+**Search.** Every Ultra trade from 2010 to 2026 (real Databento NQ) gets 19 features known before the entry:
+- trend, 5/20/60-day returns, ATR regime, stop size;
+- VWAP distance, gap, prior-day range and position;
+- overnight range, position in the day's range, last-30-minute move, volatility, weekday.
+
+Each candidate setup is one module × one feature × one quantile side. The protocol was fixed before looking:
+- Chosen on 2020-23 with win rate ≥ 80% and PF ≥ 1.5.
+- Must then hold in 2024-26: win rate ≥ 80% and PF ≥ 1.3.
+- And in 2010-19: win rate ≥ 75% and PF ≥ 1.1.
+
+**Result.**
+- 182 setups pass 2020-23 and 30 also pass 2024-26 and 2010-19.
+- **The same search with the features shuffled at random also gives about 34 survivors (maximum 44).** So no feature finds better trades than chance.
+- Every survivor is just **MOM1030**, a module whose normal win rate is already about 80%: 80% in 2020-23, 83% in 2024-26, 75-79% in 2010-19.
+- Conclusion: we cannot predict which individual trades will win 80%+. We can only pick the modules whose normal win rate is about 80%.
+
+**Implemented: 4 contracts on the two ~80% modules.**
+- MOM1030 win rate: 80-83% since 2020, 75-79% before.
+- CPI09 win rate: 78-81% since 2020.
+- New properties: `Mom1030Multiplier = 4` and `Cpi09Multiplier = 4`, group 01.
+
+| | Sharpe 2010-14 / 2015-19 / 2020-23 / 2024-26 | PF, same periods | $ 2020-23 / 2024-26 | Max drawdown 2020-23 / 2024-26 |
+|---|---|---|---|---|
+| Ultra (before) | 0.26 / 1.16 / 3.44 / 3.74 | 1.026 / 1.132 / 1.474 / 1.506 | 78.6k / 77.5k | 3,621 / 4,447 |
+| Ultra + MOM1030 x4 + CPI09 x4 | 0.42 / 1.23 / 3.54 / 3.96 | 1.042 / 1.139 / 1.481 / 1.529 | 86.3k / 86.2k | 4,582 / 3,661 |
+| UltraQ (before) | 0.61 / 1.14 / 3.36 / 3.59 | 1.068 / 1.142 / 1.510 / 1.531 | 71.0k / 69.4k | 3,390 / 3,985 |
+| UltraQ + x4 | 0.76 / 1.17 / 3.48 / 3.78 | 1.085 / 1.145 / 1.519 / 1.552 | 78.8k / 77.6k | 4,711 / 3,143 |
+
+- Sharpe and PF are higher in all four periods, and income rises about 10-11%.
+- The 2020-23 drawdown is about $1k larger.
+- Rejected: ORB60 x2 (higher PF but lower Sharpe and +$1.3k drawdown); MOM11 x2 (it lost money in 2010-19).
+- **ORB at 75%+ win rate:** it is a target choice, not a better setup. ORB60 at 0.4R wins 74-75% with PF 1.42-1.51; at 0.6R (the current setting) it wins 68-71% with PF 1.60-1.62. A higher win rate there means lower PF.
+
 ## ★★★★★★★ 2026-10-14 (later): 16-year robustness table + yearly module review (English)
 
 Script: `research/mine/robust16.py` -> `robust16.json`. Years 2013-19 are cost-normalised (cost 0.345% of ATR per trade); 2020-26 are real $ per MNQ, 1 contract.

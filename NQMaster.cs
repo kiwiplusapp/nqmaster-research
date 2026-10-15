@@ -300,7 +300,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseOrb = true; OrbRangeMin = 60; OrbTargetR = 0.6; OrbPullbackFilter = true; PullbackMaxRet = 0.44; StopCapAtr = 0.35;
 				UseMseq = true; UseCrt = true; UseMom11 = true; UseMom1130 = true; UseRsi2 = true; UseOrb90 = true; UseMseqShort = true; UseMom13 = true; UseMom1030 = true; UseOn07 = true; UseRev06 = true; UseLon = true; UseIct = true;
 				Contracts = 1; FlattenTime = 1556; SkipFomc = true;
-				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = false; UseLateFh = false; Vw13Wide = true; UseNf05 = true; UseLf0315 = false; UseLf06 = true; UseLf0430 = true; NightOnWr70 = false; UseCpi09 = true; CpiDates = ""; Cpi09Multiplier = 2; Mom1030Multiplier = 2;
+				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = false; UseLateFh = false; Vw13Wide = true; UseNf05 = true; UseLf0315 = false; UseLf06 = true; UseLf0430 = true; NightOnWr70 = false; UseCpi09 = true; CpiDates = ""; Cpi09Multiplier = 4; Mom1030Multiplier = 4;
 				FomcDates = "2024-01-31,2024-03-20,2024-05-01,2024-06-12,2024-07-31,2024-09-18,2024-11-07,2024-12-18,2025-01-29,2025-03-19,2025-05-07,2025-06-18,2025-07-30,2025-09-17,2025-10-29,2025-12-10,2026-01-28,2026-03-18,2026-04-29,2026-06-17,2026-07-29,2026-09-16,2026-10-28,2026-12-09";
 				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250; DailyLossLimit = 0; MinAtrPoints = 150;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3; EvalLateMinCushion = 0;
@@ -793,7 +793,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			int st = Math.Max(4, (int)Math.Round(m.StopAtr * atrDaily / TickSize));
 			int tq = m.Sig == "MOM13" ? LateQty(d, Hm(m.Time)) : Qty();
-			// research/mine/size_q.py (2026-10-15): x2 raised Sharpe in 2010-14 / 2015-19 / 2020-23 / 2024-26 for these two only
+			// research/mine/size_q.py + wr80_lab.py (2026-10-15): the two ~80% win-rate modules; x4 raised Sharpe and PF in 2010-14 / 2015-19 / 2020-23 / 2024-26
 			if (!noBoost && m.Sig == "CPI09" && Cpi09Multiplier > 1) tq = Cpi09Multiplier * Qty();
 			if (!noBoost && m.Sig == "MOM1030" && Mom1030Multiplier > 1) tq = Mom1030Multiplier * Qty();
 			if (m.DoubleDist > 0 && !noBoost && Math.Abs(Close[0] - reference) >= m.DoubleDist * atrDaily) tq = 2 * Qty();
@@ -1735,8 +1735,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "Night modules also in WR70Plus (NF05 / LF06 / LF0430)", Order = 26, GroupName = "01. Module switches (any profile)")] public bool NightOnWr70 { get; set; }
 		[NinjaScriptProperty][Display(Name = "CPI09 on (CPI days: 09:30 fade of the 08:30 release move; Ultra / UltraQ / WR70Plus)", Order = 27, GroupName = "01. Module switches (any profile)")] public bool UseCpi09 { get; set; }
 		[NinjaScriptProperty][Display(Name = "Extra CPI release dates (yyyy-MM-dd list; built in 2024-2027)", Order = 28, GroupName = "01. Module switches (any profile)")] public string CpiDates { get; set; }
-		[NinjaScriptProperty][Range(1, 3)][Display(Name = "CPI09 size multiplier (2 = validated)", Order = 29, GroupName = "01. Module switches (any profile)")] public int Cpi09Multiplier { get; set; }
-		[NinjaScriptProperty][Range(1, 3)][Display(Name = "MOM1030 size multiplier (2 = validated)", Order = 30, GroupName = "01. Module switches (any profile)")] public int Mom1030Multiplier { get; set; }
+		[NinjaScriptProperty][Range(1, 4)][Display(Name = "CPI09 size multiplier (4 = validated: ~80% win-rate module)", Order = 29, GroupName = "01. Module switches (any profile)")] public int Cpi09Multiplier { get; set; }
+		[NinjaScriptProperty][Range(1, 4)][Display(Name = "MOM1030 size multiplier (4 = validated: ~80% win-rate module)", Order = 30, GroupName = "01. Module switches (any profile)")] public int Mom1030Multiplier { get; set; }
 		[NinjaScriptProperty][Range(-5.0, 5.0)][Display(Name = "Pullback max prior-day move (x ATRd)", Order = 20, GroupName = "02. Edge")] public double PullbackMaxRet { get; set; }
 		[NinjaScriptProperty][Range(0.05, 1.0)][Display(Name = "ORB stop cap (x ATRd)", Order = 21, GroupName = "02. Edge")] public double StopCapAtr { get; set; }
 		[NinjaScriptProperty][Range(-1.0, 2.0)][Display(Name = "ORB: breakout must clear the prior close by x ATR (0.10; -1 = off)", Order = 22, GroupName = "02. Edge")] public double OrbPriorCloseAtr { get; set; }
