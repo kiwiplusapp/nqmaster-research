@@ -1,7 +1,6 @@
 """2026-10-15 CME NQ options open interest (what the QuikStrike OI heatmap shows) as a trading input. Databento GLBX.MDP3 NQ.OPT
 definition + statistics (open interest, stat_type 9), 2024-01..2026-10 (free credit). Levels for trading day D use only OI
-published before D (no lookahead). Levels: per strike, OI summed over calls+puts of every NQ option expiring within the next
-7 calendar days ("near" walls) and of all expiries ("all"). Tests (fixed before looking), each on 2024-25 and on 2026 separately:
+published before D (no lookahead). Levels: per strike, OI summed over calls+puts of the FRONT quarterly expiry ("near" walls; NQ.OPT holds only the quarterly options) and of all expiries ("all"). Tests (fixed before looking), each on 2024-25 and on 2026 separately:
  1 Magnet: on days when a near expiry settles, does the RTH close end nearer to the largest-OI strike than the 09:30 open?
    Control = same test with a strike shifted by +-3 strikes (100-250 pts away from the big one, same distance class).
  2 Level reaction: first RTH touch (after 10:00) of a top-3 OI strike: 30-min move against the approach (rejection) vs touches of
@@ -41,14 +40,16 @@ def levels(s, days):
         dd = pd.Timestamp(str(D)).date(); k = np.searchsorted(oid, dd) - 1
         if k < 0: continue
         snap = s[s.day == oid[k]]
-        near = snap[(pd.to_datetime(snap.exp) >= pd.Timestamp(dd)) & (pd.to_datetime(snap.exp) <= pd.Timestamp(dd) + pd.Timedelta(days=7))]
+        fut = snap[pd.to_datetime(snap.exp) >= pd.Timestamp(dd)]
+        near = fut[fut.exp == fut.exp.min()] if len(fut) else fut          # front expiry (quarterly NQ options; weeklies are other parents)
         out[D] = dict(near=near.groupby("strike_price").quantity.sum(), all=snap[pd.to_datetime(snap.exp) >= pd.Timestamp(dd)].groupby("strike_price").quantity.sum(),
                       expday=bool((snap.exp == dd).any()))
     return out
 
 
 if __name__ == "__main__":
-    s = load(); print("OI rows", len(s), "days", s.day.nunique(), "first", s.day.min(), "last", s.day.max(), flush=True)
+    cache = os.path.join(OI, "oi_cache.pkl")
+    s = pd.read_pickle(cache) if os.path.exists(cache) else load(); print("OI rows", len(s), "days", s.day.nunique(), "first", s.day.min(), "last", s.day.max(), flush=True)
     D = Data("nqdb.npz")
     # nqdb is forward-adjusted (later prices moved DOWN by the cumulative roll carry): raw = adjusted + carry of the rolls so far
     rolls = pd.read_csv(os.path.join(os.path.dirname(HERE), "data", "nqdb_rolls.csv"), parse_dates=["switch_utc"]).sort_values("switch_utc")
@@ -56,10 +57,6 @@ if __name__ == "__main__":
     def carry(d):
         k = np.searchsorted(rd, d, side="right") - 1
         return float(cum[k]) if k >= 0 else 0.0
-    off = {d: carry(d) for d in np.unique(D.daydate[D.daydate >= 20231201])}
-    for a in ("o", "h", "l", "c"):
-        arr = getattr(D, a).copy(); m = D.date >= 20231201
-        arr[m] = arr[m] + np.vectorize(lambda d: off.get(d, carry(d)))(D.date[m]); setattr(D, a, arr)
     rth = (D.om >= 570) & (D.om < 960); days = np.array(sorted(set(D.daydate[(D.daydate >= 20240102)])))
     L = levels(s, days); print("days with levels", len(L), flush=True)
     res = {"meta": dict(oi_days=int(s.day.nunique()), level_days=len(L))}
@@ -67,7 +64,7 @@ if __name__ == "__main__":
     for d, lv in L.items():
         idx = np.nonzero((D.date == d) & rth)[0]
         if len(idx) < 300: continue
-        o, c = D.o[idx[0]], D.c[idx[-1]]; hi, lo = D.h[idx], D.l[idx]; om = D.om[idx]
+        cy = carry(d); o, c = D.o[idx[0]] + cy, D.c[idx[-1]] + cy; hi, lo = D.h[idx] + cy, D.l[idx] + cy; om = D.om[idx]; cl = D.c[idx] + cy
         for kind in ("near", "all"):
             ser = lv[kind]
             if ser is None or len(ser) == 0 or ser.sum() <= 0: continue
@@ -82,22 +79,22 @@ if __name__ == "__main__":
             for lvl, typ in [(k, "oi") for k in top] + [(r, "round") for r in np.arange(np.ceil(lo.min() / 100) * 100, hi.max(), 100) if not np.any(np.abs(top - r) < 1)]:
                 t = np.nonzero((om >= 600) & (om < 930) & (lo <= lvl) & (hi >= lvl))[0]
                 if len(t) == 0 or t[0] == 0: continue
-                t = t[0]; appr = 1 if D.c[idx[t - 1]] < lvl else -1; t30 = min(t + 30, len(idx) - 1)
-                rows.append(dict(date=d, kind=kind + "_touch_" + typ, rej=float((lvl - D.c[idx[t30]]) * appr)))
-    R = pd.DataFrame(rows)
+                t = t[0]; appr = 1 if cl[t - 1] < lvl else -1; t30 = min(t + 30, len(idx) - 1)
+                rows.append(dict(date=d, kind=kind + "_touch_" + typ, rej=float((lvl - cl[t30]) * appr)))
+    R = pd.DataFrame(rows); R.to_pickle(os.path.join(OI, "oi_rows.pkl"))
     for per, m in (("2024-25", R.date < 20260101), ("2026", R.date >= 20260101)):
         X = R[m]; out = {}
         for kind in ("near", "all"):
             a = X[X.kind == kind]; e = a[a.exp]
-            out[kind] = dict(days=int(len(a)), magnet_all=round(float(a.magnet.mean()), 3), ctrl_all=round(float(a.ctrl.mean()), 3),
-                             exp_days=int(len(e)), magnet_exp=round(float(e.magnet.mean()), 3) if len(e) else None, ctrl_exp=round(float(e.ctrl.mean()), 3) if len(e) else None)
+            out[kind] = dict(days=int(len(a)), magnet_all=round(float(a.magnet.astype(float).mean()), 3), ctrl_all=round(float(a.ctrl.astype(float).mean()), 3),
+                             exp_days=int(len(e)), magnet_exp=round(float(e.magnet.astype(float).mean()), 3) if len(e) else None, ctrl_exp=round(float(e.ctrl.mean()), 3) if len(e) else None)
             for typ in ("oi", "round"):
                 t = X[X.kind == f"{kind}_touch_{typ}"].rej
                 out[kind][f"touch_{typ}"] = dict(n=int(len(t)), mean_rejection_pts=round(float(t.mean()), 2), p_reject=round(float((t > 0).mean()), 3))
         res[per] = out; print(per, json.dumps(out), flush=True)
     # 3 NQMaster trade filter
     X = pickle.load(open(os.path.join(HERE, "cand16_trades.pkl"), "rb"))["UltraR"][0]; X = X[X.date >= 20240102].copy()
-    ent = D.o[X.fi.to_numpy().astype(int)]
+    ent = D.o[X.fi.to_numpy().astype(int)] + np.array([carry(d) for d in X.date])
     pf = lambda u: float(u[u > 0].sum() / -u[u <= 0].sum())
     flag = []
     for (d, e, dd), u in zip(X[["date"]].assign(e=ent, dd=X.d).itertuples(index=False), X.u):

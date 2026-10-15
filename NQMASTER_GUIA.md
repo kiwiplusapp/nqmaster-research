@@ -39,6 +39,18 @@ Each candidate setup is one module × one feature × one quantile side. The prot
 - Rejected: ORB60 x2 (higher PF but lower Sharpe and +$1.3k drawdown); MOM11 x2 (it lost money in 2010-19).
 - **ORB at 75%+ win rate:** it is a target choice, not a better setup. ORB60 at 0.4R wins 74-75% with PF 1.42-1.51; at 0.6R (the current setting) it wins 68-71% with PF 1.60-1.62. A higher win rate there means lower PF.
 
+**Options open interest (CME QuikStrike heatmap data), 2026-10-15** — `research/mine/oi_lab.py` -> `oi_lab.json`. This uses Databento NQ quarterly options (NQ.OPT, which does not include the weeklies), with OI as published the day before. It cost about $7.80 of free credit.
+
+| Test | 2024-25 | 2026 |
+|---|---|---|
+| Close nearer the biggest-OI strike than the open was (front expiry) | 44.6% (control strike 43.1%) | 38.5% (control 43.2%) |
+| First touch of a top-3 OI strike, 30 min later reversed | 46.6% (ordinary round number 50.2%) | 45.8% (round number 45.4%) |
+| Ultra trades with a big OI strike between entry and target (within 0.4%) | WR 65.0%, PF 1.42 vs 66.2%, 1.47 without | WR 63.0%, PF 1.51 vs 66.8%, 1.66 without |
+
+- No magnet effect and no support/resistance effect.
+- Trades with an OI wall ahead are slightly weaker, but they are still clearly profitable (PF 1.4-1.5). Skipping them would lose money.
+- **Verdict: the open-interest heatmap does not help NQMaster.** Nothing was implemented.
+
 ## ★★★★★★★ 2026-10-14 (later): 16-year robustness table + yearly module review (English)
 
 Script: `research/mine/robust16.py` -> `robust16.json`. Years 2013-19 are cost-normalised (cost 0.345% of ATR per trade); 2020-26 are real $ per MNQ, 1 contract.

@@ -1,0 +1,106 @@
+{
+ "meta": {
+  "oi_days": 708,
+  "level_days": 718
+ },
+ "2024-25": {
+  "near": {
+   "days": 473,
+   "magnet_all": 0.446,
+   "ctrl_all": 0.431,
+   "exp_days": 0,
+   "magnet_exp": null,
+   "ctrl_exp": null,
+   "touch_oi": {
+    "n": 266,
+    "mean_rejection_pts": -4.05,
+    "p_reject": 0.466
+   },
+   "touch_round": {
+    "n": 847,
+    "mean_rejection_pts": 1.31,
+    "p_reject": 0.502
+   }
+  },
+  "all": {
+   "days": 474,
+   "magnet_all": 0.466,
+   "ctrl_all": 0.426,
+   "exp_days": 0,
+   "magnet_exp": null,
+   "ctrl_exp": null,
+   "touch_oi": {
+    "n": 267,
+    "mean_rejection_pts": -2.5,
+    "p_reject": 0.472
+   },
+   "touch_round": {
+    "n": 849,
+    "mean_rejection_pts": 0.47,
+    "p_reject": 0.499
+   }
+  },
+  "ultra_filter": {
+   "0.0": {
+    "n": 1420,
+    "wr": 66.2,
+    "pf": 1.468
+   },
+   "1.0": {
+    "n": 906,
+    "wr": 65.0,
+    "pf": 1.42
+   }
+  }
+ },
+ "2026": {
+  "near": {
+   "days": 192,
+   "magnet_all": 0.385,
+   "ctrl_all": 0.432,
+   "exp_days": 0,
+   "magnet_exp": null,
+   "ctrl_exp": null,
+   "touch_oi": {
+    "n": 96,
+    "mean_rejection_pts": -2.63,
+    "p_reject": 0.458
+   },
+   "touch_round": {
+    "n": 531,
+    "mean_rejection_pts": -1.03,
+    "p_reject": 0.454
+   }
+  },
+  "all": {
+   "days": 193,
+   "magnet_all": 0.44,
+   "ctrl_all": 0.453,
+   "exp_days": 1,
+   "magnet_exp": 1.0,
+   "ctrl_exp": 1.0,
+   "touch_oi": {
+    "n": 96,
+    "mean_rejection_pts": -4.24,
+    "p_reject": 0.448
+   },
+   "touch_round": {
+    "n": 527,
+    "mean_rejection_pts": -0.23,
+    "p_reject": 0.457
+   }
+  },
+  "ultra_filter": {
+   "0.0": {
+    "n": 554,
+    "wr": 66.8,
+    "pf": 1.661
+   },
+   "1.0": {
+    "n": 300,
+    "wr": 63.0,
+    "pf": 1.506
+   }
+  }
+ }
+}
