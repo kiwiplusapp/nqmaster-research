@@ -15,6 +15,7 @@ from wrq_lib import getD, SLIP, S
 from wrq_port import build_profile, metrics, days_of, PROFILES, conflict_filter, apply_rules, module_trades, BASE_W, daily
 from wrq_agree import n_same
 HERE = os.path.dirname(os.path.abspath(__file__))
+# guard-ok: read-only wrq_feats.pkl; importers use FT
 FT = pickle.load(open(os.path.join(HERE, "wrq_feats.pkl"), "rb"))
 _RNG = {}
 
@@ -63,10 +64,12 @@ def build(per, prof, over=None, agr=(), slip=SLIP, cache=None):
     return apply_rules(X, per)
 
 BE = {"VOLB": (dict(be=0.75, beo=0.1), None)}
+# guard-ok-begin: filter tables built from FT (read-only); importers use ORBt / VTSO
 ORBc = {"ORB60": ({}, k_pdcd(0.0988)), "ORB90": ({}, k_pdcd(0.0988))}
 ORBt = {"ORB60": ({}, k_trig(0.1, 60)), "ORB90": ({}, k_trig(0.1, 90))}
 ORB0 = {"ORB60": ({}, k_trig(0.0, 60)), "ORB90": ({}, k_trig(0.0, 90))}
 VTSO = {"VOLB_tf1": ({}, k_tso(77))}
+# guard-ok-end
 CANDS = {
     "Ultra": [("base", None, ()), ("BE", BE, ()), ("ORBc", ORBc, ()), ("ORBt", ORBt, ()), ("ORB0", ORB0, ()),
               ("AGR (MOM1030, MOM13)", None, ("MOM1030", "MOM13")), ("AGR3 (+LATE15)", None, ("MOM1030", "MOM13", "LATE15")),

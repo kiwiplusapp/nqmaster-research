@@ -1,6 +1,7 @@
 import pickle, numpy as np, pandas as pd
 from news import NEWS
-M = pickle.load(open("modpnl.pkl", "rb"))
+if __name__ == "__main__":      # used by sets() / the script only (improve2.py imports perf())
+    M = pickle.load(open("modpnl.pkl", "rb"))
 def sets():
     P, F = M["nq_1m"]; Pr, Fr = M["mnq_fut"]
     yield "IS", F[F.date < 20240101].copy(), P.index[P.index < 20240101]

@@ -1,0 +1,74 @@
+{
+ "today | edge-0%": {
+  "seat_years": 278,
+  "usd_month_median": 1324,
+  "p10": 35,
+  "p90": 2366,
+  "mean": 1305,
+  "P_negative_year": 9.0,
+  "P_ge_1200_month": 52.9,
+  "accounts_lost_per_year_mean": 1.17,
+  "funded_busts_per_year_mean": 0.35,
+  "funded_busts_p90": 2.0
+ },
+ "new preset | edge-0%": {
+  "seat_years": 278,
+  "usd_month_median": 2157,
+  "p10": -39,
+  "p90": 4051,
+  "mean": 2142,
+  "P_negative_year": 12.6,
+  "P_ge_1200_month": 60.4,
+  "accounts_lost_per_year_mean": 1.18,
+  "funded_busts_per_year_mean": 0.36,
+  "funded_busts_p90": 2.0
+ },
+ "today | edge-35%": {
+  "seat_years": 278,
+  "usd_month_median": 682,
+  "p10": -118,
+  "p90": 1766,
+  "mean": 712,
+  "P_negative_year": 27.7,
+  "P_ge_1200_month": 25.5,
+  "accounts_lost_per_year_mean": 3.14,
+  "funded_busts_per_year_mean": 0.9,
+  "funded_busts_p90": 2.0
+ },
+ "new preset | edge-35%": {
+  "seat_years": 278,
+  "usd_month_median": 1071,
+  "p10": -118,
+  "p90": 2982,
+  "mean": 1097,
+  "P_negative_year": 30.9,
+  "P_ge_1200_month": 45.3,
+  "accounts_lost_per_year_mean": 3.05,
+  "funded_busts_per_year_mean": 0.88,
+  "funded_busts_p90": 2.0
+ },
+ "today | edge-100%": {
+  "seat_years": 278,
+  "usd_month_median": -124,
+  "p10": -222,
+  "p90": 812,
+  "mean": 28,
+  "P_negative_year": 65.8,
+  "P_ge_1200_month": 0.0,
+  "accounts_lost_per_year_mean": 10.38,
+  "funded_busts_per_year_mean": 1.3,
+  "funded_busts_p90": 3.0
+ },
+ "new preset | edge-100%": {
+  "seat_years": 278,
+  "usd_month_median": -131,
+  "p10": -222,
+  "p90": 892,
+  "mean": 10,
+  "P_negative_year": 83.5,
+  "P_ge_1200_month": 0.0,
+  "accounts_lost_per_year_mean": 10.38,
+  "funded_busts_per_year_mean": 1.3,
+  "funded_busts_p90": 3.0
+ }
+}

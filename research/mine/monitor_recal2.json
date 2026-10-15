@@ -1,0 +1,135 @@
+{
+ "Ultra (x4 + CPI09)": {
+  "warn": {
+   "h": 9.12,
+   "h_sd": 12.5,
+   "P_false_1y": 0.226,
+   "median_days_dead_edge": 68.0
+  },
+  "alarm": {
+   "k": 0.085,
+   "h": 24.44,
+   "h_sd": 33.5,
+   "mean_z": 0.1701,
+   "P_false_1y": 0.0,
+   "P_false_3y": 0.002,
+   "median_days_dead_edge": 241.0,
+   "median_days_negative_edge": 131.5
+  }
+ },
+ "UltraQ (x4)": {
+  "warn": {
+   "h": 9.04,
+   "h_sd": 13.0,
+   "P_false_1y": 0.235,
+   "median_days_dead_edge": 79.0
+  },
+  "alarm": {
+   "k": 0.0773,
+   "h": 26.08,
+   "h_sd": 37.5,
+   "mean_z": 0.1547,
+   "P_false_1y": 0.0,
+   "P_false_3y": 0.002,
+   "median_days_dead_edge": 287.0,
+   "median_days_negative_edge": 155.5
+  }
+ },
+ "WR70Plus (+CPI09 x4)": {
+  "warn": {
+   "h": 6.86,
+   "h_sd": 12.5,
+   "P_false_1y": 0.226,
+   "median_days_dead_edge": 72.0
+  },
+  "alarm": {
+   "k": 0.0634,
+   "h": 12.07,
+   "h_sd": 22.0,
+   "mean_z": 0.1268,
+   "P_false_1y": 0.013,
+   "P_false_3y": 0.061,
+   "median_days_dead_edge": 146.0,
+   "median_days_negative_edge": 85.0
+  }
+ },
+ "Durable": {
+  "warn": {
+   "h": 6.98,
+   "h_sd": 14.5,
+   "P_false_1y": 0.226,
+   "median_days_dead_edge": 91.0
+  },
+  "alarm": {
+   "k": 0.0455,
+   "h": 10.35,
+   "h_sd": 21.5,
+   "mean_z": 0.091,
+   "P_false_1y": 0.046,
+   "P_false_3y": 0.177,
+   "median_days_dead_edge": 148.0,
+   "median_days_negative_edge": 93.5
+  }
+ },
+ "Ultra old calibration check (UltraR x1)": {
+  "warn": {
+   "h": 8.6,
+   "h_sd": 12.5,
+   "P_false_1y": 0.248,
+   "median_days_dead_edge": 72.0
+  },
+  "alarm": {
+   "k": 0.0758,
+   "h": 18.57,
+   "h_sd": 27.0,
+   "mean_z": 0.1517,
+   "P_false_1y": 0.002,
+   "P_false_3y": 0.023,
+   "median_days_dead_edge": 192.5,
+   "median_days_negative_edge": 108.5
+  }
+ },
+ "fallback_table_recomputed": {
+  "2020": [
+   "LF0430",
+   "LF06",
+   "MOM11",
+   "MOM13",
+   "ON07",
+   "ORB60",
+   "ORB90",
+   "REV06",
+   "VW13",
+   "VW13b"
+  ],
+  "2021": [
+   "LF0430",
+   "LF06",
+   "MOM11",
+   "MOM13",
+   "ON07",
+   "VW13",
+   "VW13b"
+  ],
+  "2022": [
+   "LF0430",
+   "LF06",
+   "ON07",
+   "VW13",
+   "VW13b"
+  ],
+  "2023": [
+   "LF06",
+   "ON07"
+  ],
+  "2024": [
+   "LF06",
+   "VW13"
+  ],
+  "2025": [],
+  "2026": [],
+  "2027": [
+   "REV06"
+  ]
+ }
+}

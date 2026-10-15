@@ -40,8 +40,10 @@ def patched(path, reps, extra_ns):
     ns = dict(np=np, njit=njit, TICK=0.25, SLIP=0.25); ns.update(extra_ns); exec(f, ns); return ns["sim"]
 
 
+# guard-ok-begin: compiles patched copies of sim() from ict_fix.py / london.py in memory (no files); build() uses them
 ICT_SIM = patched("ict_fix.py", [("out[k, 4] = i; k += 1; pos = 0", "out[k, 4] = i; out[k, 5] = entry; out[k, 6] = sl; out[k, 7] = plim; k += 1; pos = 0")], {})
 LON_SIM = patched("london.py", [("out[k, 4] = min(q, nxt - 1); k += 1", "out[k, 4] = min(q, nxt - 1); out[k, 5] = entry; out[k, 6] = stop; k += 1")], {})
+# guard-ok-end
 
 
 def first_1m_of_5m(Dr):

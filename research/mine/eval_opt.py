@@ -6,13 +6,13 @@ import sys, numpy as np, pandas as pd
 sys.path.insert(0, ".")
 import prof_grid_lib
 from acct_life import CFG
-from acct_lab import Z
+from acct_lab import Z, dense_key
 from acct_policy import day_vectors
 from acct_size import eval_stats
 T, D = 3000.0, 2000.0
 MODS = CFG["UA_FULL_GR"]
 def grids(per):
-    z = Z(per); return {m: (z[m + "|L"].astype(np.float32), z[m + "|R"].astype(np.float32)) for m in MODS if m + "|L" in z.files}
+    z = Z(per); return {m: (z[dense_key(per, m) + "|L"].astype(np.float32), z[dense_key(per, m) + "|R"].astype(np.float32)) for m in MODS}
 G = {p: grids(p) for p in ("IS", "C24", "REAL")}
 DAY = {p: np.array([G[p][m][1][:, -1] for m in MODS]) for p in G}       # modules x days realized close (1 contract)
 def portfolio(per, w, PS=0.0):

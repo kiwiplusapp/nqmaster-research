@@ -1,0 +1,20 @@
+{
+ "edge-0%": {
+  "P_funded_lost_90d_by_start_period": {
+   "2020-23": 27.7,
+   "2024-26": 13.5,
+   "summer 2026": 73.4,
+   "P_day_le_-1000_in_90d": 66.8,
+   "P_drawdown_ge_2000_in_90d": 49.1
+  }
+ },
+ "edge-35%": {
+  "P_funded_lost_90d_by_start_period": {
+   "2020-23": 51.0,
+   "2024-26": 34.2,
+   "summer 2026": 87.5,
+   "P_day_le_-1000_in_90d": 69.0,
+   "P_drawdown_ge_2000_in_90d": 73.5
+  }
+ }
+}

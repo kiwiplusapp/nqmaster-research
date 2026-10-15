@@ -1,0 +1,134 @@
+{
+ "CPI09": {
+  "max_gap": 86,
+  "p99_gap": 71.74000000000007,
+  "n_days": 64,
+  "threshold": 129
+ },
+ "CRT11": {
+  "max_gap": 49,
+  "p99_gap": 38.39999999999995,
+  "n_days": 142,
+  "threshold": 74
+ },
+ "ICT": {
+  "max_gap": 81,
+  "p99_gap": 59.19999999999999,
+  "n_days": 122,
+  "threshold": 122
+ },
+ "LATE15": {
+  "max_gap": 31,
+  "p99_gap": 26.430000000000007,
+  "n_days": 259,
+  "threshold": 47
+ },
+ "LF0430": {
+  "max_gap": 50,
+  "p99_gap": 39.0,
+  "n_days": 196,
+  "threshold": 75
+ },
+ "LF06": {
+  "max_gap": 77,
+  "p99_gap": 41.16,
+  "n_days": 186,
+  "threshold": 116
+ },
+ "LON": {
+  "max_gap": 28,
+  "p99_gap": 18.560000000000002,
+  "n_days": 446,
+  "threshold": 42
+ },
+ "MOM1030": {
+  "max_gap": 31,
+  "p99_gap": 28.0,
+  "n_days": 280,
+  "threshold": 47
+ },
+ "MOM11": {
+  "max_gap": 6,
+  "p99_gap": 3.1099999999999,
+  "n_days": 1291,
+  "threshold": 10
+ },
+ "MOM13": {
+  "max_gap": 25,
+  "p99_gap": 21.0,
+  "n_days": 505,
+  "threshold": 38
+ },
+ "MSEQ": {
+  "max_gap": 77,
+  "p99_gap": 38.599999999999795,
+  "n_days": 362,
+  "threshold": 116
+ },
+ "MSEQS": {
+  "max_gap": 155,
+  "p99_gap": 151.29,
+  "n_days": 55,
+  "threshold": 233
+ },
+ "NF05": {
+  "max_gap": 79,
+  "p99_gap": 33.98999999999995,
+  "n_days": 269,
+  "threshold": 119
+ },
+ "ON07": {
+  "max_gap": 24,
+  "p99_gap": 11.0,
+  "n_days": 638,
+  "threshold": 36
+ },
+ "ORB60": {
+  "max_gap": 30,
+  "p99_gap": 22.0,
+  "n_days": 302,
+  "threshold": 45
+ },
+ "ORB90": {
+  "max_gap": 27,
+  "p99_gap": 24.25,
+  "n_days": 277,
+  "threshold": 41
+ },
+ "REV06": {
+  "max_gap": 26,
+  "p99_gap": 12.0,
+  "n_days": 483,
+  "threshold": 39
+ },
+ "VOLB": {
+  "max_gap": 5,
+  "p99_gap": 4.0,
+  "n_days": 1200,
+  "threshold": 10
+ },
+ "VW13": {
+  "max_gap": 70,
+  "p99_gap": 57.159999999999826,
+  "n_days": 154,
+  "threshold": 105
+ },
+ "VW13b": {
+  "max_gap": 28,
+  "p99_gap": 19.930000000000007,
+  "n_days": 409,
+  "threshold": 42
+ },
+ "ANY_LONG": {
+  "max_gap": 8,
+  "p99_gap": 4.0,
+  "n_days": 1319,
+  "threshold": 12
+ },
+ "ANY_SHORT": {
+  "max_gap": 8,
+  "p99_gap": 6.0,
+  "n_days": 1079,
+  "threshold": 12
+ }
+}

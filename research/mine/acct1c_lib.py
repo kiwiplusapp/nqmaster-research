@@ -15,7 +15,7 @@ from numba import njit
 sys.path.insert(0, ".")
 import prof_grid_lib  # noqa: F401  (defines CFG profile lists, no work at import)
 from acct_life import CFG
-from acct_lab import Z, day_vectors
+from acct_lab import Z, day_vectors, dense_key
 from acct_policy import hiatr
 
 PERS = ("IS", "C24", "REAL")
@@ -31,6 +31,7 @@ WR_FULL = fix(CFG["WR_FULL"]) + NIGHT + ["N:LATE15"]     # WR70Plus + NightOnWr7
 WR_NOB = fix(CFG["WR_NOB"]) + NIGHT + ["N:LATE15"]
 WR_SAFE = fix(CFG["WR_SAFE"]) + NIGHT + ["N:LATE15"]
 EST = None
+# guard-ok: reads the small gate84_sets.txt; importers use EST
 for line in open("gate84_sets.txt"):
     if line.startswith("ESTABLE"): EST = [k for k in line.split(":", 1)[1].split() if not k.startswith("G:")]
 # NQMaster EvalSafeSet=Estable under WR70Plus: EstableSig modules that WR70Plus runs (CRT11, ORB90, MSEQ, REV06, VOLB trend 0.5R, VW13)
@@ -46,12 +47,9 @@ def items(nq, gold=(), gw=1.0, nqw=1.0):
 
 _LR = {}; _DV = {}; _EX = {}; _WARNED = set()
 def _key(per, k):
-    """REAL has no 'U1:MSEQS' grid: use the Ultra version 'U:MSEQS' (MSEQS boosts are rare) and warn once"""
-    z = Z(per)
-    if k + "|L" in z.files: return k
-    alt = "U:" + k.split(":", 1)[1]
-    if (per, k) not in _WARNED: print(f"WARNING {per}: {k} missing -> {alt}", flush=True); _WARNED.add((per, k))
-    return alt
+    """grid key for k: REAL has no 'U1:MSEQS' grid (no boosted MSEQS trade there), so the identical 'U:MSEQS' is used
+    (acct_lab.DENSE_ALIAS); any other missing key raises KeyError"""
+    return dense_key(per, k)
 def _sum(per, it):
     key = (per, it)
     if key not in _LR:

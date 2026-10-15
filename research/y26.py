@@ -9,6 +9,7 @@ Y0 = 20260101
 SPLIT = 20260601            # IS: Jan-May 2026 | OOS: Jun-Sep 2026
 TICK, PV, COMM = 0.25, 2.0, 1.0
 
+# guard-ok: read-only Ctx (warm indicators); eval25 / library26 / rotate26 / scan26_ifvg use cx / DAYS
 cx = Ctx()                  # full history is loaded only so indicators are warm on Jan 2 2026
 DAYS = cx.rth_days[cx.rth_days >= Y0]
 DAYS_IS = DAYS[DAYS < SPLIT]

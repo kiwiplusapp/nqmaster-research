@@ -9,6 +9,7 @@ from run_mine import FAMILIES
 from gold_port import conflict_filter
 from ict_redo import ictf
 from ultra_plus_lib import mined
+# guard-ok-begin: read-only loads / Ultra base portfolio; nqdrive_check.py, nqdrive_port.py, gnq_port.py use D_is / D_re / D_lg / U
 R = pd.read_csv("results_gnq.csv")
 ok = R[(R.IS_n >= 100) & (R.C24_n >= 60) & (R.IS_pf >= 1.25) & (R.C24_pf >= 1.25) & (R.REAL_pf >= 1.15)].copy()
 ok["p"] = ok.params.map(ast.literal_eval)
@@ -22,6 +23,7 @@ def ultra(per):
                    mined(("LATE_MOM", 762), per, "LATE15"), mined(("ENGULF_4H", 1172), per, "ENG10"), mined(("LATE_MOM", 1107), per, "LATEFH")])
     return X[["date", "mod", "tin", "tout", "d", "u", "w"]], T["Ultra"][per][1]
 U = {p: ultra(p) for p in ("IS", "C24", "REAL")}
+# guard-ok-end
 def trades(D, gen, p, md, slip=0.25, nc=None):
     df = run_events(D, gen(D, p), flat=955, maxday=md, slip=slip, norm_cost=nc)
     if len(df): df["tin"] = D.sm[df.fi.to_numpy().astype(int)]; df["tout"] = D.sm[df.xi.to_numpy().astype(int)] + 1

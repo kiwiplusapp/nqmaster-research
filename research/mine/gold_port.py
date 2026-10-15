@@ -19,6 +19,7 @@ def days_of(name, lo, hi):
     D = Data(name); rth = (D.om >= 570) & (D.om < 960); d = np.unique(D.date[rth]); d = d[(d >= lo) & (d < hi)]
     return np.array([x for x in d if x not in FOMC])
 PER = {"IS": ("nq", 20200201, 20240101), "C24": ("nq", 20240101, 30000000), "REAL": ("mnq", 20240201, 30000000)}
+# guard-ok: read-only gold day lists; gold_curated / gold_final / gold_flat1600 / gold_port2 use DAYS
 DAYS = {"IS": days_of("xau_hd.npz", 20200201, 20240101), "C24": days_of("xau_hd.npz", 20240101, 30000000), "REAL": days_of("mgc_fut.npz", 20240201, 30000000)}
 def trades(tr, per, name, w=1.0):
     key, lo, hi = PER[per]; df = tr[key]; df = df[(df.date >= lo) & (df.date < hi) & ~df.date.isin(FOMC)]

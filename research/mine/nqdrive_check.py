@@ -15,6 +15,7 @@ def per_slice(df, per):
     df = df[(df.date >= lo) & (df.date < hi) & ~df.date.isin(FOMC)]
     return pd.DataFrame(dict(date=df.date, mod="X", tin=df.tin, tout=df.tout, d=df.d, u=df.usd, w=1.0))
 BASE = {}
+# guard-ok: read-only BASE portfolio (Ultra + NF05) used by nqdrive_port.py
 for per, D in (("IS", D_is), ("C24", D_is), ("REAL", D_re)):
     nf = per_slice(trades(D, gen_drive, NF, 1), per).assign(mod="NF05"); Ux, days = U[per]
     BASE[per] = (pd.concat([Ux, nf]), days)

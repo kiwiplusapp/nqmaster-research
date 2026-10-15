@@ -6,6 +6,7 @@ Intraday overlays: own daily loss stop DL (flatten at the first minute equity <=
 import os, sys, pickle, numpy as np, pandas as pd
 from numba import njit
 RES = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); DN = os.path.join(RES, "tmp", "dense")
+# guard-ok: reads the 2.5 KB dense meta.pkl; importers use META
 META = pickle.load(open(os.path.join(DN, "meta.pkl"), "rb"))
 _Z = {}
 def Z(per):
@@ -16,13 +17,24 @@ def group(m):
     for g in ("ORB60", "ORB90", "MSEQS", "MSEQ", "CRT11", "ICT", "MOM1030", "MOM11", "MOM13", "ON07", "REV06", "VW13", "VOLB", "LON", "LATE15", "ASIA", "ENG0408", "ENG0206", "ENG0610", "OD1030", "SVWAP22", "DRIVE11", "LATE1430"):
         if b.startswith(g): return g
     return b
+# exact aliases only: dense_build.py writes 'U1:X' (every weight capped at 1) only when the period has a boosted X trade.
+# REAL has no boosted MSEQS trade, so it has no 'U1:MSEQS' grid; that grid would be identical to 'U:MSEQS'.
+DENSE_ALIAS = {"U1:MSEQS": "U:MSEQS"}
+def dense_key(per, k):
+    """grid key to read for module key k in period per. A missing key raises KeyError (it is never skipped silently)."""
+    files = Z(per).files
+    if k + "|L" in files: return k
+    a = DENSE_ALIAS.get(k)
+    if a is not None and a + "|L" in files: return a
+    raise KeyError(f"dense key {k!r} missing in period {per} ({os.path.join(DN, per + '.npz')}). Rebuild the grids in order "
+                   "dense_build -> ict_redo -> dense_profiles -> dense_extra -> gnq_port -> nqdrive_port, or fix the module list.")
 _cache = {}
 def sums(per, mods):
     key = (per, tuple(sorted(mods)))
     if key in _cache: return _cache[key]
     z = Z(per); nd = len(z["days"]); L = np.zeros((nd, 1440), np.float32); R = np.zeros((nd, 1440), np.float32)
     for m in mods:
-        if m + "|L" in z.files: L += z[m + "|L"]; R += z[m + "|R"]
+        k = dense_key(per, m); L += z[k + "|L"]; R += z[k + "|R"]
     if len(_cache) > 64: _cache.clear()
     _cache[key] = (L, R); return L, R
 def day_vectors(L, R, DL=0.0, G=0.0):

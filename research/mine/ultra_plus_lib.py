@@ -1,8 +1,13 @@
 """mined(key, per, name): trades of a mined module (trades_b3 / trades_b4) for one period, FOMC days excluded (from ultra_plus.py)."""
 import pickle, pandas as pd
 TR = {}
-for f in ("trades_b3.pkl", "trades_b4.pkl"): TR.update(pickle.load(open(f, "rb")))
+def _load():
+    """trades_b3 / trades_b4 are read on the first mined() call (importing this module reads nothing)"""
+    if not TR:
+        for f in ("trades_b3.pkl", "trades_b4.pkl"): TR.update(pickle.load(open(f, "rb")))
+    return TR
 def mined(key, per, name):
+    _load()
     df = TR[key]["mnq" if per == "REAL" else "nq"]
     lo, hi = (20240201, 3e7) if per == "REAL" else ((20200201, 20240101) if per == "IS" else (20240101, 3e7))
     from news import NEWS

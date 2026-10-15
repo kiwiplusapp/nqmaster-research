@@ -1,6 +1,7 @@
 import os, sys, pickle, numpy as np, pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from port_test import base, cand_trades, metrics, conflict_filter
+# guard-ok: read-only results / trades load used by get()
 R1 = pd.read_csv("results_b1.csv"); TR = pickle.load(open("trades_b1.pkl", "rb"))
 from core import Data, run_events
 from families import FAMILIES
@@ -14,9 +15,11 @@ def get(fam, ps):
         df["tin"] = D.sm[df.fi.to_numpy().astype(int)]; df["tout"] = D.sm[df.xi.to_numpy().astype(int)] + 1
         out[key] = df[["date", "usd", "tin", "tout", "d"]]
     return out
+# guard-ok-begin: read-only: two mined trade sets and filter inputs used by base() / cand_trades()
 VW13a = get("CLOCK_ANCHOR", "{'anc': 'VWAP', 'T': 1300, 'x': 0.3, 'mode': 1, 's': 0.15, 'R': 0.5, 'tg': 0, 'tf': 1, 'hold': 120}")
 VW13b = get("CLOCK_ANCHOR", "{'anc': 'VWAP', 'T': 1300, 'x': 0.15, 'mode': 1, 's': 0.15, 'R': 0.5, 'tg': 0, 'tf': 1, 'hold': 120}")
 sel = pickle.load(open("filt_sel.pkl", "rb")); BF = pickle.load(open("base_feats.pkl", "rb"))
+# guard-ok-end
 def pkg_base(per, cap):
     F = BF[per][0].copy(); b = pd.Series(1.0, index=F.index); keep = pd.Series(True, index=F.index)
     for r, k in sel:

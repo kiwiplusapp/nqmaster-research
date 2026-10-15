@@ -1,5 +1,124 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★★★ 2026-10-16 (tarde): backtest de 6 años y módulos nuevos
+
+Ventana: octubre de 2020 a octubre de 2026. Datos: NQ real de Databento. Costos: $1,90 de comisión + 1 tick por lado. Montos: por contrato base.
+
+Scripts en `research/mine/`: `six_base.py`, `six_reselect.py`, `six_modules.py`, `six_combo2.py`, `six_life.py`, `six_build.py`, `b7_report.md`.
+
+**Sistema actual en 6 años** (`six_base.json`):
+
+| Perfil | Trades/día | WR | PF | $/mes | DD máx. | Peor mes | Meses + | Sharpe |
+|---|---|---|---|---|---|---|---|---|
+| Ultra | 4,7 | 66,3% | 1,50 | $2.184 | $4.582 | −$2.210 | 59/73 | 3,70 |
+| UltraQ | 4,0 | 69,2% | 1,53 | $1.980 | $4.759 | −$2.066 | 59/73 | 3,58 |
+| WR70Plus | 3,4 | 70,7% | 1,54 | $1.542 | $3.223 | −$2.109 | 60/73 | 3,60 |
+
+- Ultra por año (PF):
+
+  | 2020 (oct-dic) | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
+  |---|---|---|---|---|---|---|
+  | 0,98 | 1,45 | 1,80 | 1,23 | 1,42 | 1,58 | 1,58 |
+
+- Con 4 ticks de slippage por lado: PF 1,41.
+
+**Qué se probó.** El criterio fue el mismo en todos los casos: elegir en 2020-10 a 2023 y comprobar en 2024-26, sin exigir 2010-19.
+
+- **54.944 estrategias ya minadas:**
+  - El ORB de 08:20 vuelve a aparecer, pero queda descartado: el backtest con ticks le saca el edge.
+  - Quedan 7 módulos nuevos, uno por señal (`six_combo2.py`).
+- **Módulos actuales:**
+  - Ninguno mejora al quitarlo en los dos períodos a la vez.
+  - ENG10 sigue apagado: falla en 2024-26.
+  - LATEFH sí suma.
+  - Los pesos por módulo elegidos en 2020-23 empeoran 2024-26, así que se rechazan.
+- **5 familias nuevas** (agente, `families7.py`: squeeze, aceptación del rango previo, eficiencia del recorrido, posición en el rango nocturno, aperturas semanal/mensual): ninguna suma. La única con persistencia repite el MOM1030 que ya operamos.
+
+**Módulos nuevos** (grupo 11, `SixYearModules`, **apagado por defecto**):
+
+| Módulo | Qué hace | Trades T1 / T2 | PF T1 / T2 | PF T2 +4 ticks |
+|---|---|---|---|---|
+| CA04V | 04:00, sigue el precio si está ≥ 0,20 ATR del VWAP de sesión; stop 0,15 ATR, 1R | 103 / 135 | 1,95 / 1,21 | 1,13 |
+| SO04 | 04:00, ≥ 0,35 ATR de la apertura de las 18:00, con la tendencia; 1R | 62 / 70 | 1,24 / 1,33 | 1,25 |
+| GD03 | 05:00, va contra la movida desde las 03:00 (≥ 0,2 ATR), con la tendencia; stop en el extremo, 2R | 84 / 70 | 1,83 / 1,32 | 1,20 |
+| RV11 | 11:00, volumen relativo ≤ 0,8 y ≥ 0,25 ATR del cierre previo; sigue la dirección, 1R | 56 / 51 | 1,58 / 1,52 | 1,44 |
+| ENG26 | Vela 4H 02-06 envuelve a la de 22-02; entra a las 09:30, 0,5R | 106 / 102 | 1,57 / 1,33 | 1,26 |
+| ORFAIL | Ruptura fallida del rango de 15 minutos, con la tendencia; objetivo el otro lado del rango | 144 / 143 | 1,25 / 1,25 | 1,20 |
+| CAM3 | Falso quiebre de Camarilla L3/H3, con la tendencia; objetivo el VWAP | 73 / 65 | 1,29 / 1,34 | 1,24 |
+| LATEFH | Ya existía; el mismo interruptor lo prende | 181 / 165 | 1,39 / 1,47 | — |
+
+**Resultado con todos prendidos** (`six_build.py`; incluye el bloqueo de entradas opuestas a una posición abierta):
+
+| | Ultra hoy | Ultra + módulos nuevos |
+|---|---|---|
+| Sharpe 2020-23 / 2024-26 | 3,45 / 3,96 | 3,76 / 4,09 |
+| Ganancia en 6 años | $156,4 mil | $170,2 mil (+9%) |
+| DD máximo | $4.694 | $4.406 |
+| Peor mes | −$2.210 | −$2.150 |
+| WR | 66,7 / 65,8% | 65,3 / 64,1% |
+
+**En cuentas** (`six_life.py`, MFFU 50K, 1 contrato, preset actual, $ por mes por cuenta):
+
+| Período | Edge completo | 35% menos edge | Pasar la evaluación en ≤ 20 días |
+|---|---|---|---|
+| 2020-23 | 1.713 → 1.984 | 1.142 → 1.351 | 30 → 33% |
+| 2024-26 | 2.009 → 2.076 | 1.128 → 1.136 | 44 → 42% |
+
+- En 2024-26, con 35% menos edge, P(año negativo) pasa de 0 a 9% y el percentil 10 baja de $557 a $159.
+
+**Veredicto:** mejora poco y no pasa el criterio de cuentas de la auditoría. Por eso queda apagado hasta probarlo en NinjaTrader.
+
+**Para probarlo:**
+
+1. F5.
+2. Strategy Analyzer: MNQ 1 minuto, 2020-10-15 a hoy, Ultra, 1 contrato. Dos corridas: `SixYearModules` en false y en true.
+3. Exportá los trades de la corrida en true y corré `python parity_check.py <csv> --set ultra6` desde `research/mine`.
+4. Prendelo solo si pasa la paridad y la corrida en true le gana a la otra.
+
+Backup del archivo anterior: `NQMaster_backup_pre_six.cs`. El script `patch_six.py` lo regenera.
+
+## ★★★★★★★★★★★ 2026-10-16: auditoría completa (en español)
+
+Informe: `Conocimiento/Auditoria 16-oct-2026.md`. Operación diaria: `RUNBOOK_OPERACION.md` (manda sobre esta guía si se contradicen).
+
+Cambios en `NQMaster.cs` (stub OK, **falta F5**). Backups: `NQMaster_backup_pre_ops16.cs` y `NQMaster_backup_pre_review16.cs`.
+
+- **Monitor de borde recalibrado** para los ×4 de MOM1030/CPI09. Con los valores viejos daba una falsa alarma el 2024-03-18.
+
+  | Perfil | k | h | aviso |
+  |---|---|---|---|
+  | Ultra | 0,085 | 24,44 | 9,12 |
+  | UltraQ | 0,0773 | 26,08 | 9,04 |
+  | WR70Plus | 0,0634 | 12,07 | 6,86 |
+  | Durable | 0,0455 | 10,35 | 6,98 |
+
+  - El nuevo nivel de **aviso** solo alerta.
+  - El estado del monitor se guarda en `nqmaster_edge_<cuenta>.txt` y sobrevive reinicios.
+- **Preset Mffu50K, fondeada: sin escalón por defecto.** Pide el retiro al llegar a $4.600 de ganancia y deja $4.100.
+  - El escalón a 2 contratos (`FundedStepUpCushion` 4000, retiro a $6.600) es opcional: más ingreso mediano si el edge es real, pero duplica el tamaño y suma 6-7 puntos a P(año negativo) con 35% menos edge. Ver revisión adversarial.
+  - El panel ahora dice hasta cuánto retirar.
+- **Grupo 10, nuevas propiedades:**
+  - `InactivityAlarm`: avisa si un módulo no opera más de 1,5× su máximo histórico, o si pasan 12 días sin shorts o sin longs.
+  - `CrossAccountGuard` y `HedgeGroup`: no abren NQ opuesto a otra cuenta de la misma PC (prohibición de hedging en Lucid y MFFU).
+- **Arreglos de la revisión de código** (`research/mine/audit_code_2026-10-16.md`):
+  - F1: el risk cap mide MOM1030/CPI09 por lote.
+  - F2: el objetivo de evaluación ya no corta las fondeadas.
+  - F3: estado del monitor persistido.
+  - F5: el ×8 de evaluación es el total de lotes.
+  - F6: aviso cuando la tabla de fallback se queda sin años.
+  - F8: el informe de salud no llama a Log al terminar.
+  - F9: los días de roll o pausa no cuentan en el monitor.
+- **Log de tamaño en cada entrada:** muestra base → pedido → enviado.
+
+Herramientas:
+
+- `research/mine/parity_check.py`: compuerta de paridad con NinjaTrader; correr antes de cada cambio de código.
+- `research/mine/impl_gap.py`: brecha de implementación en vivo.
+- `tools/check_guards.py`: guardas de importación.
+- `tools/nt8_stub/check.sh`: verificación de sintaxis.
+
+Descartado: risk parity/HRP, apagar ICT/ON07 y apagar módulos redundantes (`Conocimiento/Descartado/Auditoria 16-oct ...`). REV06 queda en vigilancia: apagarlo mejora 3 de 4 períodos, pero toca la regla de confluencia y esa interacción no está probada.
+
 ## ★★★★★★★★★★ 2026-10-15 (night): the operating system, as one design (English)
 
 Playbook page: `research/mine/os_playbook.html` (published as the "NQMaster Operating System" artifact). Research: `research/mine/os_adapt.py` -> `os_adapt.json`. Patches: `patch_fallback.py`, plus a fix to the Mffu50K preset (below).
