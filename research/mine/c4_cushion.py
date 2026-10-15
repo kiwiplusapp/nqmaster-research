@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     def vecm(cap, m, G, h, k=1.0):
         a, b, ca, cb = P[cap]; cc = k * (ca + m * cb)
-        lo, cl = vectors(k * (a[0] + m * b[0]) - cc[:, None] - h[:, None], k * (a[1] + m * b[1]) - cc[:, None] - h[:, None], k * (a[2] + m * b[2]) - cc - h, G)
+        lo, cl = vectors(k * (a[0] + m * b[0]) - cc[:, None] - k * h[:, None], k * (a[1] + m * b[1]) - cc[:, None] - k * h[:, None], k * (a[2] + m * b[2]) - cc - k * h, G)   # haircut scales with size (red team)
         return lo, cl
     years = days // 10000
     OUT = {"policies": []}

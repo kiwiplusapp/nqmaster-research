@@ -19,7 +19,7 @@ def build(E, D):
     key = pd.Series(np.arange(len(D.o)), index=pd.MultiIndex.from_arrays([D.date, D.sm])); key = key[~key.index.duplicated()]
     C["fi"] = [key.get((a, b), -1) for a, b in zip(C.date, C.tin)]; C["xi"] = [key.get((a, b), -1) for a, b in zip(C.date, C.tout)]
     C = C[(C.fi >= 0) & (C.xi >= 0)].copy(); C["e"] = D.o[C.fi.to_numpy()]
-    C["risk"] = 0.35 * D.atr[C.fi.to_numpy()] * D.pv if len(D.atr) == len(D.o) else 0.0
+    C["risk"] = 0.35 * D.atr[D.day[C.fi.to_numpy()]] * D.pv		# red team 2026-10-16: D.atr is per day (was always 0 -> CPI09 never capped)
     X = RB.attach(X, E)
     cols = ["date", "mod", "tin", "tout", "d", "u", "fi", "xi", "w", "e", "risk"]
     T = pd.concat([X[cols], C[cols]], ignore_index=True).dropna(subset=["e"]).sort_values(["date", "tin"]).reset_index(drop=True)

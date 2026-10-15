@@ -1,5 +1,5 @@
-"""2026-10-16 B4 pre-mortem numbers (1 base contract, current defaults, MFFU Rapid EOD 50K funded with the new preset: risk cap $300 below
-a $2,000 cushion, step-up at $4,000, keep $6,100). Measured on 2020-26 real days:
+"""2026-10-16 B4 pre-mortem numbers (1 base contract, current defaults, MFFU Rapid EOD 50K funded with the default preset: risk cap $300 below
+a $2,000 cushion, no step-up, keep $4,100). Measured on 2020-26 real days:
   P(funded account lost within 90 trading days) from a fresh funded start, every start day, by period, full edge / 35% less edge
   P(at least one day <= -$1,000 per base contract within 90 trading days) and P(peak-to-trough >= $2,000 within 90 days) from daily
   P&L (20-day block bootstrap, 2,000 paths) -> premortem16.json"""
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     d24 = int(np.searchsorted(days, 20240101)); fin = P[0][0][2] + 4 * P[0][1][2]; mu1, mu2 = float(fin[:d24].mean()), float(fin[d24:].mean())
     def vecm(cap, m, h, k=1.0):
         a, b, ca, cb = P[cap]; cc = k * (ca + m * cb)
-        return vectors(k * (a[0] + m * b[0]) - cc[:, None] - h[:, None], k * (a[1] + m * b[1]) - cc[:, None] - h[:, None], k * (a[2] + m * b[2]) - cc - h, 0.0)
+        return vectors(k * (a[0] + m * b[0]) - cc[:, None] - k * h[:, None], k * (a[1] + m * b[1]) - cc[:, None] - k * h[:, None], k * (a[2] + m * b[2]) - cc - k * h, 0.0)
     OUT = {}
     for hc in (0.0, 0.35):
         h = np.where(np.arange(n) < d24, hc * mu1, hc * mu2)
@@ -33,7 +33,7 @@ if __name__ == "__main__":
         rec = {}
         for nm, lo, hi in (("2020-23", 20200101, 20240101), ("2024-26", 20240101, 20260601), ("summer 2026", 20260601, 20260901)):
             st = np.nonzero((days >= lo) & (days < hi))[0]; st = st[st < n - 20]
-            lost = [fu_m(FL, FC, 2000.0, 4000.0, idx, int(s), int(min(n, s + 90)), 6100.0, 2000.0, 0)[2] == -1 for s in st]
+            lost = [fu_m(FL, FC, 2000.0, 1e9, idx, int(s), int(min(n, s + 90)), 4100.0, 2000.0, 0)[2] == -1 for s in st]
             rec[nm] = round(100 * float(np.mean(lost)), 1)
         # daily tail at 1 contract (full gear)
         x = full[1]; r2 = []; r1 = []

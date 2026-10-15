@@ -191,8 +191,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				case NQMasterPropPreset.Mffu50K:
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 30;
 					if (ev) { EvalTarget = 3000; EvalProfitStop = 800; EvalRiskCapCushion = 0; MaxOpenContracts = 30; EvalHighWrMultiplier = 8; }
-					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 2000; FundedStepUpCushion = 4000; FundedStepUpContracts = 2; FundedPayoutAt = 6600; MaxOpenContracts = 30; FundedProfitStop = 0; }
-					if (!ev) NewsBlackout = true;	// MFFU funded: no trades or orders +-2 min around Tier-1 news (rule). Step-up 2 contracts at a $4,000 cushion, payout at $6,600 = keep $6,100 (c4_cushion.py, 2026-10-16)
+					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 2000; FundedPayoutAt = FundedStepUpCushion > 0 ? 6600 : 4600; MaxOpenContracts = 30; FundedProfitStop = 0; }
+					if (!ev) NewsBlackout = true;	// MFFU funded: no trades or orders +-2 min around Tier-1 news (rule). Payout at $4,600 = keep $4,100; optional step-up (FundedStepUpCushion 4000) -> $6,600: more median $ but 2x size, +6-7 pts P(negative year) at 35% less edge (c4_cushion.py + red team 2026-10-16), so it is NOT a default
 					break;
 			}
 			Print(string.Format("NQMaster | preset {0} ({1}): balance {2:0}, trailing DD {3:0}, eval target {4:0}, profit stop {5:0}, consistency {6:0}%, risk cap {7:0} below cushion {8:0}, max open contracts {9}, MOM1030/CPI09 x{10}",
@@ -1326,7 +1326,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				// research/mine/monitor_recal2.py (2026-10-16): recalibrated for MOM1030 / CPI09 x4 and CPI09; hw = warning level (alert only)
 				case NQMasterProfile.WR70Plus: k = 0.0634; h = 12.07; edgeHw = 6.86; break;
-				case NQMasterProfile.Durable: k = 0.0458; h = 10.71; edgeHw = 6.98; break;
+				case NQMasterProfile.Durable: k = 0.0455; h = 10.35; edgeHw = 6.98; break;
 				case NQMasterProfile.UltraQ: k = 0.0773; h = 26.08; edgeHw = 9.04; break;
 				default: k = 0.0850; h = 24.44; edgeHw = 9.12; break;			// Ultra (Custom uses the Ultra calibration)
 			}
@@ -1846,7 +1846,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (PropMode != NQMasterPropMode.Off && RiskCapPerContract > 0) txt += string.Format("\nRisk cap ${0:0}/contract: {1} (cushion ${2:0} vs ${3:0}) | skipped {4}", RiskCapPerContract,
 				RiskCapActive ? "ACTIVE" : "off", propCushion, PropMode == NQMasterPropMode.Eval ? EvalRiskCapCushion : FundedRiskCapCushion, riskSkips);
 			if (PropMode == NQMasterPropMode.Funded && FundedStepUpCushion > 0) txt += string.Format("\nSize: {0} contracts per module ({1})", Qty(), StepUpOn ? "step-up on" : string.Format("step-up at cushion ${0:0}", FundedStepUpCushion));
-			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += string.Format("\nPAYOUT: profit >= ${0:0} -> request it", FundedPayoutAt);
+			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += string.Format("\nPAYOUT: profit >= ${0:0} -> request it and withdraw down to ${1:0} profit (the rest is the cushion)", FundedPayoutAt, Math.Max(0, FundedPayoutAt - 500));
 			if (AtrStartMax > 0 && !double.IsNaN(atrStartRatio)) txt += string.Format("\nATR ratio {0:0.00}: {1}", atrStartRatio, atrStartRatio < AtrStartMax ? "OK to start a new eval" : "do NOT start a new eval today");
 			Draw.TextFixed(this, "NQM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
 		}

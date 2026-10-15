@@ -17,7 +17,7 @@ Una página. Si algo de acá contradice una sección vieja de `NQMASTER_GUIA.md`
 | Cuenta | Ajustes |
 |---|---|
 | MFFU Rapid EOD 50K, evaluación | Profile Ultra · Contracts 1 · PropMode Eval · PropPreset Mffu50K |
-| MFFU Rapid EOD 50K, fondeada | Igual, con PropMode Funded. El preset pone el risk cap $300 por debajo de un cushion de $2.000, el escalón a 2 contratos desde un cushion de $4.000, el retiro por encima de $6.100 de ganancia y el apagón de noticias. |
+| MFFU Rapid EOD 50K, fondeada | Igual, con PropMode Funded. El preset pone el risk cap $300 por debajo de un cushion de $2.000, el pedido de retiro al llegar a $4.600 de ganancia (retirás hasta dejar $4.100) y el apagón de noticias. El escalón a 2 contratos (`FundedStepUpCushion` 4000, retiro a $6.600) es **opcional**: más ingreso mediano si el edge es real, pero duplica el tamaño y suma 6-7 puntos a P(año negativo) con 35% menos edge. |
 | Lucid Pro 25K (fondeo rápido) | PropPreset LucidPro25K; evaluación nueva al día siguiente de cada pérdida |
 
 - **Misma firma = mismo perfil en todas las cuentas.** Lucid y MFFU prohíben posiciones opuestas entre cuentas propias.

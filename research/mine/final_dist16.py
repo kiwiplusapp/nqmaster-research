@@ -19,7 +19,7 @@ if __name__ == "__main__":
     d24 = int(np.searchsorted(days, 20240101)); fin = P[0][0][2] + 4 * P[0][1][2]; mu1, mu2 = float(fin[:d24].mean()), float(fin[d24:].mean())
     def vecm(cap, m, G, h, k=1.0):
         a, b, ca, cb = P[cap]; cc = k * (ca + m * cb)
-        return vectors(k * (a[0] + m * b[0]) - cc[:, None] - h[:, None], k * (a[1] + m * b[1]) - cc[:, None] - h[:, None], k * (a[2] + m * b[2]) - cc - h, G)
+        return vectors(k * (a[0] + m * b[0]) - cc[:, None] - k * h[:, None], k * (a[1] + m * b[1]) - cc[:, None] - k * h[:, None], k * (a[2] + m * b[2]) - cc - k * h, G)
     OUT = {}
     for hc in (0.0, 0.35, 1.0):
         h = np.where(np.arange(n) < d24, hc * mu1, hc * mu2)
