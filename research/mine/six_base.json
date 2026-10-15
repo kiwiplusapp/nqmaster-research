@@ -1,0 +1,1768 @@
+{
+ "Ultra": {
+  "all": {
+   "trades": 6975,
+   "per_day": 4.74,
+   "wr": 66.3,
+   "pf": 1.501,
+   "net": 156729,
+   "per_month": 2184,
+   "maxdd": 4582,
+   "worst_month": -2210,
+   "pos_months": "59/73",
+   "sharpe": 3.7
+  },
+  "T1": {
+   "trades": 3768,
+   "per_day": 4.83,
+   "wr": 66.7,
+   "pf": 1.471,
+   "net": 70543,
+   "per_month": 1835,
+   "maxdd": 4582,
+   "worst_month": -1259,
+   "pos_months": "31/39",
+   "sharpe": 3.47
+  },
+  "T2": {
+   "trades": 3207,
+   "per_day": 4.63,
+   "wr": 65.8,
+   "pf": 1.529,
+   "net": 86186,
+   "per_month": 2598,
+   "maxdd": 3661,
+   "worst_month": -2210,
+   "pos_months": "28/34",
+   "sharpe": 3.95
+  },
+  "all_plus4ticks": {
+   "trades": 6975,
+   "per_day": 4.74,
+   "wr": 66.3,
+   "pf": 1.407,
+   "net": 130809,
+   "per_month": 1823,
+   "maxdd": 7121,
+   "worst_month": -2543,
+   "pos_months": "56/73",
+   "sharpe": 3.11
+  },
+  "years": {
+   "2020": {
+    "trades": 259,
+    "per_day": 4.89,
+    "wr": 62.9,
+    "pf": 0.98,
+    "net": -212,
+    "per_month": -84,
+    "maxdd": 1871,
+    "worst_month": -1259,
+    "pos_months": "2/3",
+    "sharpe": -0.22
+   },
+   "2021": {
+    "trades": 1121,
+    "per_day": 4.79,
+    "wr": 66.4,
+    "pf": 1.447,
+    "net": 16090,
+    "per_month": 1357,
+    "maxdd": 1293,
+    "worst_month": -107,
+    "pos_months": "11/12",
+    "sharpe": 3.32
+   },
+   "2022": {
+    "trades": 1200,
+    "per_day": 4.84,
+    "wr": 70.2,
+    "pf": 1.795,
+    "net": 43768,
+    "per_month": 3691,
+    "maxdd": 1918,
+    "worst_month": 860,
+    "pos_months": "12/12",
+    "sharpe": 5.33
+   },
+   "2023": {
+    "trades": 1188,
+    "per_day": 4.85,
+    "wr": 64.4,
+    "pf": 1.225,
+    "net": 10897,
+    "per_month": 921,
+    "maxdd": 4582,
+    "worst_month": -1021,
+    "pos_months": "6/12",
+    "sharpe": 1.93
+   },
+   "2024": {
+    "trades": 1195,
+    "per_day": 4.76,
+    "wr": 64.1,
+    "pf": 1.418,
+    "net": 21419,
+    "per_month": 1791,
+    "maxdd": 3523,
+    "worst_month": -2210,
+    "pos_months": "9/12",
+    "sharpe": 3.6
+   },
+   "2025": {
+    "trades": 1150,
+    "per_day": 4.64,
+    "wr": 67.7,
+    "pf": 1.583,
+    "net": 33020,
+    "per_month": 2769,
+    "maxdd": 1915,
+    "worst_month": -382,
+    "pos_months": "11/12",
+    "sharpe": 4.19
+   },
+   "2026": {
+    "trades": 862,
+    "per_day": 4.44,
+    "wr": 65.7,
+    "pf": 1.577,
+    "net": 31747,
+    "per_month": 3464,
+    "maxdd": 3661,
+    "worst_month": -559,
+    "pos_months": "8/10",
+    "sharpe": 4.22
+   }
+  },
+  "modules": {
+   "CPI09": {
+    "T1": {
+     "trades": 37,
+     "per_day": 1.0,
+     "wr": 78.4,
+     "pf": 2.115,
+     "net": 5381,
+     "per_month": 149,
+     "maxdd": 1175,
+     "worst_month": -1067,
+     "pos_months": "29/37",
+     "sharpe": 5.48
+    },
+    "T2": {
+     "trades": 27,
+     "per_day": 1.0,
+     "wr": 81.5,
+     "pf": 2.623,
+     "net": 6227,
+     "per_month": 195,
+     "maxdd": 1624,
+     "worst_month": -1624,
+     "pos_months": "22/27",
+     "sharpe": 6.6
+    }
+   },
+   "CRT11": {
+    "T1": {
+     "trades": 62,
+     "per_day": 1.0,
+     "wr": 48.4,
+     "pf": 1.506,
+     "net": 2860,
+     "per_month": 76,
+     "maxdd": 901,
+     "worst_month": -653,
+     "pos_months": "16/32",
+     "sharpe": 2.58
+    },
+    "T2": {
+     "trades": 66,
+     "per_day": 1.0,
+     "wr": 63.6,
+     "pf": 2.907,
+     "net": 9058,
+     "per_month": 275,
+     "maxdd": 867,
+     "worst_month": -742,
+     "pos_months": "20/30",
+     "sharpe": 6.56
+    }
+   },
+   "ICT": {
+    "T1": {
+     "trades": 63,
+     "per_day": 1.0,
+     "wr": 54.0,
+     "pf": 1.26,
+     "net": 1364,
+     "per_month": 37,
+     "maxdd": 813,
+     "worst_month": -649,
+     "pos_months": "18/28",
+     "sharpe": 1.72
+    },
+    "T2": {
+     "trades": 53,
+     "per_day": 1.0,
+     "wr": 56.6,
+     "pf": 1.149,
+     "net": 868,
+     "per_month": 26,
+     "maxdd": 1631,
+     "worst_month": -1014,
+     "pos_months": "14/25",
+     "sharpe": 1.0
+    }
+   },
+   "LATE15": {
+    "T1": {
+     "trades": 134,
+     "per_day": 1.0,
+     "wr": 61.9,
+     "pf": 1.62,
+     "net": 2062,
+     "per_month": 55,
+     "maxdd": 492,
+     "worst_month": -264,
+     "pos_months": "26/38",
+     "sharpe": 3.11
+    },
+    "T2": {
+     "trades": 99,
+     "per_day": 1.0,
+     "wr": 60.6,
+     "pf": 1.276,
+     "net": 1104,
+     "per_month": 34,
+     "maxdd": 1561,
+     "worst_month": -785,
+     "pos_months": "16/31",
+     "sharpe": 1.53
+    }
+   },
+   "LF0430": {
+    "T1": {
+     "trades": 88,
+     "per_day": 1.0,
+     "wr": 58.0,
+     "pf": 1.399,
+     "net": 1098,
+     "per_month": 29,
+     "maxdd": 496,
+     "worst_month": -209,
+     "pos_months": "17/32",
+     "sharpe": 2.26
+    },
+    "T2": {
+     "trades": 90,
+     "per_day": 1.0,
+     "wr": 58.9,
+     "pf": 1.357,
+     "net": 1678,
+     "per_month": 51,
+     "maxdd": 800,
+     "worst_month": -408,
+     "pos_months": "19/32",
+     "sharpe": 2.03
+    }
+   },
+   "LF06": {
+    "T1": {
+     "trades": 86,
+     "per_day": 1.0,
+     "wr": 72.1,
+     "pf": 1.337,
+     "net": 789,
+     "per_month": 22,
+     "maxdd": 388,
+     "worst_month": -213,
+     "pos_months": "17/34",
+     "sharpe": 2.11
+    },
+    "T2": {
+     "trades": 75,
+     "per_day": 1.0,
+     "wr": 74.7,
+     "pf": 1.396,
+     "net": 1096,
+     "per_month": 34,
+     "maxdd": 578,
+     "worst_month": -178,
+     "pos_months": "21/28",
+     "sharpe": 2.34
+    }
+   },
+   "LON": {
+    "T1": {
+     "trades": 235,
+     "per_day": 1.0,
+     "wr": 43.4,
+     "pf": 1.19,
+     "net": 1984,
+     "per_month": 52,
+     "maxdd": 1340,
+     "worst_month": -305,
+     "pos_months": "23/39",
+     "sharpe": 1.18
+    },
+    "T2": {
+     "trades": 179,
+     "per_day": 1.0,
+     "wr": 45.3,
+     "pf": 1.486,
+     "net": 4462,
+     "per_month": 135,
+     "maxdd": 1127,
+     "worst_month": -340,
+     "pos_months": "18/33",
+     "sharpe": 2.58
+    }
+   },
+   "MOM1030": {
+    "T1": {
+     "trades": 160,
+     "per_day": 1.0,
+     "wr": 80.6,
+     "pf": 1.468,
+     "net": 5117,
+     "per_month": 135,
+     "maxdd": 2184,
+     "worst_month": -1065,
+     "pos_months": "21/37",
+     "sharpe": 2.55
+    },
+    "T2": {
+     "trades": 101,
+     "per_day": 1.0,
+     "wr": 83.2,
+     "pf": 1.578,
+     "net": 5367,
+     "per_month": 163,
+     "maxdd": 2409,
+     "worst_month": -1266,
+     "pos_months": "24/31",
+     "sharpe": 2.81
+    }
+   },
+   "MOM11": {
+    "T1": {
+     "trades": 613,
+     "per_day": 1.0,
+     "wr": 79.9,
+     "pf": 1.14,
+     "net": 2222,
+     "per_month": 58,
+     "maxdd": 1413,
+     "worst_month": -601,
+     "pos_months": "24/39",
+     "sharpe": 0.83
+    },
+    "T2": {
+     "trades": 552,
+     "per_day": 1.0,
+     "wr": 80.3,
+     "pf": 1.289,
+     "net": 5223,
+     "per_month": 157,
+     "maxdd": 1638,
+     "worst_month": -596,
+     "pos_months": "21/34",
+     "sharpe": 1.61
+    }
+   },
+   "MOM13": {
+    "T1": {
+     "trades": 261,
+     "per_day": 1.0,
+     "wr": 59.8,
+     "pf": 1.471,
+     "net": 4667,
+     "per_month": 122,
+     "maxdd": 959,
+     "worst_month": -447,
+     "pos_months": "28/39",
+     "sharpe": 2.77
+    },
+    "T2": {
+     "trades": 188,
+     "per_day": 1.0,
+     "wr": 59.0,
+     "pf": 1.557,
+     "net": 4408,
+     "per_month": 134,
+     "maxdd": 1310,
+     "worst_month": -515,
+     "pos_months": "20/32",
+     "sharpe": 2.86
+    }
+   },
+   "MSEQ": {
+    "T1": {
+     "trades": 177,
+     "per_day": 1.11,
+     "wr": 66.1,
+     "pf": 1.763,
+     "net": 6887,
+     "per_month": 183,
+     "maxdd": 1046,
+     "worst_month": -539,
+     "pos_months": "19/33",
+     "sharpe": 3.59
+    },
+    "T2": {
+     "trades": 168,
+     "per_day": 1.08,
+     "wr": 57.1,
+     "pf": 1.298,
+     "net": 4114,
+     "per_month": 125,
+     "maxdd": 2357,
+     "worst_month": -1519,
+     "pos_months": "20/31",
+     "sharpe": 1.54
+    }
+   },
+   "MSEQS": {
+    "T1": {
+     "trades": 28,
+     "per_day": 1.04,
+     "wr": 67.9,
+     "pf": 2.135,
+     "net": 1294,
+     "per_month": 36,
+     "maxdd": 474,
+     "worst_month": -230,
+     "pos_months": "12/16",
+     "sharpe": 4.49
+    },
+    "T2": {
+     "trades": 27,
+     "per_day": 1.08,
+     "wr": 63.0,
+     "pf": 1.824,
+     "net": 1863,
+     "per_month": 68,
+     "maxdd": 866,
+     "worst_month": -454,
+     "pos_months": "7/11",
+     "sharpe": 4.24
+    }
+   },
+   "NF05": {
+    "T1": {
+     "trades": 105,
+     "per_day": 1.0,
+     "wr": 52.4,
+     "pf": 1.602,
+     "net": 2302,
+     "per_month": 66,
+     "maxdd": 808,
+     "worst_month": -324,
+     "pos_months": "20/34",
+     "sharpe": 3.04
+    },
+    "T2": {
+     "trades": 124,
+     "per_day": 1.0,
+     "wr": 48.4,
+     "pf": 1.389,
+     "net": 2857,
+     "per_month": 86,
+     "maxdd": 846,
+     "worst_month": -636,
+     "pos_months": "19/33",
+     "sharpe": 2.14
+    }
+   },
+   "ON07": {
+    "T1": {
+     "trades": 317,
+     "per_day": 1.0,
+     "wr": 54.6,
+     "pf": 1.261,
+     "net": 1385,
+     "per_month": 36,
+     "maxdd": 793,
+     "worst_month": -319,
+     "pos_months": "23/39",
+     "sharpe": 1.34
+    },
+    "T2": {
+     "trades": 265,
+     "per_day": 1.0,
+     "wr": 55.5,
+     "pf": 1.218,
+     "net": 1382,
+     "per_month": 42,
+     "maxdd": 1342,
+     "worst_month": -419,
+     "pos_months": "21/33",
+     "sharpe": 1.11
+    }
+   },
+   "ORB60": {
+    "T1": {
+     "trades": 170,
+     "per_day": 1.12,
+     "wr": 72.9,
+     "pf": 1.97,
+     "net": 8903,
+     "per_month": 233,
+     "maxdd": 878,
+     "worst_month": -878,
+     "pos_months": "30/38",
+     "sharpe": 4.66
+    },
+    "T2": {
+     "trades": 135,
+     "per_day": 1.14,
+     "wr": 71.1,
+     "pf": 2.145,
+     "net": 10315,
+     "per_month": 316,
+     "maxdd": 1420,
+     "worst_month": -1089,
+     "pos_months": "22/32",
+     "sharpe": 5.08
+    }
+   },
+   "ORB90": {
+    "T1": {
+     "trades": 145,
+     "per_day": 1.04,
+     "wr": 71.0,
+     "pf": 1.938,
+     "net": 6372,
+     "per_month": 168,
+     "maxdd": 959,
+     "worst_month": -605,
+     "pos_months": "27/38",
+     "sharpe": 4.3
+    },
+    "T2": {
+     "trades": 112,
+     "per_day": 1.05,
+     "wr": 66.1,
+     "pf": 1.892,
+     "net": 5269,
+     "per_month": 161,
+     "maxdd": 823,
+     "worst_month": -536,
+     "pos_months": "21/31",
+     "sharpe": 4.3
+    }
+   },
+   "REV06": {
+    "T1": {
+     "trades": 223,
+     "per_day": 1.0,
+     "wr": 81.2,
+     "pf": 1.243,
+     "net": 1048,
+     "per_month": 27,
+     "maxdd": 638,
+     "worst_month": -293,
+     "pos_months": "23/38",
+     "sharpe": 1.39
+    },
+    "T2": {
+     "trades": 213,
+     "per_day": 1.0,
+     "wr": 77.9,
+     "pf": 1.01,
+     "net": 70,
+     "per_month": 2,
+     "maxdd": 712,
+     "worst_month": -336,
+     "pos_months": "18/34",
+     "sharpe": 0.06
+    }
+   },
+   "VOLB": {
+    "T1": {
+     "trades": 570,
+     "per_day": 1.0,
+     "wr": 63.0,
+     "pf": 1.39,
+     "net": 12920,
+     "per_month": 336,
+     "maxdd": 2092,
+     "worst_month": -1177,
+     "pos_months": "27/39",
+     "sharpe": 1.93
+    },
+    "T2": {
+     "trades": 515,
+     "per_day": 1.0,
+     "wr": 61.6,
+     "pf": 1.548,
+     "net": 19371,
+     "per_month": 584,
+     "maxdd": 1865,
+     "worst_month": -934,
+     "pos_months": "23/34",
+     "sharpe": 2.29
+    }
+   },
+   "VW13": {
+    "T1": {
+     "trades": 80,
+     "per_day": 1.0,
+     "wr": 75.0,
+     "pf": 1.407,
+     "net": 620,
+     "per_month": 17,
+     "maxdd": 323,
+     "worst_month": -231,
+     "pos_months": "21/37",
+     "sharpe": 2.45
+    },
+    "T2": {
+     "trades": 61,
+     "per_day": 1.0,
+     "wr": 75.4,
+     "pf": 1.532,
+     "net": 733,
+     "per_month": 23,
+     "maxdd": 253,
+     "worst_month": -158,
+     "pos_months": "18/27",
+     "sharpe": 3.0
+    }
+   },
+   "VW13b": {
+    "T1": {
+     "trades": 214,
+     "per_day": 1.0,
+     "wr": 73.4,
+     "pf": 1.288,
+     "net": 1269,
+     "per_month": 34,
+     "maxdd": 354,
+     "worst_month": -320,
+     "pos_months": "25/38",
+     "sharpe": 1.79
+    },
+    "T2": {
+     "trades": 157,
+     "per_day": 1.0,
+     "wr": 69.4,
+     "pf": 1.159,
+     "net": 722,
+     "per_month": 22,
+     "maxdd": 542,
+     "worst_month": -213,
+     "pos_months": "19/33",
+     "sharpe": 1.0
+    }
+   }
+  }
+ },
+ "UltraQ": {
+  "all": {
+   "trades": 5713,
+   "per_day": 3.95,
+   "wr": 69.2,
+   "pf": 1.533,
+   "net": 142069,
+   "per_month": 1980,
+   "maxdd": 4759,
+   "worst_month": -2066,
+   "pos_months": "59/73",
+   "sharpe": 3.58
+  },
+  "T1": {
+   "trades": 3055,
+   "per_day": 3.99,
+   "wr": 70.0,
+   "pf": 1.511,
+   "net": 64484,
+   "per_month": 1678,
+   "maxdd": 4711,
+   "worst_month": -1187,
+   "pos_months": "30/39",
+   "sharpe": 3.39
+  },
+  "T2": {
+   "trades": 2658,
+   "per_day": 3.91,
+   "wr": 68.3,
+   "pf": 1.552,
+   "net": 77585,
+   "per_month": 2338,
+   "maxdd": 3143,
+   "worst_month": -2066,
+   "pos_months": "29/34",
+   "sharpe": 3.78
+  },
+  "all_plus4ticks": {
+   "trades": 5713,
+   "per_day": 3.95,
+   "wr": 69.2,
+   "pf": 1.441,
+   "net": 120502,
+   "per_month": 1680,
+   "maxdd": 7612,
+   "worst_month": -2327,
+   "pos_months": "55/73",
+   "sharpe": 3.06
+  },
+  "years": {
+   "2020": {
+    "trades": 210,
+    "per_day": 3.96,
+    "wr": 63.3,
+    "pf": 0.927,
+    "net": -697,
+    "per_month": -276,
+    "maxdd": 1785,
+    "worst_month": -973,
+    "pos_months": "1/3",
+    "sharpe": -0.75
+   },
+   "2021": {
+    "trades": 909,
+    "per_day": 3.94,
+    "wr": 71.0,
+    "pf": 1.555,
+    "net": 16425,
+    "per_month": 1385,
+    "maxdd": 1423,
+    "worst_month": -28,
+    "pos_months": "11/12",
+    "sharpe": 3.56
+   },
+   "2022": {
+    "trades": 969,
+    "per_day": 3.97,
+    "wr": 73.3,
+    "pf": 1.851,
+    "net": 38720,
+    "per_month": 3265,
+    "maxdd": 1634,
+    "worst_month": -46,
+    "pos_months": "11/12",
+    "sharpe": 5.09
+   },
+   "2023": {
+    "trades": 967,
+    "per_day": 4.06,
+    "wr": 67.3,
+    "pf": 1.242,
+    "net": 10036,
+    "per_month": 849,
+    "maxdd": 4711,
+    "worst_month": -1187,
+    "pos_months": "7/12",
+    "sharpe": 1.89
+   },
+   "2024": {
+    "trades": 978,
+    "per_day": 4.02,
+    "wr": 67.0,
+    "pf": 1.42,
+    "net": 18811,
+    "per_month": 1573,
+    "maxdd": 3143,
+    "worst_month": -2066,
+    "pos_months": "10/12",
+    "sharpe": 3.25
+   },
+   "2025": {
+    "trades": 948,
+    "per_day": 3.85,
+    "wr": 69.8,
+    "pf": 1.596,
+    "net": 29191,
+    "per_month": 2448,
+    "maxdd": 2124,
+    "worst_month": -549,
+    "pos_months": "11/12",
+    "sharpe": 4.01
+   },
+   "2026": {
+    "trades": 732,
+    "per_day": 3.83,
+    "wr": 68.2,
+    "pf": 1.633,
+    "net": 29584,
+    "per_month": 3228,
+    "maxdd": 2768,
+    "worst_month": -835,
+    "pos_months": "8/10",
+    "sharpe": 4.15
+   }
+  },
+  "modules": {
+   "CPI09": {
+    "T1": {
+     "trades": 37,
+     "per_day": 1.0,
+     "wr": 78.4,
+     "pf": 2.115,
+     "net": 5381,
+     "per_month": 149,
+     "maxdd": 1175,
+     "worst_month": -1067,
+     "pos_months": "29/37",
+     "sharpe": 5.48
+    },
+    "T2": {
+     "trades": 27,
+     "per_day": 1.0,
+     "wr": 81.5,
+     "pf": 2.623,
+     "net": 6227,
+     "per_month": 195,
+     "maxdd": 1624,
+     "worst_month": -1624,
+     "pos_months": "22/27",
+     "sharpe": 6.6
+    }
+   },
+   "CRT11": {
+    "T1": {
+     "trades": 62,
+     "per_day": 1.0,
+     "wr": 48.4,
+     "pf": 1.47,
+     "net": 2657,
+     "per_month": 70,
+     "maxdd": 901,
+     "worst_month": -653,
+     "pos_months": "16/32",
+     "sharpe": 2.42
+    },
+    "T2": {
+     "trades": 66,
+     "per_day": 1.0,
+     "wr": 63.6,
+     "pf": 2.948,
+     "net": 9124,
+     "per_month": 277,
+     "maxdd": 867,
+     "worst_month": -742,
+     "pos_months": "20/30",
+     "sharpe": 6.62
+    }
+   },
+   "LATE15": {
+    "T1": {
+     "trades": 134,
+     "per_day": 1.0,
+     "wr": 61.9,
+     "pf": 1.62,
+     "net": 2062,
+     "per_month": 55,
+     "maxdd": 492,
+     "worst_month": -264,
+     "pos_months": "26/38",
+     "sharpe": 3.11
+    },
+    "T2": {
+     "trades": 99,
+     "per_day": 1.0,
+     "wr": 60.6,
+     "pf": 1.276,
+     "net": 1104,
+     "per_month": 34,
+     "maxdd": 1561,
+     "worst_month": -785,
+     "pos_months": "16/31",
+     "sharpe": 1.53
+    }
+   },
+   "LF0430": {
+    "T1": {
+     "trades": 88,
+     "per_day": 1.0,
+     "wr": 58.0,
+     "pf": 1.399,
+     "net": 1098,
+     "per_month": 29,
+     "maxdd": 496,
+     "worst_month": -209,
+     "pos_months": "17/32",
+     "sharpe": 2.26
+    },
+    "T2": {
+     "trades": 90,
+     "per_day": 1.0,
+     "wr": 58.9,
+     "pf": 1.357,
+     "net": 1678,
+     "per_month": 51,
+     "maxdd": 800,
+     "worst_month": -408,
+     "pos_months": "19/32",
+     "sharpe": 2.03
+    }
+   },
+   "LF06": {
+    "T1": {
+     "trades": 89,
+     "per_day": 1.0,
+     "wr": 70.8,
+     "pf": 1.267,
+     "net": 673,
+     "per_month": 18,
+     "maxdd": 502,
+     "worst_month": -213,
+     "pos_months": "16/35",
+     "sharpe": 1.72
+    },
+    "T2": {
+     "trades": 82,
+     "per_day": 1.0,
+     "wr": 74.4,
+     "pf": 1.345,
+     "net": 1064,
+     "per_month": 33,
+     "maxdd": 578,
+     "worst_month": -188,
+     "pos_months": "21/29",
+     "sharpe": 2.08
+    }
+   },
+   "MOM1030": {
+    "T1": {
+     "trades": 150,
+     "per_day": 1.0,
+     "wr": 81.3,
+     "pf": 1.531,
+     "net": 5276,
+     "per_month": 139,
+     "maxdd": 1935,
+     "worst_month": -1065,
+     "pos_months": "21/37",
+     "sharpe": 2.82
+    },
+    "T2": {
+     "trades": 96,
+     "per_day": 1.0,
+     "wr": 82.3,
+     "pf": 1.505,
+     "net": 4688,
+     "per_month": 146,
+     "maxdd": 2409,
+     "worst_month": -1266,
+     "pos_months": "23/30",
+     "sharpe": 2.52
+    }
+   },
+   "MOM11": {
+    "T1": {
+     "trades": 615,
+     "per_day": 1.0,
+     "wr": 80.0,
+     "pf": 1.146,
+     "net": 2308,
+     "per_month": 60,
+     "maxdd": 1387,
+     "worst_month": -601,
+     "pos_months": "24/39",
+     "sharpe": 0.86
+    },
+    "T2": {
+     "trades": 554,
+     "per_day": 1.0,
+     "wr": 80.3,
+     "pf": 1.296,
+     "net": 5345,
+     "per_month": 161,
+     "maxdd": 1638,
+     "worst_month": -596,
+     "pos_months": "21/34",
+     "sharpe": 1.64
+    }
+   },
+   "MOM13": {
+    "T1": {
+     "trades": 261,
+     "per_day": 1.0,
+     "wr": 59.8,
+     "pf": 1.466,
+     "net": 4545,
+     "per_month": 119,
+     "maxdd": 948,
+     "worst_month": -447,
+     "pos_months": "28/39",
+     "sharpe": 2.77
+    },
+    "T2": {
+     "trades": 188,
+     "per_day": 1.0,
+     "wr": 59.0,
+     "pf": 1.496,
+     "net": 3823,
+     "per_month": 116,
+     "maxdd": 1310,
+     "worst_month": -515,
+     "pos_months": "20/32",
+     "sharpe": 2.74
+    }
+   },
+   "MSEQ": {
+    "T1": {
+     "trades": 177,
+     "per_day": 1.11,
+     "wr": 66.1,
+     "pf": 1.76,
+     "net": 6752,
+     "per_month": 179,
+     "maxdd": 1046,
+     "worst_month": -539,
+     "pos_months": "19/33",
+     "sharpe": 3.55
+    },
+    "T2": {
+     "trades": 168,
+     "per_day": 1.08,
+     "wr": 57.1,
+     "pf": 1.315,
+     "net": 4253,
+     "per_month": 129,
+     "maxdd": 2357,
+     "worst_month": -1519,
+     "pos_months": "21/31",
+     "sharpe": 1.61
+    }
+   },
+   "MSEQS": {
+    "T1": {
+     "trades": 28,
+     "per_day": 1.04,
+     "wr": 67.9,
+     "pf": 2.135,
+     "net": 1294,
+     "per_month": 36,
+     "maxdd": 474,
+     "worst_month": -230,
+     "pos_months": "12/16",
+     "sharpe": 4.49
+    },
+    "T2": {
+     "trades": 27,
+     "per_day": 1.08,
+     "wr": 63.0,
+     "pf": 1.824,
+     "net": 1863,
+     "per_month": 68,
+     "maxdd": 866,
+     "worst_month": -454,
+     "pos_months": "7/11",
+     "sharpe": 4.24
+    }
+   },
+   "NF05": {
+    "T1": {
+     "trades": 116,
+     "per_day": 1.0,
+     "wr": 53.4,
+     "pf": 1.555,
+     "net": 2307,
+     "per_month": 60,
+     "maxdd": 731,
+     "worst_month": -324,
+     "pos_months": "20/35",
+     "sharpe": 2.83
+    },
+    "T2": {
+     "trades": 137,
+     "per_day": 1.0,
+     "wr": 46.7,
+     "pf": 1.284,
+     "net": 2346,
+     "per_month": 71,
+     "maxdd": 846,
+     "worst_month": -636,
+     "pos_months": "19/33",
+     "sharpe": 1.62
+    }
+   },
+   "ORB60": {
+    "T1": {
+     "trades": 170,
+     "per_day": 1.12,
+     "wr": 72.9,
+     "pf": 1.97,
+     "net": 8903,
+     "per_month": 233,
+     "maxdd": 878,
+     "worst_month": -878,
+     "pos_months": "30/38",
+     "sharpe": 4.66
+    },
+    "T2": {
+     "trades": 135,
+     "per_day": 1.14,
+     "wr": 71.1,
+     "pf": 2.145,
+     "net": 10315,
+     "per_month": 316,
+     "maxdd": 1420,
+     "worst_month": -1089,
+     "pos_months": "22/32",
+     "sharpe": 5.08
+    }
+   },
+   "ORB90": {
+    "T1": {
+     "trades": 145,
+     "per_day": 1.04,
+     "wr": 71.0,
+     "pf": 1.938,
+     "net": 6372,
+     "per_month": 168,
+     "maxdd": 959,
+     "worst_month": -605,
+     "pos_months": "27/38",
+     "sharpe": 4.3
+    },
+    "T2": {
+     "trades": 112,
+     "per_day": 1.05,
+     "wr": 66.1,
+     "pf": 1.892,
+     "net": 5269,
+     "per_month": 161,
+     "maxdd": 823,
+     "worst_month": -536,
+     "pos_months": "21/31",
+     "sharpe": 4.3
+    }
+   },
+   "REV06": {
+    "T1": {
+     "trades": 333,
+     "per_day": 1.0,
+     "wr": 80.8,
+     "pf": 1.198,
+     "net": 1317,
+     "per_month": 34,
+     "maxdd": 625,
+     "worst_month": -275,
+     "pos_months": "25/39",
+     "sharpe": 1.14
+    },
+    "T2": {
+     "trades": 299,
+     "per_day": 1.0,
+     "wr": 77.3,
+     "pf": 0.992,
+     "net": -79,
+     "per_month": -2,
+     "maxdd": 898,
+     "worst_month": -425,
+     "pos_months": "18/34",
+     "sharpe": -0.05
+    }
+   },
+   "VOLB": {
+    "T1": {
+     "trades": 570,
+     "per_day": 1.0,
+     "wr": 63.0,
+     "pf": 1.39,
+     "net": 12920,
+     "per_month": 336,
+     "maxdd": 2092,
+     "worst_month": -1177,
+     "pos_months": "27/39",
+     "sharpe": 1.93
+    },
+    "T2": {
+     "trades": 517,
+     "per_day": 1.0,
+     "wr": 61.7,
+     "pf": 1.561,
+     "net": 19833,
+     "per_month": 598,
+     "maxdd": 1865,
+     "worst_month": -934,
+     "pos_months": "23/34",
+     "sharpe": 2.33
+    }
+   },
+   "VW13": {
+    "T1": {
+     "trades": 80,
+     "per_day": 1.0,
+     "wr": 75.0,
+     "pf": 1.407,
+     "net": 620,
+     "per_month": 17,
+     "maxdd": 323,
+     "worst_month": -231,
+     "pos_months": "21/37",
+     "sharpe": 2.45
+    },
+    "T2": {
+     "trades": 61,
+     "per_day": 1.0,
+     "wr": 75.4,
+     "pf": 1.532,
+     "net": 733,
+     "per_month": 23,
+     "maxdd": 253,
+     "worst_month": -158,
+     "pos_months": "18/27",
+     "sharpe": 3.0
+    }
+   }
+  }
+ },
+ "WR70Plus": {
+  "all": {
+   "trades": 4866,
+   "per_day": 3.39,
+   "wr": 70.7,
+   "pf": 1.536,
+   "net": 110630,
+   "per_month": 1542,
+   "maxdd": 3223,
+   "worst_month": -2109,
+   "pos_months": "60/73",
+   "sharpe": 3.6
+  },
+  "T1": {
+   "trades": 2598,
+   "per_day": 3.4,
+   "wr": 71.7,
+   "pf": 1.555,
+   "net": 52658,
+   "per_month": 1370,
+   "maxdd": 3223,
+   "worst_month": -861,
+   "pos_months": "32/39",
+   "sharpe": 3.57
+  },
+  "T2": {
+   "trades": 2268,
+   "per_day": 3.36,
+   "wr": 69.5,
+   "pf": 1.519,
+   "net": 57972,
+   "per_month": 1747,
+   "maxdd": 3118,
+   "worst_month": -2109,
+   "pos_months": "28/34",
+   "sharpe": 3.66
+  },
+  "all_plus4ticks": {
+   "trades": 4866,
+   "per_day": 3.39,
+   "wr": 70.7,
+   "pf": 1.441,
+   "net": 93305,
+   "per_month": 1300,
+   "maxdd": 3670,
+   "worst_month": -2310,
+   "pos_months": "57/73",
+   "sharpe": 3.06
+  },
+  "years": {
+   "2020": {
+    "trades": 178,
+    "per_day": 3.42,
+    "wr": 65.2,
+    "pf": 0.899,
+    "net": -781,
+    "per_month": -309,
+    "maxdd": 1454,
+    "worst_month": -861,
+    "pos_months": "1/3",
+    "sharpe": -1.03
+   },
+   "2021": {
+    "trades": 768,
+    "per_day": 3.35,
+    "wr": 71.7,
+    "pf": 1.487,
+    "net": 11243,
+    "per_month": 948,
+    "maxdd": 1543,
+    "worst_month": 26,
+    "pos_months": "12/12",
+    "sharpe": 3.17
+   },
+   "2022": {
+    "trades": 830,
+    "per_day": 3.42,
+    "wr": 74.2,
+    "pf": 1.874,
+    "net": 29730,
+    "per_month": 2507,
+    "maxdd": 1958,
+    "worst_month": -273,
+    "pos_months": "10/12",
+    "sharpe": 5.2
+   },
+   "2023": {
+    "trades": 822,
+    "per_day": 3.44,
+    "wr": 70.7,
+    "pf": 1.416,
+    "net": 12466,
+    "per_month": 1054,
+    "maxdd": 3223,
+    "worst_month": -783,
+    "pos_months": "9/12",
+    "sharpe": 2.85
+   },
+   "2024": {
+    "trades": 840,
+    "per_day": 3.47,
+    "wr": 68.6,
+    "pf": 1.475,
+    "net": 16079,
+    "per_month": 1345,
+    "maxdd": 2813,
+    "worst_month": -1181,
+    "pos_months": "9/12",
+    "sharpe": 3.65
+   },
+   "2025": {
+    "trades": 809,
+    "per_day": 3.33,
+    "wr": 71.4,
+    "pf": 1.522,
+    "net": 20775,
+    "per_month": 1742,
+    "maxdd": 2005,
+    "worst_month": -194,
+    "pos_months": "11/12",
+    "sharpe": 3.79
+   },
+   "2026": {
+    "trades": 619,
+    "per_day": 3.28,
+    "wr": 68.3,
+    "pf": 1.555,
+    "net": 21119,
+    "per_month": 2304,
+    "maxdd": 3118,
+    "worst_month": -2109,
+    "pos_months": "8/10",
+    "sharpe": 3.74
+   }
+  },
+  "modules": {
+   "CPI09": {
+    "T1": {
+     "trades": 37,
+     "per_day": 1.0,
+     "wr": 78.4,
+     "pf": 2.115,
+     "net": 5381,
+     "per_month": 149,
+     "maxdd": 1175,
+     "worst_month": -1067,
+     "pos_months": "29/37",
+     "sharpe": 5.48
+    },
+    "T2": {
+     "trades": 27,
+     "per_day": 1.0,
+     "wr": 81.5,
+     "pf": 2.623,
+     "net": 6227,
+     "per_month": 195,
+     "maxdd": 1624,
+     "worst_month": -1624,
+     "pos_months": "22/27",
+     "sharpe": 6.6
+    }
+   },
+   "CRT11": {
+    "T1": {
+     "trades": 83,
+     "per_day": 1.0,
+     "wr": 44.6,
+     "pf": 1.425,
+     "net": 3318,
+     "per_month": 88,
+     "maxdd": 1254,
+     "worst_month": -803,
+     "pos_months": "17/35",
+     "sharpe": 2.24
+    },
+    "T2": {
+     "trades": 89,
+     "per_day": 1.0,
+     "wr": 59.6,
+     "pf": 2.377,
+     "net": 9632,
+     "per_month": 293,
+     "maxdd": 867,
+     "worst_month": -742,
+     "pos_months": "23/33",
+     "sharpe": 5.46
+    }
+   },
+   "ICT": {
+    "T1": {
+     "trades": 78,
+     "per_day": 1.0,
+     "wr": 53.8,
+     "pf": 1.267,
+     "net": 1667,
+     "per_month": 44,
+     "maxdd": 664,
+     "worst_month": -372,
+     "pos_months": "17/31",
+     "sharpe": 1.76
+    },
+    "T2": {
+     "trades": 59,
+     "per_day": 1.0,
+     "wr": 57.6,
+     "pf": 1.179,
+     "net": 1150,
+     "per_month": 35,
+     "maxdd": 1580,
+     "worst_month": -1014,
+     "pos_months": "15/26",
+     "sharpe": 1.18
+    }
+   },
+   "LATE15": {
+    "T1": {
+     "trades": 134,
+     "per_day": 1.0,
+     "wr": 61.9,
+     "pf": 1.62,
+     "net": 2062,
+     "per_month": 55,
+     "maxdd": 492,
+     "worst_month": -264,
+     "pos_months": "26/38",
+     "sharpe": 3.11
+    },
+    "T2": {
+     "trades": 99,
+     "per_day": 1.0,
+     "wr": 60.6,
+     "pf": 1.276,
+     "net": 1104,
+     "per_month": 34,
+     "maxdd": 1561,
+     "worst_month": -785,
+     "pos_months": "16/31",
+     "sharpe": 1.53
+    }
+   },
+   "LF0430": {
+    "T1": {
+     "trades": 88,
+     "per_day": 1.0,
+     "wr": 58.0,
+     "pf": 1.399,
+     "net": 1098,
+     "per_month": 29,
+     "maxdd": 496,
+     "worst_month": -209,
+     "pos_months": "17/32",
+     "sharpe": 2.26
+    },
+    "T2": {
+     "trades": 90,
+     "per_day": 1.0,
+     "wr": 58.9,
+     "pf": 1.357,
+     "net": 1678,
+     "per_month": 51,
+     "maxdd": 800,
+     "worst_month": -408,
+     "pos_months": "19/32",
+     "sharpe": 2.03
+    }
+   },
+   "LF06": {
+    "T1": {
+     "trades": 89,
+     "per_day": 1.0,
+     "wr": 70.8,
+     "pf": 1.267,
+     "net": 673,
+     "per_month": 18,
+     "maxdd": 502,
+     "worst_month": -213,
+     "pos_months": "16/35",
+     "sharpe": 1.72
+    },
+    "T2": {
+     "trades": 82,
+     "per_day": 1.0,
+     "wr": 74.4,
+     "pf": 1.345,
+     "net": 1064,
+     "per_month": 33,
+     "maxdd": 578,
+     "worst_month": -188,
+     "pos_months": "21/29",
+     "sharpe": 2.08
+    }
+   },
+   "MOM11": {
+    "T1": {
+     "trades": 610,
+     "per_day": 1.0,
+     "wr": 80.0,
+     "pf": 1.143,
+     "net": 2260,
+     "per_month": 59,
+     "maxdd": 1316,
+     "worst_month": -601,
+     "pos_months": "24/39",
+     "sharpe": 0.85
+    },
+    "T2": {
+     "trades": 551,
+     "per_day": 1.0,
+     "wr": 80.2,
+     "pf": 1.287,
+     "net": 5190,
+     "per_month": 156,
+     "maxdd": 1638,
+     "worst_month": -596,
+     "pos_months": "21/34",
+     "sharpe": 1.6
+    }
+   },
+   "MSEQ": {
+    "T1": {
+     "trades": 192,
+     "per_day": 1.12,
+     "wr": 65.6,
+     "pf": 1.684,
+     "net": 6745,
+     "per_month": 179,
+     "maxdd": 959,
+     "worst_month": -539,
+     "pos_months": "21/35",
+     "sharpe": 3.31
+    },
+    "T2": {
+     "trades": 182,
+     "per_day": 1.08,
+     "wr": 57.1,
+     "pf": 1.321,
+     "net": 4554,
+     "per_month": 138,
+     "maxdd": 2353,
+     "worst_month": -1519,
+     "pos_months": "21/31",
+     "sharpe": 1.64
+    }
+   },
+   "MSEQS": {
+    "T1": {
+     "trades": 28,
+     "per_day": 1.04,
+     "wr": 67.9,
+     "pf": 2.135,
+     "net": 1294,
+     "per_month": 36,
+     "maxdd": 474,
+     "worst_month": -230,
+     "pos_months": "12/16",
+     "sharpe": 4.49
+    },
+    "T2": {
+     "trades": 27,
+     "per_day": 1.08,
+     "wr": 63.0,
+     "pf": 1.824,
+     "net": 1863,
+     "per_month": 68,
+     "maxdd": 866,
+     "worst_month": -454,
+     "pos_months": "7/11",
+     "sharpe": 4.24
+    }
+   },
+   "NF05": {
+    "T1": {
+     "trades": 116,
+     "per_day": 1.0,
+     "wr": 53.4,
+     "pf": 1.555,
+     "net": 2307,
+     "per_month": 60,
+     "maxdd": 731,
+     "worst_month": -324,
+     "pos_months": "20/35",
+     "sharpe": 2.83
+    },
+    "T2": {
+     "trades": 137,
+     "per_day": 1.0,
+     "wr": 46.7,
+     "pf": 1.284,
+     "net": 2346,
+     "per_month": 71,
+     "maxdd": 846,
+     "worst_month": -636,
+     "pos_months": "19/33",
+     "sharpe": 1.62
+    }
+   },
+   "ORB60": {
+    "T1": {
+     "trades": 161,
+     "per_day": 1.05,
+     "wr": 70.2,
+     "pf": 2.045,
+     "net": 9887,
+     "per_month": 259,
+     "maxdd": 855,
+     "worst_month": -855,
+     "pos_months": "30/38",
+     "sharpe": 4.96
+    },
+    "T2": {
+     "trades": 133,
+     "per_day": 1.11,
+     "wr": 69.9,
+     "pf": 2.439,
+     "net": 13150,
+     "per_month": 403,
+     "maxdd": 1461,
+     "worst_month": -1013,
+     "pos_months": "22/32",
+     "sharpe": 5.67
+    }
+   },
+   "ORB90": {
+    "T1": {
+     "trades": 146,
+     "per_day": 1.04,
+     "wr": 70.5,
+     "pf": 1.89,
+     "net": 6200,
+     "per_month": 164,
+     "maxdd": 959,
+     "worst_month": -605,
+     "pos_months": "27/38",
+     "sharpe": 4.15
+    },
+    "T2": {
+     "trades": 114,
+     "per_day": 1.05,
+     "wr": 66.7,
+     "pf": 1.922,
+     "net": 5448,
+     "per_month": 167,
+     "maxdd": 823,
+     "worst_month": -536,
+     "pos_months": "21/31",
+     "sharpe": 4.4
+    }
+   },
+   "REV06": {
+    "T1": {
+     "trades": 333,
+     "per_day": 1.0,
+     "wr": 80.8,
+     "pf": 1.198,
+     "net": 1317,
+     "per_month": 34,
+     "maxdd": 625,
+     "worst_month": -275,
+     "pos_months": "25/39",
+     "sharpe": 1.14
+    },
+    "T2": {
+     "trades": 299,
+     "per_day": 1.0,
+     "wr": 77.3,
+     "pf": 0.992,
+     "net": -79,
+     "per_month": -2,
+     "maxdd": 898,
+     "worst_month": -425,
+     "pos_months": "18/34",
+     "sharpe": -0.05
+    }
+   },
+   "VOLB_tf1": {
+    "T1": {
+     "trades": 207,
+     "per_day": 1.0,
+     "wr": 77.8,
+     "pf": 1.893,
+     "net": 6581,
+     "per_month": 173,
+     "maxdd": 686,
+     "worst_month": -483,
+     "pos_months": "28/37",
+     "sharpe": 4.39
+    },
+    "T2": {
+     "trades": 159,
+     "per_day": 1.0,
+     "wr": 69.2,
+     "pf": 1.328,
+     "net": 3096,
+     "per_month": 95,
+     "maxdd": 1119,
+     "worst_month": -761,
+     "pos_months": "18/33",
+     "sharpe": 1.86
+    }
+   },
+   "VW13": {
+    "T1": {
+     "trades": 80,
+     "per_day": 1.0,
+     "wr": 75.0,
+     "pf": 1.407,
+     "net": 620,
+     "per_month": 17,
+     "maxdd": 323,
+     "worst_month": -231,
+     "pos_months": "21/37",
+     "sharpe": 2.45
+    },
+    "T2": {
+     "trades": 61,
+     "per_day": 1.0,
+     "wr": 75.4,
+     "pf": 1.532,
+     "net": 733,
+     "per_month": 23,
+     "maxdd": 253,
+     "worst_month": -158,
+     "pos_months": "18/27",
+     "sharpe": 3.0
+    }
+   },
+   "VW13b": {
+    "T1": {
+     "trades": 216,
+     "per_day": 1.0,
+     "wr": 73.1,
+     "pf": 1.28,
+     "net": 1248,
+     "per_month": 33,
+     "maxdd": 354,
+     "worst_month": -290,
+     "pos_months": "25/38",
+     "sharpe": 1.74
+    },
+    "T2": {
+     "trades": 159,
+     "per_day": 1.0,
+     "wr": 69.8,
+     "pf": 1.18,
+     "net": 819,
+     "per_month": 25,
+     "maxdd": 542,
+     "worst_month": -213,
+     "pos_months": "19/33",
+     "sharpe": 1.13
+    }
+   }
+  }
+ }
+}

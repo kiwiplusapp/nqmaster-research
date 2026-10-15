@@ -1,0 +1,82 @@
+{
+ "Ultra (today) | edge-0%": {
+  "T1": {
+   "usd_month": 1713,
+   "p10_month": 670,
+   "lost_per_year": 0.22,
+   "neg_year_pct": 0.0,
+   "eval_pass20": 30.3,
+   "eval_bust": 23.4,
+   "serial20": 33.8
+  },
+  "T2": {
+   "usd_month": 2009,
+   "p10_month": 1256,
+   "lost_per_year": 0.25,
+   "neg_year_pct": 0.0,
+   "eval_pass20": 44.4,
+   "eval_bust": 22.5,
+   "serial20": 51.0
+  }
+ },
+ "Ultra (today) | edge-35%": {
+  "T1": {
+   "usd_month": 1142,
+   "p10_month": 127,
+   "lost_per_year": 1.85,
+   "neg_year_pct": 7.5,
+   "eval_pass20": 22.3,
+   "eval_bust": 44.7,
+   "serial20": 25.8
+  },
+  "T2": {
+   "usd_month": 1128,
+   "p10_month": 557,
+   "lost_per_year": 1.09,
+   "neg_year_pct": 0.0,
+   "eval_pass20": 26.6,
+   "eval_bust": 34.6,
+   "serial20": 30.9
+  }
+ },
+ "Ultra + new | edge-0%": {
+  "T1": {
+   "usd_month": 1984,
+   "p10_month": 832,
+   "lost_per_year": 0.31,
+   "neg_year_pct": 0.0,
+   "eval_pass20": 32.8,
+   "eval_bust": 25.8,
+   "serial20": 36.4
+  },
+  "T2": {
+   "usd_month": 2076,
+   "p10_month": 1300,
+   "lost_per_year": 0.21,
+   "neg_year_pct": 0.0,
+   "eval_pass20": 41.7,
+   "eval_bust": 22.4,
+   "serial20": 48.5
+  }
+ },
+ "Ultra + new | edge-35%": {
+  "T1": {
+   "usd_month": 1351,
+   "p10_month": 236,
+   "lost_per_year": 1.68,
+   "neg_year_pct": 2.8,
+   "eval_pass20": 24.7,
+   "eval_bust": 45.6,
+   "serial20": 27.7
+  },
+  "T2": {
+   "usd_month": 1136,
+   "p10_month": 159,
+   "lost_per_year": 1.09,
+   "neg_year_pct": 9.0,
+   "eval_pass20": 27.7,
+   "eval_bust": 29.1,
+   "serial20": 31.2
+  }
+ }
+}

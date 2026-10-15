@@ -17,7 +17,11 @@ try:
     from families6 import FAMILIES6
 except ImportError:
     FAMILIES6 = {}
-FAMILIES = {**OLD, **FAMILIES5, **FAMILIES6}
+try:
+    from families7 import FAMILIES7
+except ImportError:
+    FAMILIES7 = {}
+FAMILIES = {**OLD, **FAMILIES5, **FAMILIES6, **FAMILIES7}
 FLAT = int(os.environ.get("MINE_FLAT", "955")); NORM = 0.00345
 PARTS_R = (("T1", 20200101, 20240101), ("T2", 20240101, 20991231))
 PARTS_N = (("A", 20100601, 20150101), ("B", 20150101, 20200101), ("T1n", 20200101, 20240101), ("T2n", 20240101, 20991231))
@@ -45,7 +49,7 @@ def task(arg):
         r = run_events(D, ev, flat=FLAT, maxday=maxday, slip=0.25)
         nm = run_events(D, ev, flat=FLAT, maxday=maxday, slip=0.0, norm_cost=NORM)
         stats(r, PARTS_R, row); stats(nm, PARTS_N, row)
-        if row["T1_n"] >= 80 and (row["T1_pf"] or 0) >= 1.25:
+        if row["T1_n"] >= int(os.environ.get("MINE_KEEP_N", "80")) and (row["T1_pf"] or 0) >= 1.25:
             for df in (r, nm):
                 df["tin"] = D.sm[df.fi.to_numpy().astype(int)] if len(df) else []; df["tout"] = D.sm[df.xi.to_numpy().astype(int)] + 1 if len(df) else []
             keep = dict(real=r[["date", "usd", "tin", "tout", "d", "fi", "xi"]], norm=nm[["date", "usd", "d", "fi"]])
