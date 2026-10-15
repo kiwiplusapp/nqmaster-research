@@ -1,5 +1,61 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★ 2026-10-15 (night): the operating system, as one design (English)
+
+Playbook page: `research/mine/os_playbook.html` (published as the "NQMaster Operating System" artifact). Research: `research/mine/os_adapt.py` -> `os_adapt.json`. Patches: `patch_fallback.py`, plus a fix to the Mffu50K preset (below).
+
+**Six layers.**
+1. **Edge.** Profile Ultra.
+2. **Size.** 1 base contract, MOM1030/CPI09 ×4, ×8 in 50K evals.
+3. **Account.** Presets.
+4. **Protection.** FOMC, ATR, risk cap, guards.
+5. **Adaptation.** Edge monitor → fallback.
+6. **Feedback.** Health report, panel, log.
+
+**New: what the edge monitor does on an alarm (`os_adapt.py`).**
+- Test period: 2013-19 cost-normalised. It is out of sample for the monitor's calibration, which used 2020-26 and never fires there. Ultra's edge was weak in those years.
+
+| On alarm | Sharpe 2013-19 | Max DD | Losing years 2011-19 | 2020-23 real |
+|---|---|---|---|---|
+| Alert only (old default) | 0.88 | $1,519 | 3 | $78,579 |
+| Pause 63 / 126 / 252 days | 0.73 / 0.69 / 0.86 | $1,526-2,101 | 4 | $78,579 |
+| **Review-set fallback 252 days, yearly table (shipped)** | **1.05** | **$1,338** | **2** | $78,579 |
+| Review-set fallback, exact alarm date | 1.15 | $1,249 | 1 | $78,579 |
+| Yearly review always on (no monitor) | 1.52 | $709 | 1 | $60,870 |
+
+- **Pausing on an alarm is worse than doing nothing.** Keep `EdgeMonitorPause = false`.
+- The fallback switches off the modules that failed the 5-year review (cost-normalised PF ≤ 1.05) for 252 monitored trading days, then resets the CUSUM and returns to the full profile.
+- Yearly table built into the code:
+
+  | Year | Modules off |
+  |---|---|
+  | 2020 | LF0430 LF06 MOM11 MOM13 ON07 ORB60 ORB90 REV06 VW13 |
+  | 2021 | LF0430 LF06 MOM11 MOM13 ON07 VW13 |
+  | 2022 | LF0430 LF06 ON07 VW13 |
+  | 2023 | LF06 ON07 |
+  | 2024 | LF06 VW13 |
+  | 2025-26 | none |
+  | 2027 | REV06 |
+
+- The always-on yearly review would have cost $17.7k in 2020-23 because it keeps recovering modules off. **So REV06 stays on in 2027 unless the monitor fires.** This replaces the earlier "REV06 off for 2027" advice.
+- Evidence size: 9 alarms in 9 years. The gain held for every length tested (126 / 252 / 378 days: Sharpe 0.97 / 1.05 / 1.07 vs 0.88).
+- New properties in group 06: `EdgeAlarmFallback` (true), `EdgeFallbackDays` (252), `EdgeFallbackOff` (empty = built-in table). The panel shows "FALLBACK n days left". Backup: `NQMaster_backup_pre_fallback.cs`.
+
+**Fix: Mffu50K preset, funded.**
+- It withdrew only above $6,600 profit, a value meant for the 2-contract step-up, while step-up is off by default.
+- Now it requests the payout at $4,600 (keeps $4,100) when step-up is off, and at $6,600 when it is on.
+- Tested at 1 contract (`smallacct_cushion.py`): keeping $4k gives $1,029 / $1,538 a month vs $836-976 / $1,323-1,478 when keeping $5-7k.
+- The preset now also turns on the news blackout in the funded account (MFFU rule: flat ±2 min around Tier-1 news).
+
+**Settings, the whole system.**
+- MFFU 50K eval: Ultra, Contracts 1, PropMode Eval, PropPreset Mffu50K.
+- MFFU 50K funded: the same with PropMode Funded.
+- Lucid Pro 25K, fastest: PropPreset LucidPro25K; new eval the day after a bust.
+- GoldMaster Robust on MGC alongside.
+- Defaults for everything else: Days to load ≥ 45, edge monitor on, fallback on.
+
+Stub compile OK, NOT compiled in NinjaTrader: F5.
+
 ## ★★★★★★★★★ 2026-10-15 (later): "big size when an 80% strategy fires, to pass the eval fast" + update (English)
 
 Scripts: `research/mine/sniper_eval.py`, `sniper_uniform.py`, `sniper_life.py` (-> `.json` / `.csv`). Code patches: `patch_evalhw.py`, `patch_report.py`.

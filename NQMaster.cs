@@ -190,7 +190,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				case NQMasterPropPreset.Mffu50K:
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 30;
 					if (ev) { EvalTarget = 3000; EvalProfitStop = 800; EvalRiskCapCushion = 0; MaxOpenContracts = 30; EvalHighWrMultiplier = 8; }
-					else { RiskCapPerContract = 300; FundedRiskCapCushion = 2000; FundedPayoutAt = 6600; MaxOpenContracts = 30; FundedProfitStop = 0; }
+					else { RiskCapPerContract = 300; FundedRiskCapCushion = 2000; FundedPayoutAt = FundedStepUpCushion > 0 ? 6600 : 4600; MaxOpenContracts = 30; FundedProfitStop = 0; }
+					if (!ev) NewsBlackout = true;	// MFFU funded: no trades +-2 min around Tier-1 news (rule); payout 4,600 = keep $4,100 at 1 contract (smallacct_cushion.py), 6,600 with step-up
 					break;
 			}
 			Print(string.Format("NQMaster | preset {0} ({1}): balance {2:0}, trailing DD {3:0}, eval target {4:0}, profit stop {5:0}, consistency {6:0}%, risk cap {7:0} below cushion {8:0}, max open contracts {9}, MOM1030/CPI09 x{10}",

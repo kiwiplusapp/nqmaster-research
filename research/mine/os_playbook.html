@@ -1,0 +1,204 @@
+<title>NQMaster Operating System</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; the six system layers as a stacked "order book" ladder, then routes, routine and limits. */
+:root {
+  --paper: #f5f6f4; --panel: #ffffff; --ink: #15202a; --muted: #5a6670; --rule: #d8dcd9;
+  --accent: #0f6a73; --accent-soft: #e1efef; --warn: #a86a12; --warn-soft: #f6ecd9; --good: #2e7a4b; --bad: #a83a32;
+  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #11171c; --panel: #172028; --ink: #e6ebee; --muted: #9aa7b0; --rule: #2a3640;
+  --accent: #4fb5bd; --accent-soft: #15333a; --warn: #e0a54a; --warn-soft: #3a2c14; --good: #6cc48f; --bad: #e27a70; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #11171c; --panel: #172028; --ink: #e6ebee; --muted: #9aa7b0; --rule: #2a3640;
+  --accent: #4fb5bd; --accent-soft: #15333a; --warn: #e0a54a; --warn-soft: #3a2c14; --good: #6cc48f; --bad: #e27a70; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 44px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 800; font-stretch: 85%; line-height: 1.05; }
+h2 { font-size: 24px; font-weight: 700; font-stretch: 90%; }
+h3 { font-size: 16px; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.lede { font-size: 17px; color: var(--muted); }
+header { display: grid; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 22px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--f-mono); font-size: 12.5px; color: var(--muted); }
+section { display: grid; gap: 16px; }
+.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+/* layer ladder */
+.ladder { display: grid; border: 1px solid var(--rule); background: var(--panel); }
+.rung { display: grid; grid-template-columns: 54px minmax(0, 1fr); border-top: 1px solid var(--rule); }
+.rung:first-child { border-top: 0; }
+.rung .lvl { font-family: var(--f-mono); font-size: 13px; color: var(--accent); padding: 16px 0 0 16px; }
+.rung .body { padding: 14px 18px 16px 0; display: grid; gap: 6px; min-width: 0; }
+.rung .q { color: var(--muted); font-size: 13.5px; }
+.rung .new { display: inline-block; font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 1px 7px; border-radius: 3px; background: var(--accent-soft); color: var(--accent); margin-left: 8px; vertical-align: 2px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--f-mono); font-size: 12px; padding: 2px 8px; border: 1px solid var(--rule); border-radius: 3px; white-space: nowrap; }
+.chip.off { color: var(--muted); text-decoration: line-through; }
+/* tables */
+.tbl { overflow-x: auto; border: 1px solid var(--rule); background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 13.5px; }
+th, td { text-align: left; padding: 9px 12px; border-top: 1px solid var(--rule); vertical-align: top; }
+thead th { border-top: 0; font-family: var(--f-mono); font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--paper); }
+td.n { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.pick td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+.note { font-size: 13px; color: var(--muted); }
+/* settings */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.card { background: var(--panel); border: 1px solid var(--rule); padding: 16px 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.card dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 13px; }
+.card dt { font-family: var(--f-mono); color: var(--muted); }
+.card dd { margin: 0; font-family: var(--f-mono); }
+/* routine */
+.routine { display: grid; gap: 0; border-left: 2px solid var(--rule); margin-left: 6px; }
+.step { display: grid; gap: 4px; padding: 0 0 18px 20px; position: relative; }
+.step::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 2px solid var(--accent); }
+.step.alarm::before { border-color: var(--warn); }
+.step .when { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.step.alarm .when { color: var(--warn); }
+ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; max-width: 70ch; }
+/* expectations */
+.meters { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+.meter { background: var(--panel); border: 1px solid var(--rule); padding: 14px 16px; display: grid; gap: 8px; }
+.meter .v { font-family: var(--f-display); font-size: 30px; font-weight: 800; font-stretch: 85%; line-height: 1; }
+.bar { height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.meter .lbl { font-size: 13px; color: var(--muted); }
+.callout { background: var(--warn-soft); border: 1px solid var(--rule); padding: 14px 16px; display: grid; gap: 6px; }
+.callout h3 { color: var(--warn); }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 16px; display: grid; gap: 6px; }
+code { font-family: var(--f-mono); font-size: 0.92em; }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">MNQ · NinjaTrader 8 · prop accounts · 15 Oct 2026</div>
+  <h1>NQMaster Operating System</h1>
+  <p class="lede">How the whole system is meant to run: what trades, how big, on which accounts, what protects it, and what it does by itself when the market changes. Every number below comes from a test on real futures data, run with $1.90 commission plus 1 tick of slippage per side.</p>
+  <div class="meta"><span>NT backtest 2024-01 → 2026-10: 3,072 trades · WR 65.5% · PF 1.52 · $2,385/mo per contract</span><span>matched to research: 92.7% of trades</span></div>
+</header>
+
+<section>
+  <div class="eyebrow">The design</div>
+  <h2>Six layers, each answers one question</h2>
+  <div class="ladder">
+    <div class="rung"><div class="lvl">L1</div><div class="body">
+      <h3>Edge: what to trade</h3>
+      <p class="q">Profile Ultra: 19 small, mostly independent strategies (modules) on MNQ, about 6 trades a day, spread around the clock.</p>
+      <div class="chips">
+        <span class="chip">night: NF05 · LF0430 · LF06 · REV06 · ON07 · LON</span>
+        <span class="chip">open: VOLB · ICT · ORB60 · ORB90 · MOM1030 · CPI09</span>
+        <span class="chip">midday: MOM11 · CRT11 · MSEQ · MSEQS · VW13 · MOM13</span>
+        <span class="chip">late: LATE15</span>
+        <span class="chip off">ENG10 · LATEFH</span>
+      </div>
+      <p class="note">GoldMaster Robust on MGC is the diversifier (correlation with NQ ≈ 0). Edge per trade is at its tested ceiling: 53,000+ mined configurations, ML, order flow, options OI and feature filters added nothing robust.</p>
+    </div></div>
+    <div class="rung"><div class="lvl">L2</div><div class="body">
+      <h3>Size: how much on each trade</h3>
+      <p class="q">One base contract per module. Fixed boosts that held in all four test periods (2010-14, 2015-19, 2020-23, 2024-26):</p>
+      <div class="chips"><span class="chip">MOM1030 ×4</span><span class="chip">CPI09 ×4</span><span class="chip">ICT ×2</span><span class="chip">late confluence ×2</span><span class="chip">VW13 2nd lot</span></div>
+      <p class="q">In a 50K evaluation the two ~80% win-rate modules go to ×8 <span class="new">new</span> (preset does it). Funded accounts stay at ×4.</p>
+    </div></div>
+    <div class="rung"><div class="lvl">L3</div><div class="body">
+      <h3>Account: where it runs</h3>
+      <p class="q">Only firms that allow bots: MyFundedFutures, Lucid, Bulenox, FundedNext. Apex (since 2026-03) and Topstep don't. One preset per account type sets target, drawdown, consistency, profit stop, risk cap and payouts.</p>
+    </div></div>
+    <div class="rung"><div class="lvl">L4</div><div class="body">
+      <h3>Protection: when not to trade</h3>
+      <div class="chips"><span class="chip">FOMC days skipped</span><span class="chip">ATR &lt; 150 pts: no trades</span><span class="chip">risk cap $300 while cushion is low</span><span class="chip">max open contracts</span><span class="chip">roll guard</span><span class="chip">half-day sessions</span><span class="chip">account sync guard</span><span class="chip">stale-order watchdog</span><span class="chip">news blackout (MFFU)</span></div>
+    </div></div>
+    <div class="rung"><div class="lvl">L5</div><div class="body">
+      <h3>Adaptation: what happens when the market changes <span class="new">new</span></h3>
+      <p class="q">The edge monitor (a CUSUM of daily results vs the backtest) raises an alarm when live trading stops looking like the backtest. It never fired in 2020-26; it fired 9 times in 2010-19, when the edge was weak.</p>
+      <p>On an alarm, NQMaster now switches off for one year (252 trading days) the modules that failed the 5-year review, then returns to the full profile. Pausing everything instead was tested and is worse.</p>
+    </div></div>
+    <div class="rung"><div class="lvl">L6</div><div class="body">
+      <h3>Feedback: what you look at <span class="new">new</span></h3>
+      <p class="q">Module health report in the Output window (each module's win rate, PF and $ for the whole run and the last 365 days), the chart panel, the log file and alerts. The report is for review, not for sizing: a module's hot year does not predict its next trades.</p>
+    </div></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Evidence for the new layer</div>
+  <h2>What to do on an edge alarm</h2>
+  <p>Tested on 2013-19 (cost-normalised), a period the monitor was not calibrated on and where Ultra's edge was weak. In 2020-26 the monitor never fires, so all policies are identical there.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>On alarm</th><th>Sharpe 2013-19</th><th>Max DD 2013-19</th><th>Losing years 2011-19</th><th>2020-23 real $</th></tr></thead>
+    <tbody>
+      <tr><td>Alert only (old default)</td><td class="n">0.88</td><td class="n">$1,519</td><td class="n">3</td><td class="n">$78,579</td></tr>
+      <tr><td>Pause all entries 63 / 126 / 252 days</td><td class="n">0.73 / 0.69 / 0.86</td><td class="n">$1,526-2,101</td><td class="n">4</td><td class="n">$78,579</td></tr>
+      <tr class="pick"><td><b>Review-set fallback 252 days (shipped, yearly table)</b></td><td class="n">1.05</td><td class="n">$1,338</td><td class="n">2</td><td class="n">$78,579</td></tr>
+      <tr><td>Review-set fallback, exact alarm date</td><td class="n">1.15</td><td class="n">$1,249</td><td class="n">1</td><td class="n">$78,579</td></tr>
+      <tr><td>Yearly review always on (no monitor)</td><td class="n">1.52</td><td class="n">$709</td><td class="n">1</td><td class="n">$60,870</td></tr>
+    </tbody></table></div>
+  <p class="note">Applying the yearly review every January regardless would have cost $17.7k in 2020-23 because it kept recovering modules off. Tying it to the alarm keeps most of the protection without that cost. So REV06 stays on in 2027 unless the monitor fires. Sample: 9 alarms in 9 years, so the size of the gain is uncertain; the direction held for every fallback length tested (126 / 252 / 378 days).</p>
+</section>
+
+<section>
+  <div class="eyebrow">Layer 3 in practice</div>
+  <h2>Account routes</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Route</th><th>Setup</th><th>Pass / funded</th><th>Income per account per month (2020-23 / 2024-26)</th><th>With 35% less edge</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td><b>MFFU Rapid EOD 50K</b> · best income</td><td>Eval ×8 → funded ×4, 1 contract, withdraw above $4,100 profit</td><td class="n">single eval ≤ 1 mo 29 / 41%</td><td class="n">$1,351 / $1,903</td><td class="n">$852 / $1,107</td></tr>
+      <tr><td><b>Lucid Flex 50K</b></td><td>Eval ×8 → funded ×4, profit stop $1,350</td><td class="n">single eval ≤ 1 mo 34 / 48%</td><td class="n">$980 / $1,322</td><td class="n">$656 / $686</td></tr>
+      <tr><td><b>Lucid Pro 25K</b> · fastest funded</td><td>Eval 2 contracts, new eval the day after a bust; funded 1 contract</td><td class="n">funded within a month 90 / 92%, ~2.4 evals</td><td class="n">~$700</td><td class="n">~$400</td></tr>
+    </tbody></table></div>
+  <p class="note">Income figures are 12-month lifecycle simulations per seat: eval fees, busts, restarts and payouts included. More money comes from more accounts, not from more size per account: MFFU allows 3, Lucid 5 funded.</p>
+</section>
+
+<section>
+  <div class="eyebrow">Settings</div>
+  <h2>Three setups, nothing else to change</h2>
+  <div class="cards">
+    <div class="card"><h3>MFFU 50K evaluation</h3><dl>
+      <dt>Profile</dt><dd>Ultra</dd><dt>Contracts</dt><dd>1</dd><dt>PropMode</dt><dd>Eval</dd><dt>PropPreset</dt><dd>Mffu50K</dd><dt>result</dt><dd>MOM1030/CPI09 ×8, profit stop $800</dd></dl></div>
+    <div class="card"><h3>MFFU 50K funded</h3><dl>
+      <dt>Profile</dt><dd>Ultra</dd><dt>Contracts</dt><dd>1</dd><dt>PropMode</dt><dd>Funded</dd><dt>PropPreset</dt><dd>Mffu50K</dd><dt>result</dt><dd>×4, news blackout on, payout at $4,600 (keeps $4,100)</dd></dl></div>
+    <div class="card"><h3>Lucid Pro 25K, fastest</h3><dl>
+      <dt>Profile</dt><dd>Ultra</dd><dt>PropMode</dt><dd>Eval → Funded</dd><dt>PropPreset</dt><dd>LucidPro25K</dd><dt>contracts</dt><dd>set by preset (2 → 1)</dd><dt>rule</dt><dd>buy a new eval the day after a bust</dd></dl></div>
+  </div>
+  <p class="note">Every setup: Days to load ≥ 45, edge monitor on, fallback on (defaults). GoldMaster Robust on MGC alongside, same account.</p>
+</section>
+
+<section>
+  <div class="eyebrow">Operating routine</div>
+  <h2>What you do, and when</h2>
+  <div class="routine">
+    <div class="step"><div class="when">Once, before going live</div><p>F5 compile on the PC. Strategy Analyzer Ultra 1 contract over 2024-01 → today; send me the trades CSV and I compare it trade by trade with research.</p></div>
+    <div class="step"><div class="when">Every day</div><p>Nothing manual. Glance at the chart panel and the alerts: stale order, account sync, roll date, edge monitor percentage.</p></div>
+    <div class="step"><div class="when">Every month</div><p>Read the module health report. Compare live $ per contract with the expected band: a losing month happens in about 1 of 6 months, so only a pattern matters.</p></div>
+    <div class="step"><div class="when">At each quarterly roll</div><p>When the roll guard warns (8 days before expiry), move the strategy to the next MNQ contract with the same settings.</p></div>
+    <div class="step"><div class="when">Every January</div><p>Ask me to re-run the 5-year module review (<code>robust16.py</code>) and update the built-in fallback table. Do not switch modules off by hand unless the monitor fires.</p></div>
+    <div class="step alarm"><div class="when">On an edge alarm</div><p>Automatic: one year on the reviewed module set, then full profile. Your part: no new accounts during the fallback; if the fallback year is also negative per contract, stop and review with me.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Expectations</div>
+  <h2>What is likely, what is not</h2>
+  <div class="meters">
+    <div class="meter"><div class="v num">82%</div><div class="bar"><i style="width:82%"></i></div><div class="lbl">chance of a positive year on one MFFU 50K account at 1 contract, after weighting for possible edge loss</div></div>
+    <div class="meter"><div class="v num">~50%</div><div class="bar"><i style="width:50%"></i></div><div class="lbl">best single 50K eval passed within one month; above that needs a Sharpe the edge does not have</div></div>
+    <div class="meter"><div class="v num">90%</div><div class="bar"><i style="width:90%"></i></div><div class="lbl">funded within a month on Lucid Pro 25K with restarts (≈ 2.4 evals)</div></div>
+    <div class="meter"><div class="v num">−35%</div><div class="bar"><i style="width:35%; background: var(--warn)"></i></div><div class="lbl">planning haircut: assume live trading earns about 65% of the backtest</div></div>
+  </div>
+  <div class="two">
+    <div class="callout"><h3>Rejected today</h3><p>Big size on any module that won ≥ 80% over the last year: those trades average +$46 per win vs −$132 per loss (PF 1.34), and at 8-10 contracts busts reach 42-57%. Pausing on an edge alarm: lower Sharpe than doing nothing.</p></div>
+    <div class="callout"><h3>Still the main risk</h3><p>The edge is a post-2020 regime: before 2020, Ultra's cost-normalised PF was about 1.0-1.2. Range-bound, high-volatility months (like summer 2026) can bust a $2,000 drawdown. The fallback and several accounts are the answer, not more size.</p></div>
+  </div>
+</section>
+
+<footer>
+  <span>Research: <code>research/mine/os_adapt.py</code>, <code>sniper_eval.py</code>, <code>sniper_uniform.py</code>, <code>sniper_life.py</code>, <code>month80.py</code>, <code>final3y_conf.py</code>. Code: <code>NQMaster.cs</code> (stub-compiled; compile in NinjaTrader with F5).</span>
+  <span>Periods: T1 = 2020-23, T2 = 2024-26 real Databento NQ; 2010-19 cost-normalised (0.345% of ATR per trade).</span>
+</footer>
+</div>
