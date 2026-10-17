@@ -203,10 +203,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 				case NQMasterPropPreset.Mffu50K:
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 30;
 					if (ev) { EvalTarget = 3000; EvalProfitStop = 800; EvalRiskCapCushion = 0; MaxOpenContracts = 30; EvalHighWrMultiplier = 8; }
-					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 2000; if (FundedLadderStep <= 0) FundedPayoutAt = FundedStepUpCushion > 0 ? 6600 : 4600; MaxOpenContracts = 30; FundedProfitStop = 0; }	// ladder on: FundedPayoutAt stays as set (11,600 for the K4 / $3,000 recipe; red team 2026-10-17 H1)
+					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 2000; if (FundedLadderStep <= 0) FundedPayoutAt = FundedStepUpCushion > 0 ? 6600 : 4600; else FundedPayoutAt = Math.Max(FundedPayoutAt, FundedStepUpCushion + (FundedLadderMax - FundedStepUpContracts) * FundedLadderStep + 2600); MaxOpenContracts = 30; FundedProfitStop = 0; }	// ladder on: payout level at least the top of the ladder + 2,600 (11,600 for the K4 / $3,000 recipe; code review 2026-10-17 L1)
 					if (!ev) NewsBlackout = true;	// MFFU funded: no trades or orders +-2 min around Tier-1 news (rule). Payout at $4,600 = keep $4,100; optional step-up (FundedStepUpCushion 4000) -> $6,600: more median $ but 2x size, +6-7 pts P(negative year) at 35% less edge (c4_cushion.py + red team 2026-10-16), so it is NOT a default
 					break;
 			}
+			if (FundedLadderStep > 0 && !ev && FundedStepUpCushion <= 0) Print("NQMaster | WARNING: the size ladder needs FundedStepUpCushion > 0 (first step); it is OFF");
 			Print(string.Format("NQMaster | preset {0} ({1}): balance {2:0}, trailing DD {3:0}, eval target {4:0}, profit stop {5:0}, consistency {6:0}%, risk cap {7:0} below cushion {8:0}, max open contracts {9}, MOM1030/CPI09 x{10}",
 				PropPreset, PropMode, StartBalance, PropTrailingDD, EvalTarget, EvalProfitStop, ConsistencyPct, RiskCapPerContract, ev ? EvalRiskCapCushion : FundedRiskCapCushion, MaxOpenContracts, HwQty(Mom1030Multiplier)));
 		}
@@ -381,7 +382,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 				}
 				foreach (Order z in zombies) { try { Order r = GetRealtimeOrder(z); if (r != null && Working(r)) CancelOrder(r); } catch { } }
 				eqPeak = netPnl;	// adaptive size measures the drawdown from the moment the strategy goes live
+				int hq = Math.Max(1, Qty());
 				PropGoLive();
+				int lq = Math.Max(1, Qty());	// code review 2026-10-17 M1: entries carried over from history keep the backtest size; re-size them to the live cushion's size
+				if (lq != hq) foreach (Mod m in mods)
+				{
+					if (m.Entry == null || !Working(m.Entry) || (m.Entry.OrderType != OrderType.StopMarket && m.Entry.OrderType != OrderType.Limit)) continue;
+					int want = Math.Max(1, (int)Math.Round(m.Entry.Quantity * (double)lq / hq));
+					if (want != m.Entry.Quantity) { try { ChangeOrder(m.Entry, want, m.Entry.LimitPrice, m.Entry.StopPrice); Log(string.Format("{0} entry re-sized {1} -> {2} at go-live (cushion size {3} -> {4})", m.Sig, m.Entry.Quantity, want, hq, lq)); } catch { } }
+				}
 				syncArmed = false; desyncBars = 0; NewsListCheck();
 				if (atrCount < AtrMin || rthDaysSeen < WarmupDays) Warn("nqm_warmup", string.Format("NQMaster | WARNING: only {0} RTH days loaded, the warm-up needs {1}: modules stay idle until then (set Days to load >= 45).", rthDaysSeen, WarmupDays));
 				rollHalt = RollDue(); if (rollHalt) Warn("nqm_roll", "NQMaster | ROLL DATE reached for " + Instrument.FullName + ": no new entries. Move the strategy to the next contract (same settings).");
@@ -1226,15 +1235,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double dayStartPnl; private bool dayStopped;
 		private void DailyLossCheck()
 		{
-			if (dayStopped) return;
-			// research/mine/ladder_stop.py (2026-10-17): with the funded size ladder, an account daily stop of $1,500 per contract per module
-			// (realized + open P&L) cuts funded busts 0.61 -> 0.19 per year (2024-26) and raises the p10 of the steady-state income; neutral at 1 contract.
-			double lim = DailyLossLimit;
-			if (DailyLossPerContract > 0 && PropMode == NQMasterPropMode.Funded) lim = Math.Max(lim, DailyLossPerContract * Qty());
-			if (lim <= 0) return;
-			double open = 0;
-			if (Position.MarketPosition != MarketPosition.Flat) { try { open = Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Close[0]); } catch { } }
-			if (netPnl - dayStartPnl + Math.Min(0, open) <= -lim) { dayStopped = true; FlattenAll("daily loss limit"); Log(string.Format("DAILY LOSS LIMIT {0:0} reached - no more trades this session", lim)); }
+			if (DailyLossLimit <= 0 || dayStopped) return;
+			if (netPnl - dayStartPnl <= -DailyLossLimit) { dayStopped = true; FlattenAll("daily loss limit"); Log("DAILY LOSS LIMIT reached - no more trades this session"); }
 		}
 		// ---- evaluation mode (research/mine/evalpol.py): Contracts per module (2 recommended); if on the EvalLateDay-th session
 		// (0-based, counted from EvalStartDate) the evaluation profit is still below EvalLateGoal, trade EvalLateContracts until the end.
@@ -1269,7 +1271,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			if (FundedLadderStep <= 0) return FundedStepUpContracts;
 			int k = FundedStepUpContracts + (int)Math.Floor((propCushion - FundedStepUpCushion) / FundedLadderStep);
-			return Math.Max(FundedStepUpContracts, Math.Min(FundedLadderMax, k));
+			return Math.Min(FundedLadderMax, Math.Max(FundedStepUpContracts, k));
 		}
 		private int Qty()
 		{
@@ -1674,11 +1676,18 @@ namespace NinjaTrader.NinjaScript.Strategies
 			// Funded: optional daily profit stop for LucidPro's 40% per-payout-cycle consistency (research/mine/lucidpro.py: 2 contracts,
 			// stop at +$500 for the whole account -> $/month per account +13% vs LucidFlex 2c/2c; no daily loss stop in Funded)
 			bool evalMode = PropMode == NQMasterPropMode.Eval;
-			double lossStop = evalMode ? EvalDailyStop : 0, profitStop = evalMode ? EvalProfitStop : (PropMode == NQMasterPropMode.Funded ? FundedProfitStop : 0);
+			// research/mine/ladder_stop.py (2026-10-17): with the funded size ladder, an ACCOUNT daily stop of $1,500 per contract per module (realized + open,
+			// size fixed at the day start) cuts funded busts 0.61 -> 0.19 per year (2024-26) and raises the p10 of the steady-state income; neutral at 1 contract.
+			double lossStop = evalMode ? EvalDailyStop : (PropMode == NQMasterPropMode.Funded && DailyLossPerContract > 0 ? DailyLossPerContract * Math.Max(1, edgeDayQty) : 0);
+			double profitStop = evalMode ? EvalProfitStop : (PropMode == NQMasterPropMode.Funded ? FundedProfitStop : 0);
 			if ((lossStop <= 0 && profitStop <= 0) || propStopped || double.IsNaN(propDayStart)) return;
 			double now = State == State.Realtime ? Account.Get(AccountItem.CashValue, Currency.UsDollar) + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar)
 				: StartBalance + netPnl + (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Closes[0][0]));
-			if (lossStop > 0 && now - propDayStart <= -lossStop) { propStopped = true; FlattenAll("prop daily stop"); Log(string.Format("PROP DAILY STOP: {0:0} today", now - propDayStart)); }
+			if (lossStop > 0 && !evalMode && State != State.Realtime && Position.MarketPosition != MarketPosition.Flat)
+			{	// historical: mirror the research (minute low of the day's equity) with the bar's adverse extreme
+				try { now = Math.Min(now, StartBalance + netPnl + Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Position.MarketPosition == MarketPosition.Long ? Lows[0][0] : Highs[0][0])); } catch { }
+			}
+			if (lossStop > 0 && now - propDayStart <= -lossStop) { propStopped = true; FlattenAll("prop daily stop"); Log(string.Format("PROP DAILY STOP: {0:0} today (limit {1:0})", now - propDayStart, lossStop)); }
 			else if (profitStop > 0 && now - propDayStart >= profitStop) { propStopped = true; FlattenAll(evalMode ? "eval daily profit stop" : "funded daily profit stop"); Log(string.Format("{0} DAILY PROFIT STOP: +{1:0} today (Lucid consistency)", evalMode ? "EVAL" : "FUNDED", now - propDayStart)); }
 		}
 
@@ -1944,7 +1953,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				// research/mine/reentry_lab.py (2026-10-17): VOLB 2R re-armed once after a stop-out (not after the break-even stop), same levels, either
 				// side, before 15:00: 181 trades 2020-26, PF 1.52 / 1.32 (T1 / T2), +$58 per month per contract, Sharpe up in both periods, but max DD +6%
 				// (protocol limit +5%) -> opt-in only (VolbReArm)
-				if (from == volb && from.OpenQty == 0 && VolbReArm && !volbTrendOnly && !volbBeSet && volbTrades < 2 && execution.Order.Name == "Stop loss")
+				if (from == volb && from.OpenQty == 0 && VolbReArm && !volbTrendOnly && volb.R >= 1.5 && !volbBeSet && volbTrades < 2 && !Working(volb.Entry) && execution.Order.Name == "Stop loss")
 				{ volbDone = false; Log("VOLB stopped out: re-armed for a second attempt (VolbReArm)"); }
 			}
 			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; }
@@ -2171,7 +2180,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Max drawdown $ (0 = off, realtime)", Order = 36, GroupName = "03. Risk / account")] public double MaxDrawdown { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Drawdown buffer $", Order = 37, GroupName = "03. Risk / account")] public double DrawdownBuffer { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Daily loss limit $ (0 = off; eval: 800, funded: 500)", Order = 46, GroupName = "03. Risk / account")] public double DailyLossLimit { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: daily loss limit $ per contract per module, realized + open (0 = off; 1500 with the size ladder)", Order = 47, GroupName = "03. Risk / account")] public double DailyLossPerContract { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: daily loss limit $ per contract per module, realized + open (0 = off; 1500 with the size ladder)", Order = 49, GroupName = "03. Risk / account")] public double DailyLossPerContract { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Min daily ATR (points) to trade (0 = off)", Order = 47, GroupName = "03. Risk / account")] public double MinAtrPoints { get; set; }
 		[NinjaScriptProperty][Range(2, 15)][Display(Name = "Warm-up days (15 = validated; 2 = trade from day 3 with short ATR / trend averages)", Order = 48, GroupName = "03. Risk / account")] public int WarmupDays { get; set; }
 		[NinjaScriptProperty][Display(Name = "Eval mode (late size-up)", Order = 1, GroupName = "05. Evaluation mode")] public bool EvalMode { get; set; }
@@ -2219,8 +2228,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: stop the day at +$ (whole account; LucidPro 40% consistency: 500 with 2 contracts; 0 = off)", Order = 15, GroupName = "07. Prop account (cushion gating)")] public double FundedProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 16, GroupName = "07. Prop account (cushion gating)")] public double FundedStepUpCushion { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 17, GroupName = "07. Prop account (cushion gating)")] public int FundedStepUpContracts { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: ladder, +1 contract per further $ of cushion (0 = off; MFFU 3000 with step-up 3000, max 4, payout at 11600)", Order = 18, GroupName = "07. Prop account (cushion gating)")] public double FundedLadderStep { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: ladder max contracts per module (4 on MFFU 50K: 30-micro cap)", Order = 19, GroupName = "07. Prop account (cushion gating)")] public int FundedLadderMax { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: ladder, +1 contract per further $ of cushion (0 = off; MFFU 3000 with step-up 3000, max 4, payout at 11600)", Order = 22, GroupName = "07. Prop account (cushion gating)")] public double FundedLadderStep { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: ladder max contracts per module (4 on MFFU 50K: 30-micro cap)", Order = 23, GroupName = "07. Prop account (cushion gating)")] public int FundedLadderMax { get; set; }
 		[NinjaScriptProperty][Range(0, 8)][Display(Name = "Eval: MOM1030 / CPI09 multiplier (0 = normal x4; 8 on 50K evals at 1 contract; presets Lucid50K / Mffu50K set 8)", Order = 21, GroupName = "07. Prop account (cushion gating)")] public int EvalHighWrMultiplier { get; set; }
 		[NinjaScriptProperty][Display(Name = "Order-flow boost on (FAILED out-of-sample test: keep OFF; backtests need Tick Replay)", Order = 1, GroupName = "09. Order flow (experimental)")] public bool UseOrderFlowBoost { get; set; }
 		[NinjaScriptProperty][Range(0.0, 1.0)][Display(Name = "Session delta with the trade >= (0.015 = research top 20%)", Order = 2, GroupName = "09. Order flow (experimental)")] public double OrderFlowCvdMin { get; set; }
