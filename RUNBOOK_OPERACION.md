@@ -1,4 +1,4 @@
-# Runbook de operación NQMaster (versión 2026-10-16)
+# Runbook de operación NQMaster (versión 2026-10-17)
 
 Una página. Si algo de acá contradice una sección vieja de `NQMASTER_GUIA.md`, manda esta.
 
@@ -18,6 +18,7 @@ Una página. Si algo de acá contradice una sección vieja de `NQMASTER_GUIA.md`
 |---|---|
 | MFFU Rapid EOD 50K, evaluación | Profile Ultra · Contracts 1 · PropMode Eval · PropPreset Mffu50K |
 | MFFU Rapid EOD 50K, fondeada | Igual, con PropMode Funded. El preset pone el risk cap $300 por debajo de un cushion de $2.000, el pedido de retiro al llegar a $4.600 de ganancia (retirás hasta dejar $4.100) y el apagón de noticias. El escalón a 2 contratos (`FundedStepUpCushion` 4000, retiro a $6.600) es **opcional**: más ingreso mediano si el edge es real, pero duplica el tamaño y suma 6-7 puntos a P(año negativo) con 35% menos edge. |
+| MFFU Rapid EOD 50K, fondeada, **escalera de tamaño** (opcional, 17-oct; objetivo "$200/día por cuenta") | PropMode Funded + preset Mffu50K + `SixYearModules` true + `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4, `FundedPayoutAt` 11600, `DailyLossPerContract` 1500, `MaxOpenContracts` 30; GoldMaster Robust con `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4. Pedir los retiros después del cierre de las 16:00. Sube 1 contrato por módulo por cada $3.000 de colchón (día de inicio) hasta 4; retirás solo lo que supere $11.100 de ganancia. En régimen (años 2-3) $214-288/día con el edge completo y $96-125 con 35% menos; quiebres 0,1-0,2 por año (1,2 con −35%). Amplifica lo que haya: si el edge se apaga, el colchón retenido se pierde. Nunca corrió en NinjaTrader: Strategy Analyzer con el preset completo antes de usarlo. |
 | Lucid Pro 25K (fondeo rápido) | PropPreset LucidPro25K; evaluación nueva al día siguiente de cada pérdida |
 
 - **Misma firma = mismo perfil en todas las cuentas.** Lucid y MFFU prohíben posiciones opuestas entre cuentas propias.

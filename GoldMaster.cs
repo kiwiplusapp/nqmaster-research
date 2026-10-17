@@ -218,7 +218,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseEng0610 = false;
 				Contracts = 1; FlattenTime = 1600; SkipFomc = true; FomcDates = "";	// 1600: MFFU auto-closes at 16:10 ET, Lucid at 16:45 (was 1651)
 				AccountSyncGuard = true; SkipShortSessions = true; MaxOpenContracts = 20; RollGuard = true; LogToFile = true;
-				WarmupDays = 60; DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; NewsBlackout = false; NewsTimes = ""; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
+				WarmupDays = 60; DailyLossLimit = 0; AccountDailyStop = 0; AccountProfitStop = 0; NewsBlackout = false; NewsTimes = ""; EvalTarget = 0; StartBalance = 50000; ConsistencyPct = 50; EvalBestDaySoFar = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2; FundedLadderStep = 0; FundedLadderMax = 4;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 8; EvalLateGoal = 2100; EvalLateContracts = 2; EvalLateMinCushion = 1000;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; PauseFile = "pause_gold.txt"; ShowDashboard = true; PrintLog = true;
 			}
@@ -501,7 +501,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private int Qty()
 		{
 			if (EvalMode && evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal && (EvalLateMinCushion <= 0 || double.IsNaN(evalCushion) || evalCushion >= EvalLateMinCushion)) return EvalLateContracts;
-			if (!EvalMode && FundedStepUpCushion > 0 && !double.IsNaN(stepCushion) && stepCushion >= FundedStepUpCushion) return FundedStepUpContracts;
+			if (!EvalMode && FundedStepUpCushion > 0 && !double.IsNaN(stepCushion) && stepCushion >= FundedStepUpCushion)
+			{	// size ladder (research/mine/ladder_plan.py scales gold with the NQ ladder): +1 contract per FundedLadderStep of cushion above the step-up, up to FundedLadderMax
+				if (FundedLadderStep <= 0) return FundedStepUpContracts;
+				int k = FundedStepUpContracts + (int)Math.Floor((stepCushion - FundedStepUpCushion) / FundedLadderStep);
+				return Math.Min(FundedLadderMax, Math.Max(FundedStepUpContracts, k));
+			}
 			return Contracts;
 		}
 
@@ -887,6 +892,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Account daily profit stop $ (eval: 1400 with 2 contracts; 0 = off)", Order = 12, GroupName = "02. Risk / account")] public double AccountProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when account cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 15, GroupName = "02. Risk / account")] public double FundedStepUpCushion { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 16, GroupName = "02. Risk / account")] public int FundedStepUpContracts { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: ladder, +1 contract per further $ of cushion (0 = off; same values as NQMaster: 3000, max 4)", Order = 161, GroupName = "02. Risk / account")] public double FundedLadderStep { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: ladder max contracts per module", Order = 162, GroupName = "02. Risk / account")] public int FundedLadderMax { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Start balance $", Order = 9, GroupName = "02. Risk / account")] public double StartBalance { get; set; }
 		[NinjaScriptProperty][Display(Name = "News blackout: flat, no orders 2 min around CPI / NFP / FOMC minutes (MFFU funded)", Order = 13, GroupName = "02. Risk / account")] public bool NewsBlackout { get; set; }
 		[NinjaScriptProperty][Display(Name = "Extra Tier-1 times ET (yyyy-MM-dd HH:mm, comma list)", Order = 14, GroupName = "02. Risk / account")] public string NewsTimes { get; set; }

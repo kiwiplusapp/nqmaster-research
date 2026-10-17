@@ -1,0 +1,152 @@
+<title>Plan $250-300 por día</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* layout: one reading column, tables that scroll inside their own box; ledger-like neutrals with one amber accent (money) */
+:root { --bg:#f7f5f0; --fg:#1f1d1a; --muted:#6b655c; --line:#d9d3c7; --card:#fffdf8; --accent:#b4610f; --good:#2e6b3a; --bad:#9b2c2c; --font-body:"Source Serif 4", Georgia, serif; --font-ui:"IBM Plex Sans", system-ui, sans-serif; --font-mono:"IBM Plex Mono", ui-monospace, monospace; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#15140f; --fg:#ebe6dc; --muted:#a39c90; --line:#3a362e; --card:#1d1b15; --accent:#e0a050; --good:#7cc08a; --bad:#e07a7a; color-scheme: dark } }
+:root[data-theme="dark"] { --bg:#15140f; --fg:#ebe6dc; --muted:#a39c90; --line:#3a362e; --card:#1d1b15; --accent:#e0a050; --good:#7cc08a; --bad:#e07a7a; color-scheme: dark }
+body { background:var(--bg); color:var(--fg); font-family:var(--font-body); font-size:17px; line-height:1.55; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:32px 64px; }
+main { max-width:860px; margin:0 auto; }
+h1 { font-family:var(--font-ui); font-size:2rem; line-height:1.15; margin:0 0 .25rem; text-wrap:balance; }
+h2 { font-family:var(--font-ui); font-size:1.25rem; margin:2.2rem 0 .6rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+h3 { font-family:var(--font-ui); font-size:1rem; margin:1.4rem 0 .4rem; }
+p, li { max-width:68ch; }
+.eyebrow { font-family:var(--font-ui); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.verdict { background:var(--card); border-left:4px solid var(--accent); padding:14px 18px; margin:1.2rem 0; font-size:1.05rem; }
+.tiles { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin:1rem 0; }
+.tile { background:var(--card); border:1px solid var(--line); padding:12px 14px; min-width:0; }
+.tile .k { font-family:var(--font-ui); font-size:.78rem; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; }
+.tile .v { font-family:var(--font-mono); font-size:1.5rem; font-variant-numeric:tabular-nums; color:var(--accent); }
+.tile .s { font-size:.85rem; color:var(--muted); }
+.tw { overflow-x:auto; margin:.6rem 0 1rem; }
+table { border-collapse:collapse; font-family:var(--font-ui); font-size:.9rem; min-width:520px; }
+th, td { text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; white-space:nowrap; }
+th { font-weight:600; color:var(--muted); font-size:.8rem; letter-spacing:.03em; text-transform:uppercase; }
+td.num, th.num { text-align:right; }
+tr.hi td { background:color-mix(in srgb, var(--accent) 12%, transparent); font-weight:600; }
+.good { color:var(--good); } .bad { color:var(--bad); }
+.note { font-size:.9rem; color:var(--muted); }
+ol li, ul li { margin:.3rem 0; }
+code { font-family:var(--font-mono); font-size:.85em; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<main>
+<div class="eyebrow">NQMaster · 17 de octubre de 2026 · pedido: $250-300 por día, luego $200 por día por cuenta · NQ real Databento 2020-10 a 2026-10, costos $1,90 + 1 tick por lado en las tablas por contrato; las simulaciones por cuenta llevan 1 tick más por lado</div>
+<h1>Plan $250-300 por día</h1>
+<p class="note">Todo en dólares netos por día <strong>calendario</strong> (365 días): comisiones, fees de evaluación y reparto 90/10 de las firmas descontados. "−35%" = 35% menos edge que el backtest (supuesto realista de la auditoría); "cero" = sin edge.</p>
+
+<div class="verdict"><strong>Veredicto.</strong> Un contrato base del sistema da $72-89 por día con el edge completo y $47-58 con 35% menos. A $250-300 por día no se llega mejorando trades (dos rondas más hoy, cero sobrevivientes): se llega con <strong>8 cuentas fondeadas</strong> (3 MFFU 50K + 5 Lucid 150K, con módulos de 6 años y oro) y solo si el edge se mantiene cerca del backtest: mediana $507-682 por día; con 35% menos edge, $235-353. <strong>$200 por día por cuenta</strong> solo lo da la escalera de tamaño en MFFU con el edge completo (sección 2b).</div>
+
+<div class="tiles">
+  <div class="tile"><div class="k">1 contrato, Ultra + 6 años + oro</div><div class="v">$89</div><div class="s">por día; $58 con −35%</div></div>
+  <div class="tile"><div class="k">Contratos para $250/día</div><div class="v">2,8</div><div class="s">con edge completo; 4,3 con −35%</div></div>
+  <div class="tile"><div class="k">8 cuentas, edge completo</div><div class="v">$507-682</div><div class="s">con 6 años + oro; mediana bootstrap 2020-23 / 2024-26</div></div>
+  <div class="tile"><div class="k">8 cuentas, −35%</div><div class="v">$235-353</div><div class="s">con 6 años + oro; p10 $23-97; 4-7% de años negativos</div></div>
+  <div class="tile"><div class="k">1 cuenta MFFU con escalera, edge completo</div><div class="v">$119-189</div><div class="s">por día; $29-42 con −35%</div></div>
+</div>
+
+<h2>1. Qué da un contrato base</h2>
+<div class="tw"><table>
+<tr><th>Set</th><th class="num">$/día completo</th><th class="num">$/día −35%</th><th class="num">$/mes</th><th class="num">Sharpe</th><th class="num">DD máx.</th><th class="num">Contratos para $250/día</th></tr>
+<tr><td>Ultra</td><td class="num">72</td><td class="num">47</td><td class="num">2.183</td><td class="num">3,70</td><td class="num">4.582</td><td class="num">3,5 / 5,4</td></tr>
+<tr><td>Ultra + oro Robust</td><td class="num">80</td><td class="num">52</td><td class="num">2.424</td><td class="num">3,90</td><td class="num">4.554</td><td class="num">3,1 / 4,8</td></tr>
+<tr><td>Ultra + módulos 6 años</td><td class="num">81</td><td class="num">53</td><td class="num">2.465</td><td class="num">3,99</td><td class="num">5.008</td><td class="num">3,1 / 4,8</td></tr>
+<tr class="hi"><td>Ultra + 6 años + oro Robust</td><td class="num">89</td><td class="num">58</td><td class="num">2.705</td><td class="num">4,15</td><td class="num">4.181</td><td class="num">2,8 / 4,3</td></tr>
+<tr><td>UltraQ</td><td class="num">65</td><td class="num">42</td><td class="num">1.979</td><td class="num">3,54</td><td class="num">4.759</td><td class="num">3,8 / 5,9</td></tr>
+<tr><td>WR70Plus + oro</td><td class="num">59</td><td class="num">38</td><td class="num">1.782</td><td class="num">3,79</td><td class="num">3.151</td><td class="num">4,3 / 6,6</td></tr>
+</table></div>
+<p>Por año, el set completo rinde entre <strong>$57 por día (2023)</strong> y <strong>$238 por día (2026)</strong> por contrato. Un tick más de slippage por lado cuesta 6%. Los módulos de 6 años y el oro suman 24% de ingreso sin subir el drawdown.</p>
+
+<h2>2. Qué da un conjunto de cuentas fondeadas</h2>
+<p>Ciclo de 12 meses por asiento: evaluación, fondeada, retiros, quiebre, nueva evaluación. Todas las cuentas van sobre el mismo mercado (correladas), arranques escalonados 5 días, 400 años bootstrap por período. MFFU 50K con el preset actual (1 contrato, retiro dejando $4.100). Lucid Flex 50K: 2 contratos, stop de ganancia diario $1.350, retiro a $4.000. Lucid Flex 150K: 6 contratos en evaluación y 3 fondeada, retiro a $6.000. Topes de las firmas: 3 MFFU, 5 Lucid fondeadas.</p>
+<h3>Ultra + oro Robust, $ por día, mediana bootstrap 2020-23 / 2024-26</h3>
+<div class="tw"><table>
+<tr><th>Plan</th><th class="num">Edge completo</th><th class="num">p10</th><th class="num">−35%</th><th class="num">−50%</th><th class="num">P(año negativo) −35%</th></tr>
+<tr><td>1 MFFU 50K 1c</td><td class="num">35 / 61</td><td class="num">10 / 32</td><td class="num">10 / 24</td><td class="num">1 / 11</td><td class="num bad">27% / 16%</td></tr>
+<tr><td>3 MFFU 50K 1c</td><td class="num">105 / 182</td><td class="num">35 / 98</td><td class="num">31 / 72</td><td class="num">5 / 33</td><td class="num bad">26% / 15%</td></tr>
+<tr><td>3 MFFU step-up 2c</td><td class="num">162 / 297</td><td class="num">41 / 125</td><td class="num">32 / 100</td><td class="num">−3 / 32</td><td class="num bad">33% / 20%</td></tr>
+<tr><td>5 Lucid Flex 50K 2c</td><td class="num">211 / 266</td><td class="num">103 / 154</td><td class="num">97 / 133</td><td class="num">71 / 80</td><td class="num">13% / 8%</td></tr>
+<tr><td>1 Lucid 150K 6c/3c</td><td class="num">66 / 88</td><td class="num">35 / 53</td><td class="num">33 / 42</td><td class="num">21 / 23</td><td class="num">12% / 8%</td></tr>
+<tr><td>5 Lucid 150K 6c/3c</td><td class="num">330 / 432</td><td class="num">175 / 279</td><td class="num">162 / 206</td><td class="num">106 / 122</td><td class="num">11% / 8%</td></tr>
+<tr><td>3 MFFU 1c + 5 Lucid 50K 2c</td><td class="num">317 / 447</td><td class="num">154 / 271</td><td class="num">131 / 207</td><td class="num">84 / 116</td><td class="num">12% / 9%</td></tr>
+<tr class="hi"><td>3 MFFU 1c + 5 Lucid 150K</td><td class="num">441 / 616</td><td class="num">222 / 381</td><td class="num">187 / 278</td><td class="num">114 / 159</td><td class="num">10% / 7%</td></tr>
+</table></div>
+<h3>Ultra + 6 años + oro Robust (el set recomendado), $ por día, mediana bootstrap 2020-23 / 2024-26</h3>
+<div class="tw"><table>
+<tr><th>Plan</th><th class="num">Edge completo</th><th class="num">p10</th><th class="num">−35%</th><th class="num">−50%</th><th class="num">P(año negativo) −35%</th></tr>
+<tr><td>1 MFFU 50K 1c</td><td class="num">43 / 66</td><td class="num">19 / 34</td><td class="num">16 / 29</td><td class="num">8 / 13</td><td class="num">24% / 11%</td></tr>
+<tr><td>3 MFFU 50K 1c</td><td class="num">130 / 203</td><td class="num">56 / 104</td><td class="num">47 / 86</td><td class="num">24 / 39</td><td class="num">23% / 11%</td></tr>
+<tr><td>3 MFFU step-up 2c</td><td class="num">214 / 325</td><td class="num">77 / 131</td><td class="num">60 / 117</td><td class="num">24 / 37</td><td class="num">27% / 16%</td></tr>
+<tr><td>5 Lucid Flex 50K 2c</td><td class="num">232 / 276</td><td class="num">123 / 168</td><td class="num">118 / 161</td><td class="num">85 / 87</td><td class="num">9% / 6%</td></tr>
+<tr><td>1 Lucid 150K 6c/3c</td><td class="num">73 / 93</td><td class="num">40 / 60</td><td class="num">36 / 55</td><td class="num">25 / 30</td><td class="num">8% / 4%</td></tr>
+<tr><td>5 Lucid 150K 6c/3c</td><td class="num">371 / 472</td><td class="num">202 / 311</td><td class="num">181 / 272</td><td class="num">126 / 154</td><td class="num">7% / 4%</td></tr>
+<tr><td>3 MFFU 1c + 5 Lucid 50K 2c</td><td class="num">370 / 484</td><td class="num">194 / 286</td><td class="num">168 / 241</td><td class="num">108 / 128</td><td class="num">9% / 5%</td></tr>
+<tr class="hi"><td>3 MFFU 1c + 5 Lucid 150K</td><td class="num">507 / 682</td><td class="num">274 / 423</td><td class="num">235 / 353</td><td class="num">159 / 196</td><td class="num">7% / 4%</td></tr>
+</table></div>
+<h2>2b. "$200 por día por cuenta": escalera de tamaño dentro de la fondeada</h2>
+<p>Los contratos por módulo suben con el colchón al inicio del día (saldo menos piso del trailing): un contrato más por cada tramo de colchón hasta un máximo, y se retira solo lo que sobra por encima del colchón que sostiene la escalera. El ingreso por cuenta escala con la ganancia retenida y se frena solo si el edge se apaga: con 35% menos edge el tamaño medio cae de 2,6 a 1,5 contratos; con 50% menos vuelve a uno. Ultra + 6 años + oro, $ por día calendario, mediana bootstrap 2020-23 / 2024-26.</p>
+<div class="tw"><table>
+<tr><th>Política por cuenta</th><th class="num">Completo: mediana (historia)</th><th class="num">P(≥$200/día)</th><th class="num">Quiebres/año</th><th class="num">Tamaño medio</th><th class="num">−35%</th><th class="num">P(año neg.) −35%</th><th class="num">−50%</th></tr>
+<tr><td>MFFU 50K 1c (hoy)</td><td class="num">45 / 68 (55 / 72)</td><td class="num">0% / 0%</td><td class="num">0.27 / 0.50</td><td class="num">0.8</td><td class="num">18 / 28</td><td class="num">20% / 14%</td><td class="num">6 / 11</td></tr>
+<tr><td>MFFU step-up 2c a $4k (deja $6,1k)</td><td class="num">68 / 104 (94 / 119)</td><td class="num">0% / 2%</td><td class="num">0.27 / 0.56</td><td class="num">1.4</td><td class="num">22 / 31</td><td class="num">28% / 18%</td><td class="num">5 / 12</td></tr>
+<tr><td>MFFU escalera hasta 3c, +1 por $3k, deja $8k</td><td class="num">97 / 146 (136 / 172)</td><td class="num">3% / 25%</td><td class="num">0.27 / 0.68</td><td class="num">2.0</td><td class="num">27 / 42</td><td class="num">30% / 25%</td><td class="num">0 / 13</td></tr>
+<tr><td>MFFU escalera hasta 4c, +1 por $2k, deja $8k</td><td class="num">119 / 154 (177 / 201)</td><td class="num">18% / 33%</td><td class="num">0.73 / 1.95</td><td class="num">2.4</td><td class="num">28 / 45</td><td class="num">32% / 23%</td><td class="num">0 / 12</td></tr>
+<tr class="hi"><td>MFFU escalera hasta 4c, +1 por $3k, deja $11k</td><td class="num">119 / 189 (169 / 221)</td><td class="num">19% / 46%</td><td class="num">0.27 / 0.69</td><td class="num">2.6</td><td class="num">29 / 42</td><td class="num">35% / 28%</td><td class="num">-2 / 6</td></tr>
+<tr><td>MFFU escalera hasta 4c, +1 por $4k, deja $14k</td><td class="num">107 / 191 (158 / 213)</td><td class="num">10% / 46%</td><td class="num">0.23 / 0.35</td><td class="num">2.7</td><td class="num">23 / 55</td><td class="num">38% / 28%</td><td class="num">-2 / 1</td></tr>
+<tr><td>Lucid 150K 3c (hoy)</td><td class="num">60 / 87 (75 / 74)</td><td class="num">0% / 0%</td><td class="num">1.51 / 2.04</td><td class="num">3.0</td><td class="num">32 / 47</td><td class="num">9% / 6%</td><td class="num">19 / 28</td></tr>
+<tr><td>Lucid 150K escalera 3→4c</td><td class="num">63 / 85 (80 / 76)</td><td class="num">0% / 0%</td><td class="num">1.52 / 2.32</td><td class="num">3.7</td><td class="num">33 / 45</td><td class="num">10% / 6%</td><td class="num">19 / 21</td></tr>
+<tr><td>Lucid 150K escalera 3→5c</td><td class="num">61 / 80 (74 / 74)</td><td class="num">0% / 0%</td><td class="num">1.41 / 2.21</td><td class="num">4.3</td><td class="num">27 / 39</td><td class="num">13% / 10%</td><td class="num">18 / 22</td></tr>
+</table></div>
+<div class="verdict"><strong>$200 por día por cuenta</strong> se alcanza solo con el edge completo y la escalera hasta 4 contratos en MFFU 50K, y recién desde el segundo año: la tabla de arriba es el primer año (arranca sin colchón). Revisión adversarial con blackout de noticias, tick extra en oro y haircut de eval corregidos: primer año $110-160 por día, régimen estable (años 2-3) $197-232 con 45-64% de los años por encima de $200; con 35% menos edge, $47-53 el primer año y $84-86 en régimen, con 2-4 cuentas perdidas por año. La escalera amplifica lo que haya. Lucid 150K no escala: retiros topeados en $3.000 y 5 por cuenta, y a 3 contratos ya quiebra 1,5-2 veces por año.</div>
+<p><strong>Sesgo de selección.</strong> Los parámetros de la escalera se eligieron viendo los dos períodos; elegidos solo en 2020-23 saldría "+1 por $2k, deja $8k", que en 2024-26 rinde 15-19% menos y quiebra 2,8 veces más. Dejar $11.000 está calibrado al peor día de 2024-26 (−$2.572 por contrato): un día 10% peor que el máximo de la muestra quiebra la cuenta y lo retenido. Los módulos de 6 años y el oro tampoco son fuera de muestra; sin ellos la escalera queda en $163-217 por día en régimen.</p>
+<p>Implementado en NQMaster, grupo 07, opcional: <code>FundedLadderStep</code> (0 = apagado) y <code>FundedLadderMax</code>. Receta MFFU: step-up a $3.000 con 2 contratos, escalera +1 por $3.000 hasta 4, retiro a $11.600 (deja $11.100), máximo 30 micros. Con la escalera prendida el preset Mffu50K ya no pisa el nivel de retiro (antes lo bajaba a $6.600 y la cuenta casi nunca llegaba a 4 contratos). Backup <code>NQMaster_backup_pre_ladder.cs</code>; falta F5.</p>
+
+<p class="note">Con edge cero todos los planes dan mediana negativa (−$5 a −$65 por día) y 70-90% de años negativos: las fees se pagan igual. La columna "historia" sobrepesa el medio de cada período (cada ventana de 12 meses tiene que caber dentro de él) e infla el edge 14-17% en 2020-23 y 4-5% en 2024-26; para un año futuro vale la mediana bootstrap.</p>
+
+<h3>Escalera + stop diario por contrato, lectura en régimen (ventanas de 36 meses)</h3>
+<div class="tw"><table>
+<tr><th>Política</th><th class="num">Completo, año 1</th><th class="num">Años 2-3 (p10)</th><th class="num">P(años 2-3 ≥ $200)</th><th class="num">Quiebres/año</th><th class="num">−35%, años 2-3 (p10)</th><th class="num">Quiebres/año −35%</th></tr>
+<tr><td>1 contrato (hoy)</td><td class="num">43 / 67</td><td class="num">64 / 86 (44 / 65)</td><td class="num">0 / 0%</td><td class="num">0,16 / 0,27</td><td class="num">33 / 44 (11 / 18)</td><td class="num">0,83 / 1,44</td></tr>
+<tr><td>Escalera hasta 4c, +1 por $3k, deja $11,1k</td><td class="num">133 / 199</td><td class="num">220 / 265 (138 / 168)</td><td class="num">64 / 76%</td><td class="num">0,12 / 0,61</td><td class="num">91 / 103 (24 / 27)</td><td class="num">0,72 / 1,65</td></tr>
+<tr class="hi"><td>Ídem + stop diario $1.500 por contrato</td><td class="num">129 / 196</td><td class="num">214 / 288 (136 / 207)</td><td class="num">61 / 92%</td><td class="num">0,09 / 0,19</td><td class="num">96 / 125 (20 / 40)</td><td class="num">0,73 / 1,20</td></tr>
+<tr><td>Escalera elegida solo en 2020-23 (+1 por $2k, deja $8,1k)</td><td class="num">134 / 184</td><td class="num">184 / 209 (114 / 125)</td><td class="num">42 / 54%</td><td class="num">0,54 / 1,79</td><td class="num">78 / 75 (20 / 16)</td><td class="num">1,50 / 2,94</td></tr>
+<tr><td>Escalera hasta 3c, deja $8,1k</td><td class="num">101 / 148</td><td class="num">165 / 205 (99 / 127)</td><td class="num">23 / 55%</td><td class="num">0,16 / 0,45</td><td class="num">72 / 84 (19 / 25)</td><td class="num">0,80 / 1,64</td></tr>
+</table></div>
+<p>El stop diario de $1.500 por contrato por módulo (cuenta entera, realizado más abierto) recorta el peor día de −$10.300 a −$6.000 a 4 contratos: quiebres 0,61 → 0,19 por año en 2024-26 con el mismo ingreso. $1.000 y $2.000 no ayudan; a 1 contrato es neutro. Implementado como <code>DailyLossPerContract</code> (grupo 03). Receta MFFU completa: NQMaster preset Mffu50K, SixYearModules, step-up a $3.000 con 2 contratos, escalera +1 por $3.000 hasta 4, retiro a $11.600, stop diario $1.500 por contrato, máximo 30 micros; GoldMaster Robust con el mismo step-up y la misma escalera.</p>
+
+<h3>¿Y si el edge se apaga? Recorte creciente dentro de la ventana de 3 años</h3>
+<div class="tw"><table>
+<tr><th>Escenario</th><th class="num">1 contrato: total 3 años (p10)</th><th class="num">Escalera 4c + stop: total 3 años (p10)</th></tr>
+<tr><td>Edge completo constante</td><td class="num">$61,7k / $87,1k (45k / 64k)</td><td class="num">$205k / $273k (141k / 188k)</td></tr>
+<tr><td>−35% constante</td><td class="num">$30k / $40k (12k / 16k)</td><td class="num">$91k / $110k (29k / 33k)</td></tr>
+<tr><td>Se apaga a lo largo de 3 años</td><td class="num">$25k / $28k (9k / 14k)</td><td class="num">$67k / $92k (15k / 23k)</td></tr>
+<tr><td>Se apaga en 18 meses</td><td class="num">$8k / $13k (−2k / −1k)</td><td class="num">$21k / $28k (−4k / −5k)</td></tr>
+<tr><td>Se apaga en 6 meses y queda en cero</td><td class="num">−$1,8k / −$1,3k</td><td class="num">−$4,1k / −$2,1k</td></tr>
+</table></div>
+<p>En ningún escenario la escalera pierde más que el contrato fijo, salvo unos $2.000 de fees cuando el edge muere rápido: el colchón retenido que se pierde es ganancia de la propia cuenta, no capital propio. La escalera es una opción sobre el edge: cobra mucho más si sigue y pierde lo mismo que la cuenta chica si se apaga. Lo que crece con un edge muerto es el número de evaluaciones compradas (3-7 en 3 años): ahí manda la regla de pausa del runbook.</p>
+
+<h2>3. Camino, en orden</h2>
+<ol>
+<li>Prender <code>SixYearModules</code> y GoldMaster Robust en todas las cuentas. Antes: backtest de paridad en NinjaTrader (sección del 16-oct de la guía).</li>
+<li>Cubrir los 3 asientos MFFU 50K a 1 contrato con el preset <code>Mffu50K</code>.</li>
+<li>Pasar las Lucid 50K a 150K a medida que se renuevan: un asiento 150K (6 contratos en evaluación, 3 fondeada) rinde ~2,5 veces uno de 50K a 2 contratos y quiebra menos.</li>
+<li>Recién con 6-8 fondeadas y 3 meses de P&amp;L real cerca del backtest, considerar el step-up de MFFU a 2 contratos.</li>
+<li>Capital por ronda de evaluaciones: $1.500-2.500 (MFFU $157, Lucid 50K $146, Lucid 150K ~$285). Cada quiebre de fondeada cuesta una evaluación nueva y 1-2 meses sin ingreso de ese asiento.</li>
+</ol>
+
+<h2>4. Qué se probó hoy para subir el edge por trade</h2>
+<ul>
+<li><strong>Cuatro familias nuevas</strong> (2.856 configuraciones, 16 años de NQ real, protocolo fijado antes de correr): ruptura de máximos/mínimos de N días, reversión por z-score al mediodía, continuación de la primera pierna, vela de agotamiento. <span class="bad">Cero sobrevivientes.</span></li>
+<li><strong>Segundo intento tras un stop</strong>: reentrar en la misma dirección pierde (PF 0,87-0,96); dar vuelta la posición gana solo en 2024-26 y bloquea 16-30% de las entradas base. Único candidato con sustancia: VOLB re-armado (PF 1,52 / 1,32, +$58 por mes por contrato, Sharpe sube en los dos períodos) pero DD máximo +6% contra un límite de +5%. Quedó como opción <code>VolbReArm</code>, apagada, pendiente de F5.</li>
+</ul>
+
+<h2>5. Lo que no se puede prometer</h2>
+<ul>
+<li>P(un conjunto de 8 cuentas promedie ≥ $250 por día en un año): 93-99% con el edge completo, 35-60% con 35% menos, 1-4% sin edge.</li>
+<li>P(una cuenta MFFU con escalera promedie ≥ $200 por día): 45-64% en régimen con el edge completo (menos el primer año), 0-6% con 35% menos.</li>
+<li>Revisión adversarial independiente (<code>research/mine/redteam_2026-10-17.md</code>): las dos conclusiones sobreviven con las salvedades de arriba; queda sin modelar el blackout de noticias de MFFU (1,5-7% del P&amp;L), el paso a cuenta real (cierra las sim en Lucid) y el tope de 30 micros (~1%).</li>
+<li>El edge es un régimen posterior a 2020. Si se apaga, las cuentas se queman pagando fees: monitor de borde y revisión anual siguen siendo obligatorios.</li>
+<li>Nada de lo de hoy está compilado en NinjaTrader: F5 en la PC antes de operar. Revisión de código independiente hecha (<code>research/mine/code_review_2026-10-17.md</code>): sin fallas críticas; corregido el tamaño de las órdenes heredadas al pasar a tiempo real, el stop por contrato pasó a la cuenta entera con tamaño fijado al inicio del día, GoldMaster recibió la misma escalera (la investigación escala el oro junto con el NQ) y la receta exige <code>SixYearModules</code> true. Pedir retiros después del cierre de las 16:00. El Strategy Analyzer no reproduce retiros ni quiebres: verifica la mecánica, no el ingreso. La escalera y el stop por contrato nunca corrieron en NinjaTrader: backtest del preset completo en Strategy Analyzer antes de ponerlos en una cuenta.</li>
+</ul>
+<p class="note">Scripts: <code>research/mine/income_map.py</code>, <code>seats_plan.py</code>, <code>seats_tables.py</code>, <code>reentry_lab.py</code>, <code>families8.py</code>. Guía: <code>NQMASTER_GUIA.md</code>, sección 17-oct.</p>
+</main>

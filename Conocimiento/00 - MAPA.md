@@ -30,6 +30,9 @@
 | GOLD | ORB30 del oro a favor de la tendencia | [[GOLD ORB30]] |
 | Guard | FOMC, objetivo de la eval, drawdown | [[Account Guard]] |
 
+## Plan de ingresos
+- [[Plan 250-300 por dia (17-oct)]]: $ por contrato y por conjunto de cuentas, escalera de tamaño para $200/día por cuenta; descartes en [[Descartado/Lote 8 y re-entradas (17-oct)]]
+
 ## Lo que NO funciona (descartado con datos)
 - [[IFVG y SMC]] · [[ICT Sniper y PO3]] · [[Estrategias TradingView]] · [[Order flow y perfil de volumen]]
 - [[Oro por horario]] · [[Filtros y optimizaciones rechazadas]] · [[Machine learning]]

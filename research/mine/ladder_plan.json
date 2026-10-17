@@ -1,0 +1,5246 @@
+{
+ "Ultra+gold | edge-0% | MFFU 1c (today)": {
+  "T1_hist": {
+   "mean_day": 47,
+   "median_day": 41,
+   "p10_day": 18,
+   "p90_day": 86,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.22,
+   "mean_size": 0.86,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 68,
+   "median_day": 71,
+   "p10_day": 40,
+   "p90_day": 80,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.49,
+   "mean_size": 0.86,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 36,
+   "median_day": 35,
+   "p10_day": 14,
+   "p90_day": 59,
+   "P_neg_year": 2.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.26,
+   "mean_size": 0.83,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 64,
+   "median_day": 63,
+   "p10_day": 34,
+   "p90_day": 96,
+   "P_neg_year": 0.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.46,
+   "mean_size": 0.85,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU step-up 2c @4k (keep 6.1k)": {
+  "T1_hist": {
+   "mean_day": 78,
+   "median_day": 69,
+   "p10_day": 27,
+   "p90_day": 147,
+   "P_neg_year": 4.3,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.02,
+   "mean_size": 1.36,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 110,
+   "median_day": 114,
+   "p10_day": 57,
+   "p90_day": 134,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.49,
+   "mean_size": 1.44,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 56,
+   "median_day": 55,
+   "p10_day": 10,
+   "p90_day": 98,
+   "P_neg_year": 5.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.28,
+   "mean_size": 1.31,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 102,
+   "median_day": 96,
+   "p10_day": 40,
+   "p90_day": 176,
+   "P_neg_year": 1.2,
+   "P_ge_200_day": 4.0,
+   "busts_per_year": 0.62,
+   "mean_size": 1.39,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K3 S2k B4k": {
+  "T1_hist": {
+   "mean_day": 78,
+   "median_day": 81,
+   "p10_day": 5,
+   "p90_day": 146,
+   "P_neg_year": 5.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.85,
+   "mean_size": 1.29,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 109,
+   "median_day": 113,
+   "p10_day": 71,
+   "p90_day": 142,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.12,
+   "mean_size": 1.43,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 63,
+   "median_day": 57,
+   "p10_day": 11,
+   "p90_day": 117,
+   "P_neg_year": 5.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.1,
+   "mean_size": 1.34,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 93,
+   "median_day": 82,
+   "p10_day": 30,
+   "p90_day": 163,
+   "P_neg_year": 1.0,
+   "P_ge_200_day": 4.2,
+   "busts_per_year": 2.91,
+   "mean_size": 1.4,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K3 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 109,
+   "median_day": 111,
+   "p10_day": -1,
+   "p90_day": 218,
+   "P_neg_year": 10.8,
+   "P_ge_200_day": 14.4,
+   "busts_per_year": 0.84,
+   "mean_size": 1.74,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 160,
+   "median_day": 167,
+   "p10_day": 101,
+   "p90_day": 209,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 14.6,
+   "busts_per_year": 1.84,
+   "mean_size": 2.14,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 79,
+   "median_day": 73,
+   "p10_day": 9,
+   "p90_day": 151,
+   "P_neg_year": 5.5,
+   "P_ge_200_day": 2.8,
+   "busts_per_year": 0.81,
+   "mean_size": 1.83,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 129,
+   "median_day": 123,
+   "p10_day": 37,
+   "p90_day": 224,
+   "P_neg_year": 2.0,
+   "P_ge_200_day": 15.5,
+   "busts_per_year": 2.08,
+   "mean_size": 1.89,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K3 S3k B6k": {
+  "T1_hist": {
+   "mean_day": 94,
+   "median_day": 83,
+   "p10_day": 23,
+   "p90_day": 185,
+   "P_neg_year": 5.0,
+   "P_ge_200_day": 1.4,
+   "busts_per_year": 0.22,
+   "mean_size": 1.61,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 142,
+   "median_day": 141,
+   "p10_day": 89,
+   "p90_day": 184,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.8,
+   "mean_size": 1.71,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 69,
+   "median_day": 65,
+   "p10_day": 15,
+   "p90_day": 129,
+   "P_neg_year": 4.2,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 0.35,
+   "mean_size": 1.53,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 110,
+   "median_day": 105,
+   "p10_day": 38,
+   "p90_day": 194,
+   "P_neg_year": 1.5,
+   "P_ge_200_day": 7.0,
+   "busts_per_year": 1.19,
+   "mean_size": 1.56,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K3 S3k B8k": {
+  "T1_hist": {
+   "mean_day": 114,
+   "median_day": 94,
+   "p10_day": 30,
+   "p90_day": 218,
+   "P_neg_year": 5.8,
+   "P_ge_200_day": 21.6,
+   "busts_per_year": 0.04,
+   "mean_size": 1.94,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 158,
+   "median_day": 162,
+   "p10_day": 92,
+   "p90_day": 193,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 6.7,
+   "busts_per_year": 0.61,
+   "mean_size": 2.04,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 76,
+   "median_day": 75,
+   "p10_day": 7,
+   "p90_day": 145,
+   "P_neg_year": 8.0,
+   "P_ge_200_day": 1.5,
+   "busts_per_year": 0.38,
+   "mean_size": 1.79,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 149,
+   "median_day": 145,
+   "p10_day": 50,
+   "p90_day": 245,
+   "P_neg_year": 1.2,
+   "P_ge_200_day": 22.5,
+   "busts_per_year": 0.87,
+   "mean_size": 2.0,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K3 S4k B8k": {
+  "T1_hist": {
+   "mean_day": 92,
+   "median_day": 70,
+   "p10_day": 22,
+   "p90_day": 186,
+   "P_neg_year": 5.8,
+   "P_ge_200_day": 1.4,
+   "busts_per_year": 0.02,
+   "mean_size": 1.66,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 143,
+   "median_day": 151,
+   "p10_day": 68,
+   "p90_day": 176,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 3.4,
+   "busts_per_year": 0.56,
+   "mean_size": 1.8,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 60,
+   "median_day": 56,
+   "p10_day": 6,
+   "p90_day": 116,
+   "P_neg_year": 8.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.32,
+   "mean_size": 1.52,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 129,
+   "median_day": 125,
+   "p10_day": 49,
+   "p90_day": 206,
+   "P_neg_year": 0.8,
+   "P_ge_200_day": 13.2,
+   "busts_per_year": 0.41,
+   "mean_size": 1.76,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K3 S4k B10k": {
+  "T1_hist": {
+   "mean_day": 106,
+   "median_day": 86,
+   "p10_day": 25,
+   "p90_day": 207,
+   "P_neg_year": 7.2,
+   "P_ge_200_day": 14.4,
+   "busts_per_year": 0.02,
+   "mean_size": 1.91,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 148,
+   "median_day": 162,
+   "p10_day": 70,
+   "p90_day": 184,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 5.6,
+   "busts_per_year": 0.49,
+   "mean_size": 2.04,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 73,
+   "median_day": 68,
+   "p10_day": 3,
+   "p90_day": 144,
+   "P_neg_year": 9.5,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 0.31,
+   "mean_size": 1.8,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 142,
+   "median_day": 139,
+   "p10_day": 48,
+   "p90_day": 238,
+   "P_neg_year": 2.8,
+   "P_ge_200_day": 20.0,
+   "busts_per_year": 0.49,
+   "mean_size": 1.99,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K4 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 119,
+   "median_day": 121,
+   "p10_day": -1,
+   "p90_day": 239,
+   "P_neg_year": 10.8,
+   "P_ge_200_day": 20.9,
+   "busts_per_year": 0.84,
+   "mean_size": 1.86,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 139,
+   "median_day": 152,
+   "p10_day": 85,
+   "p90_day": 180,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 2.2,
+   "busts_per_year": 2.94,
+   "mean_size": 2.01,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 82,
+   "median_day": 77,
+   "p10_day": 5,
+   "p90_day": 161,
+   "P_neg_year": 7.0,
+   "P_ge_200_day": 3.0,
+   "busts_per_year": 0.91,
+   "mean_size": 1.84,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 122,
+   "median_day": 117,
+   "p10_day": 32,
+   "p90_day": 213,
+   "P_neg_year": 3.5,
+   "P_ge_200_day": 14.0,
+   "busts_per_year": 2.56,
+   "mean_size": 1.94,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K4 S2k B8k": {
+  "T1_hist": {
+   "mean_day": 140,
+   "median_day": 138,
+   "p10_day": -1,
+   "p90_day": 291,
+   "P_neg_year": 10.8,
+   "P_ge_200_day": 32.4,
+   "busts_per_year": 0.82,
+   "mean_size": 2.27,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 202,
+   "median_day": 220,
+   "p10_day": 119,
+   "p90_day": 269,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 59.6,
+   "busts_per_year": 1.84,
+   "mean_size": 2.65,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 103,
+   "median_day": 92,
+   "p10_day": 11,
+   "p90_day": 206,
+   "P_neg_year": 6.2,
+   "P_ge_200_day": 11.5,
+   "busts_per_year": 0.71,
+   "mean_size": 2.36,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 159,
+   "median_day": 151,
+   "p10_day": 26,
+   "p90_day": 302,
+   "P_neg_year": 3.5,
+   "P_ge_200_day": 31.2,
+   "busts_per_year": 1.89,
+   "mean_size": 2.36,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K4 S3k B9k": {
+  "T1_hist": {
+   "mean_day": 126,
+   "median_day": 104,
+   "p10_day": 30,
+   "p90_day": 247,
+   "P_neg_year": 7.2,
+   "P_ge_200_day": 31.7,
+   "busts_per_year": 0.04,
+   "mean_size": 2.16,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 181,
+   "median_day": 189,
+   "p10_day": 97,
+   "p90_day": 228,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 42.7,
+   "busts_per_year": 0.8,
+   "mean_size": 2.27,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 84,
+   "median_day": 79,
+   "p10_day": 7,
+   "p90_day": 160,
+   "P_neg_year": 9.0,
+   "P_ge_200_day": 2.5,
+   "busts_per_year": 0.34,
+   "mean_size": 2.01,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 152,
+   "median_day": 142,
+   "p10_day": 44,
+   "p90_day": 276,
+   "P_neg_year": 2.0,
+   "P_ge_200_day": 28.0,
+   "busts_per_year": 1.04,
+   "mean_size": 2.12,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K4 S3k B11k": {
+  "T1_hist": {
+   "mean_day": 140,
+   "median_day": 113,
+   "p10_day": 26,
+   "p90_day": 281,
+   "P_neg_year": 7.2,
+   "P_ge_200_day": 34.5,
+   "busts_per_year": 0.04,
+   "mean_size": 2.42,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 196,
+   "median_day": 209,
+   "p10_day": 102,
+   "p90_day": 254,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 58.4,
+   "busts_per_year": 0.56,
+   "mean_size": 2.54,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 97,
+   "median_day": 91,
+   "p10_day": 0,
+   "p90_day": 189,
+   "P_neg_year": 10.2,
+   "P_ge_200_day": 8.0,
+   "busts_per_year": 0.33,
+   "mean_size": 2.31,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 177,
+   "median_day": 175,
+   "p10_day": 59,
+   "p90_day": 296,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 38.2,
+   "busts_per_year": 0.64,
+   "mean_size": 2.51,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K4 S4k B12k": {
+  "T1_hist": {
+   "mean_day": 119,
+   "median_day": 92,
+   "p10_day": 23,
+   "p90_day": 243,
+   "P_neg_year": 7.2,
+   "P_ge_200_day": 28.1,
+   "busts_per_year": 0.02,
+   "mean_size": 2.16,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 180,
+   "median_day": 187,
+   "p10_day": 79,
+   "p90_day": 226,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 40.4,
+   "busts_per_year": 0.49,
+   "mean_size": 2.37,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 83,
+   "median_day": 80,
+   "p10_day": 0,
+   "p90_day": 157,
+   "P_neg_year": 10.2,
+   "P_ge_200_day": 2.8,
+   "busts_per_year": 0.26,
+   "mean_size": 2.1,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 163,
+   "median_day": 158,
+   "p10_day": 57,
+   "p90_day": 272,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 30.5,
+   "busts_per_year": 0.45,
+   "mean_size": 2.35,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | MFFU ladder K4 S4k B14k": {
+  "T1_hist": {
+   "mean_day": 129,
+   "median_day": 102,
+   "p10_day": 20,
+   "p90_day": 262,
+   "P_neg_year": 7.9,
+   "P_ge_200_day": 33.8,
+   "busts_per_year": 0.02,
+   "mean_size": 2.36,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 192,
+   "median_day": 209,
+   "p10_day": 85,
+   "p90_day": 237,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 55.1,
+   "busts_per_year": 0.49,
+   "mean_size": 2.59,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 84,
+   "median_day": 83,
+   "p10_day": 0,
+   "p90_day": 166,
+   "P_neg_year": 10.8,
+   "P_ge_200_day": 3.8,
+   "busts_per_year": 0.28,
+   "mean_size": 2.21,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 189,
+   "median_day": 179,
+   "p10_day": 67,
+   "p90_day": 318,
+   "P_neg_year": 1.8,
+   "P_ge_200_day": 43.5,
+   "busts_per_year": 0.38,
+   "mean_size": 2.64,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | Lucid150K 3c (today)": {
+  "T1_hist": {
+   "mean_day": 63,
+   "median_day": 60,
+   "p10_day": 34,
+   "p90_day": 93,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.94,
+   "mean_size": 3.0,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 71,
+   "median_day": 67,
+   "p10_day": 52,
+   "p90_day": 92,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.37,
+   "mean_size": 3.0,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 55,
+   "median_day": 54,
+   "p10_day": 25,
+   "p90_day": 86,
+   "P_neg_year": 0.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.43,
+   "mean_size": 3.0,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 78,
+   "median_day": 80,
+   "p10_day": 46,
+   "p90_day": 112,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.17,
+   "mean_size": 3.0,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | Lucid150K ladder 3->4c S3k": {
+  "T1_hist": {
+   "mean_day": 68,
+   "median_day": 60,
+   "p10_day": 35,
+   "p90_day": 106,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.85,
+   "mean_size": 3.64,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 73,
+   "median_day": 68,
+   "p10_day": 55,
+   "p90_day": 95,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.3,
+   "mean_size": 3.58,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 58,
+   "median_day": 58,
+   "p10_day": 27,
+   "p90_day": 88,
+   "P_neg_year": 0.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.56,
+   "mean_size": 3.61,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 79,
+   "median_day": 82,
+   "p10_day": 47,
+   "p90_day": 112,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.36,
+   "mean_size": 3.65,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | Lucid150K ladder 3->4c S4.5k": {
+  "T1_hist": {
+   "mean_day": 66,
+   "median_day": 64,
+   "p10_day": 25,
+   "p90_day": 99,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.64,
+   "mean_size": 3.63,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 65,
+   "median_day": 62,
+   "p10_day": 50,
+   "p90_day": 88,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.28,
+   "mean_size": 3.54,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 53,
+   "median_day": 54,
+   "p10_day": 23,
+   "p90_day": 86,
+   "P_neg_year": 0.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.33,
+   "mean_size": 3.54,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 73,
+   "median_day": 72,
+   "p10_day": 42,
+   "p90_day": 103,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.2,
+   "mean_size": 3.6,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | Lucid150K ladder 3->5c S3k": {
+  "T1_hist": {
+   "mean_day": 64,
+   "median_day": 64,
+   "p10_day": 24,
+   "p90_day": 94,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.96,
+   "mean_size": 4.32,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 67,
+   "median_day": 61,
+   "p10_day": 51,
+   "p90_day": 90,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.33,
+   "mean_size": 4.12,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 53,
+   "median_day": 55,
+   "p10_day": 22,
+   "p90_day": 88,
+   "P_neg_year": 1.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.4,
+   "mean_size": 4.13,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 74,
+   "median_day": 75,
+   "p10_day": 40,
+   "p90_day": 106,
+   "P_neg_year": 0.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.12,
+   "mean_size": 4.25,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-0% | Lucid150K ladder 3->5c S4.5k": {
+  "T1_hist": {
+   "mean_day": 60,
+   "median_day": 56,
+   "p10_day": 24,
+   "p90_day": 95,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.91,
+   "mean_size": 4.15,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 68,
+   "median_day": 63,
+   "p10_day": 54,
+   "p90_day": 89,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.33,
+   "mean_size": 4.15,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 48,
+   "median_day": 52,
+   "p10_day": 22,
+   "p90_day": 71,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.29,
+   "mean_size": 4.03,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 69,
+   "median_day": 68,
+   "p10_day": 38,
+   "p90_day": 97,
+   "P_neg_year": 0.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.88,
+   "mean_size": 4.17,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU 1c (today)": {
+  "T1_hist": {
+   "mean_day": 29,
+   "median_day": 20,
+   "p10_day": -1,
+   "p90_day": 67,
+   "P_neg_year": 15.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.68,
+   "mean_size": 0.75,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 33,
+   "median_day": 39,
+   "p10_day": 3,
+   "p90_day": 51,
+   "P_neg_year": 9.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.44,
+   "mean_size": 0.74,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 16,
+   "median_day": 14,
+   "p10_day": -3,
+   "p90_day": 40,
+   "P_neg_year": 22.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.86,
+   "mean_size": 0.63,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 28,
+   "median_day": 26,
+   "p10_day": -3,
+   "p90_day": 62,
+   "P_neg_year": 15.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.45,
+   "mean_size": 0.66,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU step-up 2c @4k (keep 6.1k)": {
+  "T1_hist": {
+   "mean_day": 42,
+   "median_day": 30,
+   "p10_day": -1,
+   "p90_day": 101,
+   "P_neg_year": 16.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.68,
+   "mean_size": 1.11,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 49,
+   "median_day": 58,
+   "p10_day": 0,
+   "p90_day": 74,
+   "P_neg_year": 10.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.44,
+   "mean_size": 1.03,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 21,
+   "median_day": 12,
+   "p10_day": -3,
+   "p90_day": 58,
+   "P_neg_year": 34.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.89,
+   "mean_size": 0.88,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 41,
+   "median_day": 31,
+   "p10_day": -3,
+   "p90_day": 100,
+   "P_neg_year": 20.0,
+   "P_ge_200_day": 0.5,
+   "busts_per_year": 1.52,
+   "mean_size": 0.96,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K3 S2k B4k": {
+  "T1_hist": {
+   "mean_day": 57,
+   "median_day": 50,
+   "p10_day": 2,
+   "p90_day": 115,
+   "P_neg_year": 7.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.88,
+   "mean_size": 1.09,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 55,
+   "median_day": 63,
+   "p10_day": 9,
+   "p90_day": 89,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.55,
+   "mean_size": 1.14,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 22,
+   "median_day": 14,
+   "p10_day": -3,
+   "p90_day": 61,
+   "P_neg_year": 29.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.95,
+   "mean_size": 0.88,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 30,
+   "median_day": 22,
+   "p10_day": -4,
+   "p90_day": 79,
+   "P_neg_year": 21.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.49,
+   "mean_size": 0.91,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K3 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 74,
+   "median_day": 61,
+   "p10_day": -2,
+   "p90_day": 168,
+   "P_neg_year": 12.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.88,
+   "mean_size": 1.57,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 86,
+   "median_day": 101,
+   "p10_day": 2,
+   "p90_day": 139,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.8,
+   "mean_size": 1.45,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 32,
+   "median_day": 19,
+   "p10_day": -3,
+   "p90_day": 90,
+   "P_neg_year": 29.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.56,
+   "mean_size": 1.24,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 49,
+   "median_day": 32,
+   "p10_day": -3,
+   "p90_day": 119,
+   "P_neg_year": 20.2,
+   "P_ge_200_day": 1.8,
+   "busts_per_year": 2.94,
+   "mean_size": 1.3,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K3 S3k B6k": {
+  "T1_hist": {
+   "mean_day": 52,
+   "median_day": 36,
+   "p10_day": -2,
+   "p90_day": 125,
+   "P_neg_year": 19.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.85,
+   "mean_size": 1.23,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 67,
+   "median_day": 84,
+   "p10_day": -2,
+   "p90_day": 96,
+   "P_neg_year": 11.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.74,
+   "mean_size": 1.14,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 25,
+   "median_day": 14,
+   "p10_day": -3,
+   "p90_day": 69,
+   "P_neg_year": 35.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.04,
+   "mean_size": 0.95,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 50,
+   "median_day": 37,
+   "p10_day": -3,
+   "p90_day": 125,
+   "P_neg_year": 20.8,
+   "P_ge_200_day": 1.2,
+   "busts_per_year": 1.96,
+   "mean_size": 1.05,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K3 S3k B8k": {
+  "T1_hist": {
+   "mean_day": 66,
+   "median_day": 38,
+   "p10_day": -2,
+   "p90_day": 170,
+   "P_neg_year": 26.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.85,
+   "mean_size": 1.52,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 68,
+   "median_day": 90,
+   "p10_day": -2,
+   "p90_day": 110,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.87,
+   "mean_size": 1.39,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 25,
+   "median_day": 10,
+   "p10_day": -3,
+   "p90_day": 77,
+   "P_neg_year": 39.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.02,
+   "mean_size": 1.11,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 56,
+   "median_day": 45,
+   "p10_day": -3,
+   "p90_day": 142,
+   "P_neg_year": 24.8,
+   "P_ge_200_day": 1.8,
+   "busts_per_year": 1.8,
+   "mean_size": 1.25,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K3 S4k B8k": {
+  "T1_hist": {
+   "mean_day": 52,
+   "median_day": 31,
+   "p10_day": -1,
+   "p90_day": 130,
+   "P_neg_year": 21.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.64,
+   "mean_size": 1.29,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 62,
+   "median_day": 75,
+   "p10_day": -2,
+   "p90_day": 93,
+   "P_neg_year": 11.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.36,
+   "mean_size": 1.32,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 21,
+   "median_day": 5,
+   "p10_day": -3,
+   "p90_day": 62,
+   "P_neg_year": 44.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.94,
+   "mean_size": 0.96,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 51,
+   "median_day": 40,
+   "p10_day": -3,
+   "p90_day": 128,
+   "P_neg_year": 21.8,
+   "P_ge_200_day": 1.0,
+   "busts_per_year": 1.36,
+   "mean_size": 1.19,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K3 S4k B10k": {
+  "T1_hist": {
+   "mean_day": 58,
+   "median_day": 32,
+   "p10_day": -2,
+   "p90_day": 154,
+   "P_neg_year": 36.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.55,
+   "mean_size": 1.45,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 65,
+   "median_day": 79,
+   "p10_day": -2,
+   "p90_day": 99,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.44,
+   "mean_size": 1.5,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 24,
+   "median_day": 5,
+   "p10_day": -3,
+   "p90_day": 76,
+   "P_neg_year": 46.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.92,
+   "mean_size": 1.09,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 58,
+   "median_day": 44,
+   "p10_day": -3,
+   "p90_day": 146,
+   "P_neg_year": 21.0,
+   "P_ge_200_day": 2.8,
+   "busts_per_year": 1.16,
+   "mean_size": 1.42,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K4 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 76,
+   "median_day": 61,
+   "p10_day": -2,
+   "p90_day": 170,
+   "P_neg_year": 12.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.88,
+   "mean_size": 1.65,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 62,
+   "median_day": 60,
+   "p10_day": 2,
+   "p90_day": 132,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.35,
+   "mean_size": 1.32,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 32,
+   "median_day": 21,
+   "p10_day": -3,
+   "p90_day": 86,
+   "P_neg_year": 29.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.59,
+   "mean_size": 1.26,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 46,
+   "median_day": 33,
+   "p10_day": -4,
+   "p90_day": 116,
+   "P_neg_year": 23.5,
+   "P_ge_200_day": 1.2,
+   "busts_per_year": 3.2,
+   "mean_size": 1.29,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K4 S2k B8k": {
+  "T1_hist": {
+   "mean_day": 92,
+   "median_day": 73,
+   "p10_day": -2,
+   "p90_day": 209,
+   "P_neg_year": 16.5,
+   "P_ge_200_day": 13.7,
+   "busts_per_year": 0.87,
+   "mean_size": 2.03,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 97,
+   "median_day": 93,
+   "p10_day": -2,
+   "p90_day": 168,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.8,
+   "mean_size": 1.98,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 34,
+   "median_day": 15,
+   "p10_day": -3,
+   "p90_day": 98,
+   "P_neg_year": 36.2,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 1.49,
+   "mean_size": 1.48,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 65,
+   "median_day": 44,
+   "p10_day": -4,
+   "p90_day": 168,
+   "P_neg_year": 24.5,
+   "P_ge_200_day": 5.8,
+   "busts_per_year": 2.73,
+   "mean_size": 1.64,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K4 S3k B9k": {
+  "T1_hist": {
+   "mean_day": 70,
+   "median_day": 40,
+   "p10_day": -2,
+   "p90_day": 182,
+   "P_neg_year": 27.3,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.85,
+   "mean_size": 1.65,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 77,
+   "median_day": 106,
+   "p10_day": -2,
+   "p90_day": 124,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.06,
+   "mean_size": 1.52,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 27,
+   "median_day": 7,
+   "p10_day": -3,
+   "p90_day": 87,
+   "P_neg_year": 44.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.01,
+   "mean_size": 1.21,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 62,
+   "median_day": 44,
+   "p10_day": -3,
+   "p90_day": 178,
+   "P_neg_year": 24.8,
+   "P_ge_200_day": 6.0,
+   "busts_per_year": 1.76,
+   "mean_size": 1.37,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K4 S3k B11k": {
+  "T1_hist": {
+   "mean_day": 79,
+   "median_day": 44,
+   "p10_day": -2,
+   "p90_day": 208,
+   "P_neg_year": 33.1,
+   "P_ge_200_day": 18.0,
+   "busts_per_year": 0.82,
+   "mean_size": 1.82,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 83,
+   "median_day": 108,
+   "p10_day": -2,
+   "p90_day": 141,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.55,
+   "mean_size": 1.69,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 32,
+   "median_day": 11,
+   "p10_day": -3,
+   "p90_day": 97,
+   "P_neg_year": 44.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.97,
+   "mean_size": 1.37,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 67,
+   "median_day": 43,
+   "p10_day": -3,
+   "p90_day": 171,
+   "P_neg_year": 30.2,
+   "P_ge_200_day": 6.5,
+   "busts_per_year": 1.63,
+   "mean_size": 1.54,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K4 S4k B12k": {
+  "T1_hist": {
+   "mean_day": 60,
+   "median_day": 28,
+   "p10_day": -2,
+   "p90_day": 160,
+   "P_neg_year": 40.3,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.5,
+   "mean_size": 1.59,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 75,
+   "median_day": 90,
+   "p10_day": -2,
+   "p90_day": 114,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.44,
+   "mean_size": 1.73,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 26,
+   "median_day": 5,
+   "p10_day": -3,
+   "p90_day": 80,
+   "P_neg_year": 46.2,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 0.89,
+   "mean_size": 1.26,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 62,
+   "median_day": 43,
+   "p10_day": -3,
+   "p90_day": 155,
+   "P_neg_year": 27.5,
+   "P_ge_200_day": 5.0,
+   "busts_per_year": 1.25,
+   "mean_size": 1.55,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | MFFU ladder K4 S4k B14k": {
+  "T1_hist": {
+   "mean_day": 68,
+   "median_day": 31,
+   "p10_day": -2,
+   "p90_day": 185,
+   "P_neg_year": 40.3,
+   "P_ge_200_day": 2.2,
+   "busts_per_year": 0.5,
+   "mean_size": 1.73,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 74,
+   "median_day": 90,
+   "p10_day": -2,
+   "p90_day": 120,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.36,
+   "mean_size": 1.88,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 26,
+   "median_day": 0,
+   "p10_day": -3,
+   "p90_day": 95,
+   "P_neg_year": 50.5,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 0.81,
+   "mean_size": 1.37,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 66,
+   "median_day": 52,
+   "p10_day": -3,
+   "p90_day": 168,
+   "P_neg_year": 29.8,
+   "P_ge_200_day": 4.5,
+   "busts_per_year": 1.13,
+   "mean_size": 1.68,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | Lucid150K 3c (today)": {
+  "T1_hist": {
+   "mean_day": 43,
+   "median_day": 38,
+   "p10_day": 14,
+   "p90_day": 77,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.1,
+   "mean_size": 3.0,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 43,
+   "median_day": 48,
+   "p10_day": 9,
+   "p90_day": 60,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.94,
+   "mean_size": 3.0,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 29,
+   "median_day": 28,
+   "p10_day": -7,
+   "p90_day": 57,
+   "P_neg_year": 13.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.18,
+   "mean_size": 3.0,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 40,
+   "median_day": 41,
+   "p10_day": 1,
+   "p90_day": 81,
+   "P_neg_year": 9.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.09,
+   "mean_size": 3.0,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | Lucid150K ladder 3->4c S3k": {
+  "T1_hist": {
+   "mean_day": 45,
+   "median_day": 42,
+   "p10_day": 13,
+   "p90_day": 81,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.02,
+   "mean_size": 3.56,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 45,
+   "median_day": 52,
+   "p10_day": 14,
+   "p90_day": 61,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.98,
+   "mean_size": 3.58,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 29,
+   "median_day": 26,
+   "p10_day": -3,
+   "p90_day": 60,
+   "P_neg_year": 12.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.31,
+   "mean_size": 3.5,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 38,
+   "median_day": 37,
+   "p10_day": 0,
+   "p90_day": 76,
+   "P_neg_year": 10.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.35,
+   "mean_size": 3.57,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | Lucid150K ladder 3->4c S4.5k": {
+  "T1_hist": {
+   "mean_day": 39,
+   "median_day": 42,
+   "p10_day": 5,
+   "p90_day": 73,
+   "P_neg_year": 9.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.03,
+   "mean_size": 3.48,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 39,
+   "median_day": 45,
+   "p10_day": 16,
+   "p90_day": 59,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.8,
+   "mean_size": 3.58,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 26,
+   "median_day": 24,
+   "p10_day": -8,
+   "p90_day": 58,
+   "P_neg_year": 14.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.04,
+   "mean_size": 3.43,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 38,
+   "median_day": 41,
+   "p10_day": 2,
+   "p90_day": 69,
+   "P_neg_year": 8.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.03,
+   "mean_size": 3.51,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | Lucid150K ladder 3->5c S3k": {
+  "T1_hist": {
+   "mean_day": 39,
+   "median_day": 42,
+   "p10_day": 4,
+   "p90_day": 71,
+   "P_neg_year": 9.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.04,
+   "mean_size": 4.03,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 41,
+   "median_day": 48,
+   "p10_day": 19,
+   "p90_day": 61,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.96,
+   "mean_size": 4.16,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 26,
+   "median_day": 25,
+   "p10_day": -6,
+   "p90_day": 57,
+   "P_neg_year": 14.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.07,
+   "mean_size": 3.94,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 38,
+   "median_day": 41,
+   "p10_day": 1,
+   "p90_day": 74,
+   "P_neg_year": 10.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.19,
+   "mean_size": 4.07,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-35% | Lucid150K ladder 3->5c S4.5k": {
+  "T1_hist": {
+   "mean_day": 35,
+   "median_day": 29,
+   "p10_day": -2,
+   "p90_day": 65,
+   "P_neg_year": 12.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.99,
+   "mean_size": 3.94,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 37,
+   "median_day": 41,
+   "p10_day": 15,
+   "p90_day": 59,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.81,
+   "mean_size": 4.09,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 23,
+   "median_day": 22,
+   "p10_day": -12,
+   "p90_day": 55,
+   "P_neg_year": 18.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.78,
+   "mean_size": 3.86,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 32,
+   "median_day": 29,
+   "p10_day": -3,
+   "p90_day": 64,
+   "P_neg_year": 10.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.89,
+   "mean_size": 3.97,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU 1c (today)": {
+  "T1_hist": {
+   "mean_day": 23,
+   "median_day": 14,
+   "p10_day": -2,
+   "p90_day": 59,
+   "P_neg_year": 27.3,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.81,
+   "mean_size": 0.64,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 26,
+   "median_day": 26,
+   "p10_day": -2,
+   "p90_day": 47,
+   "P_neg_year": 11.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.26,
+   "mean_size": 0.62,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 7,
+   "median_day": 1,
+   "p10_day": -4,
+   "p90_day": 26,
+   "P_neg_year": 44.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.27,
+   "mean_size": 0.5,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 17,
+   "median_day": 11,
+   "p10_day": -4,
+   "p90_day": 47,
+   "P_neg_year": 28.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.95,
+   "mean_size": 0.56,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU step-up 2c @4k (keep 6.1k)": {
+  "T1_hist": {
+   "mean_day": 33,
+   "median_day": 21,
+   "p10_day": -3,
+   "p90_day": 89,
+   "P_neg_year": 32.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.81,
+   "mean_size": 0.95,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 42,
+   "median_day": 43,
+   "p10_day": -2,
+   "p90_day": 78,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.82,
+   "mean_size": 0.9,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 10,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 38,
+   "P_neg_year": 55.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.29,
+   "mean_size": 0.66,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 25,
+   "median_day": 11,
+   "p10_day": -4,
+   "p90_day": 74,
+   "P_neg_year": 38.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.98,
+   "mean_size": 0.77,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K3 S2k B4k": {
+  "T1_hist": {
+   "mean_day": 34,
+   "median_day": 34,
+   "p10_day": -1,
+   "p90_day": 81,
+   "P_neg_year": 12.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.43,
+   "mean_size": 0.98,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 43,
+   "median_day": 38,
+   "p10_day": -3,
+   "p90_day": 80,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.36,
+   "mean_size": 1.05,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 11,
+   "median_day": 3,
+   "p10_day": -4,
+   "p90_day": 39,
+   "P_neg_year": 44.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.97,
+   "mean_size": 0.77,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 21,
+   "median_day": 11,
+   "p10_day": -5,
+   "p90_day": 64,
+   "P_neg_year": 33.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.37,
+   "mean_size": 0.85,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K3 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 49,
+   "median_day": 34,
+   "p10_day": -2,
+   "p90_day": 124,
+   "P_neg_year": 18.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.09,
+   "mean_size": 1.37,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 61,
+   "median_day": 66,
+   "p10_day": -3,
+   "p90_day": 109,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.81,
+   "mean_size": 1.25,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 17,
+   "median_day": 1,
+   "p10_day": -4,
+   "p90_day": 62,
+   "P_neg_year": 49.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.81,
+   "mean_size": 0.96,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 29,
+   "median_day": 14,
+   "p10_day": -5,
+   "p90_day": 84,
+   "P_neg_year": 34.8,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 3.06,
+   "mean_size": 1.08,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K3 S3k B6k": {
+  "T1_hist": {
+   "mean_day": 39,
+   "median_day": 29,
+   "p10_day": -3,
+   "p90_day": 97,
+   "P_neg_year": 28.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.81,
+   "mean_size": 1.09,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 52,
+   "median_day": 66,
+   "p10_day": -2,
+   "p90_day": 87,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.45,
+   "mean_size": 0.94,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 13,
+   "median_day": -1,
+   "p10_day": -4,
+   "p90_day": 46,
+   "P_neg_year": 51.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.38,
+   "mean_size": 0.75,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 25,
+   "median_day": 8,
+   "p10_day": -4,
+   "p90_day": 82,
+   "P_neg_year": 38.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.37,
+   "mean_size": 0.8,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K3 S3k B8k": {
+  "T1_hist": {
+   "mean_day": 48,
+   "median_day": 23,
+   "p10_day": -3,
+   "p90_day": 128,
+   "P_neg_year": 36.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.81,
+   "mean_size": 1.32,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 58,
+   "median_day": 66,
+   "p10_day": -2,
+   "p90_day": 112,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.28,
+   "mean_size": 1.16,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 15,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 56,
+   "P_neg_year": 55.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.29,
+   "mean_size": 0.89,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 26,
+   "median_day": 5,
+   "p10_day": -5,
+   "p90_day": 90,
+   "P_neg_year": 45.8,
+   "P_ge_200_day": 0.5,
+   "busts_per_year": 2.2,
+   "mean_size": 0.91,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K3 S4k B8k": {
+  "T1_hist": {
+   "mean_day": 38,
+   "median_day": 23,
+   "p10_day": -3,
+   "p90_day": 105,
+   "P_neg_year": 38.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.81,
+   "mean_size": 1.12,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 52,
+   "median_day": 54,
+   "p10_day": -2,
+   "p90_day": 103,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.07,
+   "mean_size": 1.16,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 12,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 50,
+   "P_neg_year": 58.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.22,
+   "mean_size": 0.78,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 31,
+   "median_day": 15,
+   "p10_day": -4,
+   "p90_day": 91,
+   "P_neg_year": 38.0,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 1.75,
+   "mean_size": 0.96,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K3 S4k B10k": {
+  "T1_hist": {
+   "mean_day": 42,
+   "median_day": 16,
+   "p10_day": -3,
+   "p90_day": 126,
+   "P_neg_year": 41.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.78,
+   "mean_size": 1.23,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 53,
+   "median_day": 54,
+   "p10_day": -2,
+   "p90_day": 108,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.96,
+   "mean_size": 1.37,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 9,
+   "median_day": -2,
+   "p10_day": -3,
+   "p90_day": 39,
+   "P_neg_year": 67.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.29,
+   "mean_size": 0.79,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 27,
+   "median_day": 2,
+   "p10_day": -4,
+   "p90_day": 86,
+   "P_neg_year": 48.0,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 1.87,
+   "mean_size": 0.98,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K4 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 53,
+   "median_day": 37,
+   "p10_day": -2,
+   "p90_day": 132,
+   "P_neg_year": 18.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.09,
+   "mean_size": 1.39,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 44,
+   "median_day": 41,
+   "p10_day": -3,
+   "p90_day": 100,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.6,
+   "mean_size": 1.26,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 14,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 48,
+   "P_neg_year": 53.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.85,
+   "mean_size": 0.95,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 26,
+   "median_day": 7,
+   "p10_day": -5,
+   "p90_day": 77,
+   "P_neg_year": 39.0,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 3.18,
+   "mean_size": 1.07,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K4 S2k B8k": {
+  "T1_hist": {
+   "mean_day": 64,
+   "median_day": 40,
+   "p10_day": -3,
+   "p90_day": 169,
+   "P_neg_year": 30.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.88,
+   "mean_size": 1.75,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 80,
+   "median_day": 77,
+   "p10_day": -3,
+   "p90_day": 154,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.97,
+   "mean_size": 1.57,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 14,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 55,
+   "P_neg_year": 59.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.81,
+   "mean_size": 1.07,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 36,
+   "median_day": 12,
+   "p10_day": -5,
+   "p90_day": 110,
+   "P_neg_year": 40.5,
+   "P_ge_200_day": 2.0,
+   "busts_per_year": 2.97,
+   "mean_size": 1.34,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K4 S3k B9k": {
+  "T1_hist": {
+   "mean_day": 54,
+   "median_day": 24,
+   "p10_day": -3,
+   "p90_day": 148,
+   "P_neg_year": 36.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.81,
+   "mean_size": 1.46,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 64,
+   "median_day": 75,
+   "p10_day": -2,
+   "p90_day": 128,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.45,
+   "mean_size": 1.33,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 11,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 49,
+   "P_neg_year": 64.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.35,
+   "mean_size": 0.84,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 28,
+   "median_day": 2,
+   "p10_day": -4,
+   "p90_day": 100,
+   "P_neg_year": 49.2,
+   "P_ge_200_day": 1.2,
+   "busts_per_year": 2.1,
+   "mean_size": 0.98,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K4 S3k B11k": {
+  "T1_hist": {
+   "mean_day": 61,
+   "median_day": 25,
+   "p10_day": -3,
+   "p90_day": 170,
+   "P_neg_year": 38.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.8,
+   "mean_size": 1.61,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 67,
+   "median_day": 76,
+   "p10_day": -2,
+   "p90_day": 141,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.26,
+   "mean_size": 1.56,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 15,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 61,
+   "P_neg_year": 66.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.25,
+   "mean_size": 0.97,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 43,
+   "median_day": 13,
+   "p10_day": -4,
+   "p90_day": 137,
+   "P_neg_year": 42.5,
+   "P_ge_200_day": 3.8,
+   "busts_per_year": 2.03,
+   "mean_size": 1.24,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K4 S4k B12k": {
+  "T1_hist": {
+   "mean_day": 46,
+   "median_day": 16,
+   "p10_day": -3,
+   "p90_day": 137,
+   "P_neg_year": 41.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.78,
+   "mean_size": 1.36,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 59,
+   "median_day": 56,
+   "p10_day": -2,
+   "p90_day": 125,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.88,
+   "mean_size": 1.49,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 12,
+   "median_day": -2,
+   "p10_day": -3,
+   "p90_day": 51,
+   "P_neg_year": 67.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.15,
+   "mean_size": 0.95,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 38,
+   "median_day": 12,
+   "p10_day": -4,
+   "p90_day": 118,
+   "P_neg_year": 46.0,
+   "P_ge_200_day": 1.2,
+   "busts_per_year": 1.69,
+   "mean_size": 1.18,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | MFFU ladder K4 S4k B14k": {
+  "T1_hist": {
+   "mean_day": 49,
+   "median_day": 11,
+   "p10_day": -3,
+   "p90_day": 153,
+   "P_neg_year": 43.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.75,
+   "mean_size": 1.48,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 60,
+   "median_day": 53,
+   "p10_day": -2,
+   "p90_day": 140,
+   "P_neg_year": 16.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.65,
+   "mean_size": 1.67,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 11,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 48,
+   "P_neg_year": 70.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.26,
+   "mean_size": 0.93,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 32,
+   "median_day": -1,
+   "p10_day": -4,
+   "p90_day": 119,
+   "P_neg_year": 51.7,
+   "P_ge_200_day": 1.8,
+   "busts_per_year": 1.69,
+   "mean_size": 1.26,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | Lucid150K 3c (today)": {
+  "T1_hist": {
+   "mean_day": 27,
+   "median_day": 22,
+   "p10_day": 3,
+   "p90_day": 55,
+   "P_neg_year": 8.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.69,
+   "mean_size": 3.0,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 31,
+   "median_day": 32,
+   "p10_day": 13,
+   "p90_day": 48,
+   "P_neg_year": 1.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.82,
+   "mean_size": 3.0,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 18,
+   "median_day": 18,
+   "p10_day": -13,
+   "p90_day": 48,
+   "P_neg_year": 21.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.44,
+   "mean_size": 3.0,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 25,
+   "median_day": 22,
+   "p10_day": -7,
+   "p90_day": 58,
+   "P_neg_year": 15.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.6,
+   "mean_size": 3.0,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | Lucid150K ladder 3->4c S3k": {
+  "T1_hist": {
+   "mean_day": 23,
+   "median_day": 21,
+   "p10_day": -6,
+   "p90_day": 48,
+   "P_neg_year": 14.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.43,
+   "mean_size": 3.42,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 36,
+   "median_day": 36,
+   "p10_day": 8,
+   "p90_day": 55,
+   "P_neg_year": 3.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.02,
+   "mean_size": 3.62,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 18,
+   "median_day": 18,
+   "p10_day": -14,
+   "p90_day": 51,
+   "P_neg_year": 24.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.55,
+   "mean_size": 3.45,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 23,
+   "median_day": 20,
+   "p10_day": -13,
+   "p90_day": 58,
+   "P_neg_year": 20.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.78,
+   "mean_size": 3.51,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | Lucid150K ladder 3->4c S4.5k": {
+  "T1_hist": {
+   "mean_day": 24,
+   "median_day": 20,
+   "p10_day": -9,
+   "p90_day": 59,
+   "P_neg_year": 15.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.42,
+   "mean_size": 3.41,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 29,
+   "median_day": 24,
+   "p10_day": 12,
+   "p90_day": 49,
+   "P_neg_year": 1.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.74,
+   "mean_size": 3.51,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 17,
+   "median_day": 18,
+   "p10_day": -16,
+   "p90_day": 51,
+   "P_neg_year": 24.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.32,
+   "mean_size": 3.39,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 23,
+   "median_day": 21,
+   "p10_day": -15,
+   "p90_day": 58,
+   "P_neg_year": 20.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.52,
+   "mean_size": 3.46,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | Lucid150K ladder 3->5c S3k": {
+  "T1_hist": {
+   "mean_day": 20,
+   "median_day": 15,
+   "p10_day": -10,
+   "p90_day": 54,
+   "P_neg_year": 15.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.73,
+   "mean_size": 3.78,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 34,
+   "median_day": 37,
+   "p10_day": 9,
+   "p90_day": 52,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.94,
+   "mean_size": 4.17,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 14,
+   "median_day": 15,
+   "p10_day": -16,
+   "p90_day": 47,
+   "P_neg_year": 30.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.45,
+   "mean_size": 3.8,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 20,
+   "median_day": 17,
+   "p10_day": -20,
+   "p90_day": 56,
+   "P_neg_year": 20.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.77,
+   "mean_size": 3.94,
+   "n": 400
+  }
+ },
+ "Ultra+gold | edge-50% | Lucid150K ladder 3->5c S4.5k": {
+  "T1_hist": {
+   "mean_day": 24,
+   "median_day": 20,
+   "p10_day": -12,
+   "p90_day": 58,
+   "P_neg_year": 20.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.41,
+   "mean_size": 3.81,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 13,
+   "median_day": 14,
+   "p10_day": 2,
+   "p90_day": 24,
+   "P_neg_year": 9.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.87,
+   "mean_size": 3.85,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 12,
+   "median_day": 16,
+   "p10_day": -18,
+   "p90_day": 37,
+   "P_neg_year": 32.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.19,
+   "mean_size": 3.73,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 20,
+   "median_day": 18,
+   "p10_day": -17,
+   "p90_day": 55,
+   "P_neg_year": 22.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.36,
+   "mean_size": 3.89,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU 1c (today)": {
+  "T1_hist": {
+   "mean_day": 55,
+   "median_day": 46,
+   "p10_day": 23,
+   "p90_day": 97,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.07,
+   "mean_size": 0.88,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 72,
+   "median_day": 73,
+   "p10_day": 44,
+   "p90_day": 92,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.16,
+   "mean_size": 0.87,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 45,
+   "median_day": 45,
+   "p10_day": 21,
+   "p90_day": 68,
+   "P_neg_year": 1.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.27,
+   "mean_size": 0.85,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 67,
+   "median_day": 68,
+   "p10_day": 35,
+   "p90_day": 102,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.5,
+   "mean_size": 0.85,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU step-up 2c @4k (keep 6.1k)": {
+  "T1_hist": {
+   "mean_day": 94,
+   "median_day": 78,
+   "p10_day": 34,
+   "p90_day": 171,
+   "P_neg_year": 1.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.07,
+   "mean_size": 1.42,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 119,
+   "median_day": 130,
+   "p10_day": 69,
+   "p90_day": 144,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.16,
+   "mean_size": 1.43,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 70,
+   "median_day": 68,
+   "p10_day": 25,
+   "p90_day": 119,
+   "P_neg_year": 2.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.27,
+   "mean_size": 1.39,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 104,
+   "median_day": 104,
+   "p10_day": 45,
+   "p90_day": 160,
+   "P_neg_year": 0.5,
+   "P_ge_200_day": 2.0,
+   "busts_per_year": 0.56,
+   "mean_size": 1.4,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K3 S2k B4k": {
+  "T1_hist": {
+   "mean_day": 103,
+   "median_day": 94,
+   "p10_day": 20,
+   "p90_day": 202,
+   "P_neg_year": 4.3,
+   "P_ge_200_day": 12.2,
+   "busts_per_year": 1.14,
+   "mean_size": 1.45,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 111,
+   "median_day": 119,
+   "p10_day": 62,
+   "p90_day": 145,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.83,
+   "mean_size": 1.35,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 81,
+   "median_day": 77,
+   "p10_day": 24,
+   "p90_day": 145,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 2.0,
+   "busts_per_year": 1.2,
+   "mean_size": 1.41,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 103,
+   "median_day": 98,
+   "p10_day": 33,
+   "p90_day": 176,
+   "P_neg_year": 0.8,
+   "P_ge_200_day": 4.5,
+   "busts_per_year": 2.63,
+   "mean_size": 1.45,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K3 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 128,
+   "median_day": 106,
+   "p10_day": 21,
+   "p90_day": 262,
+   "P_neg_year": 7.9,
+   "P_ge_200_day": 30.9,
+   "busts_per_year": 1.14,
+   "mean_size": 1.85,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 163,
+   "median_day": 168,
+   "p10_day": 79,
+   "p90_day": 212,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 24.7,
+   "busts_per_year": 1.8,
+   "mean_size": 1.97,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 105,
+   "median_day": 105,
+   "p10_day": 28,
+   "p90_day": 179,
+   "P_neg_year": 2.8,
+   "P_ge_200_day": 6.2,
+   "busts_per_year": 0.73,
+   "mean_size": 1.97,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 142,
+   "median_day": 142,
+   "p10_day": 51,
+   "p90_day": 243,
+   "P_neg_year": 2.0,
+   "P_ge_200_day": 19.8,
+   "busts_per_year": 1.93,
+   "mean_size": 1.92,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K3 S3k B6k": {
+  "T1_hist": {
+   "mean_day": 111,
+   "median_day": 96,
+   "p10_day": 37,
+   "p90_day": 203,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 11.5,
+   "busts_per_year": 0.09,
+   "mean_size": 1.69,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 143,
+   "median_day": 155,
+   "p10_day": 80,
+   "p90_day": 177,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.46,
+   "mean_size": 1.66,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 84,
+   "median_day": 81,
+   "p10_day": 22,
+   "p90_day": 149,
+   "P_neg_year": 2.8,
+   "P_ge_200_day": 1.5,
+   "busts_per_year": 0.31,
+   "mean_size": 1.6,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 121,
+   "median_day": 116,
+   "p10_day": 47,
+   "p90_day": 193,
+   "P_neg_year": 0.5,
+   "P_ge_200_day": 8.5,
+   "busts_per_year": 1.04,
+   "mean_size": 1.61,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K3 S3k B8k": {
+  "T1_hist": {
+   "mean_day": 136,
+   "median_day": 115,
+   "p10_day": 43,
+   "p90_day": 256,
+   "P_neg_year": 1.4,
+   "P_ge_200_day": 33.8,
+   "busts_per_year": 0.09,
+   "mean_size": 2.04,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 172,
+   "median_day": 185,
+   "p10_day": 96,
+   "p90_day": 217,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 21.3,
+   "busts_per_year": 0.27,
+   "mean_size": 2.01,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 98,
+   "median_day": 97,
+   "p10_day": 26,
+   "p90_day": 168,
+   "P_neg_year": 3.2,
+   "P_ge_200_day": 3.2,
+   "busts_per_year": 0.27,
+   "mean_size": 1.97,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 150,
+   "median_day": 146,
+   "p10_day": 54,
+   "p90_day": 259,
+   "P_neg_year": 1.5,
+   "P_ge_200_day": 25.2,
+   "busts_per_year": 0.68,
+   "mean_size": 1.97,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K3 S4k B8k": {
+  "T1_hist": {
+   "mean_day": 110,
+   "median_day": 93,
+   "p10_day": 34,
+   "p90_day": 208,
+   "P_neg_year": 1.4,
+   "P_ge_200_day": 16.5,
+   "busts_per_year": 0.07,
+   "mean_size": 1.78,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 150,
+   "median_day": 159,
+   "p10_day": 87,
+   "p90_day": 191,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 9.0,
+   "busts_per_year": 0.16,
+   "mean_size": 1.78,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 76,
+   "median_day": 71,
+   "p10_day": 19,
+   "p90_day": 138,
+   "P_neg_year": 4.2,
+   "P_ge_200_day": 1.2,
+   "busts_per_year": 0.29,
+   "mean_size": 1.63,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 138,
+   "median_day": 135,
+   "p10_day": 61,
+   "p90_day": 213,
+   "P_neg_year": 0.8,
+   "P_ge_200_day": 15.0,
+   "busts_per_year": 0.36,
+   "mean_size": 1.79,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K3 S4k B10k": {
+  "T1_hist": {
+   "mean_day": 129,
+   "median_day": 99,
+   "p10_day": 38,
+   "p90_day": 248,
+   "P_neg_year": 3.6,
+   "P_ge_200_day": 33.1,
+   "busts_per_year": 0.07,
+   "mean_size": 2.05,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 168,
+   "median_day": 183,
+   "p10_day": 97,
+   "p90_day": 215,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 15.7,
+   "busts_per_year": 0.16,
+   "mean_size": 2.07,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 97,
+   "median_day": 96,
+   "p10_day": 25,
+   "p90_day": 167,
+   "P_neg_year": 2.5,
+   "P_ge_200_day": 2.5,
+   "busts_per_year": 0.22,
+   "mean_size": 2.01,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 162,
+   "median_day": 161,
+   "p10_day": 63,
+   "p90_day": 259,
+   "P_neg_year": 1.8,
+   "P_ge_200_day": 30.0,
+   "busts_per_year": 0.36,
+   "mean_size": 2.09,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K4 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 144,
+   "median_day": 125,
+   "p10_day": 22,
+   "p90_day": 284,
+   "P_neg_year": 7.9,
+   "P_ge_200_day": 34.5,
+   "busts_per_year": 0.86,
+   "mean_size": 2.0,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 175,
+   "median_day": 182,
+   "p10_day": 96,
+   "p90_day": 228,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 41.6,
+   "busts_per_year": 1.8,
+   "mean_size": 2.14,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 107,
+   "median_day": 105,
+   "p10_day": 28,
+   "p90_day": 194,
+   "P_neg_year": 3.2,
+   "P_ge_200_day": 9.0,
+   "busts_per_year": 0.88,
+   "mean_size": 2.03,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 136,
+   "median_day": 131,
+   "p10_day": 39,
+   "p90_day": 237,
+   "P_neg_year": 3.2,
+   "P_ge_200_day": 18.0,
+   "busts_per_year": 2.14,
+   "mean_size": 1.97,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K4 S2k B8k": {
+  "T1_hist": {
+   "mean_day": 177,
+   "median_day": 149,
+   "p10_day": 34,
+   "p90_day": 340,
+   "P_neg_year": 8.6,
+   "P_ge_200_day": 39.6,
+   "busts_per_year": 0.6,
+   "mean_size": 2.5,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 201,
+   "median_day": 220,
+   "p10_day": 94,
+   "p90_day": 259,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 62.9,
+   "busts_per_year": 1.38,
+   "mean_size": 2.44,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 128,
+   "median_day": 119,
+   "p10_day": 30,
+   "p90_day": 229,
+   "P_neg_year": 3.5,
+   "P_ge_200_day": 17.5,
+   "busts_per_year": 0.73,
+   "mean_size": 2.49,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 162,
+   "median_day": 154,
+   "p10_day": 35,
+   "p90_day": 296,
+   "P_neg_year": 2.0,
+   "P_ge_200_day": 33.0,
+   "busts_per_year": 1.95,
+   "mean_size": 2.39,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K4 S3k B9k": {
+  "T1_hist": {
+   "mean_day": 150,
+   "median_day": 130,
+   "p10_day": 43,
+   "p90_day": 289,
+   "P_neg_year": 1.4,
+   "P_ge_200_day": 36.0,
+   "busts_per_year": 0.09,
+   "mean_size": 2.3,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 192,
+   "median_day": 212,
+   "p10_day": 108,
+   "p90_day": 243,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 58.4,
+   "busts_per_year": 0.46,
+   "mean_size": 2.27,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 112,
+   "median_day": 113,
+   "p10_day": 19,
+   "p90_day": 199,
+   "P_neg_year": 6.8,
+   "P_ge_200_day": 9.2,
+   "busts_per_year": 0.34,
+   "mean_size": 2.18,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 161,
+   "median_day": 159,
+   "p10_day": 62,
+   "p90_day": 266,
+   "P_neg_year": 1.2,
+   "P_ge_200_day": 30.2,
+   "busts_per_year": 0.79,
+   "mean_size": 2.19,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K4 S3k B11k": {
+  "T1_hist": {
+   "mean_day": 169,
+   "median_day": 144,
+   "p10_day": 46,
+   "p90_day": 321,
+   "P_neg_year": 3.6,
+   "P_ge_200_day": 37.4,
+   "busts_per_year": 0.09,
+   "mean_size": 2.63,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 221,
+   "median_day": 235,
+   "p10_day": 120,
+   "p90_day": 276,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 79.8,
+   "busts_per_year": 0.27,
+   "mean_size": 2.64,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 128,
+   "median_day": 119,
+   "p10_day": 31,
+   "p90_day": 234,
+   "P_neg_year": 5.5,
+   "P_ge_200_day": 18.8,
+   "busts_per_year": 0.27,
+   "mean_size": 2.53,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 194,
+   "median_day": 189,
+   "p10_day": 65,
+   "p90_day": 326,
+   "P_neg_year": 1.5,
+   "P_ge_200_day": 46.0,
+   "busts_per_year": 0.69,
+   "mean_size": 2.56,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K4 S4k B12k": {
+  "T1_hist": {
+   "mean_day": 143,
+   "median_day": 117,
+   "p10_day": 39,
+   "p90_day": 278,
+   "P_neg_year": 4.3,
+   "P_ge_200_day": 35.3,
+   "busts_per_year": 0.07,
+   "mean_size": 2.35,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 194,
+   "median_day": 211,
+   "p10_day": 105,
+   "p90_day": 246,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 65.2,
+   "busts_per_year": 0.16,
+   "mean_size": 2.38,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 109,
+   "median_day": 104,
+   "p10_day": 17,
+   "p90_day": 194,
+   "P_neg_year": 5.8,
+   "P_ge_200_day": 8.8,
+   "busts_per_year": 0.24,
+   "mean_size": 2.26,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 173,
+   "median_day": 168,
+   "p10_day": 66,
+   "p90_day": 289,
+   "P_neg_year": 2.2,
+   "P_ge_200_day": 36.5,
+   "busts_per_year": 0.45,
+   "mean_size": 2.34,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | MFFU ladder K4 S4k B14k": {
+  "T1_hist": {
+   "mean_day": 158,
+   "median_day": 123,
+   "p10_day": 39,
+   "p90_day": 315,
+   "P_neg_year": 4.3,
+   "P_ge_200_day": 36.0,
+   "busts_per_year": 0.07,
+   "mean_size": 2.56,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 213,
+   "median_day": 225,
+   "p10_day": 106,
+   "p90_day": 283,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 69.7,
+   "busts_per_year": 0.16,
+   "mean_size": 2.66,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 109,
+   "median_day": 107,
+   "p10_day": 12,
+   "p90_day": 199,
+   "P_neg_year": 6.8,
+   "P_ge_200_day": 10.0,
+   "busts_per_year": 0.23,
+   "mean_size": 2.42,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 196,
+   "median_day": 191,
+   "p10_day": 62,
+   "p90_day": 324,
+   "P_neg_year": 1.8,
+   "P_ge_200_day": 45.8,
+   "busts_per_year": 0.35,
+   "mean_size": 2.67,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | Lucid150K 3c (today)": {
+  "T1_hist": {
+   "mean_day": 75,
+   "median_day": 66,
+   "p10_day": 36,
+   "p90_day": 115,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.45,
+   "mean_size": 3.0,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 74,
+   "median_day": 72,
+   "p10_day": 52,
+   "p90_day": 97,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.24,
+   "mean_size": 3.0,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 60,
+   "median_day": 60,
+   "p10_day": 30,
+   "p90_day": 90,
+   "P_neg_year": 0.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.51,
+   "mean_size": 3.0,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 85,
+   "median_day": 87,
+   "p10_day": 54,
+   "p90_day": 121,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.04,
+   "mean_size": 3.0,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | Lucid150K ladder 3->4c S3k": {
+  "T1_hist": {
+   "mean_day": 80,
+   "median_day": 69,
+   "p10_day": 38,
+   "p90_day": 127,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.35,
+   "mean_size": 3.65,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 76,
+   "median_day": 76,
+   "p10_day": 53,
+   "p90_day": 98,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.2,
+   "mean_size": 3.61,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 65,
+   "median_day": 63,
+   "p10_day": 33,
+   "p90_day": 94,
+   "P_neg_year": 0.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.52,
+   "mean_size": 3.62,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 83,
+   "median_day": 85,
+   "p10_day": 54,
+   "p90_day": 114,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.32,
+   "mean_size": 3.68,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | Lucid150K ladder 3->4c S4.5k": {
+  "T1_hist": {
+   "mean_day": 73,
+   "median_day": 65,
+   "p10_day": 29,
+   "p90_day": 121,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.32,
+   "mean_size": 3.6,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 74,
+   "median_day": 73,
+   "p10_day": 57,
+   "p90_day": 94,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.03,
+   "mean_size": 3.55,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 61,
+   "median_day": 59,
+   "p10_day": 27,
+   "p90_day": 93,
+   "P_neg_year": 0.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.28,
+   "mean_size": 3.57,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 80,
+   "median_day": 82,
+   "p10_day": 50,
+   "p90_day": 111,
+   "P_neg_year": 0.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.12,
+   "mean_size": 3.63,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | Lucid150K ladder 3->5c S3k": {
+  "T1_hist": {
+   "mean_day": 74,
+   "median_day": 65,
+   "p10_day": 29,
+   "p90_day": 119,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.21,
+   "mean_size": 4.27,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 74,
+   "median_day": 71,
+   "p10_day": 55,
+   "p90_day": 97,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.94,
+   "mean_size": 4.15,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 61,
+   "median_day": 61,
+   "p10_day": 26,
+   "p90_day": 93,
+   "P_neg_year": 0.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.41,
+   "mean_size": 4.18,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 78,
+   "median_day": 80,
+   "p10_day": 47,
+   "p90_day": 104,
+   "P_neg_year": 0.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.21,
+   "mean_size": 4.26,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-0% | Lucid150K ladder 3->5c S4.5k": {
+  "T1_hist": {
+   "mean_day": 66,
+   "median_day": 62,
+   "p10_day": 24,
+   "p90_day": 101,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.05,
+   "mean_size": 4.26,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 74,
+   "median_day": 73,
+   "p10_day": 55,
+   "p90_day": 95,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.29,
+   "mean_size": 4.13,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 55,
+   "median_day": 58,
+   "p10_day": 23,
+   "p90_day": 83,
+   "P_neg_year": 0.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.26,
+   "mean_size": 4.09,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 70,
+   "median_day": 68,
+   "p10_day": 39,
+   "p90_day": 99,
+   "P_neg_year": 0.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.95,
+   "mean_size": 4.18,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU 1c (today)": {
+  "T1_hist": {
+   "mean_day": 32,
+   "median_day": 21,
+   "p10_day": -2,
+   "p90_day": 77,
+   "P_neg_year": 16.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.66,
+   "mean_size": 0.73,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 31,
+   "median_day": 36,
+   "p10_day": 2,
+   "p90_day": 44,
+   "P_neg_year": 10.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.2,
+   "mean_size": 0.74,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 20,
+   "median_day": 18,
+   "p10_day": -3,
+   "p90_day": 45,
+   "P_neg_year": 19.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.91,
+   "mean_size": 0.67,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 30,
+   "median_day": 28,
+   "p10_day": -2,
+   "p90_day": 63,
+   "P_neg_year": 13.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.54,
+   "mean_size": 0.66,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU step-up 2c @4k (keep 6.1k)": {
+  "T1_hist": {
+   "mean_day": 53,
+   "median_day": 37,
+   "p10_day": -2,
+   "p90_day": 131,
+   "P_neg_year": 16.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.66,
+   "mean_size": 1.09,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 49,
+   "median_day": 58,
+   "p10_day": -2,
+   "p90_day": 75,
+   "P_neg_year": 11.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.12,
+   "mean_size": 1.14,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 27,
+   "median_day": 22,
+   "p10_day": -3,
+   "p90_day": 68,
+   "P_neg_year": 28.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.91,
+   "mean_size": 0.95,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 38,
+   "median_day": 31,
+   "p10_day": -3,
+   "p90_day": 88,
+   "P_neg_year": 18.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.5,
+   "mean_size": 0.94,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K3 S2k B4k": {
+  "T1_hist": {
+   "mean_day": 49,
+   "median_day": 31,
+   "p10_day": -3,
+   "p90_day": 113,
+   "P_neg_year": 12.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.35,
+   "mean_size": 1.06,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 54,
+   "median_day": 57,
+   "p10_day": 25,
+   "p90_day": 77,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.31,
+   "mean_size": 0.92,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 30,
+   "median_day": 21,
+   "p10_day": -3,
+   "p90_day": 79,
+   "P_neg_year": 20.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.94,
+   "mean_size": 0.99,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 37,
+   "median_day": 29,
+   "p10_day": -3,
+   "p90_day": 87,
+   "P_neg_year": 16.5,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 3.29,
+   "mean_size": 0.98,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K3 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 79,
+   "median_day": 52,
+   "p10_day": -3,
+   "p90_day": 194,
+   "P_neg_year": 15.8,
+   "P_ge_200_day": 0.7,
+   "busts_per_year": 1.16,
+   "mean_size": 1.53,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 81,
+   "median_day": 84,
+   "p10_day": 29,
+   "p90_day": 116,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.78,
+   "mean_size": 1.72,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 41,
+   "median_day": 30,
+   "p10_day": -3,
+   "p90_day": 106,
+   "P_neg_year": 24.2,
+   "P_ge_200_day": 0.5,
+   "busts_per_year": 1.58,
+   "mean_size": 1.36,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 50,
+   "median_day": 41,
+   "p10_day": -3,
+   "p90_day": 118,
+   "P_neg_year": 18.5,
+   "P_ge_200_day": 1.5,
+   "busts_per_year": 2.95,
+   "mean_size": 1.32,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K3 S3k B6k": {
+  "T1_hist": {
+   "mean_day": 61,
+   "median_day": 45,
+   "p10_day": -2,
+   "p90_day": 149,
+   "P_neg_year": 20.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.85,
+   "mean_size": 1.21,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 52,
+   "median_day": 52,
+   "p10_day": -2,
+   "p90_day": 92,
+   "P_neg_year": 11.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.72,
+   "mean_size": 1.24,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 35,
+   "median_day": 23,
+   "p10_day": -3,
+   "p90_day": 90,
+   "P_neg_year": 23.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.98,
+   "mean_size": 1.1,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 46,
+   "median_day": 36,
+   "p10_day": -3,
+   "p90_day": 119,
+   "P_neg_year": 20.2,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 2.06,
+   "mean_size": 1.01,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K3 S3k B8k": {
+  "T1_hist": {
+   "mean_day": 72,
+   "median_day": 43,
+   "p10_day": -2,
+   "p90_day": 184,
+   "P_neg_year": 22.3,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.84,
+   "mean_size": 1.47,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 58,
+   "median_day": 59,
+   "p10_day": -2,
+   "p90_day": 97,
+   "P_neg_year": 13.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.65,
+   "mean_size": 1.49,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 40,
+   "median_day": 27,
+   "p10_day": -3,
+   "p90_day": 108,
+   "P_neg_year": 30.0,
+   "P_ge_200_day": 1.0,
+   "busts_per_year": 0.98,
+   "mean_size": 1.3,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 54,
+   "median_day": 42,
+   "p10_day": -3,
+   "p90_day": 129,
+   "P_neg_year": 25.2,
+   "P_ge_200_day": 2.0,
+   "busts_per_year": 1.59,
+   "mean_size": 1.26,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K3 S4k B8k": {
+  "T1_hist": {
+   "mean_day": 58,
+   "median_day": 38,
+   "p10_day": -2,
+   "p90_day": 152,
+   "P_neg_year": 25.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.63,
+   "mean_size": 1.26,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 53,
+   "median_day": 66,
+   "p10_day": -2,
+   "p90_day": 86,
+   "P_neg_year": 12.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.06,
+   "mean_size": 1.32,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 30,
+   "median_day": 20,
+   "p10_day": -3,
+   "p90_day": 76,
+   "P_neg_year": 29.5,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 0.89,
+   "mean_size": 1.12,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 52,
+   "median_day": 43,
+   "p10_day": -3,
+   "p90_day": 123,
+   "P_neg_year": 19.2,
+   "P_ge_200_day": 1.0,
+   "busts_per_year": 1.32,
+   "mean_size": 1.21,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K3 S4k B10k": {
+  "T1_hist": {
+   "mean_day": 68,
+   "median_day": 35,
+   "p10_day": -2,
+   "p90_day": 182,
+   "P_neg_year": 30.2,
+   "P_ge_200_day": 2.2,
+   "busts_per_year": 0.48,
+   "mean_size": 1.38,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 55,
+   "median_day": 69,
+   "p10_day": -2,
+   "p90_day": 88,
+   "P_neg_year": 13.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.24,
+   "mean_size": 1.5,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 31,
+   "median_day": 16,
+   "p10_day": -3,
+   "p90_day": 94,
+   "P_neg_year": 36.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.82,
+   "mean_size": 1.27,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 55,
+   "median_day": 41,
+   "p10_day": -3,
+   "p90_day": 132,
+   "P_neg_year": 23.0,
+   "P_ge_200_day": 2.0,
+   "busts_per_year": 1.29,
+   "mean_size": 1.37,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K4 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 87,
+   "median_day": 62,
+   "p10_day": -3,
+   "p90_day": 213,
+   "P_neg_year": 15.8,
+   "P_ge_200_day": 12.2,
+   "busts_per_year": 1.17,
+   "mean_size": 1.61,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 71,
+   "median_day": 75,
+   "p10_day": 34,
+   "p90_day": 100,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.16,
+   "mean_size": 1.76,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 41,
+   "median_day": 31,
+   "p10_day": -3,
+   "p90_day": 104,
+   "P_neg_year": 25.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.74,
+   "mean_size": 1.34,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 56,
+   "median_day": 40,
+   "p10_day": -3,
+   "p90_day": 140,
+   "P_neg_year": 17.5,
+   "P_ge_200_day": 2.2,
+   "busts_per_year": 3.02,
+   "mean_size": 1.39,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K4 S2k B8k": {
+  "T1_hist": {
+   "mean_day": 99,
+   "median_day": 67,
+   "p10_day": -3,
+   "p90_day": 250,
+   "P_neg_year": 16.5,
+   "P_ge_200_day": 25.2,
+   "busts_per_year": 1.16,
+   "mean_size": 1.95,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 99,
+   "median_day": 101,
+   "p10_day": 32,
+   "p90_day": 142,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.96,
+   "mean_size": 2.2,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 45,
+   "median_day": 28,
+   "p10_day": -3,
+   "p90_day": 120,
+   "P_neg_year": 31.8,
+   "P_ge_200_day": 1.2,
+   "busts_per_year": 1.61,
+   "mean_size": 1.59,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 65,
+   "median_day": 45,
+   "p10_day": -4,
+   "p90_day": 175,
+   "P_neg_year": 23.2,
+   "P_ge_200_day": 5.2,
+   "busts_per_year": 2.94,
+   "mean_size": 1.62,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K4 S3k B9k": {
+  "T1_hist": {
+   "mean_day": 85,
+   "median_day": 56,
+   "p10_day": -2,
+   "p90_day": 215,
+   "P_neg_year": 22.3,
+   "P_ge_200_day": 18.7,
+   "busts_per_year": 0.84,
+   "mean_size": 1.65,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 66,
+   "median_day": 66,
+   "p10_day": -2,
+   "p90_day": 112,
+   "P_neg_year": 13.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.72,
+   "mean_size": 1.64,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 42,
+   "median_day": 28,
+   "p10_day": -3,
+   "p90_day": 112,
+   "P_neg_year": 31.0,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 0.96,
+   "mean_size": 1.45,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 54,
+   "median_day": 37,
+   "p10_day": -3,
+   "p90_day": 141,
+   "P_neg_year": 26.5,
+   "P_ge_200_day": 2.5,
+   "busts_per_year": 1.84,
+   "mean_size": 1.33,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K4 S3k B11k": {
+  "T1_hist": {
+   "mean_day": 94,
+   "median_day": 52,
+   "p10_day": -3,
+   "p90_day": 248,
+   "P_neg_year": 35.3,
+   "P_ge_200_day": 29.5,
+   "busts_per_year": 0.77,
+   "mean_size": 1.81,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 73,
+   "median_day": 71,
+   "p10_day": -2,
+   "p90_day": 122,
+   "P_neg_year": 18.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.55,
+   "mean_size": 1.86,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 45,
+   "median_day": 29,
+   "p10_day": -3,
+   "p90_day": 120,
+   "P_neg_year": 35.2,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 0.89,
+   "mean_size": 1.58,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 65,
+   "median_day": 42,
+   "p10_day": -3,
+   "p90_day": 172,
+   "P_neg_year": 28.5,
+   "P_ge_200_day": 5.8,
+   "busts_per_year": 1.76,
+   "mean_size": 1.55,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K4 S4k B12k": {
+  "T1_hist": {
+   "mean_day": 76,
+   "median_day": 42,
+   "p10_day": -2,
+   "p90_day": 206,
+   "P_neg_year": 37.4,
+   "P_ge_200_day": 11.5,
+   "busts_per_year": 0.47,
+   "mean_size": 1.56,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 65,
+   "median_day": 76,
+   "p10_day": -2,
+   "p90_day": 112,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.06,
+   "mean_size": 1.72,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 38,
+   "median_day": 25,
+   "p10_day": -3,
+   "p90_day": 100,
+   "P_neg_year": 35.8,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 0.79,
+   "mean_size": 1.43,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 65,
+   "median_day": 46,
+   "p10_day": -3,
+   "p90_day": 170,
+   "P_neg_year": 26.8,
+   "P_ge_200_day": 4.8,
+   "busts_per_year": 1.18,
+   "mean_size": 1.53,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | MFFU ladder K4 S4k B14k": {
+  "T1_hist": {
+   "mean_day": 82,
+   "median_day": 38,
+   "p10_day": -2,
+   "p90_day": 226,
+   "P_neg_year": 41.0,
+   "P_ge_200_day": 19.4,
+   "busts_per_year": 0.47,
+   "mean_size": 1.69,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 67,
+   "median_day": 88,
+   "p10_day": -2,
+   "p90_day": 111,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.06,
+   "mean_size": 1.9,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 41,
+   "median_day": 23,
+   "p10_day": -3,
+   "p90_day": 122,
+   "P_neg_year": 38.0,
+   "P_ge_200_day": 1.2,
+   "busts_per_year": 0.78,
+   "mean_size": 1.61,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 69,
+   "median_day": 55,
+   "p10_day": -3,
+   "p90_day": 166,
+   "P_neg_year": 28.5,
+   "P_ge_200_day": 6.8,
+   "busts_per_year": 1.16,
+   "mean_size": 1.73,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | Lucid150K 3c (today)": {
+  "T1_hist": {
+   "mean_day": 50,
+   "median_day": 47,
+   "p10_day": 15,
+   "p90_day": 86,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.23,
+   "mean_size": 3.0,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 40,
+   "median_day": 44,
+   "p10_day": 18,
+   "p90_day": 59,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.76,
+   "mean_size": 3.0,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 33,
+   "median_day": 32,
+   "p10_day": 2,
+   "p90_day": 65,
+   "P_neg_year": 9.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.26,
+   "mean_size": 3.0,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 45,
+   "median_day": 47,
+   "p10_day": 10,
+   "p90_day": 79,
+   "P_neg_year": 6.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.11,
+   "mean_size": 3.0,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | Lucid150K ladder 3->4c S3k": {
+  "T1_hist": {
+   "mean_day": 53,
+   "median_day": 50,
+   "p10_day": 14,
+   "p90_day": 90,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.22,
+   "mean_size": 3.59,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 37,
+   "median_day": 40,
+   "p10_day": 14,
+   "p90_day": 56,
+   "P_neg_year": 1.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.17,
+   "mean_size": 3.45,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 34,
+   "median_day": 33,
+   "p10_day": 2,
+   "p90_day": 63,
+   "P_neg_year": 9.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.52,
+   "mean_size": 3.52,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 45,
+   "median_day": 45,
+   "p10_day": 11,
+   "p90_day": 86,
+   "P_neg_year": 6.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.31,
+   "mean_size": 3.6,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | Lucid150K ladder 3->4c S4.5k": {
+  "T1_hist": {
+   "mean_day": 49,
+   "median_day": 42,
+   "p10_day": 11,
+   "p90_day": 86,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.27,
+   "mean_size": 3.5,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 40,
+   "median_day": 43,
+   "p10_day": 15,
+   "p90_day": 59,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.42,
+   "mean_size": 3.45,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 32,
+   "median_day": 31,
+   "p10_day": -4,
+   "p90_day": 62,
+   "P_neg_year": 11.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.1,
+   "mean_size": 3.46,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 43,
+   "median_day": 46,
+   "p10_day": 13,
+   "p90_day": 79,
+   "P_neg_year": 5.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.99,
+   "mean_size": 3.54,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | Lucid150K ladder 3->5c S3k": {
+  "T1_hist": {
+   "mean_day": 47,
+   "median_day": 45,
+   "p10_day": 15,
+   "p90_day": 88,
+   "P_neg_year": 0.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.28,
+   "mean_size": 4.08,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 32,
+   "median_day": 26,
+   "p10_day": 4,
+   "p90_day": 61,
+   "P_neg_year": 3.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.84,
+   "mean_size": 3.83,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 29,
+   "median_day": 27,
+   "p10_day": -6,
+   "p90_day": 61,
+   "P_neg_year": 12.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.35,
+   "mean_size": 3.96,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 39,
+   "median_day": 39,
+   "p10_day": 1,
+   "p90_day": 77,
+   "P_neg_year": 9.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.31,
+   "mean_size": 4.08,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-35% | Lucid150K ladder 3->5c S4.5k": {
+  "T1_hist": {
+   "mean_day": 38,
+   "median_day": 29,
+   "p10_day": 5,
+   "p90_day": 75,
+   "P_neg_year": 7.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.95,
+   "mean_size": 3.94,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 32,
+   "median_day": 24,
+   "p10_day": 15,
+   "p90_day": 58,
+   "P_neg_year": 1.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.91,
+   "mean_size": 3.79,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 29,
+   "median_day": 25,
+   "p10_day": 1,
+   "p90_day": 59,
+   "P_neg_year": 9.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.93,
+   "mean_size": 3.9,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 40,
+   "median_day": 41,
+   "p10_day": 10,
+   "p90_day": 67,
+   "P_neg_year": 5.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.68,
+   "mean_size": 4.06,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU 1c (today)": {
+  "T1_hist": {
+   "mean_day": 24,
+   "median_day": 5,
+   "p10_day": -3,
+   "p90_day": 67,
+   "P_neg_year": 29.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.02,
+   "mean_size": 0.62,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 19,
+   "median_day": 22,
+   "p10_day": -2,
+   "p90_day": 34,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.12,
+   "mean_size": 0.67,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 11,
+   "median_day": 6,
+   "p10_day": -4,
+   "p90_day": 33,
+   "P_neg_year": 37.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.28,
+   "mean_size": 0.56,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 16,
+   "median_day": 11,
+   "p10_day": -4,
+   "p90_day": 43,
+   "P_neg_year": 30.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.21,
+   "mean_size": 0.56,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU step-up 2c @4k (keep 6.1k)": {
+  "T1_hist": {
+   "mean_day": 37,
+   "median_day": 6,
+   "p10_day": -3,
+   "p90_day": 106,
+   "P_neg_year": 37.4,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.02,
+   "mean_size": 0.89,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 29,
+   "median_day": 26,
+   "p10_day": -2,
+   "p90_day": 52,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.39,
+   "mean_size": 0.88,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 15,
+   "median_day": 5,
+   "p10_day": -4,
+   "p90_day": 48,
+   "P_neg_year": 44.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.27,
+   "mean_size": 0.74,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 22,
+   "median_day": 12,
+   "p10_day": -4,
+   "p90_day": 67,
+   "P_neg_year": 35.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.96,
+   "mean_size": 0.76,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K3 S2k B4k": {
+  "T1_hist": {
+   "mean_day": 32,
+   "median_day": 6,
+   "p10_day": -3,
+   "p90_day": 92,
+   "P_neg_year": 23.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.34,
+   "mean_size": 0.87,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 28,
+   "median_day": 27,
+   "p10_day": -3,
+   "p90_day": 51,
+   "P_neg_year": 14.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.49,
+   "mean_size": 0.67,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 19,
+   "median_day": 10,
+   "p10_day": -4,
+   "p90_day": 55,
+   "P_neg_year": 32.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.16,
+   "mean_size": 0.85,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 25,
+   "median_day": 14,
+   "p10_day": -5,
+   "p90_day": 67,
+   "P_neg_year": 30.8,
+   "P_ge_200_day": 0.5,
+   "busts_per_year": 3.4,
+   "mean_size": 0.87,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K3 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 60,
+   "median_day": 18,
+   "p10_day": -3,
+   "p90_day": 170,
+   "P_neg_year": 27.3,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.17,
+   "mean_size": 1.34,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 46,
+   "median_day": 43,
+   "p10_day": -3,
+   "p90_day": 93,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.0,
+   "mean_size": 1.24,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 25,
+   "median_day": 11,
+   "p10_day": -4,
+   "p90_day": 73,
+   "P_neg_year": 37.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.92,
+   "mean_size": 1.13,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 32,
+   "median_day": 18,
+   "p10_day": -5,
+   "p90_day": 88,
+   "P_neg_year": 33.8,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 3.37,
+   "mean_size": 1.13,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K3 S3k B6k": {
+  "T1_hist": {
+   "mean_day": 37,
+   "median_day": 4,
+   "p10_day": -3,
+   "p90_day": 125,
+   "P_neg_year": 48.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.24,
+   "mean_size": 0.99,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 33,
+   "median_day": 33,
+   "p10_day": -2,
+   "p90_day": 56,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.9,
+   "mean_size": 0.98,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 18,
+   "median_day": 5,
+   "p10_day": -4,
+   "p90_day": 62,
+   "P_neg_year": 44.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.36,
+   "mean_size": 0.83,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 25,
+   "median_day": 9,
+   "p10_day": -5,
+   "p90_day": 74,
+   "P_neg_year": 41.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.4,
+   "mean_size": 0.79,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K3 S3k B8k": {
+  "T1_hist": {
+   "mean_day": 52,
+   "median_day": -1,
+   "p10_day": -3,
+   "p90_day": 158,
+   "P_neg_year": 54.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.02,
+   "mean_size": 1.16,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 35,
+   "median_day": 31,
+   "p10_day": -2,
+   "p90_day": 71,
+   "P_neg_year": 16.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.87,
+   "mean_size": 1.25,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 20,
+   "median_day": 0,
+   "p10_day": -4,
+   "p90_day": 70,
+   "P_neg_year": 50.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.29,
+   "mean_size": 0.95,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 33,
+   "median_day": 13,
+   "p10_day": -4,
+   "p90_day": 94,
+   "P_neg_year": 40.8,
+   "P_ge_200_day": 1.0,
+   "busts_per_year": 2.1,
+   "mean_size": 1.0,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K3 S4k B8k": {
+  "T1_hist": {
+   "mean_day": 42,
+   "median_day": 1,
+   "p10_day": -3,
+   "p90_day": 128,
+   "P_neg_year": 39.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.01,
+   "mean_size": 1.06,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 33,
+   "median_day": 28,
+   "p10_day": -2,
+   "p90_day": 70,
+   "P_neg_year": 16.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.12,
+   "mean_size": 1.18,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 18,
+   "median_day": 0,
+   "p10_day": -4,
+   "p90_day": 65,
+   "P_neg_year": 50.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.14,
+   "mean_size": 0.92,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 30,
+   "median_day": 14,
+   "p10_day": -4,
+   "p90_day": 92,
+   "P_neg_year": 39.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.86,
+   "mean_size": 0.95,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K3 S4k B10k": {
+  "T1_hist": {
+   "mean_day": 52,
+   "median_day": -2,
+   "p10_day": -3,
+   "p90_day": 162,
+   "P_neg_year": 56.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.99,
+   "mean_size": 1.16,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 30,
+   "median_day": 19,
+   "p10_day": -2,
+   "p90_day": 77,
+   "P_neg_year": 20.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.24,
+   "mean_size": 1.3,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 18,
+   "median_day": -1,
+   "p10_day": -4,
+   "p90_day": 64,
+   "P_neg_year": 54.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.22,
+   "mean_size": 0.98,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 27,
+   "median_day": 2,
+   "p10_day": -5,
+   "p90_day": 89,
+   "P_neg_year": 47.5,
+   "P_ge_200_day": 0.5,
+   "busts_per_year": 1.87,
+   "mean_size": 1.01,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K4 S2k B6k": {
+  "T1_hist": {
+   "mean_day": 60,
+   "median_day": 21,
+   "p10_day": -3,
+   "p90_day": 161,
+   "P_neg_year": 27.3,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.31,
+   "mean_size": 1.35,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 48,
+   "median_day": 45,
+   "p10_day": -3,
+   "p90_day": 90,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.92,
+   "mean_size": 1.25,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 24,
+   "median_day": 9,
+   "p10_day": -4,
+   "p90_day": 71,
+   "P_neg_year": 37.2,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 1.95,
+   "mean_size": 1.14,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 27,
+   "median_day": 11,
+   "p10_day": -5,
+   "p90_day": 85,
+   "P_neg_year": 39.0,
+   "P_ge_200_day": 0.5,
+   "busts_per_year": 3.31,
+   "mean_size": 1.07,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K4 S2k B8k": {
+  "T1_hist": {
+   "mean_day": 71,
+   "median_day": 24,
+   "p10_day": -3,
+   "p90_day": 198,
+   "P_neg_year": 30.9,
+   "P_ge_200_day": 7.9,
+   "busts_per_year": 0.96,
+   "mean_size": 1.62,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 59,
+   "median_day": 53,
+   "p10_day": -3,
+   "p90_day": 122,
+   "P_neg_year": 15.7,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.92,
+   "mean_size": 1.66,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 24,
+   "median_day": 0,
+   "p10_day": -4,
+   "p90_day": 81,
+   "P_neg_year": 50.0,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 1.86,
+   "mean_size": 1.24,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 31,
+   "median_day": 12,
+   "p10_day": -5,
+   "p90_day": 91,
+   "P_neg_year": 40.2,
+   "P_ge_200_day": 1.5,
+   "busts_per_year": 3.31,
+   "mean_size": 1.28,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K4 S3k B9k": {
+  "T1_hist": {
+   "mean_day": 55,
+   "median_day": -2,
+   "p10_day": -3,
+   "p90_day": 163,
+   "P_neg_year": 56.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.02,
+   "mean_size": 1.28,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 37,
+   "median_day": 27,
+   "p10_day": -2,
+   "p90_day": 81,
+   "P_neg_year": 16.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.65,
+   "mean_size": 1.32,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 20,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 77,
+   "P_neg_year": 55.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.32,
+   "mean_size": 1.01,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 34,
+   "median_day": 15,
+   "p10_day": -4,
+   "p90_day": 105,
+   "P_neg_year": 38.8,
+   "P_ge_200_day": 1.0,
+   "busts_per_year": 2.25,
+   "mean_size": 1.09,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K4 S3k B11k": {
+  "T1_hist": {
+   "mean_day": 69,
+   "median_day": -2,
+   "p10_day": -3,
+   "p90_day": 210,
+   "P_neg_year": 56.8,
+   "P_ge_200_day": 16.5,
+   "busts_per_year": 1.02,
+   "mean_size": 1.45,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 44,
+   "median_day": 39,
+   "p10_day": -2,
+   "p90_day": 95,
+   "P_neg_year": 19.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.46,
+   "mean_size": 1.65,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 20,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 76,
+   "P_neg_year": 58.8,
+   "P_ge_200_day": 0.2,
+   "busts_per_year": 1.33,
+   "mean_size": 1.12,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 36,
+   "median_day": 6,
+   "p10_day": -5,
+   "p90_day": 116,
+   "P_neg_year": 47.0,
+   "P_ge_200_day": 3.0,
+   "busts_per_year": 2.08,
+   "mean_size": 1.19,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K4 S4k B12k": {
+  "T1_hist": {
+   "mean_day": 57,
+   "median_day": -2,
+   "p10_day": -3,
+   "p90_day": 176,
+   "P_neg_year": 57.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 0.99,
+   "mean_size": 1.29,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 35,
+   "median_day": 26,
+   "p10_day": -2,
+   "p90_day": 82,
+   "P_neg_year": 20.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.04,
+   "mean_size": 1.56,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 16,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 68,
+   "P_neg_year": 61.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.21,
+   "mean_size": 1.04,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 30,
+   "median_day": -1,
+   "p10_day": -5,
+   "p90_day": 107,
+   "P_neg_year": 53.5,
+   "P_ge_200_day": 2.0,
+   "busts_per_year": 2.02,
+   "mean_size": 1.06,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | MFFU ladder K4 S4k B14k": {
+  "T1_hist": {
+   "mean_day": 62,
+   "median_day": -2,
+   "p10_day": -3,
+   "p90_day": 192,
+   "P_neg_year": 57.6,
+   "P_ge_200_day": 0.7,
+   "busts_per_year": 0.99,
+   "mean_size": 1.39,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 34,
+   "median_day": 16,
+   "p10_day": -2,
+   "p90_day": 95,
+   "P_neg_year": 22.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.04,
+   "mean_size": 1.67,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 20,
+   "median_day": -2,
+   "p10_day": -4,
+   "p90_day": 73,
+   "P_neg_year": 61.0,
+   "P_ge_200_day": 0.8,
+   "busts_per_year": 1.13,
+   "mean_size": 1.13,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 38,
+   "median_day": 1,
+   "p10_day": -4,
+   "p90_day": 137,
+   "P_neg_year": 49.5,
+   "P_ge_200_day": 1.0,
+   "busts_per_year": 1.7,
+   "mean_size": 1.31,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | Lucid150K 3c (today)": {
+  "T1_hist": {
+   "mean_day": 32,
+   "median_day": 22,
+   "p10_day": -6,
+   "p90_day": 75,
+   "P_neg_year": 20.1,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.17,
+   "mean_size": 3.0,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 23,
+   "median_day": 23,
+   "p10_day": 3,
+   "p90_day": 47,
+   "P_neg_year": 4.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.71,
+   "mean_size": 3.0,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 20,
+   "median_day": 19,
+   "p10_day": -12,
+   "p90_day": 52,
+   "P_neg_year": 23.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.63,
+   "mean_size": 3.0,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 30,
+   "median_day": 28,
+   "p10_day": -9,
+   "p90_day": 65,
+   "P_neg_year": 14.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.52,
+   "mean_size": 3.0,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | Lucid150K ladder 3->4c S3k": {
+  "T1_hist": {
+   "mean_day": 31,
+   "median_day": 22,
+   "p10_day": -9,
+   "p90_day": 70,
+   "P_neg_year": 18.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.99,
+   "mean_size": 3.5,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 18,
+   "median_day": 23,
+   "p10_day": -2,
+   "p90_day": 27,
+   "P_neg_year": 13.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 4.3,
+   "mean_size": 3.39,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 20,
+   "median_day": 19,
+   "p10_day": -14,
+   "p90_day": 55,
+   "P_neg_year": 23.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.77,
+   "mean_size": 3.47,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 23,
+   "median_day": 21,
+   "p10_day": -12,
+   "p90_day": 57,
+   "P_neg_year": 18.5,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.78,
+   "mean_size": 3.53,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | Lucid150K ladder 3->4c S4.5k": {
+  "T1_hist": {
+   "mean_day": 27,
+   "median_day": 18,
+   "p10_day": -9,
+   "p90_day": 63,
+   "P_neg_year": 21.6,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.99,
+   "mean_size": 3.39,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 16,
+   "median_day": 21,
+   "p10_day": -8,
+   "p90_day": 25,
+   "P_neg_year": 18.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 4.48,
+   "mean_size": 3.34,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 19,
+   "median_day": 20,
+   "p10_day": -14,
+   "p90_day": 50,
+   "P_neg_year": 25.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.48,
+   "mean_size": 3.41,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 27,
+   "median_day": 24,
+   "p10_day": -11,
+   "p90_day": 60,
+   "P_neg_year": 16.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.3,
+   "mean_size": 3.49,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | Lucid150K ladder 3->5c S3k": {
+  "T1_hist": {
+   "mean_day": 26,
+   "median_day": 21,
+   "p10_day": -10,
+   "p90_day": 64,
+   "P_neg_year": 20.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.21,
+   "mean_size": 3.91,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 15,
+   "median_day": 20,
+   "p10_day": -7,
+   "p90_day": 23,
+   "P_neg_year": 16.9,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 4.64,
+   "mean_size": 3.67,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 17,
+   "median_day": 18,
+   "p10_day": -16,
+   "p90_day": 51,
+   "P_neg_year": 27.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.55,
+   "mean_size": 3.89,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 26,
+   "median_day": 22,
+   "p10_day": -15,
+   "p90_day": 61,
+   "P_neg_year": 19.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.53,
+   "mean_size": 4.01,
+   "n": 400
+  }
+ },
+ "Ultra+six+gold | edge-50% | Lucid150K ladder 3->5c S4.5k": {
+  "T1_hist": {
+   "mean_day": 22,
+   "median_day": 16,
+   "p10_day": -12,
+   "p90_day": 59,
+   "P_neg_year": 25.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 1.6,
+   "mean_size": 3.81,
+   "n": 139
+  },
+  "T2_hist": {
+   "mean_day": 13,
+   "median_day": 18,
+   "p10_day": -10,
+   "p90_day": 23,
+   "P_neg_year": 18.0,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 4.46,
+   "mean_size": 3.57,
+   "n": 89
+  },
+  "T1_boot": {
+   "mean_day": 13,
+   "median_day": 16,
+   "p10_day": -18,
+   "p90_day": 43,
+   "P_neg_year": 29.8,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 2.31,
+   "mean_size": 3.77,
+   "n": 400
+  },
+  "T2_boot": {
+   "mean_day": 21,
+   "median_day": 20,
+   "p10_day": -15,
+   "p90_day": 55,
+   "P_neg_year": 21.2,
+   "P_ge_200_day": 0.0,
+   "busts_per_year": 3.37,
+   "mean_size": 3.89,
+   "n": 400
+  }
+ }
+}

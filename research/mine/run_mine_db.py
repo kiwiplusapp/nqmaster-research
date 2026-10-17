@@ -21,7 +21,11 @@ try:
     from families7 import FAMILIES7
 except ImportError:
     FAMILIES7 = {}
-FAMILIES = {**OLD, **FAMILIES5, **FAMILIES6, **FAMILIES7}
+try:
+    from families8 import FAMILIES8
+except ImportError:
+    FAMILIES8 = {}
+FAMILIES = {**OLD, **FAMILIES5, **FAMILIES6, **FAMILIES7, **FAMILIES8}
 FLAT = int(os.environ.get("MINE_FLAT", "955")); NORM = 0.00345
 PARTS_R = (("T1", 20200101, 20240101), ("T2", 20240101, 20991231))
 PARTS_N = (("A", 20100601, 20150101), ("B", 20150101, 20200101), ("T1n", 20200101, 20240101), ("T2n", 20240101, 20991231))
