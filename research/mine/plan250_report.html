@@ -1,0 +1,98 @@
+<title>Plan $250-300 por día</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* layout: one reading column, tables that scroll inside their own box; ledger-like neutrals with one amber accent (money) */
+:root { --bg:#f7f5f0; --fg:#1f1d1a; --muted:#6b655c; --line:#d9d3c7; --card:#fffdf8; --accent:#b4610f; --good:#2e6b3a; --bad:#9b2c2c; --font-body:"Source Serif 4", Georgia, serif; --font-ui:"IBM Plex Sans", system-ui, sans-serif; --font-mono:"IBM Plex Mono", ui-monospace, monospace; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#15140f; --fg:#ebe6dc; --muted:#a39c90; --line:#3a362e; --card:#1d1b15; --accent:#e0a050; --good:#7cc08a; --bad:#e07a7a; color-scheme: dark } }
+:root[data-theme="dark"] { --bg:#15140f; --fg:#ebe6dc; --muted:#a39c90; --line:#3a362e; --card:#1d1b15; --accent:#e0a050; --good:#7cc08a; --bad:#e07a7a; color-scheme: dark }
+body { background:var(--bg); color:var(--fg); font-family:var(--font-body); font-size:17px; line-height:1.55; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:32px 64px; }
+main { max-width:860px; margin:0 auto; }
+h1 { font-family:var(--font-ui); font-size:2rem; line-height:1.15; margin:0 0 .25rem; text-wrap:balance; }
+h2 { font-family:var(--font-ui); font-size:1.25rem; margin:2.2rem 0 .6rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+h3 { font-family:var(--font-ui); font-size:1rem; margin:1.4rem 0 .4rem; }
+p, li { max-width:68ch; }
+.eyebrow { font-family:var(--font-ui); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.verdict { background:var(--card); border-left:4px solid var(--accent); padding:14px 18px; margin:1.2rem 0; font-size:1.05rem; }
+.tiles { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin:1rem 0; }
+.tile { background:var(--card); border:1px solid var(--line); padding:12px 14px; min-width:0; }
+.tile .k { font-family:var(--font-ui); font-size:.78rem; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; }
+.tile .v { font-family:var(--font-mono); font-size:1.5rem; font-variant-numeric:tabular-nums; color:var(--accent); }
+.tile .s { font-size:.85rem; color:var(--muted); }
+.tw { overflow-x:auto; margin:.6rem 0 1rem; }
+table { border-collapse:collapse; font-family:var(--font-ui); font-size:.9rem; min-width:520px; }
+th, td { text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; white-space:nowrap; }
+th { font-weight:600; color:var(--muted); font-size:.8rem; letter-spacing:.03em; text-transform:uppercase; }
+td.num, th.num { text-align:right; }
+tr.hi td { background:color-mix(in srgb, var(--accent) 12%, transparent); font-weight:600; }
+.good { color:var(--good); } .bad { color:var(--bad); }
+.note { font-size:.9rem; color:var(--muted); }
+ol li, ul li { margin:.3rem 0; }
+code { font-family:var(--font-mono); font-size:.85em; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<main>
+<div class="eyebrow">NQMaster · 17 de octubre de 2026 · NQ real Databento 2020-10 a 2026-10, costos $1,90 + 1 tick por lado</div>
+<h1>Plan $250-300 por día</h1>
+<p class="note">Todo en dólares netos por día <strong>calendario</strong> (365 días): comisiones, fees de evaluación y reparto 90/10 de las firmas descontados. "−35%" = 35% menos edge que el backtest (supuesto realista de la auditoría); "cero" = sin edge.</p>
+
+<div class="verdict"><strong>Veredicto.</strong> Un contrato base del sistema da $72-89 por día con el edge completo y $47-58 con 35% menos. A $250-300 por día no se llega mejorando trades (dos rondas más hoy, cero sobrevivientes): se llega con <strong>8 cuentas fondeadas</strong> (3 MFFU 50K + 5 Lucid 150K) y solo si el edge se mantiene cerca del backtest. Con 35% menos edge la mediana de ese conjunto queda en $190-280 por día.</div>
+
+<div class="tiles">
+  <div class="tile"><div class="k">1 contrato, Ultra + 6 años + oro</div><div class="v">$89</div><div class="s">por día; $58 con −35%</div></div>
+  <div class="tile"><div class="k">Contratos para $250/día</div><div class="v">2,8</div><div class="s">con edge completo; 4,3 con −35%</div></div>
+  <div class="tile"><div class="k">8 cuentas, edge completo</div><div class="v">$441-616</div><div class="s">mediana bootstrap 2020-23 / 2024-26</div></div>
+  <div class="tile"><div class="k">8 cuentas, −35%</div><div class="v">$187-278</div><div class="s">p10 $1-50; 7-10% de años negativos</div></div>
+</div>
+
+<h2>1. Qué da un contrato base</h2>
+<div class="tw"><table>
+<tr><th>Set</th><th class="num">$/día completo</th><th class="num">$/día −35%</th><th class="num">$/mes</th><th class="num">Sharpe</th><th class="num">DD máx.</th><th class="num">Contratos para $250/día</th></tr>
+<tr><td>Ultra</td><td class="num">72</td><td class="num">47</td><td class="num">2.183</td><td class="num">3,70</td><td class="num">4.582</td><td class="num">3,5 / 5,4</td></tr>
+<tr><td>Ultra + oro Robust</td><td class="num">80</td><td class="num">52</td><td class="num">2.424</td><td class="num">3,90</td><td class="num">4.554</td><td class="num">3,1 / 4,8</td></tr>
+<tr><td>Ultra + módulos 6 años</td><td class="num">81</td><td class="num">53</td><td class="num">2.465</td><td class="num">3,99</td><td class="num">5.008</td><td class="num">3,1 / 4,8</td></tr>
+<tr class="hi"><td>Ultra + 6 años + oro Robust</td><td class="num">89</td><td class="num">58</td><td class="num">2.705</td><td class="num">4,15</td><td class="num">4.181</td><td class="num">2,8 / 4,3</td></tr>
+<tr><td>UltraQ</td><td class="num">65</td><td class="num">42</td><td class="num">1.979</td><td class="num">3,54</td><td class="num">4.759</td><td class="num">3,8 / 5,9</td></tr>
+<tr><td>WR70Plus + oro</td><td class="num">59</td><td class="num">38</td><td class="num">1.782</td><td class="num">3,79</td><td class="num">3.151</td><td class="num">4,3 / 6,6</td></tr>
+</table></div>
+<p>Por año, el set completo rinde entre <strong>$57 por día (2023)</strong> y <strong>$238 por día (2026)</strong> por contrato. Un tick más de slippage por lado cuesta 6%. Los módulos de 6 años y el oro suman 24% de ingreso sin subir el drawdown.</p>
+
+<h2>2. Qué da un conjunto de cuentas fondeadas</h2>
+<p>Ciclo de 12 meses por asiento: evaluación, fondeada, retiros, quiebre, nueva evaluación. Todas las cuentas van sobre el mismo mercado (correladas), arranques escalonados 5 días, 400 años bootstrap por período. MFFU 50K con el preset actual (1 contrato, retiro dejando $4.100). Lucid Flex 50K: 2 contratos, stop de ganancia diario $1.350, retiro a $4.000. Lucid Flex 150K: 6 contratos en evaluación y 3 fondeada, retiro a $6.000. Topes de las firmas: 3 MFFU, 5 Lucid fondeadas.</p>
+<h3>Ultra + oro Robust, $ por día, mediana bootstrap 2020-23 / 2024-26</h3>
+<div class="tw"><table>
+<tr><th>Plan</th><th class="num">Edge completo</th><th class="num">p10</th><th class="num">−35%</th><th class="num">−50%</th><th class="num">P(año negativo) −35%</th></tr>
+<tr><td>1 MFFU 50K 1c</td><td class="num">35 / 61</td><td class="num">10 / 32</td><td class="num">10 / 24</td><td class="num">1 / 11</td><td class="num bad">27% / 16%</td></tr>
+<tr><td>3 MFFU 50K 1c</td><td class="num">105 / 182</td><td class="num">35 / 98</td><td class="num">31 / 72</td><td class="num">5 / 33</td><td class="num bad">26% / 15%</td></tr>
+<tr><td>3 MFFU step-up 2c</td><td class="num">162 / 297</td><td class="num">41 / 125</td><td class="num">32 / 100</td><td class="num">−3 / 32</td><td class="num bad">33% / 20%</td></tr>
+<tr><td>5 Lucid Flex 50K 2c</td><td class="num">211 / 266</td><td class="num">103 / 154</td><td class="num">97 / 133</td><td class="num">71 / 80</td><td class="num">13% / 8%</td></tr>
+<tr><td>1 Lucid 150K 6c/3c</td><td class="num">66 / 88</td><td class="num">35 / 53</td><td class="num">33 / 42</td><td class="num">21 / 23</td><td class="num">12% / 8%</td></tr>
+<tr><td>5 Lucid 150K 6c/3c</td><td class="num">330 / 432</td><td class="num">175 / 279</td><td class="num">162 / 206</td><td class="num">106 / 122</td><td class="num">11% / 8%</td></tr>
+<tr><td>3 MFFU 1c + 5 Lucid 50K 2c</td><td class="num">317 / 447</td><td class="num">154 / 271</td><td class="num">131 / 207</td><td class="num">84 / 116</td><td class="num">12% / 9%</td></tr>
+<tr class="hi"><td>3 MFFU 1c + 5 Lucid 150K</td><td class="num">441 / 616</td><td class="num">222 / 381</td><td class="num">187 / 278</td><td class="num">114 / 159</td><td class="num">10% / 7%</td></tr>
+</table></div>
+SIX_GOLD_HTML
+<p class="note">Con edge cero todos los planes dan mediana negativa (−$5 a −$65 por día) y 70-90% de años negativos: las fees se pagan igual. La historia real (arranques cada 5 días) rinde más que el bootstrap porque encadena rachas; la mediana bootstrap es el número conservador.</p>
+
+<h2>3. Camino, en orden</h2>
+<ol>
+<li>Prender <code>SixYearModules</code> y GoldMaster Robust en todas las cuentas. Antes: backtest de paridad en NinjaTrader (sección del 16-oct de la guía).</li>
+<li>Cubrir los 3 asientos MFFU 50K a 1 contrato con el preset <code>Mffu50K</code>.</li>
+<li>Pasar las Lucid 50K a 150K a medida que se renuevan: un asiento 150K (6 contratos en evaluación, 3 fondeada) rinde ~2,5 veces uno de 50K a 2 contratos y quiebra menos.</li>
+<li>Recién con 6-8 fondeadas y 3 meses de P&amp;L real cerca del backtest, considerar el step-up de MFFU a 2 contratos.</li>
+<li>Capital por ronda de evaluaciones: $1.500-2.500 (MFFU $157, Lucid 50K $146, Lucid 150K ~$285). Cada quiebre de fondeada cuesta una evaluación nueva y 1-2 meses sin ingreso de ese asiento.</li>
+</ol>
+
+<h2>4. Qué se probó hoy para subir el edge por trade</h2>
+<ul>
+<li><strong>Cuatro familias nuevas</strong> (2.856 configuraciones, 16 años de NQ real, protocolo fijado antes de correr): ruptura de máximos/mínimos de N días, reversión por z-score al mediodía, continuación de la primera pierna, vela de agotamiento. <span class="bad">Cero sobrevivientes.</span></li>
+<li><strong>Segundo intento tras un stop</strong>: reentrar en la misma dirección pierde (PF 0,87-0,96); dar vuelta la posición gana solo en 2024-26 y bloquea 16-30% de las entradas base. Único candidato con sustancia: VOLB re-armado (PF 1,52 / 1,32, +$58 por mes por contrato, Sharpe sube en los dos períodos) pero DD máximo +6% contra un límite de +5%. Quedó como opción <code>VolbReArm</code>, apagada, pendiente de F5.</li>
+</ul>
+
+<h2>5. Lo que no se puede prometer</h2>
+<ul>
+<li>P(un conjunto de 8 cuentas promedie ≥ $250 por día en un año): 87-98% con el edge completo, 36-56% con 35% menos, ~1% sin edge.</li>
+<li>El edge es un régimen posterior a 2020. Si se apaga, las cuentas se queman pagando fees: monitor de borde y revisión anual siguen siendo obligatorios.</li>
+<li>Nada de lo de hoy está compilado en NinjaTrader: F5 en la PC antes de operar.</li>
+</ul>
+<p class="note">Scripts: <code>research/mine/income_map.py</code>, <code>seats_plan.py</code>, <code>seats_tables.py</code>, <code>reentry_lab.py</code>, <code>families8.py</code>. Guía: <code>NQMASTER_GUIA.md</code>, sección 17-oct.</p>
+</main>
