@@ -97,10 +97,11 @@ code { font-family:var(--font-mono); font-size:.85em; }
 <tr><td>Lucid 150K escalera 3→4c</td><td class="num">63 / 85 (80 / 76)</td><td class="num">0% / 0%</td><td class="num">1.52 / 2.32</td><td class="num">3.7</td><td class="num">33 / 45</td><td class="num">10% / 6%</td><td class="num">19 / 21</td></tr>
 <tr><td>Lucid 150K escalera 3→5c</td><td class="num">61 / 80 (74 / 74)</td><td class="num">0% / 0%</td><td class="num">1.41 / 2.21</td><td class="num">4.3</td><td class="num">27 / 39</td><td class="num">13% / 10%</td><td class="num">18 / 22</td></tr>
 </table></div>
-<div class="verdict"><strong>$200 por día por cuenta</strong> se alcanza solo con el edge completo y la escalera hasta 4 contratos en MFFU 50K: mediana $119-189, historia $169-221, 19-46% de los años por encima de $200. Con 35% menos edge la misma escalera da $29-42 por día y 28-35% de años negativos. La escalera amplifica lo que haya. Lucid 150K no escala: retiros topeados en $3.000 y 5 por cuenta, y a 3 contratos ya quiebra 1,5-2 veces por año.</div>
-<p>Implementado en NQMaster, grupo 07, opcional: <code>FundedLadderStep</code> (0 = apagado) y <code>FundedLadderMax</code>. Receta MFFU: step-up a $3.000 con 2 contratos, escalera +1 por $3.000 hasta 4, retiro a $11.600 (deja $11.100), máximo 30 micros. Backup <code>NQMaster_backup_pre_ladder.cs</code>; falta F5.</p>
+<div class="verdict"><strong>$200 por día por cuenta</strong> se alcanza solo con el edge completo y la escalera hasta 4 contratos en MFFU 50K, y recién desde el segundo año: la tabla de arriba es el primer año (arranca sin colchón). Revisión adversarial con blackout de noticias, tick extra en oro y haircut de eval corregidos: primer año $110-160 por día, régimen estable (años 2-3) $197-232 con 45-64% de los años por encima de $200; con 35% menos edge, $47-53 el primer año y $84-86 en régimen, con 2-4 cuentas perdidas por año. La escalera amplifica lo que haya. Lucid 150K no escala: retiros topeados en $3.000 y 5 por cuenta, y a 3 contratos ya quiebra 1,5-2 veces por año.</div>
+<p><strong>Sesgo de selección.</strong> Los parámetros de la escalera se eligieron viendo los dos períodos; elegidos solo en 2020-23 saldría "+1 por $2k, deja $8k", que en 2024-26 rinde 15-19% menos y quiebra 2,8 veces más. Dejar $11.000 está calibrado al peor día de 2024-26 (−$2.572 por contrato): un día 10% peor que el máximo de la muestra quiebra la cuenta y lo retenido. Los módulos de 6 años y el oro tampoco son fuera de muestra; sin ellos la escalera queda en $163-217 por día en régimen.</p>
+<p>Implementado en NQMaster, grupo 07, opcional: <code>FundedLadderStep</code> (0 = apagado) y <code>FundedLadderMax</code>. Receta MFFU: step-up a $3.000 con 2 contratos, escalera +1 por $3.000 hasta 4, retiro a $11.600 (deja $11.100), máximo 30 micros. Con la escalera prendida el preset Mffu50K ya no pisa el nivel de retiro (antes lo bajaba a $6.600 y la cuenta casi nunca llegaba a 4 contratos). Backup <code>NQMaster_backup_pre_ladder.cs</code>; falta F5.</p>
 
-<p class="note">Con edge cero todos los planes dan mediana negativa (−$5 a −$65 por día) y 70-90% de años negativos: las fees se pagan igual. La historia real (arranques cada 5 días) rinde más que el bootstrap porque encadena rachas; la mediana bootstrap es el número conservador.</p>
+<p class="note">Con edge cero todos los planes dan mediana negativa (−$5 a −$65 por día) y 70-90% de años negativos: las fees se pagan igual. La columna "historia" sobrepesa el medio de cada período (cada ventana de 12 meses tiene que caber dentro de él) e infla el edge 14-17% en 2020-23 y 4-5% en 2024-26; para un año futuro vale la mediana bootstrap.</p>
 
 <h2>3. Camino, en orden</h2>
 <ol>
@@ -119,8 +120,9 @@ code { font-family:var(--font-mono); font-size:.85em; }
 
 <h2>5. Lo que no se puede prometer</h2>
 <ul>
-<li>P(un conjunto de 8 cuentas promedie ≥ $250 por día en un año): 93-99% con el edge completo, 45-67% con 35% menos, ~1-4% sin edge.</li>
-<li>P(una cuenta MFFU con escalera promedie ≥ $200 por día): 19-46% con el edge completo, 1-6% con 35% menos.</li>
+<li>P(un conjunto de 8 cuentas promedie ≥ $250 por día en un año): 93-99% con el edge completo, 35-60% con 35% menos, 1-4% sin edge.</li>
+<li>P(una cuenta MFFU con escalera promedie ≥ $200 por día): 45-64% en régimen con el edge completo (menos el primer año), 0-6% con 35% menos.</li>
+<li>Revisión adversarial independiente (<code>research/mine/redteam_2026-10-17.md</code>): las dos conclusiones sobreviven con las salvedades de arriba; queda sin modelar el blackout de noticias de MFFU (1,5-7% del P&amp;L), el paso a cuenta real (cierra las sim en Lucid) y el tope de 30 micros (~1%).</li>
 <li>El edge es un régimen posterior a 2020. Si se apaga, las cuentas se queman pagando fees: monitor de borde y revisión anual siguen siendo obligatorios.</li>
 <li>Nada de lo de hoy está compilado en NinjaTrader: F5 en la PC antes de operar.</li>
 </ul>

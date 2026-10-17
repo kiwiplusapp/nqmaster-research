@@ -26,7 +26,7 @@ Con 6 años + oro: 3 MFFU + 5 Lucid 150K **507 / 682** (−35%: 235 / 353, p10 2
 
 ## $200 por día por cuenta: escalera de tamaño
 
-MFFU 50K, +1 contrato por cada $3k de colchón hasta 4, retiro dejando $11,1k: mediana $119 / 189 por día (hoy 1c: 43 / 66), 19-46% de los años ≥ $200, quiebres 0,27 / 0,69 por año; con −35%: 29 / 42 y 28-35% de años negativos. La escalera amplifica el edge que haya y se frena sola si se apaga. Lucid 150K no escala (retiros topeados). Implementado como `FundedLadderStep` / `FundedLadderMax` (opcional).
+MFFU 50K, +1 contrato por cada $3k de colchón hasta 4, retiro dejando $11,1k: mediana $119 / 189 por día (hoy 1c: 43 / 66), 19-46% de los años ≥ $200, quiebres 0,27 / 0,69 por año; con −35%: 29 / 42 y 28-35% de años negativos. La escalera amplifica el edge que haya y se frena sola si se apaga. Revisión adversarial: esos son números del primer año; en régimen (años 2-3) $197-232/día con 45-64% de años ≥ $200, $84-86 con −35%. Parámetros elegidos viendo los dos períodos (elegidos solo en 2020-23 rinden 15-19% menos y quiebran 2,8× más); el preset Mffu50K pisaba el retiro (arreglado). Lucid 150K no escala (retiros topeados). Implementado como `FundedLadderStep` / `FundedLadderMax` (opcional).
 
 Sin edge: todo negativo (las fees se pagan igual).
 

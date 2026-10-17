@@ -67,19 +67,20 @@ Idea: los contratos por módulo suben con el colchón al inicio del día (colch�
 | Lucid 150K escalera 3→4c | 63 / 85 (80 / 76) | 0% / 0% | 1.52 / 2.32 | 3.7 | 33 / 45 | 10% / 6% | 19 / 21 |
 | Lucid 150K escalera 3→5c | 61 / 80 (74 / 74) | 0% / 0% | 1.41 / 2.21 | 4.3 | 27 / 39 | 13% / 10% | 18 / 22 |
 
-- **Respuesta:** $200/día por cuenta se alcanza solo con el edge completo y la escalera hasta 4 contratos en MFFU 50K (mediana $119-189, historia $169-221, 19-46% de los años ≥ $200). Con 35% menos edge la escalera da $29-42/día y 28-35% de años negativos: **la escalera amplifica lo que haya** (más ingreso si el edge sigue, más años negativos si se apaga).
-- Lucid 150K no escala: los retiros están topeados ($3.000 por retiro, 5 retiros) y a 3 contratos ya quiebra 1,5-2 veces por año.
-- Implementado en NQMaster (grupo 07, opcional): `FundedLadderStep` (0 = apagado) y `FundedLadderMax`. Receta MFFU: `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4, `FundedPayoutAt` 11600 (deja $11.100), `MaxOpenContracts` 30. Backup `NQMaster_backup_pre_ladder.cs`, stub OK, **falta F5**. Elegido viendo los dos períodos; la superficie es plana (tramos de $2-4k y retención ±$2k dan lo mismo).
+- **Respuesta:** $200/día por cuenta se alcanza solo con el edge completo y la escalera hasta 4 contratos en MFFU 50K, y recién **desde el segundo año** (el primer año arranca de cero colchón). Revisión adversarial (`redteam_2026-10-17.md`, M1-M4, con blackout de noticias, tick extra en oro y haircut de eval corregidos): primer año $110-160/día (2020-23 / 2024-26), régimen estable (años 2-3) $197-232/día con 45-64% de los años ≥ $200; con 35% menos edge $47-53 el primer año y $84-86 en régimen, con 2-4 cuentas perdidas por año. **La escalera amplifica lo que haya** (más ingreso si el edge sigue, más años negativos si se apaga).
+- **Sesgo de selección (H3):** los parámetros de la escalera se eligieron viendo los dos períodos. Elegidos solo en 2020-23 saldría "+1 por $2k, deja $8k": en 2024-26 da 15-19% menos y **2,8× más quiebres** (1,95 vs 0,69 por año). Dejar $11k está calibrado al peor día de 2024-26 (−$2.572 por contrato, −$10,3k a 4 contratos): un día 10% peor que el máximo de la muestra quiebra la cuenta y los $11k retenidos. Los módulos de 6 años (elegidos en 2020-23) y el oro (elegido en CFD 2020-23) tampoco son fuera de muestra: descontarlos deja la escalera en $163-217/día en régimen.
+- Lucid 150K no escala: los retiros están topeados ($3.000 por retiro, 5 retiros) y a 3 contratos ya quiebra 1,5-2 veces por año. Pasar a cuenta real ("go live") cierra las sim en Lucid y en MFFU fusiona las 3 cuentas a discreción de la firma: no está modelado (±5-15%).
+- Implementado en NQMaster (grupo 07, opcional): `FundedLadderStep` (0 = apagado) y `FundedLadderMax`. Receta MFFU: preset `Mffu50K` o `Manual`, `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4, `FundedPayoutAt` 11600 (deja $11.100), `MaxOpenContracts` 30. Con la escalera prendida el preset ya **no** pisa `FundedPayoutAt` (antes lo bajaba a $6.600 y la cuenta casi nunca llegaba a 4 contratos: $123-145/día en vez de $197-232; H1 de la revisión). Backup `NQMaster_backup_pre_ladder.cs`, stub OK, **falta F5**. La superficie es plana en dólares (tramos de $2-4k, retención ±$2k) pero no en quiebres.
 
 
 - **Edge cero** (solo suerte y economía de las firmas): todos los planes dan mediana negativa (−$5 a −$65/día) y 70-90% de años negativos. Las fees se pagan igual.
-- La historia (arranques reales cada 5 días) da más que el bootstrap porque las rachas buenas se encadenan; la mediana bootstrap es el número conservador.
+- La columna "historia" **sobrepesa el medio de cada período** (cada ventana de 12 meses tiene que caber dentro del período): infla el edge 14-17% en 2020-23 y 4-5% en 2024-26 (revisión adversarial, H2). Para un año futuro vale la **mediana bootstrap**, no la historia.
 
 ### 3. Lectura y plan
 
 1. **Con el edge completo**, $250-300/día lo dan: 5 Lucid 150K, o 3 MFFU + 5 Lucid 50K a 2 contratos, o 3 MFFU + 5 Lucid 150K (más margen). Con 1-3 cuentas no se llega.
 2. **Con 35% menos edge** (el supuesto realista de la auditoría), solo el combo grande (3 MFFU + 5 Lucid 150K, 8 cuentas) se acerca: mediana $190-280/día, p10 entre $0 y $50, 7-10% de años negativos.
-3. **Camino sugerido** (en orden, sin saltar pasos):
+3. **Camino sugerido** (en orden, sin saltar pasos; los números con 6 años + oro son parcialmente dentro de muestra, ver sesgo de selección en 2b):
    - Prender `SixYearModules` y `GoldMaster Robust` en todas las cuentas (antes: backtest de paridad en NT, ver sección del 16-oct).
    - Cubrir los 3 asientos MFFU (1c, preset `Mffu50K`).
    - Pasar las Lucid 50K a 150K a medida que se renuevan: cada asiento 150K rinde ~2,5× uno de 50K con 2c y quiebra menos.
@@ -91,9 +92,14 @@ Idea: los contratos por módulo suben con el colchón al inicio del día (colch�
 - **Familias nuevas, lote 8** (`b8_report.md`, 2.856 configuraciones en 16 años de NQ real): ruptura de máximos/mínimos de N días, reversión a la media por z-score al mediodía, continuación de la primera pierna, vela de agotamiento. Cero sobrevivientes; la única que pasa 2020-23 (ruptura de 3 días con límite en el nivel) se desarma en 2024-26 y con 4 ticks.
 - **Segundo intento tras un stop** (`reentry_report.md`): ORB60/90 y MSEQ ya permiten segundo trade (casi nunca ocurre tras stop); los módulos de reloj no tienen segundo gatillo; reentrar a mercado en la misma dirección pierde (PF 0,87-0,96); dar vuelta la posición gana en 2024-26 pero no en 2020-23 y bloquea 16-30% de entradas base. **Único candidato: VOLB re-armado** (mismos niveles, cualquier lado, antes de las 15:00): 181 trades, PF 1,52 / 1,32, +$58/mes por contrato, Sharpe sube en los dos períodos, 2015-19 positivo, pero DD máximo +6% (límite +5%). Queda como **`VolbReArm` opcional, apagado** (grupo 02). Backup `NQMaster_backup_pre_volbrearm.cs`, stub OK, **falta F5**.
 
+### 4b. Revisión adversarial (`research/mine/redteam_2026-10-17.md`)
+
+Conclusiones que sobreviven: "$250-300/día necesita ~8 cuentas fondeadas" (con edge completo mediana $290-460/día; con −35% solo 3 MFFU + 5 Lucid 150K llega, y la mitad de las veces: $192-264 con Ultra + oro, $236-326 con 6 años) y "$200/día por cuenta solo con la escalera MFFU y el edge completo" (desde el año 2, en el mercado 2024-26, y sin que el preset pise el retiro). Arreglado: H1 (preset). Pendiente de modelar: blackout de noticias MFFU (1,5-7% del P&L), tick extra en oro, haircut de la eval ×8 (10-12% chico), "go live", tope de 30 micros (~1% a 4 contratos), años de 252 días = 373 calendario (+2%).
+
 ### 5. Lo que no se puede prometer
 
-- Probabilidad de que un conjunto de 8 cuentas promedie ≥ $250/día en un año: ~85-95% con el edge completo, ~35-55% con 35% menos edge, ~1% sin edge.
+- Probabilidad de que un conjunto de 8 cuentas promedie ≥ $250/día en un año: ~93-99% con el edge completo, ~35-60% con 35% menos edge, ~1-4% sin edge.
+- Probabilidad de que una cuenta MFFU con escalera promedie ≥ $200/día: ~45-64% en régimen con el edge completo (primer año menos), ~0-6% con 35% menos.
 - El edge es un régimen post-2020 (`db_long.json`). Si se apaga, las cuentas se queman pagando fees: el monitor de borde y la revisión anual siguen siendo obligatorios.
 
 
