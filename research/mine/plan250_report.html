@@ -103,6 +103,17 @@ code { font-family:var(--font-mono); font-size:.85em; }
 
 <p class="note">Con edge cero todos los planes dan mediana negativa (−$5 a −$65 por día) y 70-90% de años negativos: las fees se pagan igual. La columna "historia" sobrepesa el medio de cada período (cada ventana de 12 meses tiene que caber dentro de él) e infla el edge 14-17% en 2020-23 y 4-5% en 2024-26; para un año futuro vale la mediana bootstrap.</p>
 
+<h3>Escalera + stop diario por contrato, lectura en régimen (ventanas de 36 meses)</h3>
+<div class="tw"><table>
+<tr><th>Política</th><th class="num">Completo, año 1</th><th class="num">Años 2-3 (p10)</th><th class="num">P(años 2-3 ≥ $200)</th><th class="num">Quiebres/año</th><th class="num">−35%, años 2-3 (p10)</th><th class="num">Quiebres/año −35%</th></tr>
+<tr><td>1 contrato (hoy)</td><td class="num">43 / 67</td><td class="num">64 / 86 (44 / 65)</td><td class="num">0 / 0%</td><td class="num">0,16 / 0,27</td><td class="num">33 / 44 (11 / 18)</td><td class="num">0,83 / 1,44</td></tr>
+<tr><td>Escalera hasta 4c, +1 por $3k, deja $11,1k</td><td class="num">133 / 199</td><td class="num">220 / 265 (138 / 168)</td><td class="num">64 / 76%</td><td class="num">0,12 / 0,61</td><td class="num">91 / 103 (24 / 27)</td><td class="num">0,72 / 1,65</td></tr>
+<tr class="hi"><td>Ídem + stop diario $1.500 por contrato</td><td class="num">129 / 196</td><td class="num">214 / 288 (136 / 207)</td><td class="num">61 / 92%</td><td class="num">0,09 / 0,19</td><td class="num">96 / 125 (20 / 40)</td><td class="num">0,73 / 1,20</td></tr>
+<tr><td>Escalera elegida solo en 2020-23 (+1 por $2k, deja $8,1k)</td><td class="num">134 / 184</td><td class="num">184 / 209 (114 / 125)</td><td class="num">42 / 54%</td><td class="num">0,54 / 1,79</td><td class="num">78 / 75 (20 / 16)</td><td class="num">1,50 / 2,94</td></tr>
+<tr><td>Escalera hasta 3c, deja $8,1k</td><td class="num">101 / 148</td><td class="num">165 / 205 (99 / 127)</td><td class="num">23 / 55%</td><td class="num">0,16 / 0,45</td><td class="num">72 / 84 (19 / 25)</td><td class="num">0,80 / 1,64</td></tr>
+</table></div>
+<p>El stop diario de $1.500 por contrato por módulo (cuenta entera, realizado más abierto) recorta el peor día de −$10.300 a −$6.000 a 4 contratos: quiebres 0,61 → 0,19 por año en 2024-26 con el mismo ingreso. $1.000 y $2.000 no ayudan; a 1 contrato es neutro. Implementado como <code>DailyLossPerContract</code> (grupo 03). Receta MFFU completa: preset Mffu50K, step-up a $3.000 con 2 contratos, escalera +1 por $3.000 hasta 4, retiro a $11.600, stop diario $1.500 por contrato, máximo 30 micros.</p>
+
 <h2>3. Camino, en orden</h2>
 <ol>
 <li>Prender <code>SixYearModules</code> y GoldMaster Robust en todas las cuentas. Antes: backtest de paridad en NinjaTrader (sección del 16-oct de la guía).</li>
@@ -124,7 +135,7 @@ code { font-family:var(--font-mono); font-size:.85em; }
 <li>P(una cuenta MFFU con escalera promedie ≥ $200 por día): 45-64% en régimen con el edge completo (menos el primer año), 0-6% con 35% menos.</li>
 <li>Revisión adversarial independiente (<code>research/mine/redteam_2026-10-17.md</code>): las dos conclusiones sobreviven con las salvedades de arriba; queda sin modelar el blackout de noticias de MFFU (1,5-7% del P&amp;L), el paso a cuenta real (cierra las sim en Lucid) y el tope de 30 micros (~1%).</li>
 <li>El edge es un régimen posterior a 2020. Si se apaga, las cuentas se queman pagando fees: monitor de borde y revisión anual siguen siendo obligatorios.</li>
-<li>Nada de lo de hoy está compilado en NinjaTrader: F5 en la PC antes de operar.</li>
+<li>Nada de lo de hoy está compilado en NinjaTrader: F5 en la PC antes de operar. La escalera y el stop por contrato nunca corrieron en NinjaTrader: backtest del preset completo en Strategy Analyzer antes de ponerlos en una cuenta.</li>
 </ul>
 <p class="note">Scripts: <code>research/mine/income_map.py</code>, <code>seats_plan.py</code>, <code>seats_tables.py</code>, <code>reentry_lab.py</code>, <code>families8.py</code>. Guía: <code>NQMASTER_GUIA.md</code>, sección 17-oct.</p>
 </main>

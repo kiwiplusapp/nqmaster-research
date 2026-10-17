@@ -92,6 +92,21 @@ Idea: los contratos por módulo suben con el colchón al inicio del día (colch�
 - **Familias nuevas, lote 8** (`b8_report.md`, 2.856 configuraciones en 16 años de NQ real): ruptura de máximos/mínimos de N días, reversión a la media por z-score al mediodía, continuación de la primera pierna, vela de agotamiento. Cero sobrevivientes; la única que pasa 2020-23 (ruptura de 3 días con límite en el nivel) se desarma en 2024-26 y con 4 ticks.
 - **Segundo intento tras un stop** (`reentry_report.md`): ORB60/90 y MSEQ ya permiten segundo trade (casi nunca ocurre tras stop); los módulos de reloj no tienen segundo gatillo; reentrar a mercado en la misma dirección pierde (PF 0,87-0,96); dar vuelta la posición gana en 2024-26 pero no en 2020-23 y bloquea 16-30% de entradas base. **Único candidato: VOLB re-armado** (mismos niveles, cualquier lado, antes de las 15:00): 181 trades, PF 1,52 / 1,32, +$58/mes por contrato, Sharpe sube en los dos períodos, 2015-19 positivo, pero DD máximo +6% (límite +5%). Queda como **`VolbReArm` opcional, apagado** (grupo 02). Backup `NQMaster_backup_pre_volbrearm.cs`, stub OK, **falta F5**.
 
+### 2c. Escalera + stop diario por contrato y lectura en régimen (`ladder_stop.py`, ventanas de 36 meses, bloques de 21 días, 300 caminos)
+
+MFFU 50K, Ultra + 6 años + oro, $/día calendario, mediana bootstrap 2020-23 / 2024-26; "y1" = primer año, "y2-3" = años 2 y 3 (régimen):
+
+| Política | Edge completo y1 | y2-3 (p10) | P(y2-3 ≥ $200) | Quiebres/año | −35% y2-3 (p10) | Quiebres/año −35% |
+|---|---|---|---|---|---|---|
+| 1 contrato (hoy) | 43 / 67 | 64 / 86 (44 / 65) | 0 / 0% | 0,16 / 0,27 | 33 / 44 (11 / 18) | 0,83 / 1,44 |
+| Escalera hasta 4c, +1 por $3k, deja $11,1k | 133 / 199 | 220 / 265 (138 / 168) | 64 / 76% | 0,12 / 0,61 | 91 / 103 (24 / 27) | 0,72 / 1,65 |
+| **Ídem + stop diario $1.500 por contrato** | 129 / 196 | 214 / 288 (136 / 207) | 61 / 92% | 0,09 / 0,19 | 96 / 125 (20 / 40) | 0,73 / 1,20 |
+| Escalera elegida solo en 2020-23 (+1 por $2k, deja $8,1k) | 134 / 184 | 184 / 209 (114 / 125) | 42 / 54% | 0,54 / 1,79 | 78 / 75 (20 / 16) | 1,50 / 2,94 |
+| Escalera hasta 3c, deja $8,1k | 101 / 148 | 165 / 205 (99 / 127) | 23 / 55% | 0,16 / 0,45 | 72 / 84 (19 / 25) | 0,80 / 1,64 |
+
+- El stop diario de **$1.500 por contrato por módulo** (cuenta entera, realizado + abierto) recorta el peor día de −$10,3k a −$6k a 4 contratos: quiebres 0,61 → 0,19 por año en 2024-26 con el mismo ingreso; $1.000 y $2.000 no ayudan. A 1 contrato es neutro (coincide con lo visto el 3-oct).
+- Implementado: `DailyLossPerContract` (grupo 03, 0 = apagado; 1500 con la escalera; multiplica los contratos por módulo del día). Receta MFFU completa: preset `Mffu50K`, `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4, `FundedPayoutAt` 11600, `DailyLossPerContract` 1500, `MaxOpenContracts` 30. Stub OK, **falta F5**.
+
 ### 4b. Revisión adversarial (`research/mine/redteam_2026-10-17.md`)
 
 Conclusiones que sobreviven: "$250-300/día necesita ~8 cuentas fondeadas" (con edge completo mediana $290-460/día; con −35% solo 3 MFFU + 5 Lucid 150K llega, y la mitad de las veces: $192-264 con Ultra + oro, $236-326 con 6 años) y "$200/día por cuenta solo con la escalera MFFU y el edge completo" (desde el año 2, en el mercado 2024-26, y sin que el preset pise el retiro). Arreglado: H1 (preset). Pendiente de modelar: blackout de noticias MFFU (1,5-7% del P&L), tick extra en oro, haircut de la eval ×8 (10-12% chico), "go live", tope de 30 micros (~1% a 4 contratos), años de 252 días = 373 calendario (+2%).

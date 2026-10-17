@@ -43,3 +43,7 @@ Sin edge: todo negativo (las fees se pagan igual).
 - Re-entradas tras stop: solo VOLB re-armado tiene sustancia (+$58/mes, DD +6%) → `VolbReArm` opcional, apagado.
 
 Scripts: `research/mine/income_map.py`, `seats_plan.py`, `seats_tables.py`, `reentry_lab.py`, `families8.py`. Guía: `NQMASTER_GUIA.md` sección 17-oct.
+
+## Escalera + stop diario (ladder_stop.py)
+
+En régimen (años 2-3): escalera 4c $220 / 265 por día (2020-23 / 2024-26); con stop diario de $1.500 por contrato $214 / 288 y quiebres 0,61 → 0,19 por año; con −35%: $96 / 125. Implementado `DailyLossPerContract`.

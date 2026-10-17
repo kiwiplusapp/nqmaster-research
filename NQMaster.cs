@@ -317,7 +317,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = false; UseLateFh = false; Vw13Wide = true; UseNf05 = true; UseLf0315 = false; UseLf06 = true; UseLf0430 = true; NightOnWr70 = false; UseCpi09 = true; CpiDates = ""; Cpi09Multiplier = 4; Mom1030Multiplier = 4; EvalHighWrMultiplier = 0;
 				SixYearModules = false; UseCa04v = true; UseSo04 = true; UseGd03 = true; UseRv11 = true; UseEng26 = true; UseOrFail = true; UseCam3 = true;
 				FomcDates = "2024-01-31,2024-03-20,2024-05-01,2024-06-12,2024-07-31,2024-09-18,2024-11-07,2024-12-18,2025-01-29,2025-03-19,2025-05-07,2025-06-18,2025-07-30,2025-09-17,2025-10-29,2025-12-10,2026-01-28,2026-03-18,2026-04-29,2026-06-17,2026-07-29,2026-09-16,2026-10-28,2026-12-09";
-				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250; DailyLossLimit = 0; MinAtrPoints = 150;
+				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250; DailyLossLimit = 0; DailyLossPerContract = 0; MinAtrPoints = 150;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3; EvalLateMinCushion = 0;
 				PauseFile = "pause_trading.txt"; ShowDashboard = true; PrintLog = true;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0; EdgeAlarmFallback = true; EdgeFallbackDays = 252; EdgeFallbackOff = "";
@@ -1226,8 +1226,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double dayStartPnl; private bool dayStopped;
 		private void DailyLossCheck()
 		{
-			if (DailyLossLimit <= 0 || dayStopped) return;
-			if (netPnl - dayStartPnl <= -DailyLossLimit) { dayStopped = true; FlattenAll("daily loss limit"); Log("DAILY LOSS LIMIT reached - no more trades this session"); }
+			if (dayStopped) return;
+			// research/mine/ladder_stop.py (2026-10-17): with the funded size ladder, an account daily stop of $1,500 per contract per module
+			// (realized + open P&L) cuts funded busts 0.61 -> 0.19 per year (2024-26) and raises the p10 of the steady-state income; neutral at 1 contract.
+			double lim = DailyLossLimit;
+			if (DailyLossPerContract > 0 && PropMode == NQMasterPropMode.Funded) lim = Math.Max(lim, DailyLossPerContract * Qty());
+			if (lim <= 0) return;
+			double open = 0;
+			if (Position.MarketPosition != MarketPosition.Flat) { try { open = Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Close[0]); } catch { } }
+			if (netPnl - dayStartPnl + Math.Min(0, open) <= -lim) { dayStopped = true; FlattenAll("daily loss limit"); Log(string.Format("DAILY LOSS LIMIT {0:0} reached - no more trades this session", lim)); }
 		}
 		// ---- evaluation mode (research/mine/evalpol.py): Contracts per module (2 recommended); if on the EvalLateDay-th session
 		// (0-based, counted from EvalStartDate) the evaluation profit is still below EvalLateGoal, trade EvalLateContracts until the end.
@@ -2164,6 +2171,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Max drawdown $ (0 = off, realtime)", Order = 36, GroupName = "03. Risk / account")] public double MaxDrawdown { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Drawdown buffer $", Order = 37, GroupName = "03. Risk / account")] public double DrawdownBuffer { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Daily loss limit $ (0 = off; eval: 800, funded: 500)", Order = 46, GroupName = "03. Risk / account")] public double DailyLossLimit { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: daily loss limit $ per contract per module, realized + open (0 = off; 1500 with the size ladder)", Order = 47, GroupName = "03. Risk / account")] public double DailyLossPerContract { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Min daily ATR (points) to trade (0 = off)", Order = 47, GroupName = "03. Risk / account")] public double MinAtrPoints { get; set; }
 		[NinjaScriptProperty][Range(2, 15)][Display(Name = "Warm-up days (15 = validated; 2 = trade from day 3 with short ATR / trend averages)", Order = 48, GroupName = "03. Risk / account")] public int WarmupDays { get; set; }
 		[NinjaScriptProperty][Display(Name = "Eval mode (late size-up)", Order = 1, GroupName = "05. Evaluation mode")] public bool EvalMode { get; set; }
