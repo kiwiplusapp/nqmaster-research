@@ -478,7 +478,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 		// Module health report (group 10): trades / win rate / PF / net per module, whole run and last 365 days, from this strategy's own trades
 		private bool wentLive;
-		private void PrintModuleReport(string when)
+		private void PrintModuleReport(string label)
 		{
 			if (!ModuleHealthReport) return;
 			try
@@ -496,7 +496,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (yr) { a[4] += 1; if (p > 0) { a[5] += 1; a[6] += p; } else a[7] -= p; }
 				}
 				order.Sort();
-				Print(string.Format("NQMaster | MODULE HEALTH ({0}; {1} trades, last exit {2:yyyy-MM-dd}; 'last 365 d' ends there)", when, all.Count, last));
+				Print(string.Format("NQMaster | MODULE HEALTH ({0}; {1} trades, last exit {2:yyyy-MM-dd}; 'last 365 d' ends there)", label, all.Count, last));
 				foreach (string k in order)
 				{
 					double[] a = st[k];
