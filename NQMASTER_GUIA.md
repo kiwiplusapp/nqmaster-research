@@ -107,6 +107,21 @@ MFFU 50K, Ultra + 6 años + oro, $/día calendario, mediana bootstrap 2020-23 / 
 - El stop diario de **$1.500 por contrato por módulo** (cuenta entera, realizado + abierto) recorta el peor día de −$10,3k a −$6k a 4 contratos: quiebres 0,61 → 0,19 por año en 2024-26 con el mismo ingreso; $1.000 y $2.000 no ayudan. A 1 contrato es neutro (coincide con lo visto el 3-oct).
 - Implementado: `DailyLossPerContract` (grupo 03, 0 = apagado; 1500 con la escalera; multiplica los contratos por módulo del día). Receta MFFU completa: preset `Mffu50K`, `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4, `FundedPayoutAt` 11600, `DailyLossPerContract` 1500, `MaxOpenContracts` 30. Stub OK, **falta F5**.
 
+### 2d. ¿Y si el edge se apaga? (`ladder_decay.py`, 36 meses, 300 caminos, MFFU 50K, Ultra + 6 años + oro)
+
+El recorte de edge **crece dentro de la ventana** (0% al inicio → 100% al final) en vez de ser constante. Total neto de 3 años (mediana / p10) y cuentas perdidas en 3 años, 2020-23 / 2024-26:
+
+| Escenario | 1 contrato | Escalera 4c + stop $1.500/contrato |
+|---|---|---|
+| Edge completo constante | $61,7k / $87,1k (p10 45k / 64k), 0,5 / 0,9 quiebres | **$205k / $273k** (p10 141k / 188k), 0,3 / 0,7 |
+| −35% constante | $30k / $40k, 2,4 / 4,8 | $91k / $110k (p10 29k / 33k), 2,1 / 3,4 |
+| Se apaga en 3 años | $25k / $28k | $67k / $92k (p10 15k / 23k) |
+| Se apaga en 18 meses | $8k / $13k (p10 −2k / −1k) | $21k / $28k (p10 −4k / −5k) |
+| Se apaga en 6 meses y queda en cero | −$1,8k / −$1,3k (solo fees) | −$4,1k / −$2,1k (solo fees) |
+
+- En ningún escenario la escalera pierde más que el contrato fijo salvo ~$2k de fees cuando el edge muere rápido: el colchón retenido que se pierde es ganancia de la propia cuenta, no capital propio. La escalera es una **opción sobre el edge**: cobra mucho más si sigue, y si se apaga pierde lo mismo que la cuenta chica (las fees).
+- Lo que sí cambia con un edge que muere es la cantidad de evaluaciones compradas (3-7 en 3 años a −35% o peor): ahí es donde manda la regla de pausa del runbook (P&L real por contrato < 0 a los 60 días, o alarma del monitor).
+
 ### 4b. Revisión adversarial (`research/mine/redteam_2026-10-17.md`)
 
 Conclusiones que sobreviven: "$250-300/día necesita ~8 cuentas fondeadas" (con edge completo mediana $290-460/día; con −35% solo 3 MFFU + 5 Lucid 150K llega, y la mitad de las veces: $192-264 con Ultra + oro, $236-326 con 6 años) y "$200/día por cuenta solo con la escalera MFFU y el edge completo" (desde el año 2, en el mercado 2024-26, y sin que el preset pise el retiro). Arreglado: H1 (preset). Pendiente de modelar: blackout de noticias MFFU (1,5-7% del P&L), tick extra en oro, haircut de la eval ×8 (10-12% chico), "go live", tope de 30 micros (~1% a 4 contratos), años de 252 días = 373 calendario (+2%).

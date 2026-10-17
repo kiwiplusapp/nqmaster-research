@@ -47,3 +47,7 @@ Scripts: `research/mine/income_map.py`, `seats_plan.py`, `seats_tables.py`, `ree
 ## Escalera + stop diario (ladder_stop.py)
 
 En régimen (años 2-3): escalera 4c $220 / 265 por día (2020-23 / 2024-26); con stop diario de $1.500 por contrato $214 / 288 y quiebres 0,61 → 0,19 por año; con −35%: $96 / 125. Implementado `DailyLossPerContract`.
+
+## Si el edge se apaga (ladder_decay.py)
+
+Con recorte creciente dentro de 3 años: la escalera nunca pierde más que 1 contrato salvo ~$2k de fees cuando el edge muere en 6 meses; si el edge muere en 3 años, $67-92k vs $25-28k. Es una opción sobre el edge.

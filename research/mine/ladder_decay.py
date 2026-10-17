@@ -18,8 +18,8 @@ def ev_d(EL, EC, hp, T, D, cons, mind, idx, s, n):
     while d < n:
         t = idx[d]
         thr = 100.0 if pk >= D + 100.0 else pk - D
-        if eq + EL[0, t] - 8.0 * hp[d] <= thr: return -1, d
-        c = EC[0, t] - 8.0 * hp[d]; eq += c
+        if eq + EL[0, t] - 1.12 * hp[d] <= thr: return -1, d
+        c = EC[0, t] - 1.12 * hp[d]; eq += c   # eval mix (a + 8b) carries ~12% more edge than the funded mix (red team M3)
         if c > best: best = c
         if eq > pk: pk = eq
         if eq >= T and d - s + 1 >= mind and (cons <= 0.0 or best <= cons * eq): return 1, d
