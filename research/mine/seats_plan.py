@@ -19,7 +19,8 @@ H = 252; NSEAT = 8; NB = 400
 PLANS = {"1 MFFU 50K 1c": [("MFFU", 1)], "3 MFFU 50K 1c": [("MFFU", 3)], "3 MFFU step-up": [("MFFUs", 3)],
          "5 Lucid Flex 50K 2c": [("LF2", 5)], "5 Lucid Flex 50K 1c": [("LF1", 5)],
          "3 MFFU 1c + 5 Lucid 2c": [("MFFU", 3), ("LF2", 5)], "3 MFFU step-up + 5 Lucid 2c": [("MFFUs", 3), ("LF2", 5)],
-         "3 MFFU 1c + 5 Lucid 1c": [("MFFU", 3), ("LF1", 5)]}
+         "3 MFFU 1c + 5 Lucid 1c": [("MFFU", 3), ("LF1", 5)],
+         "1 Lucid 150K 6c/3c": [("L150", 1)], "5 Lucid 150K 6c/3c": [("L150", 5)], "3 MFFU 1c + 5 Lucid 150K": [("MFFU", 3), ("L150", 5)]}
 
 
 GOLD = {"Robust": ["OD1030", "ENG0408", "SVWAP22", "ASIA1R", "ENG0206"], "WinRate": ["OD1030", "ENG0408", "SVWAP22"]}
@@ -74,6 +75,13 @@ def seat_runs(P, h, idx, step=5):
         FL = np.ascontiguousarray(np.array([low[0], full[0], full[0]])); FC = np.ascontiguousarray(np.array([low[1], full[1], full[1]]))
         out = np.zeros((n, 9)); k = A.life(EL, EC, -1e9, 3000.0, 2000.0, 0.5, np.ones(len(h), np.bool_), 146.0, FL, FC, 1000.0, 1000.0, 0, 4000.0, 150.0, 2000.0, 2000.0, idx, H, step, out)
         R[key] = out[:k].copy()
+    # Lucid Flex 150K: target 9,000, EOD trailing 4,500 (lock +100), 50% consistency -> eval profit stop 4,050, payout days >= $250, cap 3,000,
+    # payout at $6,000 profit, fee ~$285; eval 6 contracts (x8 rule = max(4 x 6, 8) = normal x4), funded 3 contracts, low gear (cap 300) below a $1,687 cushion
+    ev = vecm(0, 4, 4050.0, 6.0); EL = np.ascontiguousarray(np.array([ev[0], ev[0]])); EC = np.ascontiguousarray(np.array([ev[1], ev[1]]))
+    full = vecm(0, 4, 0.0, 3.0); low = vecm(300, 4, 0.0, 3.0)
+    FL = np.ascontiguousarray(np.array([low[0], full[0], full[0]])); FC = np.ascontiguousarray(np.array([low[1], full[1], full[1]]))
+    out = np.zeros((n, 9)); k = A.life(EL, EC, -1e9, 9000.0, 4500.0, 0.5, np.ones(len(h), np.bool_), 285.0, FL, FC, 1687.5, 1687.5, 0, 6000.0, 250.0, 3000.0, 3000.0, idx, H, step, out)
+    R["L150"] = out[:k].copy()
     return R
 
 
