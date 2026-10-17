@@ -2,7 +2,7 @@
 
 ## ★★★★★★★★★★★★★ 2026-10-17: "quiero $250-300 por día" — mapa de ingresos y plan de cuentas
 
-Pedido: subir el promedio diario a $250-300 con buen win rate, "hacé lo que haga falta"; después: "$200 por día por cuenta, que siga funcionando en el futuro". Respuesta corta: **el sistema por contrato no llega**; a $250-300 por día se llega con **tamaño y cantidad de cuentas fondeadas**, y solo si el edge se mantiene cerca del backtest. Todo lo que sigue es por día **calendario** (365 días), neto de comisiones, fees de evaluación y reparto 90/10 de las firmas.
+Pedido: subir el promedio diario a $250-300 con buen win rate, "hacé lo que haga falta"; después: "$200 por día por cuenta, que siga funcionando en el futuro". Respuesta corta: **el sistema por contrato no llega**; a $250-300 por día se llega con **tamaño y cantidad de cuentas fondeadas**, y solo si el edge se mantiene cerca del backtest. Todo lo que sigue es por día **calendario** (365 días), neto de comisiones, fees de evaluación y reparto 90/10 de las firmas. Las simulaciones por cuenta (secciones 2 y 2b) llevan además 1 tick extra por lado.
 
 Scripts en `research/mine/`: `income_map.py` (por contrato), `seats_plan.py` + `seats_tables.py` (por cuentas), `ladder_plan.py` (escalera de tamaño por cuenta), `reentry_lab.py` (segundo intento tras stop), `families8.py` + `b8_select.py` (familias nuevas).
 
