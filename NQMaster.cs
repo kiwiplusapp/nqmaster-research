@@ -322,7 +322,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				PauseFile = "pause_trading.txt"; ShowDashboard = true; PrintLog = true;
 				EdgeMonitor = true; EdgeMonitorPause = false; EdgeMonitorStart = "2026-10-05"; EdgeK = 0; EdgeH = 0; EdgeAlarmFallback = true; EdgeFallbackDays = 252; EdgeFallbackOff = "";
 				PropMode = NQMasterPropMode.Off; PropTrailingDD = 2000; EvalCushionFull = 0; EvalDailyStop = 0; FundedCushionSafe = 0; FundedPayoutAt = 5000; FundedHighFull = true; FundedCushionFull = 0;
-				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400; EvalSafeSet = NQMasterSafeSet.Estable; FundedProfitStop = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2;
+				PropPeakOverride = 0; PropThresholdOverride = 0; AtrStartMax = 0; ConsistencyPct = 50; EvalBestDaySoFar = 0; EvalProfitStop = 1400; EvalSafeSet = NQMasterSafeSet.Estable; FundedProfitStop = 0; FundedStepUpCushion = 0; FundedStepUpContracts = 2; FundedLadderStep = 0; FundedLadderMax = 4;
 				OrbPriorCloseAtr = 0.10; VolbBreakEven = true; MomAgreement = true; VolbTrendLastEntry = 1047; VolbReArm = false; NewsBlackout = false; NewsTimes = "";
 				MinStopAtr = 0.10; RiskCapPerContract = 300; EvalRiskCapCushion = 1200; FundedRiskCapCushion = 2000;
 				WarmupDays = 15;
@@ -1252,11 +1252,23 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// the threshold has locked at start + $100), then FundedStepUpContracts (2); back to Contracts below. Withdraw down to start + $6,100.
 		// $ per account per month (history / +1 tick / resampled): 3,888 / 3,592 / 3,336 vs 2,137 / 1,984 / 2,012 at 1 contract.
 		private bool StepUpOn { get { return PropMode == NQMasterPropMode.Funded && FundedStepUpCushion > 0 && !double.IsNaN(propCushion) && propCushion >= FundedStepUpCushion; } }
+		// ---- size ladder (research/mine/ladder_plan.py, 2026-10-17, Federico: '$200 per day per account'): above the step-up cushion every further
+		// FundedLadderStep of day-start cushion adds one contract per module, up to FundedLadderMax; withdraw only above FundedPayoutAt so the
+		// cushion that carries the ladder stays in the account. MFFU 50K, Ultra + six-year modules + gold Robust, step-up 3,000 / step 3,000 / max 4,
+		// payout at 11,600 (keep 11,100): $/day per account 119 / 189 (bootstrap median 2020-23 / 2024-26; 1 contract: 45 / 68), P(>= $200/day)
+		// 19 / 46%, busts 0.27 / 0.69 per year; with 35% less edge 29 / 42 (1 contract 18 / 28) and P(negative year) 35 / 28% (20 / 14%).
+		// The ladder amplifies whatever the edge is: more income if it holds, more negative years if it fades. Opt-in (FundedLadderStep 0 = off).
+		private int LadderQty()
+		{
+			if (FundedLadderStep <= 0) return FundedStepUpContracts;
+			int k = FundedStepUpContracts + (int)Math.Floor((propCushion - FundedStepUpCushion) / FundedLadderStep);
+			return Math.Max(FundedStepUpContracts, Math.Min(FundedLadderMax, k));
+		}
 		private int Qty()
 		{
 			if (EvalMode) return (evalDayIndex >= EvalLateDay && evalEqDayStart < EvalLateGoal
 				&& (EvalLateMinCushion <= 0 || double.IsNaN(propCushion) || propCushion >= EvalLateMinCushion)) ? EvalLateContracts : Contracts;
-			if (StepUpOn) return FundedStepUpContracts;
+			if (StepUpOn) return LadderQty();
 			if (!AdaptiveSize) return Contracts;
 			return (eqPeak - netPnl) > SizeDownDrawdown ? SizeLow : SizeHigh;
 		}
@@ -1644,7 +1656,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double med = nn % 2 == 1 ? srt[nn / 2] : 0.5 * (srt[nn / 2 - 1] + srt[nn / 2]); atrStartRatio = med > 0 ? todayAtr / med : double.NaN;
 			}
 			if (PropMode != NQMasterPropMode.Off) Log(string.Format("PROP {0}: equity {1:0} | threshold {2:0} | cushion {3:0} -> {4}{5}", PropMode, PropEquity(), propThr, propCushion, gate,
-				StepUpOn ? string.Format(" | STEP-UP {0} contracts", FundedStepUpContracts) : ""));
+				StepUpOn ? string.Format(" | STEP-UP {0} contracts", LadderQty()) : ""));
 		}
 		private static bool EstableSig(string s)
 		{
@@ -1983,7 +1995,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable ? " (Estable)" : "");
 			if (PropMode != NQMasterPropMode.Off && RiskCapPerContract > 0) txt += string.Format("\nRisk cap ${0:0}/contract: {1} (cushion ${2:0} vs ${3:0}) | skipped {4}", RiskCapPerContract,
 				RiskCapActive ? "ACTIVE" : "off", propCushion, PropMode == NQMasterPropMode.Eval ? EvalRiskCapCushion : FundedRiskCapCushion, riskSkips);
-			if (PropMode == NQMasterPropMode.Funded && FundedStepUpCushion > 0) txt += string.Format("\nSize: {0} contracts per module ({1})", Qty(), StepUpOn ? "step-up on" : string.Format("step-up at cushion ${0:0}", FundedStepUpCushion));
+			if (PropMode == NQMasterPropMode.Funded && FundedStepUpCushion > 0) txt += string.Format("\nSize: {0} contracts per module ({1}{2})", Qty(), StepUpOn ? "step-up on" : string.Format("step-up at cushion ${0:0}", FundedStepUpCushion),
+				FundedLadderStep > 0 ? string.Format(", ladder +1 per ${0:0} up to {1}", FundedLadderStep, FundedLadderMax) : "");
 			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += string.Format("\nPAYOUT: profit >= ${0:0} -> request it and withdraw down to ${1:0} profit (the rest is the cushion)", FundedPayoutAt, Math.Max(0, FundedPayoutAt - 500));
 			if (AtrStartMax > 0 && !double.IsNaN(atrStartRatio)) txt += string.Format("\nATR ratio {0:0.00}: {1}", atrStartRatio, atrStartRatio < AtrStartMax ? "OK to start a new eval" : "do NOT start a new eval today");
 			Draw.TextFixed(this, "NQM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
@@ -2198,6 +2211,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: stop the day at +$ (whole account; LucidPro 40% consistency: 500 with 2 contracts; 0 = off)", Order = 15, GroupName = "07. Prop account (cushion gating)")] public double FundedProfitStop { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 16, GroupName = "07. Prop account (cushion gating)")] public double FundedStepUpCushion { get; set; }
 		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 17, GroupName = "07. Prop account (cushion gating)")] public int FundedStepUpContracts { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: ladder, +1 contract per further $ of cushion (0 = off; MFFU 3000 with step-up 3000, max 4, payout at 11600)", Order = 18, GroupName = "07. Prop account (cushion gating)")] public double FundedLadderStep { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: ladder max contracts per module (4 on MFFU 50K: 30-micro cap)", Order = 19, GroupName = "07. Prop account (cushion gating)")] public int FundedLadderMax { get; set; }
 		[NinjaScriptProperty][Range(0, 8)][Display(Name = "Eval: MOM1030 / CPI09 multiplier (0 = normal x4; 8 on 50K evals at 1 contract; presets Lucid50K / Mffu50K set 8)", Order = 21, GroupName = "07. Prop account (cushion gating)")] public int EvalHighWrMultiplier { get; set; }
 		[NinjaScriptProperty][Display(Name = "Order-flow boost on (FAILED out-of-sample test: keep OFF; backtests need Tick Replay)", Order = 1, GroupName = "09. Order flow (experimental)")] public bool UseOrderFlowBoost { get; set; }
 		[NinjaScriptProperty][Range(0.0, 1.0)][Display(Name = "Session delta with the trade >= (0.015 = research top 20%)", Order = 2, GroupName = "09. Order flow (experimental)")] public double OrderFlowCvdMin { get; set; }
