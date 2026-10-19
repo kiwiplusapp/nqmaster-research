@@ -50,7 +50,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 {
 	public enum NQMasterProfile { Ultra, UltraQ, WR70Plus, Durable, Custom }
 	public enum NQMasterPropMode { Off, Eval, Funded }
-	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K }
+	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K, Mffu50KLadder }
 	public enum NQMasterSafeSet { Classic, Estable }
 
 	public class NQMaster : Strategy
@@ -201,6 +201,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (ev) { EvalTarget = PropPreset == NQMasterPropPreset.LucidPro25K ? 1250 : 1500; EvalProfitStop = 0; EvalRiskCapCushion = 0; MaxOpenContracts = 20; Contracts = 2; }
 					else { EvalTarget = 0; RiskCapPerContract = 150; FundedRiskCapCushion = 500; FundedPayoutAt = 1500; MaxOpenContracts = 20; FundedProfitStop = 0; Contracts = 1; FundedStepUpCushion = 0; }
 					break;
+				case NQMasterPropPreset.Mffu50KLadder:
+					// research/mine/ladder_plan.py + ladder_stop.py + code review 2026-10-17: the whole MFFU size-ladder recipe in one setting.
+					// Funded: 1c (risk cap 300 below a 2,000 cushion) -> 2c at a 3,000 day-start cushion, +1 per further 3,000 up to 4; withdraw only above
+					// 11,100 of profit; account daily stop 1,500 per contract. Eval exactly as Mffu50K. GoldMaster: same step-up / ladder values by hand.
+					if (!ev) { FundedStepUpCushion = 3000; FundedStepUpContracts = 2; FundedLadderStep = 3000; FundedLadderMax = 4; FundedPayoutAt = 11600; DailyLossPerContract = 1500; Contracts = 1; }
+					goto case NQMasterPropPreset.Mffu50K;
 				case NQMasterPropPreset.Mffu50K:
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 30;
 					if (ev) { EvalTarget = 3000; EvalProfitStop = 800; EvalRiskCapCushion = 0; MaxOpenContracts = 30; EvalHighWrMultiplier = 8; }
@@ -317,7 +323,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				UseMseq = true; UseCrt = true; UseMom11 = true; UseMom1130 = true; UseRsi2 = true; UseOrb90 = true; UseMseqShort = true; UseMom13 = true; UseMom1030 = true; UseOn07 = true; UseRev06 = true; UseLon = true; UseIct = true;
 				Contracts = 1; FlattenTime = 1556; SkipFomc = true;
 				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = false; UseLateFh = false; Vw13Wide = true; UseNf05 = true; UseLf0315 = false; UseLf06 = true; UseLf0430 = true; NightOnWr70 = false; UseCpi09 = true; CpiDates = ""; Cpi09Multiplier = 4; Mom1030Multiplier = 4; EvalHighWrMultiplier = 0;
-				SixYearModules = false; UseCa04v = true; UseSo04 = true; UseGd03 = true; UseRv11 = true; UseEng26 = true; UseOrFail = true; UseCam3 = true;
+				SixYearModules = true; UseCa04v = false; UseSo04 = true; UseGd03 = false; UseRv11 = true; UseEng26 = false; UseOrFail = true; UseCam3 = true;	// research/mine/six_oos.py (2026-10-19): only the four that held on 2010-19 (never used to choose them)
 				FomcDates = "2024-01-31,2024-03-20,2024-05-01,2024-06-12,2024-07-31,2024-09-18,2024-11-07,2024-12-18,2025-01-29,2025-03-19,2025-05-07,2025-06-18,2025-07-30,2025-09-17,2025-10-29,2025-12-10,2026-01-28,2026-03-18,2026-04-29,2026-06-17,2026-07-29,2026-09-16,2026-10-28,2026-12-09";
 				StartBalance = 50000; EvalTarget = 0; MaxDrawdown = 0; DrawdownBuffer = 250; DailyLossLimit = 0; DailyLossPerContract = 0; MinAtrPoints = 150;
 				EvalMode = false; EvalStartDate = "2026-10-05"; EvalLateDay = 12; EvalLateGoal = 2000; EvalLateContracts = 3; EvalLateMinCushion = 0;
@@ -440,8 +446,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			AddTime("MOM1130", custom && UseMom1130, 1130, -2, false, 0.25, 0.3, 0, false, true);
 			Mod vw13 = AddTime("VW13", (custom ? UseVw13 : (ul || w7) && UseVw13), 1301, -3, false, 0.15, 0.5, 120, true, false); bool vwWide = w7 || ((ul || custom) && !uq && Vw13Wide); vw13.MinDist = vwWide ? 0.15 : 0.30; vw13.DoubleDist = vwWide ? 0.30 : 0;
 			Mod late15 = AddTime("LATE15", (custom ? UseLate15 : (ul || w7) && UseLate15), 1500, -4, false, 0.30, 0.5, 0, true, false); late15.MinDist = 0.5;
-			bool six = Profile == NQMasterProfile.Ultra && SixYearModules;	// six-year modules (group 11, 2026-10-16); also switches LATEFH on
-			Mod latefh = AddTime("LATEFH", (custom ? UseLateFh : ul && (UseLateFh || six)), 1500, -4, false, 0.20, 0.5, 0, false, false); latefh.MinDist = 0.25; latefh.FhCheck = true;
+			bool six = Profile == NQMasterProfile.Ultra && SixYearModules;	// six-year modules (group 11, 2026-10-16; durable four by default since 2026-10-19)
+			Mod latefh = AddTime("LATEFH", (custom ? UseLateFh : ul && UseLateFh), 1500, -4, false, 0.20, 0.5, 0, false, false); latefh.MinDist = 0.25; latefh.FhCheck = true;
 			Mod nf05 = AddTime("NF05", (custom ? UseNf05 : (ul || du || (w7 && NightOnWr70)) && UseNf05), 500, -5, true, 0.20, 2.0, 240, false, false); nf05.MinDist = 0.35; nf05.Anchor = 20 * 60;
 			Mod lf0315 = AddTime("LF0315", (custom ? UseLf0315 : ul && UseLf0315), 315, -5, true, 0.20, 2.0, 600, false, false); lf0315.MinDist = 0.10; lf0315.Anchor = 3 * 60;
 			Mod lf06 = AddTime("LF06", (custom ? UseLf06 : (ul || (w7 && NightOnWr70)) && UseLf06), 600, -5, true, 0.20, 0.5, 240, false, false); lf06.MinDist = 0.20; lf06.Anchor = 4 * 60;
@@ -1482,7 +1488,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 				case NQMasterProfile.WR70Plus: k = 0.0634; h = 12.07; edgeHw = 6.86; break;
 				case NQMasterProfile.Durable: k = 0.0455; h = 10.35; edgeHw = 6.98; break;
 				case NQMasterProfile.UltraQ: k = 0.0773; h = 26.08; edgeHw = 9.04; break;
-				default: k = 0.0850; h = 24.44; edgeHw = 9.12; break;			// Ultra (Custom uses the Ultra calibration)
+				default:																// Ultra (Custom uses the Ultra calibration)
+					if (Profile == NQMasterProfile.Ultra && SixYearModules && UseSo04 && UseRv11 && UseOrFail && UseCam3 && !UseCa04v && !UseGd03 && !UseEng26)
+					{ k = 0.0899; h = 26.93; edgeHw = 9.22; }						// research/mine/monitor_recal3.py: Ultra + durable four (2027 default)
+					else { k = 0.0850; h = 24.44; edgeHw = 9.12; }
+					break;
 			}
 			edgeK = EdgeK > 0 ? EdgeK : k; edgeH = EdgeH > 0 ? EdgeH : h;
 			if (EdgeK > 0 || EdgeH > 0) edgeHw = edgeH * 0.37;					// manual k / h: warning at the same relative level
@@ -2144,7 +2154,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Display(Name = "MSEQS on ", Order = 17, GroupName = "01. Module switches (any profile)")] public bool UseMseqShort { get; set; }
 		[NinjaScriptProperty][Display(Name = "LATE15 on (15:00 trend-day continuation; Ultra / WR70Plus / Core)", Order = 18, GroupName = "01. Module switches (any profile)")] public bool UseLate15 { get; set; }
 		[NinjaScriptProperty][Display(Name = "ENG10 on (06-10 4H candle breakout with the trend; Ultra)", Order = 19, GroupName = "01. Module switches (any profile)")] public bool UseEng10 { get; set; }
-		[NinjaScriptProperty][Display(Name = "Six-year modules on (Ultra: CA04V SO04 GD03 RV11 ENG26 ORFAIL CAM3 + LATEFH; test first, 2026-10-16)", Order = 1, GroupName = "11. Six-year modules (2020-26)")] public bool SixYearModules { get; set; }
+		[NinjaScriptProperty][Display(Name = "Six-year modules on (Ultra; default: SO04 RV11 ORFAIL CAM3 = the four that held on 2010-19; CA04V GD03 ENG26 off)", Order = 1, GroupName = "11. Six-year modules (2020-26)")] public bool SixYearModules { get; set; }
 		[NinjaScriptProperty][Display(Name = "CA04V on (04:00 momentum vs session VWAP, >= 0.20 ATR, stop 0.15 ATR, 1R)", Order = 2, GroupName = "11. Six-year modules (2020-26)")] public bool UseCa04v { get; set; }
 		[NinjaScriptProperty][Display(Name = "SO04 on (04:00 momentum vs 18:00 open, >= 0.35 ATR, with trend, 1R)", Order = 3, GroupName = "11. Six-year modules (2020-26)")] public bool UseSo04 { get; set; }
 		[NinjaScriptProperty][Display(Name = "GD03 on (05:00 fade of the move since 03:00, with trend, 2R)", Order = 4, GroupName = "11. Six-year modules (2020-26)")] public bool UseGd03 { get; set; }
