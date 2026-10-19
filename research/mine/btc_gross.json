@@ -1,0 +1,59 @@
+{
+ "configs": 65544,
+ "A": {
+  "median_gross_pf": 0.955,
+  "share_pf_ge_1": 0.305,
+  "share_pf_ge_1_3_n100": 0.026,
+  "n_pf_ge_1_3_n100": 1703
+ },
+ "T1n": {
+  "median_gross_pf": 0.971,
+  "share_pf_ge_1": 0.379,
+  "share_pf_ge_1_3_n100": 0.0414,
+  "n_pf_ge_1_3_n100": 2712
+ },
+ "T2n": {
+  "median_gross_pf": 1.012,
+  "share_pf_ge_1": 0.434,
+  "share_pf_ge_1_3_n100": 0.0393,
+  "n_pf_ge_1_3_n100": 2573
+ },
+ "gross_pass_T1_T2_A": 761,
+ "gross_pass_by_family": {
+  "RVOL_DRIVE": 143,
+  "PD_ACCEPT": 132,
+  "G_DRIVE": 69,
+  "ENGULF_4H": 67,
+  "VOL_BREAK": 55,
+  "G_ORB": 45,
+  "NDAY_BRK": 45,
+  "ON_POS": 42,
+  "NQ_DRIVE": 29,
+  "NGA_PB": 26,
+  "ONHL_TEST": 26,
+  "ER_PERSIST": 18,
+  "RANGE_BREAK": 15,
+  "NQ_ORB": 11,
+  "DAY_MR": 10,
+  "SQZ_BOX": 9,
+  "CLOCK_ANCHOR": 6,
+  "CISD_TRITON": 5,
+  "TREND_SCALP": 3,
+  "LATE_MOM": 2,
+  "VWAP_BAND2": 2,
+  "PERIOD_OPEN": 1
+ },
+ "gross_p_T2_given_T1": 0.4248,
+ "gross_p_T2_all": 0.1984,
+ "nq_reference": {
+  "configs": 45278,
+  "median_pf_T1": 0.958,
+  "median_pf_T2": 0.916,
+  "share_T1_pf_ge_1_3_n100": 0.021
+ },
+ "btc_net_reference": {
+  "median_pf_T1": 0.66,
+  "median_pf_T2": 0.831,
+  "share_T1_pf_ge_1_3_n100": 0.0035
+ }
+}
