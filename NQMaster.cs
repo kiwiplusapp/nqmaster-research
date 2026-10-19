@@ -50,7 +50,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 {
 	public enum NQMasterProfile { Ultra, UltraQ, WR70Plus, Durable, Custom }
 	public enum NQMasterPropMode { Off, Eval, Funded }
-	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K, Mffu50KLadder }
+	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K, Mffu50KLadder, Lucid150K }
 	public enum NQMasterSafeSet { Classic, Estable }
 
 	public class NQMaster : Strategy
@@ -200,6 +200,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 					StartBalance = 25000; PropTrailingDD = 1000; ConsistencyPct = 0;
 					if (ev) { EvalTarget = PropPreset == NQMasterPropPreset.LucidPro25K ? 1250 : 1500; EvalProfitStop = 0; EvalRiskCapCushion = 0; MaxOpenContracts = 20; Contracts = 2; }
 					else { EvalTarget = 0; RiskCapPerContract = 150; FundedRiskCapCushion = 500; FundedPayoutAt = 1500; MaxOpenContracts = 20; FundedProfitStop = 0; Contracts = 1; FundedStepUpCushion = 0; }
+					break;
+				case NQMasterPropPreset.Lucid150K:
+					// research/mine/acct_150k.py + acct_2027.py: Lucid Flex 150K (target 9,000, EOD trailing 4,500, 50% consistency; funded payout days >= $250,
+					// cap 3,000, 5 payouts). Eval 6 contracts per module with a daily profit stop of 4,050 (0.9 x 50% x target); funded 3 contracts, risk cap 300
+					// below a 1,687 cushion, request the payout at 6,000 of profit. 5 x 150K: median $352-459/day (2020-23 / 2024-26), $189-266 with 35% less edge.
+					StartBalance = 150000; PropTrailingDD = 4500; ConsistencyPct = 50;
+					if (ev) { EvalTarget = 9000; EvalProfitStop = 4050; EvalRiskCapCushion = 0; MaxOpenContracts = 100; Contracts = 6; EvalHighWrMultiplier = 0; }
+					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 1687; FundedPayoutAt = 6000; MaxOpenContracts = 40; FundedProfitStop = 0; Contracts = 3; FundedStepUpCushion = 0; FundedLadderStep = 0; }
 					break;
 				case NQMasterPropPreset.Mffu50KLadder:
 					// research/mine/ladder_plan.py + ladder_stop.py + code review 2026-10-17: the whole MFFU size-ladder recipe in one setting.
