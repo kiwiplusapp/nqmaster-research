@@ -110,8 +110,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 			"2026-01-13,2026-02-13,2026-03-11,2026-04-10,2026-05-12,2026-06-10,2026-07-14,2026-08-12,2026-09-11,2026-10-14,2026-11-10,2026-12-10," +
 			"2027-01-13,2027-02-11,2027-03-10,2027-04-13,2027-05-12,2027-06-10,2027-07-14,2027-08-11,2027-09-14,2027-10-14,2027-11-10,2027-12-10";
 		// Tier-1 news (MyFundedFutures: CPI, Employment Report 08:30 ET, FOMC minutes 14:00 ET; FOMC days are skipped anyway).
-		// CPI / NFP from the BLS schedules (2024 - Dec 2027; 2027 schedule published 2026-10-09), minutes = decision + 21 days.
-		private const string BuiltinNews = "2024-01-03 14:00,2024-01-05 08:30,2024-01-11 08:30,2024-02-02 08:30,2024-02-13 08:30,2024-02-21 14:00,2024-03-08 08:30,2024-03-12 08:30,2024-04-05 08:30,2024-04-10 08:30,2024-04-10 14:00,2024-05-03 08:30,2024-05-15 08:30,2024-05-22 14:00,2024-06-07 08:30,2024-06-12 08:30,2024-07-03 14:00,2024-07-05 08:30,2024-07-11 08:30,2024-08-02 08:30,2024-08-14 08:30,2024-08-21 14:00,2024-09-06 08:30,2024-09-11 08:30,2024-10-04 08:30,2024-10-09 14:00,2024-10-10 08:30,2024-11-01 08:30,2024-11-13 08:30,2024-11-28 14:00,2024-12-06 08:30,2024-12-11 08:30,2025-01-08 14:00,2025-01-10 08:30,2025-01-15 08:30,2025-02-07 08:30,2025-02-12 08:30,2025-02-19 14:00,2025-03-07 08:30,2025-03-12 08:30,2025-04-04 08:30,2025-04-09 14:00,2025-04-10 08:30,2025-05-02 08:30,2025-05-13 08:30,2025-05-28 14:00,2025-06-06 08:30,2025-06-11 08:30,2025-07-03 08:30,2025-07-09 14:00,2025-07-15 08:30,2025-08-01 08:30,2025-08-12 08:30,2025-08-20 14:00,2025-09-05 08:30,2025-09-11 08:30,2025-10-03 08:30,2025-10-08 14:00,2025-10-24 08:30,2025-11-19 14:00,2025-11-20 08:30,2025-12-16 08:30,2025-12-18 08:30,2025-12-31 14:00,2026-01-09 08:30,2026-01-13 08:30,2026-02-11 08:30,2026-02-13 08:30,2026-02-18 14:00,2026-03-06 08:30,2026-03-11 08:30,2026-04-03 08:30,2026-04-08 14:00,2026-04-10 08:30,2026-05-08 08:30,2026-05-12 08:30,2026-05-20 14:00,2026-06-05 08:30,2026-06-10 08:30,2026-07-02 08:30,2026-07-08 14:00,2026-07-14 08:30,2026-08-07 08:30,2026-08-12 08:30,2026-08-19 14:00,2026-09-04 08:30,2026-09-11 08:30,2026-10-07 14:00,2026-10-14 08:30,2026-11-06 08:30,2026-11-10 08:30,2026-11-18 14:00,2026-12-04 08:30,2026-12-10 08:30,2026-12-30 14:00,2027-02-17 14:00,2027-04-07 14:00,2027-05-19 14:00,2027-06-30 14:00,2027-08-18 14:00,2027-10-06 14:00,2027-11-17 14:00,2027-12-29 14:00,2026-10-02 08:30,2027-01-08 08:30,2027-01-13 08:30,2027-02-05 08:30,2027-02-11 08:30,2027-03-05 08:30,2027-03-10 08:30,2027-04-02 08:30,2027-04-13 08:30,2027-05-07 08:30,2027-05-12 08:30,2027-06-04 08:30,2027-06-10 08:30,2027-07-02 08:30,2027-07-14 08:30,2027-08-06 08:30,2027-08-11 08:30,2027-09-03 08:30,2027-09-14 08:30,2027-10-08 08:30,2027-10-14 08:30,2027-11-05 08:30,2027-11-10 08:30,2027-12-03 08:30,2027-12-10 08:30";
+		// CPI / NFP from the BLS schedules (2024 - Dec 2027; 2027 schedule published 2026-10-09), minutes = decision + 21 days (released dates to Oct 2026,
+		// later ones are Fed-rule estimates), plus FOMC decisions 14:00 from 2026-10-28 (safety net when SkipFomc is off). Checked 2026-10-19: research/mine/calendar_check_2026-10-19.md
+		private const string BuiltinNews = "2024-01-03 14:00,2024-01-05 08:30,2024-01-11 08:30,2024-02-02 08:30,2024-02-13 08:30,2024-02-21 14:00,2024-03-08 08:30,2024-03-12 08:30,2024-04-05 08:30,2024-04-10 08:30,2024-04-10 14:00,2024-05-03 08:30,2024-05-15 08:30,2024-05-22 14:00,2024-06-07 08:30,2024-06-12 08:30,2024-07-03 14:00,2024-07-05 08:30,2024-07-11 08:30,2024-08-02 08:30,2024-08-14 08:30,2024-08-21 14:00,2024-09-06 08:30,2024-09-11 08:30,2024-10-04 08:30,2024-10-09 14:00,2024-10-10 08:30,2024-11-01 08:30,2024-11-13 08:30,2024-11-26 14:00,2024-12-06 08:30,2024-12-11 08:30,2025-01-08 14:00,2025-01-10 08:30,2025-01-15 08:30,2025-02-07 08:30,2025-02-12 08:30,2025-02-19 14:00,2025-03-07 08:30,2025-03-12 08:30,2025-04-04 08:30,2025-04-09 14:00,2025-04-10 08:30,2025-05-02 08:30,2025-05-13 08:30,2025-05-28 14:00,2025-06-06 08:30,2025-06-11 08:30,2025-07-03 08:30,2025-07-09 14:00,2025-07-15 08:30,2025-08-01 08:30,2025-08-12 08:30,2025-08-20 14:00,2025-09-05 08:30,2025-09-11 08:30,2025-10-03 08:30,2025-10-08 14:00,2025-10-24 08:30,2025-11-19 14:00,2025-11-20 08:30,2025-12-16 08:30,2025-12-18 08:30,2025-12-30 14:00,2026-01-09 08:30,2026-01-13 08:30,2026-02-11 08:30,2026-02-13 08:30,2026-02-18 14:00,2026-03-06 08:30,2026-03-11 08:30,2026-04-03 08:30,2026-04-08 14:00,2026-04-10 08:30,2026-05-08 08:30,2026-05-12 08:30,2026-05-20 14:00,2026-06-05 08:30,2026-06-10 08:30,2026-07-02 08:30,2026-07-08 14:00,2026-07-14 08:30,2026-08-07 08:30,2026-08-12 08:30,2026-08-19 14:00,2026-09-04 08:30,2026-09-11 08:30,2026-10-07 14:00,2026-10-14 08:30,2026-11-06 08:30,2026-11-10 08:30,2026-11-18 14:00,2026-12-04 08:30,2026-12-10 08:30,2026-12-30 14:00,2027-02-17 14:00,2027-04-07 14:00,2027-05-19 14:00,2027-06-30 14:00,2027-08-18 14:00,2027-10-06 14:00,2027-11-17 14:00,2027-12-29 14:00,2026-10-02 08:30,2027-01-08 08:30,2027-01-13 08:30,2027-02-05 08:30,2027-02-11 08:30,2027-03-05 08:30,2027-03-10 08:30,2027-04-02 08:30,2027-04-13 08:30,2027-05-07 08:30,2027-05-12 08:30,2027-06-04 08:30,2027-06-10 08:30,2027-07-02 08:30,2027-07-14 08:30,2027-08-06 08:30,2027-08-11 08:30,2027-09-03 08:30,2027-09-14 08:30,2027-10-08 08:30,2027-10-14 08:30,2027-11-05 08:30,2027-11-10 08:30,2027-12-03 08:30,2027-12-10 08:30,2026-10-28 14:00,2026-12-09 14:00,2027-01-27 14:00,2027-03-17 14:00,2027-04-28 14:00,2027-06-09 14:00,2027-07-28 14:00,2027-09-15 14:00,2027-10-27 14:00,2027-12-08 14:00,2028-01-26 14:00";
 		private List<DateTime> newsEt; private bool profUltra, volbBeSet;
 
 		// completed RTH days
@@ -485,13 +486,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				if (SystemPerformance == null || SystemPerformance.AllTrades == null || SystemPerformance.AllTrades.Count == 0) return;
 				TradeCollection all = SystemPerformance.AllTrades;
-				DateTime last = all[all.Count - 1].Exit.Time, from = last.AddDays(-365);
+				DateTime last = all[all.Count - 1].Exit.Time, fromTime = last.AddDays(-365);
 				Dictionary<string, double[]> st = new Dictionary<string, double[]>(); List<string> order = new List<string>();
 				foreach (Trade t in all)
 				{
 					string k = t.Entry != null && !string.IsNullOrEmpty(t.Entry.Name) ? t.Entry.Name : "?";
 					double[] a; if (!st.TryGetValue(k, out a)) { a = new double[8]; st[k] = a; order.Add(k); }
-					double p = t.ProfitCurrency; bool yr = t.Exit != null && t.Exit.Time >= from;
+					double p = t.ProfitCurrency; bool yr = t.Exit != null && t.Exit.Time >= fromTime;
 					a[0] += 1; if (p > 0) { a[1] += 1; a[2] += p; } else a[3] -= p;
 					if (yr) { a[4] += 1; if (p > 0) { a[5] += 1; a[6] += p; } else a[7] -= p; }
 				}
@@ -511,10 +512,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			catch (Exception e) { Print("NQMaster | module report skipped: " + e.Message); }
 		}
 
-		private Mod NewMod(string sig, bool on, double r) { Mod m = new Mod(); m.Sig = sig; m.On = on; m.R = r; m.Kind = 2; mods.Add(m); return m; }
-		private Mod AddTime(string sig, bool on, int t, int lb, bool rev, double sa, double r, int hold, bool trend, bool vwap)
+		private Mod NewMod(string sig, bool isOn, double r) { Mod m = new Mod(); m.Sig = sig; m.On = isOn; m.R = r; m.Kind = 2; mods.Add(m); return m; }
+		private Mod AddTime(string sig, bool isOn, int t, int lb, bool rev, double sa, double r, int hold, bool trend, bool vwap)
 		{
-			Mod m = new Mod(); m.Sig = sig; m.On = on; m.Kind = 1; m.Time = t; m.Lookback = lb; m.Reverse = rev; m.StopAtr = sa; m.R = r; m.MaxHold = hold; m.Trend = trend; m.Vwap = vwap;
+			Mod m = new Mod(); m.Sig = sig; m.On = isOn; m.Kind = 1; m.Time = t; m.Lookback = lb; m.Reverse = rev; m.StopAtr = sa; m.R = r; m.MaxHold = hold; m.Trend = trend; m.Vwap = vwap;
 			mods.Add(m); timeMods.Add(m); return m;
 		}
 
@@ -1945,15 +1946,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 				Log(string.Format("{0} filled @ {1}", m.Sig, Fmt(m.EntryPx)));
 				return;
 			}
-			Mod from = BySig(execution.Order.FromEntrySignal);
-			if (from != null)
+			Mod exitMod = BySig(execution.Order.FromEntrySignal);
+			if (exitMod != null)
 			{
-				from.OpenQty = Math.Max(0, from.OpenQty - quantity); if (from.OpenQty == 0) from.InTrade = false;
-				Log(string.Format("{0} exit fill: {1} x{2} @ {3}{4}", from.Sig, execution.Order.Name, quantity, Fmt(price), State == State.Realtime ? string.Format(" | account cash {0:0}", Account.Get(AccountItem.CashValue, Currency.UsDollar)) : ""));
+				exitMod.OpenQty = Math.Max(0, exitMod.OpenQty - quantity); if (exitMod.OpenQty == 0) exitMod.InTrade = false;
+				Log(string.Format("{0} exit fill: {1} x{2} @ {3}{4}", exitMod.Sig, execution.Order.Name, quantity, Fmt(price), State == State.Realtime ? string.Format(" | account cash {0:0}", Account.Get(AccountItem.CashValue, Currency.UsDollar)) : ""));
 				// research/mine/reentry_lab.py (2026-10-17): VOLB 2R re-armed once after a stop-out (not after the break-even stop), same levels, either
 				// side, before 15:00: 181 trades 2020-26, PF 1.52 / 1.32 (T1 / T2), +$58 per month per contract, Sharpe up in both periods, but max DD +6%
 				// (protocol limit +5%) -> opt-in only (VolbReArm)
-				if (from == volb && from.OpenQty == 0 && VolbReArm && !volbTrendOnly && volb.R >= 1.5 && !volbBeSet && volbTrades < 2 && !Working(volb.Entry) && execution.Order.Name == "Stop loss")
+				if (exitMod == volb && exitMod.OpenQty == 0 && VolbReArm && !volbTrendOnly && volb.R >= 1.5 && !volbBeSet && volbTrades < 2 && !Working(volb.Entry) && execution.Order.Name == "Stop loss")
 				{ volbDone = false; Log("VOLB stopped out: re-armed for a second attempt (VolbReArm)"); }
 			}
 			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; }
