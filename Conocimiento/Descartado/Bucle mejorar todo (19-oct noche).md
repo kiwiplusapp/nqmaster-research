@@ -10,6 +10,6 @@ Pedido: menos drawdown, más trades, más win rate, PF igual o mayor, robusto, s
 | Oro en 16 años de futuros reales (`gold16_report.md`) | 65.544 | 0 (1 en meseta, $25/mes) |
 | Fades de noticias macro aparte del CPI (`news_fade_report.md`) | 4.032 | 0 — solo el CPI revierte en la apertura |
 | Perturbación de parámetros (`perturb_report.md`) | 7.762 | nada que cambiar; nivel honesto Sharpe ~2,5 / PF 1,3 / DD $5,6k; lo frágil son las horas |
-| Cimientos globales (`foundations_report.md`) | ver informe | ver informe |
+| Cimientos globales (`foundations_report.md`) | 34 | 0 — el filtro de tendencia vale ~1 Sharpe; SMA20/ATR14 óptimos locales robustos a un paso; pullback 0,44 y cierre 15:55 en meseta |
 
 Lo que quedó: chequeo del reloj de barras tras cada cambio de horario, variante defensiva `DisableModules = MOM1030,MOM13,REV06`, lista de vigilancia de enero. Ver [[Plan 2026-2027 (19-oct)]] y `RUNBOOK_OPERACION.md`.
