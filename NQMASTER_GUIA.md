@@ -1,5 +1,50 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★★★★★ 2026-10-19: plan 2026-2027, cuentas 25K de Lucid y módulos de WR alto con RR negativo
+
+Pedido: "¿recomendás muchas cuentas 25K de Lucid? Probá módulos nuevos de WR alto y RR negativo, mejorá todo el sistema y entregame algo que en 2026-2027 funcione casi seguro". Respuesta corta: **"casi seguro" no existe**; abajo están las probabilidades con el edge completo, con 35% menos y con 50% menos. Lo que cambió en el código y en la operación está en `RUNBOOK_OPERACION.md` (versión 2026-10-19), que manda sobre esta guía.
+
+### 1. ¿Muchas cuentas 25K de Lucid? No para ingreso (`research/mine/acct_2027.py` → `acct_2027.json`)
+
+Mismo simulador de asientos que el 17-oct (Ultra + 6 años durables + oro Robust, 12 meses, bootstrap 300 años, asientos correlados), $/día calendario, mediana 2020-23 / 2024-26:
+
+| Plan | Edge completo | −35% | −50% | P(año negativo) −35% |
+|---|---|---|---|---|
+| 5 × Lucid Flex 25K | 106 / 132 | 56 / 65 | 39 / 41 | 10 / 9% |
+| 5 × Lucid Pro 25K | 105 / 137 | 57 / 61 | 35 / 35 | 12 / 11% |
+| 5 × Lucid Flex 50K 2c | 230 / 281 | 119 / 153 | 91 / 91 | 8 / 7% |
+| **5 × Lucid Flex 150K** (preset `Lucid150K`) | **352 / 459** | **189 / 266** | 136 / 152 | 7 / 3% |
+| 3 × MFFU 50K escalera (preset `Mffu50KLadder`) | 335 / 575 | 78 / 156 | −1 / 23 | 34 / 23% |
+| 3 MFFU escalera + 5 Lucid 25K | 444 / 704 | 138 / 212 | 52 / 79 | 11 / 7% |
+| **3 MFFU escalera + 5 Lucid 150K** | **691 / 1.021** | **273 / 406** | 157 / 210 | **7 / 4%** |
+
+- Lucid deja **5 fondeadas por hogar**: cada plaza ocupada por una 25K rinde $20-27/día contra $69-94 una 150K. Con el tope de 5, gana la cuenta grande.
+- Una 25K se quema 8-11 veces por año (DD $1.000); sirve solo para tener la **primera** fondeada rápido (preset `LucidPro25K`).
+- La escalera de MFFU amplifica: con −50% de edge su mediana es ~0. Lucid 150K a 3 contratos es la parte estable del plan.
+
+### 2. Módulos nuevos de WR alto y RR negativo: ninguno (`families9.py`, `b9_report.md`)
+
+5 familias nuevas en 16 años de NQ real (números redondos, test del máximo/mínimo overnight, toque del settlement, scalp con tendencia, "snap" de estiramiento), targets 0,2 / 0,3 / 0,5 R con stops anchos, 2.196 configuraciones, chequeos de lookahead sin violaciones. **0 sobrevivientes**: en todas las familias el WR queda en o debajo del break-even del target (83 / 77 / 67%). Junto con `negrr_lab.py` (RR negativo sobre los módulos actuales: más WR, menos $ y Sharpe fuera de muestra), el RR negativo queda descartado. Nota Obsidian: `Descartado/Lote 9 WR alto RR negativo (19-oct).md`.
+
+### 3. Lo que sí cambió para 2027
+
+- **Default nuevo: Ultra + 4 módulos de 6 años "durables"** (SO04, RV11, ORFAIL, CAM3; `SixYearModules` true; CA04V, GD03 y ENG26 apagados; LATEFH ya no se fuerza). Validado en 2010-19 (datos nunca usados para elegirlos, `six_oos.py`): Sharpe 0,19→0,40 / 1,13→1,25 / 3,42→3,61 / 3,49→3,55 (2010-14 / 2015-19 / 2020-23 / 2024-26), DD máx. más bajo en los 4 bloques, $ +2-18%. PF casi igual (−0,02 en 2024-26). Los otros 3 (CA04V, GD03, ENG26) perdían en 2010-14.
+- **Monitor de borde recalibrado** para el default (`monitor_recal3.py`): k 0,0899, h 26,93, aviso 9,22. Falsa alarma 0% en 1 año / 0,2% en 3; edge muerto detectado en ~247 días (mediana), edge negativo en ~137.
+- **Presets** `Mffu50KLadder` (toda la receta de la escalera en un solo ajuste) y `Lucid150K` (eval 6c con stop diario $4.050; fondeada 3c, risk cap $300 bajo $1.687, retiro a $6.000): menos ajustes a mano = menos errores.
+- **Calendarios verificados** contra la Fed y el BLS hasta fin de 2027 (`calendar_check_2026-10-19.md`): 2 fechas viejas de minutas FOMC corregidas, decisión FOMC 14:00 agregada al apagón. Identificadores que NinjaTrader podía rechazar (`from`, `on`) renombrados.
+- **Alarmas trimestrales** (`forward2027.py`): dos trimestres negativos seguidos = pausa (pasa 0,3% de los años con el edge completo, 55% sin edge); un trimestre negativo = apagar la escalera hasta un trimestre positivo.
+- `nt_compare.py` / `parity_check.py --set ultra_d4` para validar el default nuevo en Strategy Analyzer.
+
+### 4. Expectativa honesta 2027 por contrato base (`forward2027.json`)
+
+Edge completo: mes p10 −$465 / mediana $1.964; año p10 $17,7k; drawdown del año p90 $4.150. P(año positivo por contrato) ~100% con el edge completo, 98% con 35% menos, 49% sin edge (moneda al aire). Con 35% menos: mediana del año $19k por contrato, P(trimestre negativo) 14%, P(3 meses negativos seguidos) 16%. La incógnita principal sigue siendo si el régimen post-2020 continúa: en 2010-19 el sistema da Sharpe 0,2-1,2.
+
+### 5. Pendiente en la PC
+
+1. F5 de `NQMaster.cs` y `GoldMaster.cs` (solo verificados con el stub).
+2. Strategy Analyzer Ultra 1c 2024-01-01→hoy con el default nuevo, exportar CSV y `python parity_check.py <csv> --set ultra_d4`.
+3. Strategy Analyzer con `PropPreset Mffu50KLadder` y `Lucid150K` para revisar la mecánica (los retiros y quiebres no se reproducen).
+
 ## ★★★★★★★★★★★★★ 2026-10-17: "quiero $250-300 por día" — mapa de ingresos y plan de cuentas
 
 Pedido: subir el promedio diario a $250-300 con buen win rate, "hacé lo que haga falta"; después: "$200 por día por cuenta, que siga funcionando en el futuro". Respuesta corta: **el sistema por contrato no llega**; a $250-300 por día se llega con **tamaño y cantidad de cuentas fondeadas**, y solo si el edge se mantiene cerca del backtest. Todo lo que sigue es por día **calendario** (365 días), neto de comisiones, fees de evaluación y reparto 90/10 de las firmas. Las simulaciones por cuenta (secciones 2 y 2b) llevan además 1 tick extra por lado.
