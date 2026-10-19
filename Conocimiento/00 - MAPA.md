@@ -31,6 +31,7 @@
 | Guard | FOMC, objetivo de la eval, drawdown | [[Account Guard]] |
 
 ## Plan de ingresos
+- [[Descartado/Bucle mejorar todo (19-oct noche)]]: 7 líneas (drawdown, más trades, bitcoin, oro 16 años, noticias, perturbación, cimientos), 0 cambios al edge, hallazgo del reloj
 - [[Plan 2026-2027 (19-oct)]]: default 2027 (Ultra + 6 años durables), cuentas grandes vs 25K de Lucid, alarmas trimestrales; descarte [[Descartado/Lote 9 WR alto RR negativo (19-oct)]]
 - [[Plan 250-300 por dia (17-oct)]]: $ por contrato y por conjunto de cuentas, escalera de tamaño para $200/día por cuenta; descartes en [[Descartado/Lote 8 y re-entradas (17-oct)]] y [[Descartado/RR negativo (19-oct)]]
 

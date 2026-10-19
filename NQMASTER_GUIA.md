@@ -1,5 +1,28 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★★★★★★ 2026-10-19 (noche): bucle "mejorar todo sin excepciones" — 7 líneas de investigación, 0 cambios al edge, 1 hallazgo operativo
+
+Pedido: "menor drawdown, más trades, mejor win rate, PF igual o mayor, robusto, sin overfitting; buscá, implementá, testeá y repetí". Se corrieron 7 líneas en paralelo con protocolo preregistrado (elegir en 2020-23, confirmar en 2024-26 y en 2010-19 normalizado por costos, +4 ticks, meseta, portafolio con filtro de conflictos). Resultado honesto: **ninguna cambia el edge**; el sistema está en su techo por trade. Lo que sí salió es un hallazgo operativo (el reloj) y un nivel honesto de planificación.
+
+| Línea | Qué se probó | Resultado | Informe |
+|---|---|---|---|
+| Drawdown | 40 reglas de riesgo: stops más cortos por ATR, saltear riesgo alto, tope de riesgo abierto, stop diario en ATR, tope por dirección, corte de sesión, stops semanal/mensual | **0/40**. Cada punto de DD cuesta un punto de ganancia (corr 0,63/0,77). Ninguna baja los quiebres de MFFU sin bajar el ingreso | `research/mine/ddlab_report.md` |
+| Más trades | 13 segundas instancias en otras horas, re-armado tras stop en 9 módulos, OR 5/10 min, Camarilla L2/H2/L4/H4, familia nueva de bandas de VWAP (528 celdas, sin lookahead) | **0 aceptados**. Las segundas instancias son los mismos trades (hasta 94% de solapamiento) o ruido; tasa base del archivo (54.558 celdas): P(pasa 2024-26 \| pasa 2020-23) 21%, con 2010-19 6,6% | `more_trades_report.md` |
+| Bitcoin (MBT) | Binance 1m 2017-26 → `data/btc_1m.npz`; 65.544 configs + mapa horario 6.768 celdas | **0**. Costo = 1,5% del ATR en 2024-26 y 4% en 2020-23 (NQ 0,42%); sin costos hay patrones, con costos PF 1,01/1,16. Lucid no lista MBT; MFFU lo cuenta como mini | `btc_report.md` |
+| Oro 16 años reales | 65.544 configs en `mgcdb.npz` con todas las familias (varias nunca probadas en oro) | **0**. 146 → 31 → 6 → 1 en meseta (INSIDE_DAY, $25/mes). Los módulos actuales de GoldMaster tampoco pasarían el protocolo: el oro es diversificador, no edge | `gold16_report.md` |
+| Fades de noticias | 13 listas de fechas 2009-26 validadas por el pico del minuto de publicación; grilla CPI09 + celda CPI09 trasplantada a PPI, ventas, PIB, PCE, pedidos, minutas, bienes duraderos | **0**. Solo el CPI tiene la reversión en la apertura (pico 5,2× vs 2,4-4,2×); los demás rinden como un día cualquiera (PF ~0,8). Los datos de las 10:00 no mueven el NQ | `news_fade_report.md` |
+| Perturbación de parámetros | 7.762 celdas: cada módulo ±20% / ±30 min (uno a uno, factorial, 200 sorteos conjuntos), 200 sorteos de todo el sistema a la vez, +1/+2/+4 ticks | **Nada que cambiar** (recentrar, suavizar o apagar módulos no pasa). Hallazgos: (1) lo frágil son las **horas** (15 min de desfase: Sharpe −0,3 a −0,7 por módulo), no stops ni targets; (2) con todo ±20% el sistema rinde Sharpe ~2,5 / PF 1,3 / DD $5,6k por contrato = nivel honesto; (3) ranking de fragilidad: MOM1030, MOM13, REV06, MOM11, ON07, VW13, SO04, CRT11; robustos: ORFAIL, NF05, MSEQS, VOLB, ORB60 | `perturb_report.md` |
+| Cimientos globales | Filtro de tendencia (SMA 10-50, EMA, N días), ventana de ATR, MinATR, umbral de pullback 0,44, hora de cierre | Ver `foundations_report.md` (resultado al final de esta sección) | `foundations_report.md` |
+
+### Qué cambió en la operación (runbook)
+- **Chequeo del reloj de barras** después de cada cambio de horario de verano (EE. UU. y Argentina): los módulos de reloj deben entrar a su hora ET exacta. NQMaster convierte la zona de NinjaTrader a ET; si esa zona está mal, todo entra corrido y el edge desaparece.
+- **Variante defensiva** si el monitor avisa: `DisableModules = MOM1030,MOM13,REV06` (2024-26 Sharpe 4,03 vs 4,07, PF 1,52, −12% de ganancia, DD más bajo en 2020-23).
+- **Planificar con el nivel honesto** (Sharpe ~2,5, PF ~1,3, DD ~$5.600 por contrato), no con la celda exacta.
+- **Lista de vigilancia de enero**: REV06, LATE15, CAM3, LF0430, MSEQ, MOM1030, ON07, CRT11, VW13, ICT.
+
+### Qué significa para el objetivo "menos DD, más trades, más WR, PF igual o mayor"
+Con un mismo conjunto de señales esas cuatro cosas no se mueven juntas: subir el WR baja el PF (RR negativo, 19-oct), bajar el DD baja la ganancia 1:1 (ddlab), y más trades de las mismas familias son los mismos trades. Lo único que las mueve juntas es un edge **nuevo y no correlacionado**, y hoy se agotaron los candidatos baratos (bitcoin, oro, noticias, bandas de VWAP, segundas instancias). Lo que queda son ingredientes caros o lentos: order flow en vivo con meses de grabación propia, otro mercado con costo bajo (ninguno de los micros lo tiene), o esperar a que la revisión de enero confirme qué módulos sobreviven.
+
 ## ★★★★★★★★★★★★★★ 2026-10-19: plan 2026-2027, cuentas 25K de Lucid y módulos de WR alto con RR negativo
 
 Pedido: "¿recomendás muchas cuentas 25K de Lucid? Probá módulos nuevos de WR alto y RR negativo, mejorá todo el sistema y entregame algo que en 2026-2027 funcione casi seguro". Respuesta corta: **"casi seguro" no existe**; abajo están las probabilidades con el edge completo, con 35% menos y con 50% menos. Lo que cambió en el código y en la operación está en `RUNBOOK_OPERACION.md` (versión 2026-10-19), que manda sobre esta guía.
