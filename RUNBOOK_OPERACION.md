@@ -11,6 +11,7 @@ Una página. Si algo de acá contradice una sección vieja de `NQMASTER_GUIA.md`
    - Tiene que decir **PASA**, o fallar solo en ICT y MSEQS por los motivos conocidos (ver "Divergencias abiertas" más abajo).
 3. En el Output del backtest no debería aparecer ningún `INACTIVITY ... no SHORT / no LONG`. Si aparece, hay una orden atascada: no operes.
 4. Days to load ≥ 45 (NQ) y ≥ 120 (oro, GoldMaster).
+5. **Reloj de barras** (después de cada cambio de horario de verano, EE. UU. y Argentina): en el Output del backtest, los módulos de reloj tienen que entrar a su hora ET exacta (MOM1030 10:30, MOM11 11:00, CRT11 12:00, VW13 13:01, MOM13 13:00, LATE15 15:00, CPI09 09:30). NQMaster convierte desde la zona horaria configurada en NinjaTrader a ET; si la zona de NinjaTrader o de Windows está mal, todo entra corrido. La auditoría de perturbación (`perturb_report.md`, 19-oct) muestra que un desfase de 15 minutos borra la mayor parte del edge de los módulos de reloj (Sharpe −0,3 a −0,7 por módulo).
 
 ## Configuración por cuenta (no mezclar perfiles dentro de la misma firma)
 
@@ -37,7 +38,7 @@ Una página. Si algo de acá contradice una sección vieja de `NQMASTER_GUIA.md`
 | `STALE ORDER dropped` | NinjaTrader dejó una orden atascada y el watchdog la descartó. | Nada. Si se repite todos los días, avisame. |
 | `INACTIVITY <módulo>` | Un módulo no opera hace más días que su máximo histórico ×1,5. | Revisá Working orders, rechazos y que el módulo no esté apagado. Mandame el Log. |
 | `INACTIVITY no SHORT / no LONG` | 12 días hábiles sin entradas en una dirección. El máximo de 2020-26 fue 8. | **Prioridad alta**: es el patrón del bug de 13 meses. Reiniciá la estrategia y mandame el Log. |
-| `EDGE MONITOR WARNING` | El resultado viene por debajo del backtest. Pasa por azar 1 de cada 4 años. | Nada. Solo seguí mirando. |
+| `EDGE MONITOR WARNING` | El resultado viene por debajo del backtest. Pasa por azar 1 de cada 4 años. | Nada obligatorio. Opción defensiva validada (`perturb_report.md`): `DisableModules = MOM1030,MOM13,REV06` (los 3 módulos más frágiles; 2024-26 Sharpe 4,03 vs 4,07, PF 1,52, −12% de ganancia, DD más bajo en 2020-23). |
 | `EDGE MONITOR ALARM` | El resultado en vivo ya no es compatible con el backtest. | Automático: un año con el set revisado de módulos. Vos: no abras cuentas nuevas y avisame. |
 | `ACCOUNT / STRATEGY POSITION MISMATCH` | La cuenta y la estrategia no coinciden. | La estrategia ya aplanó y se detuvo. Revisá la cuenta en el broker antes de reactivarla. |
 | `ROLL DATE` | Faltan 8 días para el vencimiento. | Mové la estrategia al contrato siguiente con los mismos ajustes. |
@@ -54,6 +55,8 @@ Pausá un perfil (Enabled = false) si se cumple cualquiera de estas:
 
 4. **Dos trimestres calendario seguidos con P&L negativo por contrato base** (`forward2027.py`): con el edge completo pasa 0,3% de los años, con 35% menos 6%, sin edge 55%.
 5. **Un trimestre negativo** no pausa, pero **apaga la escalera** (`FundedLadderStep` 0) hasta cerrar un trimestre positivo: con el edge completo pasa 14% de los años, con 35% menos 46%.
+
+**Nivel honesto para planificar** (`perturb_report.md`): si cada parámetro del sistema estuviera un ±20% / ±30 min desviado de su celda exacta, el portafolio da Sharpe ~2,5 (p10 1,9-2,1), PF ~1,3 y drawdown ~$5.600 por contrato (p90 $7.400). Planificá cuentas con esos números, no con los de la celda exacta (coincide con el recorte de 35% que ya usamos).
 
 Rangos normales por contrato base en 2027 (edge completo, 2020-26): mes p10 −$465 / mediana $1.964; trimestre p5 +$647; año p10 $17.7k; drawdown del año p90 $4.150. Si el drawdown del año supera ~$6.100 por contrato estás en la zona de 35% menos edge o peor.
 
@@ -74,6 +77,7 @@ Rangos normales por contrato base en 2027 (edge completo, 2020-26): mes p10 −$
 - Verificado el 19-oct-2026 (`research/mine/calendar_check_2026-10-19.md`): todas las fechas de FOMC, CPI y NFP hasta fin de 2027 coinciden con la Fed y el BLS. Las minutas FOMC desde nov-2026 son estimadas (regla de 3 semanas): revisar la de 2026-12-30 en diciembre. Si hay cierre del gobierno, el BLS mueve fechas: revisar bls.gov.
 - El blackout de noticias ahora también cubre la decisión FOMC de las 14:00 (solo importa si apagás `SkipFomc`).
 - Cada enero: pedime que corra `research/mine/robust16.py` y actualice la tabla `FallbackList` del año.
+- Lista de vigilancia para la revisión de enero (frágiles en la perturbación o con PF < 1 en 2026): REV06, LATE15, CAM3, LF0430, MSEQ, MOM1030, ON07, CRT11, VW13, ICT. No se apagan por un mal año; se apagan si fallan en la revisión de 5 años normalizada.
 
 ## Cumplimiento (releer antes de cada cuenta nueva)
 
