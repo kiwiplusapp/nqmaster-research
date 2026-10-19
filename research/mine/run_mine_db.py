@@ -34,7 +34,7 @@ try:
 except ImportError:
     FAMILIES10 = {}
 FAMILIES = {**OLD, **FAMILIES5, **FAMILIES6, **FAMILIES7, **FAMILIES8, **FAMILIES9, **FAMILIES10}
-FLAT = int(os.environ.get("MINE_FLAT", "955")); NORM = 0.00345
+FLAT = int(os.environ.get("MINE_FLAT", "955")); NORM = float(os.environ.get("MINE_NORM", "0.00345"))   # MINE_NORM: cost as a fraction of the daily ATR (gold 0.0096, gold16 round 2026-10-19)
 PARTS_R = (("T1", 20200101, 20240101), ("T2", 20240101, 20991231))
 PARTS_N = (("A", 20100601, 20150101), ("B", 20150101, 20200101), ("T1n", 20200101, 20240101), ("T2n", 20240101, 20991231))
 G = {}
