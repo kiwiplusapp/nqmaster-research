@@ -1,4 +1,4 @@
-# Runbook de operación NQMaster (versión 2026-10-17)
+# Runbook de operación NQMaster (versión 2026-10-19, para 2026-2027)
 
 Una página. Si algo de acá contradice una sección vieja de `NQMASTER_GUIA.md`, manda esta.
 
@@ -7,7 +7,7 @@ Una página. Si algo de acá contradice una sección vieja de `NQMASTER_GUIA.md`
 1. **F5** en el NinjaScript Editor. Tiene que compilar sin errores. En la nube solo se verifica la sintaxis contra un stub (`bash tools/nt8_stub/check.sh NQMaster.cs`).
 2. **Strategy Analyzer**: MNQ, 1 minuto, Profile Ultra, Contracts 1, PropMode Off, desde 2024-01-01 hasta hoy, comisión $1,90 y 1 tick de slippage.
    - Exportá los trades (CSV).
-   - Corré `python parity_check.py <csv> --set ultra_r` desde `research/mine`.
+   - Corré `python parity_check.py <csv> --set ultra_d4` desde `research/mine` (el default desde el 19-oct es Ultra + los 4 módulos de 6 años durables: SO04, RV11, ORFAIL, CAM3).
    - Tiene que decir **PASA**, o fallar solo en ICT y MSEQS por los motivos conocidos (ver "Divergencias abiertas" más abajo).
 3. En el Output del backtest no debería aparecer ningún `INACTIVITY ... no SHORT / no LONG`. Si aparece, hay una orden atascada: no operes.
 4. Days to load ≥ 45 (NQ) y ≥ 120 (oro, GoldMaster).
@@ -18,8 +18,9 @@ Una página. Si algo de acá contradice una sección vieja de `NQMASTER_GUIA.md`
 |---|---|
 | MFFU Rapid EOD 50K, evaluación | Profile Ultra · Contracts 1 · PropMode Eval · PropPreset Mffu50K |
 | MFFU Rapid EOD 50K, fondeada | Igual, con PropMode Funded. El preset pone el risk cap $300 por debajo de un cushion de $2.000, el pedido de retiro al llegar a $4.600 de ganancia (retirás hasta dejar $4.100) y el apagón de noticias. El escalón a 2 contratos (`FundedStepUpCushion` 4000, retiro a $6.600) es **opcional**: más ingreso mediano si el edge es real, pero duplica el tamaño y suma 6-7 puntos a P(año negativo) con 35% menos edge. |
-| MFFU Rapid EOD 50K, fondeada, **escalera de tamaño** (opcional, 17-oct; objetivo "$200/día por cuenta") | PropMode Funded + preset Mffu50K + `SixYearModules` true + `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4, `FundedPayoutAt` 11600, `DailyLossPerContract` 1500, `MaxOpenContracts` 30; GoldMaster Robust con `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4. Pedir los retiros después del cierre de las 16:00. Sube 1 contrato por módulo por cada $3.000 de colchón (día de inicio) hasta 4; retirás solo lo que supere $11.100 de ganancia. En régimen (años 2-3) $214-288/día con el edge completo y $96-125 con 35% menos; quiebres 0,1-0,2 por año (1,2 con −35%). Amplifica lo que haya: si el edge se apaga, el colchón retenido se pierde. Nunca corrió en NinjaTrader: Strategy Analyzer con el preset completo antes de usarlo. |
-| Lucid Pro 25K (fondeo rápido) | PropPreset LucidPro25K; evaluación nueva al día siguiente de cada pérdida |
+| MFFU Rapid EOD 50K, fondeada, **escalera de tamaño** (recomendada para 2027) | PropMode Funded + **PropPreset Mffu50KLadder** (pone todo lo de esta fila en NQMaster; desde el 19-oct). Equivale a: preset Mffu50K + `SixYearModules` true + `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4, `FundedPayoutAt` 11600, `DailyLossPerContract` 1500, `MaxOpenContracts` 30; GoldMaster Robust con `FundedStepUpCushion` 3000, `FundedStepUpContracts` 2, `FundedLadderStep` 3000, `FundedLadderMax` 4. Pedir los retiros después del cierre de las 16:00. Sube 1 contrato por módulo por cada $3.000 de colchón (día de inicio) hasta 4; retirás solo lo que supere $11.100 de ganancia. En régimen (años 2-3) $214-288/día con el edge completo y $96-125 con 35% menos; quiebres 0,1-0,2 por año (1,2 con −35%). Amplifica lo que haya: si el edge se apaga, el colchón retenido se pierde. Nunca corrió en NinjaTrader: Strategy Analyzer con el preset completo antes de usarlo. |
+| Lucid Pro 25K (fondeo rápido) | PropPreset LucidPro25K; evaluación nueva al día siguiente de cada pérdida. **No para ingreso**: una 25K fondeada rinde $20-27/día (mediana) contra $69-94 una 150K, y Lucid permite solo 5 fondeadas por hogar (`acct_2027.py`). Usala solo para tener la primera fondeada rápido. |
+| Lucid Flex 150K (las 5 plazas de Lucid) | Eval 6 contratos con stop de ganancia diario $4.050; fondeada 3 contratos, risk cap $300 por debajo de $1.687 de colchón, retiro a $6.000. Preset Manual (no hay preset 150K todavía). |
 
 - **Misma firma = mismo perfil en todas las cuentas.** Lucid y MFFU prohíben posiciones opuestas entre cuentas propias.
 - `CrossAccountGuard` (por defecto activo) evita las opuestas **solo entre instancias de la misma PC**. Con dos PCs, usá el mismo perfil en todas.
@@ -51,6 +52,11 @@ Pausá un perfil (Enabled = false) si se cumple cualquiera de estas:
 2. El monitor de borde saltó **y** el año de fallback también termina negativo.
 3. `python impl_gap.py <csv de la cuenta real>` da ALERTA de cuenta: los últimos 60 días quedan por debajo del 65% de lo esperado y la diferencia supera 2 errores estándar.
 
+4. **Dos trimestres calendario seguidos con P&L negativo por contrato base** (`forward2027.py`): con el edge completo pasa 0,3% de los años, con 35% menos 6%, sin edge 55%.
+5. **Un trimestre negativo** no pausa, pero **apaga la escalera** (`FundedLadderStep` 0) hasta cerrar un trimestre positivo: con el edge completo pasa 14% de los años, con 35% menos 46%.
+
+Rangos normales por contrato base en 2027 (edge completo, 2020-26): mes p10 −$465 / mediana $1.964; trimestre p5 +$647; año p10 $17.7k; drawdown del año p90 $4.150. Si el drawdown del año supera ~$6.100 por contrato estás en la zona de 35% menos edge o peor.
+
 **No es motivo de pausa:**
 
 - Un mes negativo. Pasa ~2 meses por año con edge completo y ~3 con 35% menos.
@@ -65,6 +71,8 @@ Pausá un perfil (Enabled = false) si se cumple cualquiera de estas:
   - Cargar las fechas en las propiedades `FomcDates`, `CpiDates` y `NewsTimes` (formato `yyyy-MM-dd` / `yyyy-MM-dd HH:mm`).
   - Pedirme que actualice `BuiltinFomc`, `BuiltinCpi` y `BuiltinNews`.
 - Fuentes: federalreserve.gov (FOMC y minutas), bls.gov (CPI y Employment Situation).
+- Verificado el 19-oct-2026 (`research/mine/calendar_check_2026-10-19.md`): todas las fechas de FOMC, CPI y NFP hasta fin de 2027 coinciden con la Fed y el BLS. Las minutas FOMC desde nov-2026 son estimadas (regla de 3 semanas): revisar la de 2026-12-30 en diciembre. Si hay cierre del gobierno, el BLS mueve fechas: revisar bls.gov.
+- El blackout de noticias ahora también cubre la decisión FOMC de las 14:00 (solo importa si apagás `SkipFomc`).
 - Cada enero: pedime que corra `research/mine/robust16.py` y actualice la tabla `FallbackList` del año.
 
 ## Cumplimiento (releer antes de cada cuenta nueva)
