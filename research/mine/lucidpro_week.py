@@ -18,6 +18,16 @@ HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 from robust2_life import vectors, SP
 import acct1c_lib as A
 T, D, FEE = 3000.0, 2000.0, 115.4
+NOGOLD = "nogold" in sys.argv
+
+
+def load():
+    days, P = pickle.load(open(os.path.join(SP, "acct2027_paths.pkl"), "rb"))
+    if NOGOLD:
+        from seats_plan import gold_paths
+        g = gold_paths(days, "Robust")
+        P = {cap: ((a[0] - g[0], a[1] - g[1], a[2] - g[2]), b, ca, cb) for cap, (a, b, ca, cb) in P.items()}
+    return days, P
 
 
 @njit(cache=True)
@@ -105,7 +115,7 @@ def funded(P, h, n, rng, eval_k, eval_m, nb=200):
 
 
 if __name__ == "__main__" and "funded" not in sys.argv:
-    days, P = pickle.load(open(os.path.join(SP, "acct2027_paths.pkl"), "rb")); n = len(days); d24 = int(np.searchsorted(days, 20240101))
+    days, P = load(); n = len(days); d24 = int(np.searchsorted(days, 20240101))
     a, b, ca, cb = P[0]; fin = a[2] + 4 * b[2] - ca - 4 * cb; mu1, mu2 = float(fin[:d24].mean()), float(fin[d24:].mean())
     s1 = np.nonzero((days >= 20200301) & (days < 20231101))[0]; s2 = np.nonzero(days >= 20240101)[0]; s2 = s2[s2 < n - 25]
     SIZES = {"1c x4": (1, 4), "2c x4": (2, 4), "2c x8": (2, 8), "3c x4": (3, 4), "3c x8": (3, 8), "4c x4": (4, 4)}
@@ -121,12 +131,12 @@ if __name__ == "__main__" and "funded" not in sys.argv:
                 print(f"edge-{int(hc*100):3d}% DLL {str(dll or 'OFF'):4s} {W:2d}d  single " +
                       "  ".join(f"{lab} {OUT[f'edge-{int(hc*100)}% | DLL {dll or chr(79)+chr(70)+chr(70)} | {W}d | T1'][f'single {lab}']['pass_']:4.1f}/"
                                 f"{OUT[f'edge-{int(hc*100)}% | DLL {dll or chr(79)+chr(70)+chr(70)} | {W}d | T2'][f'single {lab}']['pass_']:4.1f}" for lab in SIZES), flush=True)
-    json.dump(OUT, open(os.path.join(HERE, "lucidpro_week.json"), "w"), indent=1)
+    json.dump(OUT, open(os.path.join(HERE, "lucidpro_week" + ("_nogold" if NOGOLD else "") + ".json"), "w"), indent=1)
 
 
 def part2(NB=200):
     """12-month Lucid Pro 50K seats: eval 4c x4 serial restarts (daily resolution) -> funded variants; median $/month per seat."""
-    days, P = pickle.load(open(os.path.join(SP, "acct2027_paths.pkl"), "rb")); n = len(days); d24 = int(np.searchsorted(days, 20240101))
+    days, P = load(); n = len(days); d24 = int(np.searchsorted(days, 20240101))
     a, b, ca, cb = P[0]; fin = a[2] + 4 * b[2] - ca - 4 * cb; mu1, mu2 = float(fin[:d24].mean()), float(fin[d24:].mean())
     rng = np.random.default_rng(11); H = 252; OUT = {}
     for hc in (0.0, 0.35, 1.0):
@@ -146,7 +156,7 @@ def part2(NB=200):
                     funded_busts_yr=round(float(np.mean(lost[name])), 2), payouts_yr=round(float(np.mean(pays[name])), 2), evals_yr=round(float(np.mean(evs[name])), 2))
                 r = OUT[f"edge-{int(hc*100)}% | {per} | {name}"]
                 print(f"edge-{int(hc*100):3d}% {per} {name:12s} median {r['median_month']:5d}/mo p10 {r['p10_month']:6d} P(>=1000) {r['P_ge_1000']:5.1f}% P(neg) {r['P_neg_year']:5.1f}% busts {r['funded_busts_yr']} payouts {r['payouts_yr']} evals {r['evals_yr']}", flush=True)
-    json.dump(OUT, open(os.path.join(HERE, "lucidpro_week_funded.json"), "w"), indent=1)
+    json.dump(OUT, open(os.path.join(HERE, "lucidpro_week_funded" + ("_nogold" if NOGOLD else "") + ".json"), "w"), indent=1)
 
 
 if __name__ == "__main__" and "funded" in sys.argv:
