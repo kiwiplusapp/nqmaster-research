@@ -50,7 +50,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 {
 	public enum NQMasterProfile { Ultra, UltraQ, WR70Plus, Durable, Custom }
 	public enum NQMasterPropMode { Off, Eval, Funded }
-	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K, Mffu50KLadder, Lucid150K }
+	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K, Mffu50KLadder, Lucid150K, LucidPro50K }
 	public enum NQMasterSafeSet { Classic, Estable }
 
 	public class NQMaster : Strategy
@@ -200,6 +200,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 					StartBalance = 25000; PropTrailingDD = 1000; ConsistencyPct = 0;
 					if (ev) { EvalTarget = PropPreset == NQMasterPropPreset.LucidPro25K ? 1250 : 1500; EvalProfitStop = 0; EvalRiskCapCushion = 0; MaxOpenContracts = 20; Contracts = 2; }
 					else { EvalTarget = 0; RiskCapPerContract = 150; FundedRiskCapCushion = 500; FundedPayoutAt = 1500; MaxOpenContracts = 20; FundedProfitStop = 0; Contracts = 1; FundedStepUpCushion = 0; }
+					break;
+				case NQMasterPropPreset.LucidPro50K:
+					// research/mine/lucidpro_week.py (2026-10-20): Lucid Pro 50K (target 3,000, EOD trailing 2,000, no eval consistency, DLL OFF, 40 micros).
+					// Eval 4 contracts per module, flatten at the target, a new eval (or reset) the day after a bust: funded within 5 trading days with up to
+					// 3 evals 52% / 66% (2020-23 / 2024-26; 35% less edge 45% / 55%). Funded 1 contract, account daily profit stop 1,000 (keeps the 40% cycle
+					// consistency), risk cap 300 below a 1,000 cushion, payout request at 4,100 of profit (buffer 2,100 + cap 2,000): median $1,128 / $1,545 a month.
+					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 0;
+					if (ev) { EvalTarget = 3000; EvalProfitStop = 0; EvalRiskCapCushion = 0; MaxOpenContracts = 40; Contracts = 4; EvalHighWrMultiplier = 0; }
+					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 1000; FundedPayoutAt = 4100; MaxOpenContracts = 40; FundedProfitStop = 1000; Contracts = 1; FundedStepUpCushion = 0; FundedLadderStep = 0; }
 					break;
 				case NQMasterPropPreset.Lucid150K:
 					// research/mine/acct_150k.py + acct_2027.py: Lucid Flex 150K (target 9,000, EOD trailing 4,500, 50% consistency; funded payout days >= $250,
@@ -2229,7 +2238,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[NinjaScriptProperty][Range(1, 1000)][Display(Name = "Fallback length (monitored trading days; 252 = 1 year)", Order = 7, GroupName = "06. Edge monitor")] public int EdgeFallbackDays { get; set; }
 		[NinjaScriptProperty][Display(Name = "Fallback modules off (empty = built-in yearly review table)", Order = 8, GroupName = "06. Edge monitor")] public string EdgeFallbackOff { get; set; }
 		[NinjaScriptProperty][Display(Name = "Prop mode (Off / Eval / Funded)", Order = 1, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropMode PropMode { get; set; }
-		[NinjaScriptProperty][Display(Name = "Account preset (Lucid 25K / Lucid 50K / MFFU 50K / LucidPro 25K + FundedNext 25K: eval 2 contracts, funded 1): fills balance, drawdown, target, profit stop, risk cap and contract cap for the chosen mode", Order = 0, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropPreset PropPreset { get; set; }
+		[NinjaScriptProperty][Display(Name = "Account preset (Lucid 25K / Lucid 50K / MFFU 50K / LucidPro 25K + FundedNext 25K / MFFU ladder / Lucid 150K / LucidPro 50K: eval 4 contracts, funded 1 + daily profit stop 1,000): fills balance, drawdown, target, profit stop, risk cap and contract cap for the chosen mode", Order = 0, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropPreset PropPreset { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Trailing drawdown $ (EOD, locks at start+100)", Order = 2, GroupName = "07. Prop account (cushion gating)")] public double PropTrailingDD { get; set; }
 		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: full mode when cushion >= $", Order = 3, GroupName = "07. Prop account (cushion gating)")] public double EvalCushionFull { get; set; }
 		[NinjaScriptProperty][Display(Name = "Eval: modules below the cushion (Estable = stable set, recommended; Classic = old SAFE)", Order = 3, GroupName = "07. Prop account (cushion gating)")] public NQMasterSafeSet EvalSafeSet { get; set; }
