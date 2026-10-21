@@ -177,21 +177,45 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// ---- account presets (research/mine/smallacct_*.py, real NQ futures 2020-26, 1 contract per module). Applied at start-up when PropMode is Eval or Funded.
 		// Eval: profit stop = 0.9 x consistency x target (best day must stay under the consistency limit; the old '700 with 1 contract' cost ~9 points of 22-day pass
 		// rate on Lucid 50K), no per-trade risk cap (neutral for passing, it only slows a 25K eval). Funded: per-trade risk cap while the cushion is small.
+		private string payoutHint = "";	// dashboard PAYOUT text per firm (round 5, 2026-10-21: the exact rule of research/mine/prop_wf.py fund())
+		private string PayoutGeneric() { return string.Format("profit >= ${0:0} -> payout: follow the firm rule in RUNBOOK_OPERACION.md", FundedPayoutAt); }
 		private void ApplyPreset()
 		{
-			if (PropPreset == NQMasterPropPreset.Manual || PropMode == NQMasterPropMode.Off) return;
+			payoutHint = "";
+			if (PropPreset == NQMasterPropPreset.Manual || PropMode == NQMasterPropMode.Off) { payoutHint = PayoutGeneric(); return; }
 			bool ev = PropMode == NQMasterPropMode.Eval;
+			// round 5 (2026-10-21) C2: clear leftovers of old templates that no simulated account policy uses (prop_wf.py CUR_EVAL / CUR_FUND);
+			// these are the SetDefaults values, so a fresh strategy is unchanged. Mffu50K turns NewsBlackout back on in Funded.
+			EvalMode = false; AdaptiveSize = false;
+			EvalCushionFull = 0; EvalDailyStop = 0;
+			FundedCushionSafe = 0; FundedCushionFull = 0; FundedHighFull = true;
+			DailyLossLimit = 0;
+			if (PropPreset != NQMasterPropPreset.Mffu50KLadder) { FundedStepUpCushion = 0; FundedLadderStep = 0; DailyLossPerContract = 0; }
+			NewsBlackout = false;
+			// C2 (c): one cross-account group per prop firm (only when HedgeGroup is empty): an empty group would also pair accounts of other firms on this PC
+			if (string.IsNullOrEmpty(HedgeGroup))
+			{
+				switch (PropPreset)
+				{
+					case NQMasterPropPreset.Lucid25K: case NQMasterPropPreset.Lucid50K: case NQMasterPropPreset.Lucid150K:
+					case NQMasterPropPreset.LucidPro25K: case NQMasterPropPreset.LucidPro50K: HedgeGroup = "LUCID"; break;
+					case NQMasterPropPreset.Mffu50K: case NQMasterPropPreset.Mffu50KLadder: HedgeGroup = "MFFU"; break;
+					case NQMasterPropPreset.FundedNext25K: HedgeGroup = "FNEXT"; break;
+				}
+			}
 			switch (PropPreset)
 			{
 				case NQMasterPropPreset.Lucid25K:
 					StartBalance = 25000; PropTrailingDD = 1000; ConsistencyPct = 50;
 					if (ev) { EvalTarget = 1250; EvalProfitStop = 560; EvalRiskCapCushion = 0; MaxOpenContracts = 20; }
 					else { EvalTarget = 0; RiskCapPerContract = 150; FundedRiskCapCushion = 500; FundedPayoutAt = 1500; MaxOpenContracts = 10; FundedProfitStop = 0; }
+					payoutHint = string.Format("profit >= ${0:0} and 5 days >= $150 in the cycle -> request min($1,000, 50% of profit)", FundedPayoutAt);
 					break;
 				case NQMasterPropPreset.Lucid50K:
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 50;
 					if (ev) { EvalTarget = 3000; EvalProfitStop = 1350; EvalRiskCapCushion = 0; MaxOpenContracts = 40; EvalHighWrMultiplier = 8; }
 					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 1000; FundedPayoutAt = 4000; MaxOpenContracts = 20; FundedProfitStop = 0; }
+					payoutHint = string.Format("profit >= ${0:0} and 5 days >= $150 in the cycle -> request min($2,000, 50% of profit)", FundedPayoutAt);
 					break;
 				case NQMasterPropPreset.LucidPro25K:
 				case NQMasterPropPreset.FundedNext25K:
@@ -200,6 +224,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					StartBalance = 25000; PropTrailingDD = 1000; ConsistencyPct = 0;
 					if (ev) { EvalTarget = PropPreset == NQMasterPropPreset.LucidPro25K ? 1250 : 1500; EvalProfitStop = 0; EvalRiskCapCushion = 0; MaxOpenContracts = 20; Contracts = 2; }
 					else { EvalTarget = 0; RiskCapPerContract = 150; FundedRiskCapCushion = 500; FundedPayoutAt = 1500; MaxOpenContracts = 20; FundedProfitStop = 0; Contracts = 1; FundedStepUpCushion = 0; }
+					if (PropPreset == NQMasterPropPreset.LucidPro25K) payoutHint = "request min(cap, profit - 1,100) once that amount is >= $1,000, >= 3 days in the cycle, cycle profit >= $500, best day <= 40% of the cycle; cap 1,000 first payout then 1,500";
 					break;
 				case NQMasterPropPreset.LucidPro50K:
 					// research/mine/lucidpro_week.py (2026-10-20): Lucid Pro 50K (target 3,000, EOD trailing 2,000, no eval consistency, DLL OFF, 40 micros).
@@ -209,6 +234,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 0;
 					if (ev) { EvalTarget = 3000; EvalProfitStop = 0; EvalRiskCapCushion = 0; MaxOpenContracts = 40; Contracts = 4; EvalHighWrMultiplier = 0; }
 					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 1000; FundedPayoutAt = 4100; MaxOpenContracts = 40; FundedProfitStop = 1000; Contracts = 1; FundedStepUpCushion = 0; FundedLadderStep = 0; }
+					payoutHint = "request min(cap, profit - 2,100) once that amount is >= $2,000, >= 3 days in the cycle, cycle profit >= $500, best day <= 40% of the cycle; cap 2,000 first payout then 2,500";
 					break;
 				case NQMasterPropPreset.Lucid150K:
 					// research/mine/acct_150k.py + acct_2027.py: Lucid Flex 150K (target 9,000, EOD trailing 4,500, 50% consistency; funded payout days >= $250,
@@ -217,6 +243,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					StartBalance = 150000; PropTrailingDD = 4500; ConsistencyPct = 50;
 					if (ev) { EvalTarget = 9000; EvalProfitStop = 4050; EvalRiskCapCushion = 0; MaxOpenContracts = 100; Contracts = 6; EvalHighWrMultiplier = 0; }
 					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 1687; FundedPayoutAt = 6000; MaxOpenContracts = 40; FundedProfitStop = 0; Contracts = 3; FundedStepUpCushion = 0; FundedLadderStep = 0; }
+					payoutHint = string.Format("profit >= ${0:0} and 5 days >= $250 in the cycle -> request min($3,000, 50% of profit)", FundedPayoutAt);
 					break;
 				case NQMasterPropPreset.Mffu50KLadder:
 					// research/mine/ladder_plan.py + ladder_stop.py + code review 2026-10-17: the whole MFFU size-ladder recipe in one setting.
@@ -228,12 +255,21 @@ namespace NinjaTrader.NinjaScript.Strategies
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 30;
 					if (ev) { EvalTarget = 3000; EvalProfitStop = 800; EvalRiskCapCushion = 0; MaxOpenContracts = 30; EvalHighWrMultiplier = 8; }
 					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 2000; if (FundedLadderStep <= 0) FundedPayoutAt = FundedStepUpCushion > 0 ? 6600 : 4600; else FundedPayoutAt = Math.Max(FundedPayoutAt, FundedStepUpCushion + (FundedLadderMax - FundedStepUpContracts) * FundedLadderStep + 2600); MaxOpenContracts = 30; FundedProfitStop = 0; }	// ladder on: payout level at least the top of the ladder + 2,600 (11,600 for the K4 / $3,000 recipe; code review 2026-10-17 L1)
-					if (!ev) NewsBlackout = true;	// MFFU funded: no trades or orders +-2 min around Tier-1 news (rule). Payout at $4,600 = keep $4,100; optional step-up (FundedStepUpCushion 4000) -> $6,600: more median $ but 2x size, +6-7 pts P(negative year) at 35% less edge (c4_cushion.py + red team 2026-10-16), so it is NOT a default
+					if (!ev) NewsBlackout = true;	// MFFU funded: no trades or orders +-2 min around Tier-1 news (rule). Payout at $4,600 = keep $4,100; the optional step-up (FundedStepUpCushion 4000 -> $6,600) now needs PropPreset Manual (round 5 C2 resets it here): more median $ but 2x size, +6-7 pts P(negative year) at 35% less edge (c4_cushion.py + red team 2026-10-16), so it is NOT a default
+					if (!ev) Contracts = 1;	// round 5 C2 (b): the simulated MFFU funded policies are 1 contract (the ladder steps up from 1 by itself)
+					else if (Contracts != 1) Print(string.Format("NQMaster | WARNING: Mffu50K eval simulated at Contracts 1 (x8); Contracts is {0}", Contracts));
+					payoutHint = string.Format("profit >= ${0:0} -> request it and withdraw down to ${1:0} profit (the rest is the cushion)", FundedPayoutAt, Math.Max(0, FundedPayoutAt - 500));
 					break;
 			}
+			if (string.IsNullOrEmpty(payoutHint)) payoutHint = PayoutGeneric();	// FundedNext25K (and any preset without its own text)
 			if (FundedLadderStep > 0 && !ev && FundedStepUpCushion <= 0) Print("NQMaster | WARNING: the size ladder needs FundedStepUpCushion > 0 (first step); it is OFF");
 			Print(string.Format("NQMaster | preset {0} ({1}): balance {2:0}, trailing DD {3:0}, eval target {4:0}, profit stop {5:0}, consistency {6:0}%, risk cap {7:0} below cushion {8:0}, max open contracts {9}, MOM1030/CPI09 x{10}",
 				PropPreset, PropMode, StartBalance, PropTrailingDD, EvalTarget, EvalProfitStop, ConsistencyPct, RiskCapPerContract, ev ? EvalRiskCapCushion : FundedRiskCapCushion, MaxOpenContracts, HwQty(Mom1030Multiplier)));
+			Print(string.Format("NQMaster | preset {0} ({1}): contracts {2}, payout at {3:0}, step-up cushion {4:0}, ladder step {5:0}, hedge group '{6}', news blackout {7}",
+				PropPreset, PropMode, Contracts, FundedPayoutAt, FundedStepUpCushion, FundedLadderStep, HedgeGroup, NewsBlackout ? "on" : "off"));
+			// C2 (d): strategy options, not account settings, and not in the account simulations: warn, never override
+			if (UseOrderFlowBoost) Print("NQMaster | WARNING: UseOrderFlowBoost is ON with an account preset (it is not in the account simulations; it FAILED out of sample)");
+			if (VolbReArm) Print("NQMaster | WARNING: VolbReArm is ON with an account preset (it is not in the account simulations)");
 		}
 		private bool RollDue()
 		{
@@ -559,6 +595,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			CrossAccountPublish();
 			CheckAccountSync();
 			if (desyncHalt) return;
+			CrossAccountCancelOpp();
+			if (hedgeFlat) { if (Position.MarketPosition == MarketPosition.Flat) hedgeFlat = false; else FlattenAll("cross-account hedge guard"); }
 
 			if (Bars.IsFirstBarOfSession)
 			{
@@ -823,6 +861,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return;
 			foreach (Mod o in mods) if (o != volb && Working(o.Entry) && o.Dir == -d) return;
 			if (RtZombieOpp(d)) return;
+			if (OtherOpp(d, false)) return;		// round 5 C6 (2): another account of the group holds the opposite position / entry
 			ArmPriceBracket(volb, d, Instrument.MasterInstrument.RoundToTickSize(rthOpenPx));
 			int vsq = OfApply(volb, Qty(), d);
 			if (vsq <= 0) return;
@@ -1450,50 +1489,116 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (m.Dir == 1) { lastLongDay = tradDays; longWarned = false; } else if (m.Dir == -1) { lastShortDay = tradDays; shortWarned = false; }
 		}
 
-		// ---- cross-account guard (2026-10-16): Lucid and MFFU ban opposite positions across your own accounts. Each NQMaster instance writes
-		// its NQ-family direction to Documents\NinjaTrader 8\nqmaster_positions\<group>_<account>.txt every minute in realtime; an entry
-		// opposite to another account's open position (file younger than 3 minutes) is skipped. Same PC only.
-		private int otherDirBar = -1; private bool otherLong, otherShort;
+		// ---- cross-account guard (2026-10-16; round 5 C6 2026-10-21): Lucid and MFFU ban opposite positions across your own accounts. Each NQMaster
+		// instance writes Documents\NinjaTrader 8\nqmaster_positions\<group>_<account>_NQ.txt = "pos;L;S;utcTicks" (pos = -1/0/1 open position,
+		// L / S = 1 when a long / short position OR a working long / short entry order exists) every minute, when an entry order is placed,
+		// changes state or fills. Files older than 3 minutes are ignored. Same PC only; one HedgeGroup per firm (the presets fill it).
+		//  (2) a new entry of direction d is skipped while another account of the group holds the opposite flag (position or working entry).
+		//      A working opposite entry of the other account is ignored only when this account holds a working entry on that same side itself:
+		//      it is then the mirror of our own order, which the same signal parks here (DirectionAllowed) and in the other account.
+		//  (3) every bar, own working entries opposite to another account's OPEN position are cancelled.
+		//  (4) an own entry that fills while another account holds the opposite position is flattened at once (+ Alert + log).
+		private int otherDirBar = -1; private bool otherLong, otherShort, otherPosLong, otherPosShort, hedgeFlat;
 		private string PosDir { get { try { return Path.Combine(Core.Globals.UserDataDir, "nqmaster_positions"); } catch { return null; } } }
 		private string PosFile { get { string d = PosDir; return d == null ? null : Path.Combine(d, (HedgeGroup ?? "") + "_" + (Account != null ? Account.Name : "acct") + "_NQ.txt"); } }
 		private void CrossAccountPublish()
 		{
-			if (!CrossAccountGuard || State != State.Realtime) return;
+			if (!CrossAccountGuard || State != State.Realtime || mods == null) return;
 			try
 			{
 				Directory.CreateDirectory(PosDir);
-				int d = Position.MarketPosition == MarketPosition.Long ? 1 : (Position.MarketPosition == MarketPosition.Short ? -1 : 0);
-				foreach (Mod m in mods) if (d == 0 && Working(m.Entry) && m.Entry.OrderType == OrderType.Market) d = m.Dir;	// market entry in flight
-				File.WriteAllText(PosFile, d.ToString(CultureInfo.InvariantCulture) + ";" + DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture));
+				int pos = Position.MarketPosition == MarketPosition.Long ? 1 : (Position.MarketPosition == MarketPosition.Short ? -1 : 0);
+				foreach (Mod m in mods) if (pos == 0 && m.InTrade && m.Dir != 0) pos = m.Dir;	// fill not yet in Position
+				bool l = pos == 1, sh = pos == -1;
+				foreach (Mod m in mods)
+				{
+					if (m.InTrade) { if (m.Dir == 1) l = true; else if (m.Dir == -1) sh = true; }
+					if (Working(m.Entry) && !zombies.Contains(m.Entry)) { if (m.Dir == 1) l = true; else if (m.Dir == -1) sh = true; }
+				}
+				foreach (Order z in rtZombies) if (Working(z)) { if (z.OrderAction == OrderAction.Buy) l = true; else sh = true; }
+				string txt = pos.ToString(CultureInfo.InvariantCulture) + ";" + (l ? "1" : "0") + ";" + (sh ? "1" : "0") + ";" + DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
+				string f = PosFile, tmp = f.Substring(0, f.Length - 4) + ".tmp";
+				try { File.WriteAllText(tmp, txt); if (File.Exists(f)) File.Replace(tmp, f, null); else File.Move(tmp, f); }
+				catch { File.WriteAllText(f, txt); }
 			}
 			catch { }
 		}
 		private void CrossAccountRead()
 		{
-			otherLong = otherShort = false; otherDirBar = CurrentBars[0];
+			otherLong = otherShort = otherPosLong = otherPosShort = false; otherDirBar = CurrentBars[0];
 			if (!CrossAccountGuard || State != State.Realtime) return;
-			try
+			string[] files;
+			try { if (!Directory.Exists(PosDir)) return; files = Directory.GetFiles(PosDir, "*_NQ.txt"); } catch { return; }
+			string mine = PosFile; string pre = (HedgeGroup ?? "") + "_";
+			foreach (string f in files)
 			{
-				string mine = PosFile; string pre = (HedgeGroup ?? "") + "_";
-				foreach (string f in Directory.GetFiles(PosDir, "*_NQ.txt"))
+				try
 				{
 					if (string.Equals(f, mine, StringComparison.OrdinalIgnoreCase) || !Path.GetFileName(f).StartsWith(pre, StringComparison.OrdinalIgnoreCase)) continue;
-					string[] p = File.ReadAllText(f).Split(';'); if (p.Length < 2) continue;
-					long t; int d;
-					if (!long.TryParse(p[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out t) || !int.TryParse(p[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out d)) continue;
+					string[] p = File.ReadAllText(f).Split(';');
+					int pos, l, sh; long t;
+					if (p.Length >= 4)
+					{
+						if (!int.TryParse(p[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out pos) || !int.TryParse(p[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out l)
+							|| !int.TryParse(p[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out sh) || !long.TryParse(p[3], NumberStyles.Integer, CultureInfo.InvariantCulture, out t)) continue;
+					}
+					else if (p.Length == 2)		// file of an older NQMaster: direction;ticks
+					{
+						if (!int.TryParse(p[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out pos) || !long.TryParse(p[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out t)) continue;
+						l = pos == 1 ? 1 : 0; sh = pos == -1 ? 1 : 0;
+					}
+					else continue;
 					if ((DateTime.UtcNow - new DateTime(t, DateTimeKind.Utc)).TotalMinutes > 3) continue;
-					if (d == 1) otherLong = true; else if (d == -1) otherShort = true;
+					if (l == 1) otherLong = true;
+					if (sh == 1) otherShort = true;
+					if (pos == 1) otherPosLong = true; else if (pos == -1) otherPosShort = true;
 				}
+				catch { }
 			}
-			catch { }
 		}
-		private bool OtherAccountOpposite(int d)
+		// (2): fresh read at every check (a few small files, realtime only)
+		private bool OtherOpp(int d, bool log)
 		{
 			if (!CrossAccountGuard || State != State.Realtime) return false;
-			if (otherDirBar != CurrentBars[0]) CrossAccountRead();
-			bool opp = (d == 1 && otherShort) || (d == -1 && otherLong);
-			if (opp) { status = "another account holds the opposite NQ position (cross-account guard)"; Log("entry skipped: another account holds the opposite NQ position (hedging ban)"); }
+			CrossAccountRead();
+			bool posOpp = (d == 1 && otherPosShort) || (d == -1 && otherPosLong);
+			bool opp = posOpp || (d == 1 && otherShort) || (d == -1 && otherLong);
+			if (opp && !posOpp) foreach (Mod m in mods) if (Working(m.Entry) && !zombies.Contains(m.Entry) && m.Dir == -d) { opp = false; break; }	// mirror of our own working entry
+			if (opp && log) { status = "another account holds the opposite NQ position / entry (cross-account guard)"; Log(string.Format("entry skipped: another account of group '{0}' holds an opposite NQ {1} (hedging ban)", HedgeGroup, posOpp ? "position" : "working entry")); }
 			return opp;
+		}
+		private bool OtherAccountOpposite(int d) { return OtherOpp(d, true); }
+		// (3): own working entries opposite to another account's open position are cancelled (existing CancelEntry path)
+		private void CrossAccountCancelOpp()
+		{
+			if (!CrossAccountGuard || State != State.Realtime || mods == null) return;
+			CrossAccountRead();
+			if (!otherPosLong && !otherPosShort) return;
+			foreach (Mod m in mods)
+			{
+				if (!Working(m.Entry) || zombies.Contains(m.Entry)) continue;
+				if ((m.Dir == 1 && otherPosShort) || (m.Dir == -1 && otherPosLong))
+				{
+					bool first = m.CancelOrd != m.Entry;
+					m.Parked = false; CancelEntry(m);
+					if (first) Log(string.Format("{0} entry cancelled: another account of group '{1}' holds the opposite NQ position (hedging ban)", m.Sig, HedgeGroup));
+				}
+			}
+		}
+		// (4): called on an own entry fill
+		private void CrossAccountOnFill(Mod m)
+		{
+			if (!CrossAccountGuard || State != State.Realtime) return;
+			CrossAccountRead();
+			if (!((m.Dir == 1 && otherPosShort) || (m.Dir == -1 && otherPosLong))) return;
+			string msg = string.Format("NQMaster | HEDGE GUARD: {0} filled {1} on {2} while another account of group '{3}' holds the opposite NQ position -> flattened at once", m.Sig, m.Dir == 1 ? "LONG" : "SHORT", Account != null ? Account.Name : "?", HedgeGroup);
+			Warn("nqm_hedge", msg); Log(msg);
+			hedgeFlat = true;
+			if (!desyncHalt)
+			{
+				int q = Math.Max(1, m.OpenQty);
+				if (m.Dir == 1) ExitLong(0, q, m.Sig + "X", m.Sig); else ExitShort(0, q, m.Sig + "X", m.Sig);
+			}
 		}
 
 		private void EdgeParams()
@@ -1829,6 +1934,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			if ((d == 1 && Position.MarketPosition == MarketPosition.Short) || (d == -1 && Position.MarketPosition == MarketPosition.Long)) return true;
 			foreach (Mod o in mods) if (o != self && Working(o.Entry) && o.Dir == -d) return true;
+			if (OtherOpp(d, false)) return true;	// round 5 C6 (2)
 			return RtZombieOpp(d);
 		}
 		private bool ParkExpired(Mod o, int openMin, int closeMin)
@@ -1921,6 +2027,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			Mod m = BySig(order.Name);
 			if (m != null && !zombies.Contains(order) && (m.Entry == null || m.Entry == order || !Working(m.Entry))) m.Entry = order;
+			if (m != null && (orderState == OrderState.Accepted || orderState == OrderState.Working || orderState == OrderState.Cancelled || orderState == OrderState.Rejected || orderState == OrderState.Filled))
+				CrossAccountPublish();	// round 5 C6 (5): entry placed / cancelled / filled -> other accounts see it at once
 			if (orderState == OrderState.Rejected)
 			{
 				Warn("nqm_rej", string.Format("NQMaster | {0} REJECTED: {1} {2}", order.Name, error, nativeError));
@@ -1949,7 +2057,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (first)
 				{
 				if (UseOrderFlowBoost) { ofEntries++; if (m.OfQ0 > 0 && execution.Order.Quantity > m.OfQ0) ofBoosted++; }
-				InactivityFill(m); CrossAccountPublish();
+				InactivityFill(m); CrossAccountPublish(); CrossAccountOnFill(m);
 				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(Times[0][0]).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
 				if (m == orb2) orb2.Trades++;
 				if (m == volb) { volbDone = true; volb.EntryBar = CurrentBars[0]; volbBeSet = false; volbTrades++; }
@@ -2041,7 +2149,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				RiskCapActive ? "ACTIVE" : "off", propCushion, PropMode == NQMasterPropMode.Eval ? EvalRiskCapCushion : FundedRiskCapCushion, riskSkips);
 			if (PropMode == NQMasterPropMode.Funded && FundedStepUpCushion > 0) txt += string.Format("\nSize: {0} contracts per module ({1}{2})", Qty(), StepUpOn ? "step-up on" : string.Format("step-up at cushion ${0:0}", FundedStepUpCushion),
 				FundedLadderStep > 0 ? string.Format(", ladder +1 per ${0:0} up to {1}", FundedLadderStep, FundedLadderMax) : "");
-			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += string.Format("\nPAYOUT: profit >= ${0:0} -> request it and withdraw down to ${1:0} profit (the rest is the cushion)", FundedPayoutAt, Math.Max(0, FundedPayoutAt - 500));
+			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += "\nPAYOUT: " + payoutHint;	// text per firm, set in ApplyPreset (round 5 C3)
 			if (AtrStartMax > 0 && !double.IsNaN(atrStartRatio)) txt += string.Format("\nATR ratio {0:0.00}: {1}", atrStartRatio, atrStartRatio < AtrStartMax ? "OK to start a new eval" : "do NOT start a new eval today");
 			Draw.TextFixed(this, "NQM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
 		}

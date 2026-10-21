@@ -1,5 +1,53 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★★★★★★★★ 2026-10-21: plan de cuentas (ronda 5)
+
+Pedido de Federico: más pase en evals de 50K, más probabilidad de cobrar por cuenta, más ingreso con buen win rate y poco drawdown, sin overfitting. Solo NQ (sin GoldMaster). Insumos: `research/mine/prop_wf_report.md` (optimizador walk-forward de políticas: ninguna aceptada), `prop_survey_report.md` + `propfirms_2026-10-21.md` (firmas que permiten bots), `b13_report.md` (lote 13: 0 sobrevivientes). Pruebas de integración: bootstrap pareado, 1.000 caminos por corte, fees con cupón y de lista (`research/mine/integ_*.py` / `integ_*.json`). La configuración exacta de cada cuenta está en `RUNBOOK_OPERACION.md`, que manda sobre esta guía.
+
+**Regla fijada antes de correr:** una plaza o eval nueva reemplaza a la actual solo si, con 35% menos edge, en 2020-23 y en 2024-26 y con los dos niveles de fee, la mediana de la ganancia pareada es > 0 con P ≥ 0,80 y su P(año negativo) no empeora más de 3 puntos (MFFU: además no puede perder más de $100/mes extra sin edge). Nada nuevo pasó: **el plan sigue siendo 5 Lucid Flex 150K + 3 MFFU Rapid EOD 50K**.
+
+### Plazas (cifras de investigación, paridad NT pendiente; 2020-23 / 2024-26)
+
+| Plaza | Cantidad | Preset | Fondeada ≤22 días (hasta 3 evals) | $/mes por plaza: edge completo | con 35% menos | sin edge | P(año negativo) con 35% menos |
+|---|---|---|---|---|---|---|---|
+| Lucid Flex 150K | 5 | `Lucid150K` (eval 6c, fondeada 3c) | 69 / 72% (35% menos 53 / 53%) | 2.467 / 2.260 | 1.423 / 1.406 | −38 / −52 | 3,4 / 4,6% |
+| MFFU Rapid EOD 50K | 3 | `Mffu50K` (eval 1c ×8, fondeada 1c, retiro dejando $4.100) | 41 / 49% (30 / 32%) | 1.414 / 1.163 | 717 / 503 | −131 / −131 | 13,7 / 18,4% |
+| Lucid Pro 50K (alternativa a la 150K si se prioriza el pase de 50K) | 0 | `LucidPro50K` | 88 / 84% (73 / 74%) | 1.209 / 1.131 | 804 / 682 | −42 / −114 | 2,2 / 6,0% |
+| MFFU Builder 50K (condicional) | 0 | Manual | — | 958 / 835 (optimista) | 539 / 452 | −35 / −111 | — |
+| Bulenox Opt1 50K (condicional) | 0 | Manual | — | 855 / 810 (optimista) | 480 / 444 | −49 | — |
+| FundedNext Rapid Pro 50K (desborde) | 0 | `LucidPro50K` en eval + Manual | — | 612 / 645 | 344 / 331 | −120 / −146 | — |
+
+Plan completo (5 L150 + 3 MFFU, mismo camino, escalonadas 5 días), $/mes: edge completo 16.280 / 14.739; con 35% menos 8.838 / 8.610 (p10 2.188 / 2.000, P(año negativo) 4 / 5%); sin edge −699 / −266 con cupón (−1.541 / −1.212 con lista). Presupuesto por plaza (−$4.000 Lucid / −$1.500 MFFU): sin edge el p10 sube a −$2.095 por mes; con 35% menos P(año negativo) 4,6 / 6,1%.
+
+- La 150K le gana a Flex 50K 2c/2c (+$486 / +$553 por mes con 35% menos, P 0,91) y a Pro 50K 4c/1c (+$645 / +$768, P 0,92), pero el CI90 incluye 0: la decisión es "no cambiar", no "la 150K es mejor con 90% de confianza". Flex 50K y Pro 50K empatan entre sí.
+- MFFU eval 2c o 3c no pasa la regla (con 35% menos +$15 a +$50/mes con P 0,55-0,65; sin edge −$105 a −$288/mes). La escalera (`Mffu50KLadder`) queda como **opción**: con 35% menos +$501 / +$306 por mes pero P 0,63 / 0,58, P(año negativo) 30 / 34% contra 16 / 16%.
+
+### Cambios de código (NQMaster.cs; backup `NQMaster_backup_pre_round5.cs`; solo stub C# 5, **sin F5**)
+- **C2, limpieza de plantillas en todos los presets** (no Manual): `EvalMode`, `AdaptiveSize` false; `EvalCushionFull`, `EvalDailyStop`, `FundedCushionSafe`, `FundedCushionFull`, `DailyLossLimit` 0; `FundedHighFull` true; `FundedStepUpCushion`, `FundedLadderStep`, `DailyLossPerContract` 0 salvo con `Mffu50KLadder`; `NewsBlackout` false (Mffu50K lo vuelve a poner en Funded). Mffu50K fondeada fuerza Contracts 1; en eval avisa si Contracts ≠ 1. `HedgeGroup` por firma si está vacío (LUCID / MFFU / FNEXT). El Output imprime una segunda línea `preset ...` con contratos, retiro, escalón, escalera, grupo y apagón de noticias, y un WARNING si `UseOrderFlowBoost` o `VolbReArm` están activos (no se pisan). Consecuencia: el escalón opcional de MFFU (`FundedStepUpCushion` 4000) ahora solo se puede usar con PropPreset Manual.
+- **C3, texto de retiro por firma** en el panel (línea `PAYOUT:`), con la regla exacta del simulador: Flex 50K/25K/150K = min(tope, 50% de la ganancia) con 5 días ≥ $150 / $150 / $250 (topes $2.000 / $1.000 / $3.000); Pro 50K = min(tope, ganancia − 2.100) ≥ $2.000, ≥ 3 días, ciclo ≥ $500, mejor día ≤ 40%, topes 2.000 / 2.500 (Pro 25K: 1.100, 1.000, 1.000 / 1.500); MFFU = retirar hasta dejar FundedPayoutAt − 500; Manual y FundedNext25K = "seguí la regla de la firma en RUNBOOK_OPERACION.md".
+- **C6, guarda entre cuentas reforzada:** el archivo de cada cuenta (`nqmaster_positions\<grupo>_<cuenta>_NQ.txt`) ahora dice `posición;L;S;hora` (L / S = posición o entrada en espera long / short, también órdenes zombi en vivo) y se escribe cada minuto, al colocar, cancelar, rechazar o llenar una entrada (escritura con archivo temporal + reemplazo). Una entrada nueva se bloquea si otra cuenta del grupo tiene la bandera opuesta (posición o entrada en espera); también el re-envío de órdenes estacionadas, la entrada de mercado de VOLB y la orden stop de VOLB, que antes no pasaban por la guarda. Cada barra se cancelan las entradas propias en espera opuestas a una **posición** de otra cuenta. Si igual se llena una entrada con una posición opuesta en otra cuenta: se cierra enseguida (salida del módulo + `FlattenAll` en la barra siguiente si hace falta), alerta `HEDGE GUARD` y Log. Archivos de versiones viejas (`dir;hora`) se siguen leyendo. Todo solo en tiempo real: el backtest y la paridad no cambian.
+  - Detalle de implementación (no estaba en el plan textual): la entrada en espera opuesta de otra cuenta **no** bloquea si esta cuenta también tiene una entrada en espera de ese mismo lado. Con cuentas iguales es el espejo de nuestra propia orden, que la misma señal estaciona acá y en la otra cuenta; bloquearla haría que, por ejemplo, con el stop de VOLB en espera todas las cuentas salteen las entradas opuestas que la investigación toma (estacionando VOLB). Las posiciones opuestas siempre bloquean, y el cierre al llenarse cubre el caso en que la otra cuenta no tome la misma señal.
+
+### Qué no se cambió y por qué
+- Las 5 plazas de Lucid siguen en Flex 150K: ni Flex 50K 2c/2c ni Pro 50K pasan la regla. Lucid Pro 50K queda como alternativa si se prefiere aprobar evals de 50K.
+- Mffu50K por defecto sin cambios de valores (eval 1c ×8, fondeada 1c, retiro dejando $4.100). Sin presets nuevos (Mffu50KFast y MffuBuilder50K retirados).
+- Valores de LucidPro50K, Lucid150K, LucidPro25K, FundedNext25K y Mffu50KLadder: iguales (solo C2 y C3). Lucid50K no fuerza Contracts (las recetas 1c y 2c no coinciden y no está en el plan).
+- Ninguna política de `prop_wf` elegida en 2020-22 entra como default (escalones por colchón o días, stops intradía en eval, retiro lo antes posible + stop 500).
+- Estrategia y módulos: sin cambios (lote 13 con 0 sobrevivientes). GoldMaster: sin uso.
+- Sin código para el objetivo "pegajoso" de los días mínimos de MFFU: se resuelve deshabilitando la estrategia (runbook).
+- No se agregan Tradeify, FTMO Pro, Trading Pit, LucidDaily, Apex ni Topstep (motivos en `propfirms_2026-10-21.md`).
+
+### Riesgos abiertos
+- **Sin compilar en NinjaTrader.** C6 toca `OnExecutionUpdate`, `OnOrderUpdate` y la publicación de archivos: un error ahí puede bloquear entradas legítimas o cerrar de más. Antes de operar con varias cuentas: F5, Playback con 2 cuentas del mismo grupo (una con risk cap activo y otra sin cap), y ninguna posición opuesta simultánea.
+- **Paridad:** las cifras suponen NQMaster.cs = `ultra_d4`; no hay export NT con los ×4 ni con los módulos de 6 años; G4 falló en ICT (82%) y MSEQS (56%) el 16-oct.
+- **MaxOpenContracts** cuenta posiciones + entradas en espera; la simulación solo lotes ejecutados. Lucid150K fondeada (3c, tope 40) y Mffu50K eval (×8, tope 30) pueden cortar más: medir los cortes en las corridas por preset.
+- **Significancia:** la ventaja de la 150K tiene P 0,87-0,92 con CI90 que incluye 0; P(cobrar ≤62 días) y P(año negativo) se comparan sin prueba pareada de proporciones.
+- **La 150K aprueba menos** (una eval 43 / 44% vs 48 / 44% de Pro 50K; con 3 evals 69 / 72% vs 88 / 84%) y quema 2,5-3,3 fondeadas por año con 35% menos: es una elección de ingreso.
+- **Rotación:** ~25% del ingreso de la 150K con 35% menos viene de recomprar después de 5 pagos; la recompra inmediata de Lucid sigue sin confirmar. Live de Lucid ("cierra todas las sim", supuesto conservador): −1,8 a −3,1% de la mediana. Live de MFFU no está modelado.
+- **Fees:** precios con cupón marcados S (150K $215, lista $285). Sin edge el plan pierde −$699 / −$266 por mes con cupón y −$1.541 / −$1.212 con lista. El presupuesto por plaza se eligió entre 3 valores ya vistos.
+- **No simulado:** el apagón de noticias de MFFU (−1,5 a −6,8% del P&L), la regla de límite de precio −2% de MFFU, los trades simbólicos de días mínimos y C6 (puede sacar algunos trades).
+- **Liquidez:** 5 L150 + 3 MFFU quedan dentro del caso de 10 cuentas de `liquidity.csv` (3,8% del volumen mediano del minuto en LON, 7,8% en p10). Si se suman Bulenox o FundedNext, revisar los módulos nocturnos.
+
 ## ★★★★★★★★★★★★★★★★ 2026-10-21: ronda 4 — promediar entradas, literatura clásica, resultados de mega-caps, ORB con delta (elegir 2019-22, comparar 2023-26)
 
 Pedidos: "¿promediar la entrada sirve?", "buscá estrategias que no hayas probado, verificá en 2019-2023 y compará en 2023-2026", "el ORB de Fabio Valentini con delta de volumen, ¿sirve o ya está?", "creá estrategias con patrones, volumen, delta, heatmap". Protocolo igual que antes (más el control 2010-18 normalizado por costos, +4 ticks, meseta, portafolio con filtro de conflictos). **Resultado: 0 cambios al edge en 4 líneas (~17.000 celdas).** Lucid Pro 50K del 20-oct: ver `RUNBOOK_OPERACION.md` (preset `LucidPro50K`).

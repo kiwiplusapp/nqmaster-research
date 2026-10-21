@@ -1,0 +1,242 @@
+{
+ "hc0.0 | T1 | coupon | rot": {
+  "med": 16280,
+  "p10": 9529,
+  "p25": 13042,
+  "p90": 23086,
+  "Pneg": 0.0,
+  "luc_med": 12033,
+  "mffu_med": 4169,
+  "grads_per_yr": 0.0
+ },
+ "hc0.0 | T1 | coupon | grad": {
+  "med": 15884,
+  "p10": 9244,
+  "p25": 12571,
+  "p90": 22712,
+  "Pneg": 0.0,
+  "luc_med": 11596,
+  "mffu_med": 4169,
+  "grads_per_yr": 2.0
+ },
+ "hc0.0 | T1 | list | rot": {
+  "med": 16032,
+  "p10": 9267,
+  "p25": 12791,
+  "p90": 22834,
+  "Pneg": 0.0,
+  "luc_med": 11756,
+  "mffu_med": 4169,
+  "grads_per_yr": 0.0
+ },
+ "hc0.0 | T1 | list | grad": {
+  "med": 15629,
+  "p10": 8968,
+  "p25": 12337,
+  "p90": 22472,
+  "Pneg": 0.0,
+  "luc_med": 11378,
+  "mffu_med": 4169,
+  "grads_per_yr": 2.0
+ },
+ "hc0.0 | T2 | coupon | rot": {
+  "med": 14739,
+  "p10": 7238,
+  "p25": 10899,
+  "p90": 21717,
+  "Pneg": 0.4,
+  "luc_med": 11252,
+  "mffu_med": 3479,
+  "grads_per_yr": 0.0
+ },
+ "hc0.0 | T2 | coupon | grad": {
+  "med": 14279,
+  "p10": 6751,
+  "p25": 10728,
+  "p90": 21414,
+  "Pneg": 0.4,
+  "luc_med": 10931,
+  "mffu_med": 3479,
+  "grads_per_yr": 1.78
+ },
+ "hc0.0 | T2 | list | rot": {
+  "med": 14407,
+  "p10": 6650,
+  "p25": 10537,
+  "p90": 21418,
+  "Pneg": 0.7,
+  "luc_med": 10916,
+  "mffu_med": 3479,
+  "grads_per_yr": 0.0
+ },
+ "hc0.0 | T2 | list | grad": {
+  "med": 13919,
+  "p10": 6227,
+  "p25": 10328,
+  "p90": 21068,
+  "Pneg": 0.7,
+  "luc_med": 10569,
+  "mffu_med": 3479,
+  "grads_per_yr": 1.78
+ },
+ "hc0.35 | T1 | coupon | rot": {
+  "med": 8838,
+  "p10": 2188,
+  "p25": 5598,
+  "p90": 15935,
+  "Pneg": 4.0,
+  "luc_med": 6824,
+  "mffu_med": 2046,
+  "grads_per_yr": 0.0
+ },
+ "hc0.35 | T1 | coupon | grad": {
+  "med": 8678,
+  "p10": 2188,
+  "p25": 5475,
+  "p90": 15717,
+  "Pneg": 4.0,
+  "luc_med": 6680,
+  "mffu_med": 2046,
+  "grads_per_yr": 1.06
+ },
+ "hc0.35 | T1 | list | rot": {
+  "med": 8436,
+  "p10": 1653,
+  "p25": 5166,
+  "p90": 15581,
+  "Pneg": 5.3,
+  "luc_med": 6416,
+  "mffu_med": 2046,
+  "grads_per_yr": 0.0
+ },
+ "hc0.35 | T1 | list | grad": {
+  "med": 8237,
+  "p10": 1653,
+  "p25": 5037,
+  "p90": 15354,
+  "Pneg": 5.4,
+  "luc_med": 6272,
+  "mffu_med": 2046,
+  "grads_per_yr": 1.06
+ },
+ "hc0.35 | T2 | coupon | rot": {
+  "med": 8610,
+  "p10": 2000,
+  "p25": 5146,
+  "p90": 16058,
+  "Pneg": 5.0,
+  "luc_med": 7077,
+  "mffu_med": 1550,
+  "grads_per_yr": 0.0
+ },
+ "hc0.35 | T2 | coupon | grad": {
+  "med": 8426,
+  "p10": 1889,
+  "p25": 4892,
+  "p90": 15813,
+  "Pneg": 5.0,
+  "luc_med": 6915,
+  "mffu_med": 1550,
+  "grads_per_yr": 1.04
+ },
+ "hc0.35 | T2 | list | rot": {
+  "med": 8127,
+  "p10": 1375,
+  "p25": 4519,
+  "p90": 15662,
+  "Pneg": 6.3,
+  "luc_med": 6591,
+  "mffu_med": 1550,
+  "grads_per_yr": 0.0
+ },
+ "hc0.35 | T2 | list | grad": {
+  "med": 7909,
+  "p10": 1275,
+  "p25": 4247,
+  "p90": 15411,
+  "Pneg": 6.3,
+  "luc_med": 6419,
+  "mffu_med": 1550,
+  "grads_per_yr": 1.04
+ },
+ "hc1.0 | T1 | coupon | rot": {
+  "med": -699,
+  "p10": -3660,
+  "p25": -2570,
+  "p90": 5496,
+  "Pneg": 55.6,
+  "luc_med": -348,
+  "mffu_med": -392,
+  "grads_per_yr": 0.0
+ },
+ "hc1.0 | T1 | coupon | grad": {
+  "med": -699,
+  "p10": -3660,
+  "p25": -2570,
+  "p90": 5456,
+  "Pneg": 55.6,
+  "luc_med": -348,
+  "mffu_med": -392,
+  "grads_per_yr": 0.18
+ },
+ "hc1.0 | T1 | list | rot": {
+  "med": -1541,
+  "p10": -4725,
+  "p25": -3539,
+  "p90": 4844,
+  "Pneg": 62.3,
+  "luc_med": -1176,
+  "mffu_med": -392,
+  "grads_per_yr": 0.0
+ },
+ "hc1.0 | T1 | list | grad": {
+  "med": -1541,
+  "p10": -4725,
+  "p25": -3539,
+  "p90": 4740,
+  "Pneg": 62.3,
+  "luc_med": -1176,
+  "mffu_med": -392,
+  "grads_per_yr": 0.18
+ },
+ "hc1.0 | T2 | coupon | rot": {
+  "med": -266,
+  "p10": -4005,
+  "p25": -2742,
+  "p90": 4945,
+  "Pneg": 52.3,
+  "luc_med": 34,
+  "mffu_med": -392,
+  "grads_per_yr": 0.0
+ },
+ "hc1.0 | T2 | coupon | grad": {
+  "med": -274,
+  "p10": -4005,
+  "p25": -2742,
+  "p90": 4944,
+  "Pneg": 52.4,
+  "luc_med": -29,
+  "mffu_med": -392,
+  "grads_per_yr": 0.2
+ },
+ "hc1.0 | T2 | list | rot": {
+  "med": -1212,
+  "p10": -5185,
+  "p25": -3841,
+  "p90": 4233,
+  "Pneg": 60.0,
+  "luc_med": -904,
+  "mffu_med": -392,
+  "grads_per_yr": 0.0
+ },
+ "hc1.0 | T2 | list | grad": {
+  "med": -1217,
+  "p10": -5185,
+  "p25": -3841,
+  "p90": 4212,
+  "Pneg": 60.5,
+  "luc_med": -962,
+  "mffu_med": -392,
+  "grads_per_yr": 0.2
+ }
+}
