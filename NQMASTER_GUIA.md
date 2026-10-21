@@ -1,5 +1,23 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★★★★★★★ 2026-10-21: ronda 4 — promediar entradas, literatura clásica, resultados de mega-caps, ORB con delta (elegir 2019-22, comparar 2023-26)
+
+Pedidos: "¿promediar la entrada sirve?", "buscá estrategias que no hayas probado, verificá en 2019-2023 y compará en 2023-2026", "el ORB de Fabio Valentini con delta de volumen, ¿sirve o ya está?", "creá estrategias con patrones, volumen, delta, heatmap". Protocolo igual que antes (más el control 2010-18 normalizado por costos, +4 ticks, meseta, portafolio con filtro de conflictos). **Resultado: 0 cambios al edge en 4 líneas (~17.000 celdas).** Lucid Pro 50K del 20-oct: ver `RUNBOOK_OPERACION.md` (preset `LucidPro50K`).
+
+| Línea | Celdas | Resultado | Informe |
+|---|---|---|---|
+| Promediar entradas (mitad a mejor precio, agregar a favor, piramidar, todo límite, segunda mitad N min después; 23 módulos) | 338 | **0**. A mejor precio: WR +1-3 pts pero la 2ª mitad se llena más en los perdedores, $ −10..−47%; piramidar con stop a la entrada: WR −16..−39 pts; todo límite: pierde 26-62% de las señales (selección adversa). P(mejora 2023-26 \| mejoró 2019-22) 24% = azar. Para 1 contrato ni aplica | `avg_entry_report.md` |
+| Literatura clásica: Williams (Oops, Smash, inside/outside), Raschke/Connors (Turtle Soup+1, 80-20, Pinball, Holy Grail, Anti, Double 7, %b, R3), Crabel (NR/stretch), Taylor, tipos de apertura de Steidlmayer | 3.105 | **0**. 12 familias mediana PF 0,6-1,1. Open-drive con tendencia es real (PF 1,8/1,9/1,3/1,2) pero corr 0,3 con MOM1030/ORB60/VOLB: no suma Sharpe. Smash Day: Sharpe +0,05 pero peor mes +13%; con tendencia PF 2-4 y 8 trades/año → vigilancia | `b11_report.md` |
+| Resultados de mega-caps (9 tickers, fechas de 8-K de la SEC 2009-26) y rebalanceos del Nasdaq-100 | 1.218 | **0**. El gap del día siguiente se revirtió en 2010-22 (fade PF 1,47) y continúa en 2023-26 (follow 1,53): régimen, no regla. El default ya rinde más esos días (PF 1,75/1,45 vs 1,54/1,44); saltar o doblar empeora. Post-hoc: ORB60 ×2 el día después (+$75/mes) → revisión de enero | `earn_lab_report.md` |
+| ORB + delta (delta real de ticks 2025-05→2026-10: 9.792 celdas; proxy de barra 2010-26, corr 0,6 con el delta real: 2.208) + absorción, divergencia, flip en VWAP, clímax | 12.000 | **0**. El delta en el minuto de ruptura no hace nada; el delta de sesión a favor sube el PF pero recorta 50-70% de los trades y los ORB base pierden; 1 sobreviviente real (ORB15 + delta 15 min) con DD +20% en el portafolio y sin historia antes de 2025; los 4 sobrevivientes del proxy son ORB60 con tendencia (= ORB60 de la casa) y bajan el Sharpe. FabioOrb (FundedSync) PF 1,14 en 2026 es coherente con un ORB de todos los días + delta (PF 1,1-1,4) vs ORB60 en días de pullback (1,9-2,4). Heatmap: necesita profundidad del libro, no disponible | `delta_report.md` |
+
+### Robustez operativa (mismo día)
+- Barras faltantes: los módulos de reloj exigen la barra exacta del minuto (igual que la investigación); pasa en 0,4-1,2% de las sesiones nocturnas; no se cambia (cambiarlo rompe la paridad).
+- Runbook: sección "qué pasa si se cae la PC" (stops/targets viven en el broker; salidas por tiempo y cierre 15:55 no; recuperación al reiniciar).
+
+### Conclusión
+Cuatro rondas en tres días (~190.000 celdas) con el mismo resultado: el edge por trade está en su techo y las ideas populares (promediar, delta, patrones clásicos, noticias, eventos) o ya están dentro del sistema, o no tienen edge en NQ intradía, o cambian de signo entre regímenes. Lo que queda por medir es la ejecución en vivo (slippage real), que ningún backtest puede dar.
+
 ## ★★★★★★★★★★★★★★★ 2026-10-19 (noche): bucle "mejorar todo sin excepciones" — 7 líneas de investigación, 0 cambios al edge, 1 hallazgo operativo
 
 Pedido: "menor drawdown, más trades, mejor win rate, PF igual o mayor, robusto, sin overfitting; buscá, implementá, testeá y repetí". Se corrieron 7 líneas en paralelo con protocolo preregistrado (elegir en 2020-23, confirmar en 2024-26 y en 2010-19 normalizado por costos, +4 ticks, meseta, portafolio con filtro de conflictos). Resultado honesto: **ninguna cambia el edge**; el sistema está en su techo por trade. Lo que sí salió es un hallazgo operativo (el reloj) y un nivel honesto de planificación.
