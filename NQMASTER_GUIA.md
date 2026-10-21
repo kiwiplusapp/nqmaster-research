@@ -1,5 +1,15 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## 2026-10-21: cuentas de simulación (Sim101 / Playback)
+
+En tiempo real, NQMaster lee el saldo de la cuenta del gráfico para el colchón, el umbral, el aviso de PAYOUT, el objetivo de la evaluación y los stops diarios. `StartBalance` es solo la referencia; el saldo lo lee de la cuenta.
+
+En una cuenta de simulación de NinjaTrader (Sim101 arranca en $100.000 y guarda su propio historial), ese saldo no tiene nada que ver con la cuenta de fondeo. Ejemplo: Sim101 con $51.426 y el preset Lucid25K daba un colchón de $26.326.
+
+Ahora, en cuentas cuyo nombre empieza con `Sim` o `Playback`, el saldo se rebasa una vez al pasar a tiempo real: el patrimonio sigue desde `StartBalance` + la ganancia propia de la estrategia en el backtest, y se le suman los cambios reales de la cuenta. El panel muestra "sim account rebased" y el Output imprime "SIM ACCOUNT ...". Las cuentas reales de fondeo se leen sin cambios.
+
+El backtest no simula retiros: la ganancia del panel es la acumulada total. Para contar payouts, exportar los trades y simularlos con la regla de la firma.
+
 ## ★★★★★★★★★★★★★★★★★ 2026-10-21: plan de cuentas (ronda 5)
 
 Pedido de Federico: más pase en evals de 50K, más probabilidad de cobrar por cuenta, más ingreso con buen win rate y poco drawdown, sin overfitting. Solo NQ (sin GoldMaster). Insumos: `research/mine/prop_wf_report.md` (optimizador walk-forward de políticas: ninguna aceptada), `prop_survey_report.md` + `propfirms_2026-10-21.md` (firmas que permiten bots), `b13_report.md` (lote 13: 0 sobrevivientes). Pruebas de integración: bootstrap pareado, 1.000 caminos por corte, fees con cupón y de lista (`research/mine/integ_*.py` / `integ_*.json`). La configuración exacta de cada cuenta está en `RUNBOOK_OPERACION.md`, que manda sobre esta guía.

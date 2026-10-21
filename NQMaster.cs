@@ -1307,7 +1307,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private int evalDayIndex = -1; private double evalEqDayStart, evalPnlBase = double.NaN;
 		private double EvalEquity()
 		{
-			if (State == State.Realtime) return Account.Get(AccountItem.CashValue, Currency.UsDollar) - StartBalance;
+			if (State == State.Realtime) return AcctCash() - StartBalance;
 			return double.IsNaN(evalPnlBase) ? 0 : netPnl - evalPnlBase;
 		}
 		private void EvalSessionStart(DateTime tradeDay)
@@ -1723,9 +1723,23 @@ namespace NinjaTrader.NinjaScript.Strategies
 			try { File.WriteAllText(PropFile, string.Format(CultureInfo.InvariantCulture, "{0:0.00};{1};{2:0.00};{3:0.00};{4:0.00}", propPeak, tradeDay, propDayStart, propBestDay, PropPeakOverride)); } catch { }
 		}
 		private string PropFile { get { try { return Path.Combine(Core.Globals.UserDataDir, "nqmaster_prop_" + (Account != null ? Account.Name : "acct") + ".txt"); } catch { return null; } } }
+		// 2026-10-21: realtime prop equity comes from the account's cash. On a NinjaTrader simulation / playback account (Sim101 starts at
+		// $100,000 and keeps its own history) that cash has nothing to do with the prop account, so cushion, threshold, payout and eval
+		// target were wrong (Federico's chart: Sim account at $51,426 -> cushion $26,326 on a 25K preset). Sim/playback accounts are
+		// rebased once at the first realtime read: equity continues from StartBalance + the strategy's own P&L; the account's later
+		// realized changes are added on top. Real prop accounts (Rithmic/Tradovate names) are read unchanged.
+		private double simOff = double.NaN;
+		private bool SimAccount { get { string n = Account != null ? Account.Name ?? "" : ""; return n.StartsWith("Sim") || n.StartsWith("Playback"); } }
+		private double AcctCash()
+		{
+			double c = Account.Get(AccountItem.CashValue, Currency.UsDollar);
+			if (!SimAccount) return c;
+			if (double.IsNaN(simOff)) { simOff = StartBalance + netPnl - c; Log(string.Format("SIM ACCOUNT {0}: cash {1:0} rebased to {2:0} (StartBalance {3:0} + strategy P&L {4:0})", Account.Name, c, c + simOff, StartBalance, netPnl)); }
+			return c + simOff;
+		}
 		private double PropEquity()
 		{
-			if (State == State.Realtime) return Account.Get(AccountItem.CashValue, Currency.UsDollar);
+			if (State == State.Realtime) return AcctCash();
 			return StartBalance + netPnl;
 		}
 		private void PropGoLive()
@@ -1814,7 +1828,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			double lossStop = evalMode ? EvalDailyStop : (PropMode == NQMasterPropMode.Funded && DailyLossPerContract > 0 ? DailyLossPerContract * Math.Max(1, edgeDayQty) : 0);
 			double profitStop = evalMode ? EvalProfitStop : (PropMode == NQMasterPropMode.Funded ? FundedProfitStop : 0);
 			if ((lossStop <= 0 && profitStop <= 0) || propStopped || double.IsNaN(propDayStart)) return;
-			double now = State == State.Realtime ? Account.Get(AccountItem.CashValue, Currency.UsDollar) + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar)
+			double now = State == State.Realtime ? AcctCash() + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar)
 				: StartBalance + netPnl + (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Closes[0][0]));
 			if (lossStop > 0 && !evalMode && State != State.Realtime && Position.MarketPosition != MarketPosition.Flat)
 			{	// historical: mirror the research (minute low of the day's equity) with the bar's adverse extreme
@@ -1874,7 +1888,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void AccountGuard()
 		{
 			if (State != State.Realtime) return;
-			double bal = Account.Get(AccountItem.CashValue, Currency.UsDollar);
+			double bal = AcctCash();
 			if (double.IsNaN(highWater) || bal > highWater) highWater = bal;
 			if (EvalTarget > 0 && !targetHit && PropMode != NQMasterPropMode.Funded)
 			{
@@ -2085,7 +2099,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (exitMod != null)
 			{
 				exitMod.OpenQty = Math.Max(0, exitMod.OpenQty - quantity); if (exitMod.OpenQty == 0) exitMod.InTrade = false;
-				Log(string.Format("{0} exit fill: {1} x{2} @ {3}{4}", exitMod.Sig, execution.Order.Name, quantity, Fmt(price), State == State.Realtime ? string.Format(" | account cash {0:0}", Account.Get(AccountItem.CashValue, Currency.UsDollar)) : ""));
+				Log(string.Format("{0} exit fill: {1} x{2} @ {3}{4}", exitMod.Sig, execution.Order.Name, quantity, Fmt(price), State == State.Realtime ? string.Format(" | account cash {0:0}", AcctCash()) : ""));
 				// research/mine/reentry_lab.py (2026-10-17): VOLB 2R re-armed once after a stop-out (not after the break-even stop), same levels, either
 				// side, before 15:00: 181 trades 2020-26, PF 1.52 / 1.32 (T1 / T2), +$58 per month per contract, Sharpe up in both periods, but max DD +6%
 				// (protocol limit +5%) -> opt-in only (VolbReArm)
@@ -2143,8 +2157,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (shortSession) txt += string.Format("\nShort session: closes {0:00}:{1:00} ET", sessEndMin / 60, sessEndMin % 60);
 			if (UseOrderFlowBoost) txt += "\n" + OfStatus();
 			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / edgeH, edgeDays, edgeFbLeft > 0 ? string.Format(" | FALLBACK {0} days left", edgeFbLeft) : (edgeAlarm ? " | ALARM" : ""));
-			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1}{4} | cushion ${2:0} (threshold ${3:0})", PropMode, gate, propCushion, propThr,
-				PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable ? " (Estable)" : "");
+			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1}{4} | cushion ${2:0} (threshold ${3:0}){5}", PropMode, gate, propCushion, propThr,
+				PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable ? " (Estable)" : "",
+				State == State.Realtime && SimAccount ? " | sim account rebased" : "");
 			if (PropMode != NQMasterPropMode.Off && RiskCapPerContract > 0) txt += string.Format("\nRisk cap ${0:0}/contract: {1} (cushion ${2:0} vs ${3:0}) | skipped {4}", RiskCapPerContract,
 				RiskCapActive ? "ACTIVE" : "off", propCushion, PropMode == NQMasterPropMode.Eval ? EvalRiskCapCushion : FundedRiskCapCushion, riskSkips);
 			if (PropMode == NQMasterPropMode.Funded && FundedStepUpCushion > 0) txt += string.Format("\nSize: {0} contracts per module ({1}{2})", Qty(), StepUpOn ? "step-up on" : string.Format("step-up at cushion ${0:0}", FundedStepUpCushion),
