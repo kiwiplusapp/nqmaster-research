@@ -81,6 +81,13 @@ Rangos normales por contrato base en 2027 (edge completo, 2020-26): mes p10 −$
 - Cada enero: pedime que corra `research/mine/robust16.py` y actualice la tabla `FallbackList` del año.
 - Lista de vigilancia para la revisión de enero (frágiles en la perturbación o con PF < 1 en 2026): REV06, LATE15, CAM3, LF0430, MSEQ, MOM1030, ON07, CRT11, VW13, ICT. No se apagan por un mal año; se apagan si fallan en la revisión de 5 años normalizada.
 
+## Qué pasa si se cae la PC, la conexión o NinjaTrader
+
+- **Stops y targets viven en el broker**: NQMaster los manda con `SetStopLoss` / `SetProfitTarget` al llenarse cada entrada, así que una posición abierta sigue protegida aunque la PC se apague. Lo que NO se ejecuta sin la PC: las salidas por tiempo (`MaxHold`), el cierre a las 15:55 y el break-even de VOLB. La firma cierra sola a las 16:10 (MFFU) / 16:59 (Lucid), así que el peor caso es una posición que corre hasta su stop, target o el cierre de la firma.
+- **Al volver**: arrancá la estrategia en el mismo gráfico con **Days to load ≥ 45**. NQMaster recupera el inicio del día y el pico de la cuenta desde `nqmaster_prop_<cuenta>.txt`; las órdenes que quedaron en el broker las sincroniza `AccountSyncGuard` (si la cuenta y la estrategia no coinciden, aplana y se detiene: revisá antes de reactivar). Las entradas pendientes de la sesión se cancelan al reiniciar (`SkipShortSessions`), no se re-emiten.
+- **Barras que faltan** (minuto sin operaciones o hueco del feed): un módulo de reloj entra solo si existe la barra de su minuto; si falta, ese día no opera. Es el mismo criterio de la investigación (coincidencia exacta del minuto) y pasa en 0,4-1,2% de las sesiones nocturnas. Una barra procesada más de 2 minutos tarde tampoco genera entradas (`LateBar`). No hay que cambiar nada.
+- **Dos PCs**: `tools/instalar_en_pc.ps1` instala la misma versión; nunca corras la misma cuenta desde las dos PCs a la vez.
+
 ## Cumplimiento (releer antes de cada cuenta nueva)
 
 Detalle con fuentes y fechas en `research/mine/propfirms_check_2026-10-16.md`.
