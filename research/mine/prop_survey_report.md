@@ -132,3 +132,35 @@ Income is decided by the funded payout rules, not the eval: uncapped daily payou
 - **The funded model is generic:** it reuses no house lifecycle (one account, no re-buy after a funded bust, a fixed payout policy). Per-seat lifecycles with re-buys (acct1c_lib / mffu_rapid) earn more per month; compare plans with each other, not with those numbers.
 - **Prices change weekly** (coupons). The per-$ ranking uses the prices in the JSON.
 - **Coordination:** no eval/funded policy was received from the prop_wf optimizer during this run, so fixed sizes were used.
+
+## Cross-check with prop_wf (optimizer agent, prop_wf_report.md, 2026-10-21)
+- **The two serial numbers measure different things:**
+  - Here: unlimited re-buys inside 22 trading days, T2 = starts 2024-01... At k = 4 that averages ~2 evals and reaches 95-99% on T2.
+  - prop_wf: at most 3 evals inside 22 days, T2 = 2023-01..2026-09, block bootstrap. It gives P(funded <= 22 d), full edge / -35%:
+
+    | Plan | Full edge | -35% |
+    |---|---|---|
+    | Lucid Pro 4c | 83.5% | 74.3% |
+    | FundedNext Rapid Pro 4c | 83.5% | 74.3% |
+    | Bulenox Opt1 4c | 78.1% | 68.4% |
+    | MFFU Builder 3c | 80.2% | 63.7% |
+    | Lucid Flex 2c | 74.5% | 58.4% |
+    | MFFU Rapid EOD 3c | 72.0% | 52.5% |
+
+  Use the prop_wf numbers as the budget-capped planning level. The ranking is the same.
+- **prop_wf accepted no new policy on any 50K plan:**
+  - Fixed eval size, no intraday account stop: stops of $600 / $900 / $1,200 cost 0-17 points.
+  - Funded payout ASAP + a $500 daily profit stop raises early payouts but cuts 12-month cash by 24-41%.
+  - These sizes agree with the k chosen here.
+- **Seat median $/month (prop_wf, re-buys, house funded policies), T1/T2:**
+
+  | Plan | Full edge | -35% |
+  |---|---|---|
+  | Lucid Flex | 1,580/1,439 | 905/799 |
+  | MFFU Rapid | 1,415/1,216 | 761/489 |
+  | Lucid Pro | 1,209/1,131 | 795/732 |
+  | MFFU Builder | 958/835 | - |
+  | Bulenox Opt1 | 855/810 | - |
+  | FundedNext Rapid Pro | 612/645 | - |
+
+  The seat model (with re-buys) ranks MFFU Rapid and Lucid Flex above Lucid Pro on income. The one-account 12-month view above also puts MFFU first. Both agree that FundedNext Rapid Pro and Bulenox are diversification / overflow seats, not income leaders.
