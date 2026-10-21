@@ -1,0 +1,36 @@
+{
+ "cl_all": {
+  "minutes": 511546,
+  "corr_1m": 0.544,
+  "sign_agree_1m": 0.69,
+  "corr_15m_sum": 0.53
+ },
+ "cl_rth": {
+  "minutes": 142995,
+  "corr_1m": 0.565,
+  "sign_agree_1m": 0.711,
+  "corr_15m_sum": 0.548
+ },
+ "cl_cum90_0930": {
+  "days": 373,
+  "corr": 0.509,
+  "sign_agree": 0.657
+ },
+ "tr_all": {
+  "minutes": 511546,
+  "corr_1m": 0.608,
+  "sign_agree_1m": 0.764,
+  "corr_15m_sum": 0.598
+ },
+ "tr_rth": {
+  "minutes": 142995,
+  "corr_1m": 0.625,
+  "sign_agree_1m": 0.79,
+  "corr_15m_sum": 0.605
+ },
+ "tr_cum90_0930": {
+  "days": 373,
+  "corr": 0.609,
+  "sign_agree": 0.743
+ }
+}

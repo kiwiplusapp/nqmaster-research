@@ -37,7 +37,11 @@ try:
     from families11 import FAMILIES11
 except ImportError:
     FAMILIES11 = {}
-FAMILIES = {**OLD, **FAMILIES5, **FAMILIES6, **FAMILIES7, **FAMILIES8, **FAMILIES9, **FAMILIES10, **FAMILIES11}
+try:
+    from families12 import FAMILIES12
+except ImportError:
+    FAMILIES12 = {}
+FAMILIES = {**OLD, **FAMILIES5, **FAMILIES6, **FAMILIES7, **FAMILIES8, **FAMILIES9, **FAMILIES10, **FAMILIES11, **FAMILIES12}
 FLAT = int(os.environ.get("MINE_FLAT", "955")); NORM = float(os.environ.get("MINE_NORM", "0.00345"))   # MINE_NORM: cost as a fraction of the daily ATR (gold 0.0096, gold16 round 2026-10-19)
 T1S = int(os.environ.get("MINE_T1", "20200101")); T2S = int(os.environ.get("MINE_T2", "20240101"))     # period cut-offs (batch 11 used MINE_T1=20190101 MINE_T2=20230101); defaults unchanged
 PARTS_R = (("T1", T1S, T2S), ("T2", T2S, 20991231))
