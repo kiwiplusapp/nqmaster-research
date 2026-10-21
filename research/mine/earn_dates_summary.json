@@ -1,0 +1,75 @@
+{
+ "earnings": {
+  "NVDA": {
+   "n": 71,
+   "first": 20090210,
+   "last": 20260826,
+   "dropped": 5,
+   "years_not_4": {}
+  },
+  "AAPL": {
+   "n": 71,
+   "first": 20090121,
+   "last": 20260730,
+   "dropped": 1,
+   "years_not_4": {}
+  },
+  "MSFT": {
+   "n": 71,
+   "first": 20090122,
+   "last": 20260729,
+   "dropped": 0,
+   "years_not_4": {}
+  },
+  "AMZN": {
+   "n": 71,
+   "first": 20090129,
+   "last": 20260730,
+   "dropped": 1,
+   "years_not_4": {}
+  },
+  "GOOGL": {
+   "n": 71,
+   "first": 20090122,
+   "last": 20260722,
+   "dropped": 4,
+   "years_not_4": {}
+  },
+  "META": {
+   "n": 57,
+   "first": 20120726,
+   "last": 20260729,
+   "dropped": 3,
+   "years_not_4": {
+    "2012": 2
+   }
+  },
+  "TSLA": {
+   "n": 64,
+   "first": 20100804,
+   "last": 20260722,
+   "dropped": 54,
+   "years_not_4": {
+    "2010": 2,
+    "2011": 3
+   }
+  },
+  "AVGO": {
+   "n": 68,
+   "first": 20090903,
+   "last": 20260902,
+   "dropped": 8,
+   "years_not_4": {
+    "2011": 3
+   }
+  },
+  "NFLX": {
+   "n": 72,
+   "first": 20090126,
+   "last": 20261020,
+   "dropped": 7,
+   "years_not_4": {}
+  }
+ },
+ "ndx_rebal": 70
+}
