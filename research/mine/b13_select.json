@@ -277,7 +277,10 @@
    "rate_T2_AB_given_s1": 0.0
   }
  },
- "lookahead": null,
+ "lookahead": {
+  "events": 360,
+  "violations": 0
+ },
  "tables": {
   "dt_fam_win": [
    {

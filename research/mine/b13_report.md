@@ -52,7 +52,12 @@ Federico brought two strategies from videos. This batch tests them with the same
 
 ## Lookahead check
 
-LOOKAHEAD_PLACEHOLDER
+`b13_lookahead.py` sampled 360 events: 6 cells per family, 12 events each, seeded. For each event, every bar after the signal bar was perturbed (prices +137 points, ranges widened, volume x3). ATR, daily trend, RTH VWAP, session VWAP, tf bars and SMA200 were then recomputed from the perturbed data and the generator re-run. The event had to keep its direction, type, price, stop, target and expiry.
+
+- **Touch-resolved events** keep the touch bar and are perturbed from i+2. These are the DT_CONT stop entries, DT_REV limit entries, IB_FADE limits and the IB_BREAK OCO, where the signal bar is the bar before the touch, meaning a resting order that exists from the arming bar.
+- **Pivots** are therefore shown to use only bars up to the confirming bar p2+k.
+
+**0 violations.**
 
 ## Results per family
 

@@ -1,0 +1,201 @@
+{
+ "DT_CONT": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'bar': 5, 'k': 2, 'tol': 0.0, 'win': 'rth', 'filt': 'none', 'b': 0.0, 'st': 'mid', 'R': 1.0}",
+    "n_events": 5804
+   },
+   {
+    "j": 106,
+    "params": "{'bar': 5, 'k': 2, 'tol': 0.02, 'win': 'rth', 'filt': 'none', 'b': 0.05, 'st': 0.25, 'R': 2.0}",
+    "n_events": 7439
+   },
+   {
+    "j": 1257,
+    "params": "{'bar': 15, 'k': 5, 'tol': 0.02, 'win': 'rth', 'filt': 'none', 'b': 0.05, 'st': 0.25, 'R': 1.0}",
+    "n_events": 1002
+   },
+   {
+    "j": 1312,
+    "params": "{'bar': 15, 'k': 5, 'tol': 0.02, 'win': 'on', 'filt': 'vwap', 'b': 0.0, 'st': 0.25, 'R': 2.0}",
+    "n_events": 1981
+   },
+   {
+    "j": 1325,
+    "params": "{'bar': 15, 'k': 5, 'tol': 0.02, 'win': 'on', 'filt': 'sma200', 'b': 0.0, 'st': 0.25, 'R': 0.0}",
+    "n_events": 1294
+   },
+   {
+    "j": 1372,
+    "params": "{'bar': 15, 'k': 5, 'tol': 0.05, 'win': 'rth', 'filt': 'sma200', 'b': 0.0, 'st': 0.25, 'R': 2.0}",
+    "n_events": 1032
+   }
+  ],
+  "events": 72,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "DT_REV": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'bar': 5, 'k': 2, 'tol': 0.0, 'win': 'rth', 'filt': 'none', 'b': 0.0, 'ent': 'stop', 'tgt': 0.5}",
+    "n_events": 5804
+   },
+   {
+    "j": 57,
+    "params": "{'bar': 5, 'k': 2, 'tol': 0.0, 'win': 'on', 'filt': 'none', 'b': 0.05, 'ent': 'lim', 'tgt': 0.5}",
+    "n_events": 7462
+   },
+   {
+    "j": 465,
+    "params": "{'bar': 5, 'k': 5, 'tol': 0.0, 'win': 'on', 'filt': 'sma200', 'b': 0.05, 'ent': 'lim', 'tgt': 0.5}",
+    "n_events": 694
+   },
+   {
+    "j": 706,
+    "params": "{'bar': 5, 'k': 5, 'tol': 0.1, 'win': 'rth', 'filt': 'sma200', 'b': 0.05, 'ent': 'lim', 'tgt': 1.5}",
+    "n_events": 689
+   },
+   {
+    "j": 807,
+    "params": "{'bar': 15, 'k': 2, 'tol': 0.0, 'win': 'rth', 'filt': 'trend', 'b': 0.0, 'ent': 'lim', 'tgt': 0.5}",
+    "n_events": 957
+   },
+   {
+    "j": 1372,
+    "params": "{'bar': 15, 'k': 5, 'tol': 0.05, 'win': 'rth', 'filt': 'sma200', 'b': 0.0, 'ent': 'lim', 'tgt': 1.5}",
+    "n_events": 527
+   }
+  ],
+  "events": 72,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "IB_FADE": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'ib': 30, 'x': 0.0, 'sk': 0.0, 'd': 0.1, 'ent': 'lim', 'tf': 0}",
+    "n_events": 5215
+   },
+   {
+    "j": 39,
+    "params": "{'ib': 30, 'x': 0.0, 'sk': 0.35, 'd': 0.1, 'ent': 'mkt', 'tf': 1}",
+    "n_events": 2457
+   },
+   {
+    "j": 147,
+    "params": "{'ib': 60, 'x': 0.0, 'sk': 0.0, 'd': 0.1, 'ent': 'mkt', 'tf': 1}",
+    "n_events": 2126
+   },
+   {
+    "j": 152,
+    "params": "{'ib': 60, 'x': 0.0, 'sk': 0.0, 'd': 0.3, 'ent': 'lim', 'tf': 0}",
+    "n_events": 1045
+   },
+   {
+    "j": 162,
+    "params": "{'ib': 60, 'x': 0.0, 'sk': 0.15, 'd': 0.2, 'ent': 'mkt', 'tf': 0}",
+    "n_events": 2650
+   },
+   {
+    "j": 264,
+    "params": "{'ib': 60, 'x': 0.1, 'sk': 0.25, 'd': 0.1, 'ent': 'lim', 'tf': 0}",
+    "n_events": 3473
+   }
+  ],
+  "events": 72,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "IB_BREAK": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'ib': 30, 'b': 0.0, 'ctx': 'none', 'st': 'mid', 'R': 1.0}",
+    "n_events": 4149
+   },
+   {
+    "j": 41,
+    "params": "{'ib': 30, 'b': 0.05, 'ctx': 'vwap', 'st': 'opp', 'R': 0.0}",
+    "n_events": 3958
+   },
+   {
+    "j": 45,
+    "params": "{'ib': 30, 'b': 0.05, 'ctx': 'both', 'st': 'opp', 'R': 1.0}",
+    "n_events": 1930
+   },
+   {
+    "j": 55,
+    "params": "{'ib': 30, 'b': 0.1, 'ctx': 'trend', 'st': 'mid', 'R': 2.0}",
+    "n_events": 1825
+   },
+   {
+    "j": 69,
+    "params": "{'ib': 30, 'b': 0.1, 'ctx': 'both', 'st': 'opp', 'R': 1.0}",
+    "n_events": 1791
+   },
+   {
+    "j": 76,
+    "params": "{'ib': 60, 'b': 0.0, 'ctx': 'none', 'st': 'opp', 'R': 2.0}",
+    "n_events": 3798
+   }
+  ],
+  "events": 72,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "IB_RECLAIM": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'ib': 30, 'b': 0.0, 'sk': 0.0, 'tg': 0.0, 'wait': 60, 'tf': 0}",
+    "n_events": 2598
+   },
+   {
+    "j": 17,
+    "params": "{'ib': 30, 'b': 0.0, 'sk': 0.25, 'tg': 1.0, 'wait': 60, 'tf': 1}",
+    "n_events": 1247
+   },
+   {
+    "j": 24,
+    "params": "{'ib': 30, 'b': 0.05, 'sk': 0.0, 'tg': 0.0, 'wait': 60, 'tf': 0}",
+    "n_events": 1896
+   },
+   {
+    "j": 56,
+    "params": "{'ib': 60, 'b': 0.0, 'sk': 0.0, 'tg': 2.0, 'wait': 60, 'tf': 0}",
+    "n_events": 1299
+   },
+   {
+    "j": 70,
+    "params": "{'ib': 60, 'b': 0.0, 'sk': 0.25, 'tg': 2.0, 'wait': 120, 'tf': 0}",
+    "n_events": 2016
+   },
+   {
+    "j": 71,
+    "params": "{'ib': 60, 'b': 0.0, 'sk': 0.25, 'tg': 2.0, 'wait': 120, 'tf': 1}",
+    "n_events": 959
+   }
+  ],
+  "events": 72,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "_total": {
+  "events": 360,
+  "violations": 0
+ }
+}
