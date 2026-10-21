@@ -178,7 +178,19 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// Eval: profit stop = 0.9 x consistency x target (best day must stay under the consistency limit; the old '700 with 1 contract' cost ~9 points of 22-day pass
 		// rate on Lucid 50K), no per-trade risk cap (neutral for passing, it only slows a 25K eval). Funded: per-trade risk cap while the cushion is small.
 		private string payoutHint = "";	// dashboard PAYOUT text per firm (round 5, 2026-10-21: the exact rule of research/mine/prop_wf.py fund())
-		private string PayoutGeneric() { return string.Format("profit >= ${0:0} -> payout: follow the firm rule in RUNBOOK_OPERACION.md", FundedPayoutAt); }
+		private string PayoutGeneric() { return string.Format("ganancia >= ${0:0} -> retiro: seguir la regla de la firma (RUNBOOK_OPERACION.md)", FundedPayoutAt); }
+		private void PresetPrint(string m) { if (!presetQuiet) Print(m); }
+		// ---- retired settings (2026-10-21 cleanup): hidden and forced to the validated values. Each one failed out of sample or was
+		// superseded (memory: order-flow boost, adaptive size, late eval size-up, cushion gating, ATR start check, monitor pause, VOLB re-arm,
+		// MOM1130 / RSI2 / LF0315 / CA04V / GD03 / ENG26 / ENG10 / LATEFH); the edge parameters keep the values every test used.
+		private void ForceRetired()
+		{
+			EvalMode = false; AdaptiveSize = false; UseOrderFlowBoost = false; EvalCushionFull = 0; FundedCushionSafe = 0; FundedCushionFull = 0; FundedHighFull = true;
+			AtrStartMax = 0; EdgeMonitorPause = false; EdgeK = 0; EdgeH = 0; MaxDrawdown = 0; VolbReArm = false;
+			UseMom1130 = false; UseRsi2 = false; UseLf0315 = false; UseCa04v = false; UseGd03 = false; UseEng26 = false; UseEng10 = false; UseLateFh = false;
+			PullbackMaxRet = 0.44; StopCapAtr = 0.35; OrbPriorCloseAtr = 0.10; VolbBreakEven = true; MomAgreement = true; VolbTrendLastEntry = 1047; MinStopAtr = 0.10;
+			UseContextRules = true; UseConfluence = true; IctMultiplier = 2; Vw13Wide = true; Cpi09Multiplier = 4; Mom1030Multiplier = 4;
+		}
 		private void ApplyPreset()
 		{
 			payoutHint = "";
@@ -209,13 +221,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 					StartBalance = 25000; PropTrailingDD = 1000; ConsistencyPct = 50;
 					if (ev) { EvalTarget = 1250; EvalProfitStop = 560; EvalRiskCapCushion = 0; MaxOpenContracts = 20; }
 					else { EvalTarget = 0; RiskCapPerContract = 150; FundedRiskCapCushion = 500; FundedPayoutAt = 1500; MaxOpenContracts = 10; FundedProfitStop = 0; }
-					payoutHint = string.Format("profit >= ${0:0} and 5 days >= $150 in the cycle -> request min($1,000, 50% of profit)", FundedPayoutAt);
+					payoutHint = string.Format("ganancia >= ${0:0} y 5 d\u00edas >= $100 en el ciclo -> pedir min($1.000, 50% de la ganancia)", FundedPayoutAt);
 					break;
 				case NQMasterPropPreset.Lucid50K:
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 50;
 					if (ev) { EvalTarget = 3000; EvalProfitStop = 1350; EvalRiskCapCushion = 0; MaxOpenContracts = 40; EvalHighWrMultiplier = 8; }
 					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 1000; FundedPayoutAt = 4000; MaxOpenContracts = 20; FundedProfitStop = 0; }
-					payoutHint = string.Format("profit >= ${0:0} and 5 days >= $150 in the cycle -> request min($2,000, 50% of profit)", FundedPayoutAt);
+					payoutHint = string.Format("ganancia >= ${0:0} y 5 d\u00edas >= $150 en el ciclo -> pedir min($2.000, 50% de la ganancia)", FundedPayoutAt);
 					break;
 				case NQMasterPropPreset.LucidPro25K:
 				case NQMasterPropPreset.FundedNext25K:
@@ -223,8 +235,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 					// funded within ~22 trading days 90% / 92% (2020-23 / 2024-26; 35% less edge: 83% / 89%); funded account at 1 contract.
 					StartBalance = 25000; PropTrailingDD = 1000; ConsistencyPct = 0;
 					if (ev) { EvalTarget = PropPreset == NQMasterPropPreset.LucidPro25K ? 1250 : 1500; EvalProfitStop = 0; EvalRiskCapCushion = 0; MaxOpenContracts = 20; Contracts = 2; }
-					else { EvalTarget = 0; RiskCapPerContract = 150; FundedRiskCapCushion = 500; FundedPayoutAt = 1500; MaxOpenContracts = 20; FundedProfitStop = 0; Contracts = 1; FundedStepUpCushion = 0; }
-					if (PropPreset == NQMasterPropPreset.LucidPro25K) payoutHint = "request min(cap, profit - 1,100) once that amount is >= $1,000, >= 3 days in the cycle, cycle profit >= $500, best day <= 40% of the cycle; cap 1,000 first payout then 1,500";
+					else { EvalTarget = 0; RiskCapPerContract = 150; FundedRiskCapCushion = 500; FundedPayoutAt = PropPreset == NQMasterPropPreset.LucidPro25K ? 2100 : 1500; MaxOpenContracts = 20; FundedProfitStop = 0; Contracts = 1; FundedStepUpCushion = 0; }	// LucidPro25K: buffer 1,100 + first payout 1,000 (research X 1,000)
+					if (PropPreset == NQMasterPropPreset.LucidPro25K) payoutHint = "pedir min(tope, ganancia - 1.100) cuando eso sea >= $1.000, con >= 3 d\u00edas en el ciclo, ganancia del ciclo >= $500 y mejor d\u00eda <= 40% del ciclo; tope 1.000 el primero, luego 1.500";
 					break;
 				case NQMasterPropPreset.LucidPro50K:
 					// research/mine/lucidpro_week.py (2026-10-20): Lucid Pro 50K (target 3,000, EOD trailing 2,000, no eval consistency, DLL OFF, 40 micros).
@@ -234,7 +246,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 0;
 					if (ev) { EvalTarget = 3000; EvalProfitStop = 0; EvalRiskCapCushion = 0; MaxOpenContracts = 40; Contracts = 4; EvalHighWrMultiplier = 0; }
 					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 1000; FundedPayoutAt = 4100; MaxOpenContracts = 40; FundedProfitStop = 1000; Contracts = 1; FundedStepUpCushion = 0; FundedLadderStep = 0; }
-					payoutHint = "request min(cap, profit - 2,100) once that amount is >= $2,000, >= 3 days in the cycle, cycle profit >= $500, best day <= 40% of the cycle; cap 2,000 first payout then 2,500";
+					payoutHint = "pedir min(tope, ganancia - 2.100) cuando eso sea >= $2.000, con >= 3 d\u00edas en el ciclo, ganancia del ciclo >= $500 y mejor d\u00eda <= 40% del ciclo; tope 2.000 el primero, luego 2.500";
 					break;
 				case NQMasterPropPreset.Lucid150K:
 					// research/mine/acct_150k.py + acct_2027.py: Lucid Flex 150K (target 9,000, EOD trailing 4,500, 50% consistency; funded payout days >= $250,
@@ -243,7 +255,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					StartBalance = 150000; PropTrailingDD = 4500; ConsistencyPct = 50;
 					if (ev) { EvalTarget = 9000; EvalProfitStop = 4050; EvalRiskCapCushion = 0; MaxOpenContracts = 100; Contracts = 6; EvalHighWrMultiplier = 0; }
 					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 1687; FundedPayoutAt = 6000; MaxOpenContracts = 40; FundedProfitStop = 0; Contracts = 3; FundedStepUpCushion = 0; FundedLadderStep = 0; }
-					payoutHint = string.Format("profit >= ${0:0} and 5 days >= $250 in the cycle -> request min($3,000, 50% of profit)", FundedPayoutAt);
+					payoutHint = string.Format("ganancia >= ${0:0} y 5 d\u00edas >= $250 en el ciclo -> pedir min($3.000, 50% de la ganancia)", FundedPayoutAt);
 					break;
 				case NQMasterPropPreset.Mffu50KLadder:
 					// research/mine/ladder_plan.py + ladder_stop.py + code review 2026-10-17: the whole MFFU size-ladder recipe in one setting.
@@ -257,19 +269,17 @@ namespace NinjaTrader.NinjaScript.Strategies
 					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 2000; if (FundedLadderStep <= 0) FundedPayoutAt = FundedStepUpCushion > 0 ? 6600 : 4600; else FundedPayoutAt = Math.Max(FundedPayoutAt, FundedStepUpCushion + (FundedLadderMax - FundedStepUpContracts) * FundedLadderStep + 2600); MaxOpenContracts = 30; FundedProfitStop = 0; }	// ladder on: payout level at least the top of the ladder + 2,600 (11,600 for the K4 / $3,000 recipe; code review 2026-10-17 L1)
 					if (!ev) NewsBlackout = true;	// MFFU funded: no trades or orders +-2 min around Tier-1 news (rule). Payout at $4,600 = keep $4,100; the optional step-up (FundedStepUpCushion 4000 -> $6,600) now needs PropPreset Manual (round 5 C2 resets it here): more median $ but 2x size, +6-7 pts P(negative year) at 35% less edge (c4_cushion.py + red team 2026-10-16), so it is NOT a default
 					if (!ev) Contracts = 1;	// round 5 C2 (b): the simulated MFFU funded policies are 1 contract (the ladder steps up from 1 by itself)
-					else if (Contracts != 1) Print(string.Format("NQMaster | WARNING: Mffu50K eval simulated at Contracts 1 (x8); Contracts is {0}", Contracts));
-					payoutHint = string.Format("profit >= ${0:0} -> request it and withdraw down to ${1:0} profit (the rest is the cushion)", FundedPayoutAt, Math.Max(0, FundedPayoutAt - 500));
+					else if (Contracts != 1) PresetPrint(string.Format("NQMaster | WARNING: Mffu50K eval simulated at Contracts 1 (x8); Contracts is {0}", Contracts));
+					payoutHint = string.Format("ganancia >= ${0:0} -> pedir el retiro y dejar ${1:0} de ganancia en la cuenta (es el colch\u00f3n)", FundedPayoutAt, Math.Max(0, FundedPayoutAt - 500));
 					break;
 			}
 			if (string.IsNullOrEmpty(payoutHint)) payoutHint = PayoutGeneric();	// FundedNext25K (and any preset without its own text)
-			if (FundedLadderStep > 0 && !ev && FundedStepUpCushion <= 0) Print("NQMaster | WARNING: the size ladder needs FundedStepUpCushion > 0 (first step); it is OFF");
-			Print(string.Format("NQMaster | preset {0} ({1}): balance {2:0}, trailing DD {3:0}, eval target {4:0}, profit stop {5:0}, consistency {6:0}%, risk cap {7:0} below cushion {8:0}, max open contracts {9}, MOM1030/CPI09 x{10}",
+			if (FundedLadderStep > 0 && !ev && FundedStepUpCushion <= 0) PresetPrint("NQMaster | WARNING: the size ladder needs FundedStepUpCushion > 0 (first step); it is OFF");
+			PresetPrint(string.Format("NQMaster | preset {0} ({1}): balance {2:0}, trailing DD {3:0}, eval target {4:0}, profit stop {5:0}, consistency {6:0}%, risk cap {7:0} below cushion {8:0}, max open contracts {9}, MOM1030/CPI09 x{10}",
 				PropPreset, PropMode, StartBalance, PropTrailingDD, EvalTarget, EvalProfitStop, ConsistencyPct, RiskCapPerContract, ev ? EvalRiskCapCushion : FundedRiskCapCushion, MaxOpenContracts, HwQty(Mom1030Multiplier)));
-			Print(string.Format("NQMaster | preset {0} ({1}): contracts {2}, payout at {3:0}, step-up cushion {4:0}, ladder step {5:0}, hedge group '{6}', news blackout {7}",
+			PresetPrint(string.Format("NQMaster | preset {0} ({1}): contracts {2}, payout at {3:0}, step-up cushion {4:0}, ladder step {5:0}, hedge group '{6}', news blackout {7}",
 				PropPreset, PropMode, Contracts, FundedPayoutAt, FundedStepUpCushion, FundedLadderStep, HedgeGroup, NewsBlackout ? "on" : "off"));
 			// C2 (d): strategy options, not account settings, and not in the account simulations: warn, never override
-			if (UseOrderFlowBoost) Print("NQMaster | WARNING: UseOrderFlowBoost is ON with an account preset (it is not in the account simulations; it FAILED out of sample)");
-			if (VolbReArm) Print("NQMaster | WARNING: VolbReArm is ON with an account preset (it is not in the account simulations)");
 		}
 		private bool RollDue()
 		{
@@ -387,7 +397,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				OrbPriorCloseAtr = 0.10; VolbBreakEven = true; MomAgreement = true; VolbTrendLastEntry = 1047; VolbReArm = false; NewsBlackout = false; NewsTimes = "";
 				MinStopAtr = 0.10; RiskCapPerContract = 300; EvalRiskCapCushion = 1200; FundedRiskCapCushion = 2000;
 				WarmupDays = 15;
-				PropPreset = NQMasterPropPreset.Manual;
+				PropPreset = NQMasterPropPreset.Manual; CycleSim = true; EvalPrice = 0; ActivationFee = 0;
 				AccountSyncGuard = true; SkipShortSessions = true; MaxOpenContracts = 20; RollGuard = true; LogToFile = true; ModuleHealthReport = true; DisableModules = ""; InactivityAlarm = true; CrossAccountGuard = true; HedgeGroup = "";
 				UseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;
 			}
@@ -418,7 +428,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (DateTime.TryParseExact(raw.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d)) cpiDays.Add(d.Year * 10000 + d.Month * 100 + d.Day);
 					else Print("NQMaster | CPI dates: cannot read '" + raw.Trim() + "' (format yyyy-MM-dd)");
 				}
-				ApplyPreset();
+				ForceRetired();
+				CycleInit();
 				newsEt = new List<DateTime>();
 				foreach (string raw in (BuiltinNews + "," + (NewsTimes ?? "")).Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
 				{
@@ -443,6 +454,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				foreach (Order z in zombies) { try { Order r = GetRealtimeOrder(z); if (r != null && Working(r)) CancelOrder(r); } catch { } }
 				eqPeak = netPnl;	// adaptive size measures the drawdown from the moment the strategy goes live
 				int hq = Math.Max(1, Qty());
+				CycleGoLive();
+				liveStartPnl = netPnl; liveStartTrades = totalTrades; liveStart = ToEt(Times[0][0]);
 				PropGoLive();
 				int lq = Math.Max(1, Qty());	// code review 2026-10-17 M1: entries carried over from history keep the backtest size; re-size them to the live cushion's size
 				if (lq != hq) foreach (Mod m in mods)
@@ -606,6 +619,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				SessionBounds();
 				InactivityDayClose();
 				EdgeDayClose(etOpen);
+				StatDayClose();
 				dayStartPnl = netPnl; dayStopped = false;
 				// the session that just ended: finalize its RTH day, or mark it as a session without a complete RTH day
 				if (dayHasBars) FinalizeRthDay();
@@ -615,6 +629,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				fomcToday = SkipFomc && fomc.Contains(tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day);
 				cpiToday = cpiDays != null && cpiDays.Contains(tradeDay.Year * 10000 + tradeDay.Month * 100 + tradeDay.Day);
 				EvalSessionStart(tradeDay);
+				CycleSessionStart(tradeDay);
 				edgeDayQty = Qty(); edgeDayTradable = !fomcToday && !rollHalt && !PauseActive(); edgeDayDate = tradeDay;		// review F9: blocked days are not counted
 				NewSession();
 				PropSessionStart();
@@ -670,6 +685,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			AccountGuard();
 			DailyLossCheck();
 			PropDailyCheck();
+			CycleBar();
 			if (NewsBlackout && InNews(etClose, 3)) { FlattenAll("news blackout (Tier-1 release)"); status = "NEWS BLACKOUT"; UpdateDashboard(); return; }
 
 			// exits: module time exits, London exit, flatten
@@ -1724,27 +1740,25 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 		private string PropFile { get { try { return Path.Combine(Core.Globals.UserDataDir, "nqmaster_prop_" + (Account != null ? Account.Name : "acct") + ".txt"); } catch { return null; } } }
 		// 2026-10-21: realtime prop equity comes from the account's cash. On a NinjaTrader simulation / playback account (Sim101 starts at
-		// $100,000 and keeps its own history) that cash has nothing to do with the prop account, so cushion, threshold, payout and eval
-		// target were wrong (Federico's chart: Sim account at $51,426 -> cushion $26,326 on a 25K preset). Sim/playback accounts are
-		// rebased once at the first realtime read: equity continues from StartBalance + the strategy's own P&L; the account's later
-		// realized changes are added on top. Real prop accounts (Rithmic/Tradovate names) are read unchanged.
-		private double simOff = double.NaN;
+		// $100,000 and keeps its own history) that cash has nothing to do with the prop account (Federico's chart: Sim at $51,426 -> cushion
+		// $26,326 on a 25K preset), so Sim/Playback accounts use the strategy's own account: start balance + its P&L since the simulated
+		// account started - simulated payouts (the account-cycle simulation keeps running live there). Real prop accounts are read as is.
 		private bool SimAccount { get { string n = Account != null ? Account.Name ?? "" : ""; return n.StartsWith("Sim") || n.StartsWith("Playback"); } }
 		private double AcctCash()
 		{
-			double c = Account.Get(AccountItem.CashValue, Currency.UsDollar);
-			if (!SimAccount) return c;
-			if (double.IsNaN(simOff)) { simOff = StartBalance + netPnl - c; Log(string.Format("SIM ACCOUNT {0}: cash {1:0} rebased to {2:0} (StartBalance {3:0} + strategy P&L {4:0})", Account.Name, c, c + simOff, StartBalance, netPnl)); }
-			return c + simOff;
+			if (SimAccount) return StartBalance + netPnl - CyOffset();
+			return Account.Get(AccountItem.CashValue, Currency.UsDollar);
 		}
+
 		private double PropEquity()
 		{
 			if (State == State.Realtime) return AcctCash();
-			return StartBalance + netPnl;
+			return StartBalance + netPnl - CyOffset();
 		}
 		private void PropGoLive()
 		{
 			if (PropMode == NQMasterPropMode.Off) return;
+			if (SimAccount) return;	// Sim / Playback: keep the backtest's account state (no prop file)
 			propLive = true; propPeak = StartBalance; propDayStart = double.NaN; propBestDay = EvalBestDaySoFar;
 			DateTime et = ToEt(Times[0][0]); DateTime td = et.Hour >= 18 ? et.Date.AddDays(1) : et.Date; int today = td.Year * 10000 + td.Month * 100 + td.Day;
 			try
@@ -1791,6 +1805,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				PropSave(tday);
 				propThr = propPeak >= StartBalance + PropTrailingDD + 100 ? StartBalance + 100 : propPeak - PropTrailingDD;
 				if (PropThresholdOverride > 0) propThr = PropThresholdOverride;
+				if (CyLive) { propPeak = StartBalance + cy.Pk; propThr = StartBalance + cy.Thr; }	// simulated seat: the audited rules engine
 				propCushion = eqRef - propThr;
 				if (PropMode == NQMasterPropMode.Eval) gate = propCushion >= EvalCushionFull ? GateMode.Full : GateMode.Safe;
 				else if (FundedCushionFull > 0) gate = propCushion < FundedCushionSafe ? GateMode.Safe : (propCushion < FundedCushionFull ? GateMode.NoBoost : GateMode.Full);
@@ -1829,10 +1844,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			double profitStop = evalMode ? EvalProfitStop : (PropMode == NQMasterPropMode.Funded ? FundedProfitStop : 0);
 			if ((lossStop <= 0 && profitStop <= 0) || propStopped || double.IsNaN(propDayStart)) return;
 			double now = State == State.Realtime ? AcctCash() + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar)
-				: StartBalance + netPnl + (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Closes[0][0]));
+				: StartBalance + netPnl - CyOffset() + (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Closes[0][0]));
 			if (lossStop > 0 && !evalMode && State != State.Realtime && Position.MarketPosition != MarketPosition.Flat)
 			{	// historical: mirror the research (minute low of the day's equity) with the bar's adverse extreme
-				try { now = Math.Min(now, StartBalance + netPnl + Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Position.MarketPosition == MarketPosition.Long ? Lows[0][0] : Highs[0][0])); } catch { }
+				try { now = Math.Min(now, StartBalance + netPnl - CyOffset() + Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Position.MarketPosition == MarketPosition.Long ? Lows[0][0] : Highs[0][0])); } catch { }
 			}
 			if (lossStop > 0 && now - propDayStart <= -lossStop) { propStopped = true; FlattenAll("prop daily stop"); Log(string.Format("PROP DAILY STOP: {0:0} today (limit {1:0})", now - propDayStart, lossStop)); }
 			else if (profitStop > 0 && now - propDayStart >= profitStop) { propStopped = true; FlattenAll(evalMode ? "eval daily profit stop" : "funded daily profit stop"); Log(string.Format("{0} DAILY PROFIT STOP: +{1:0} today (Lucid consistency)", evalMode ? "EVAL" : "FUNDED", now - propDayStart)); }
@@ -1874,6 +1889,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (rollHalt) { status = "ROLL DATE: move the strategy to the next contract"; return false; }
 			if (newsBlock5 && BarsInProgress == 1) { status = "NEWS BLACKOUT"; return false; }
 			if (fomcToday) { status = "FOMC day: no trading"; return false; }
+			if (cyHalt) { status = cyStatus.Length > 0 ? cyStatus : "simulaci\u00f3n de cuenta: sin operar"; return false; }
 			if (targetHit) { status = "eval target reached"; return false; }
 			if (ddTripped) { status = "drawdown guard"; return false; }
 			if (dayStopped) { status = "daily loss limit"; return false; }
@@ -1890,7 +1906,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (State != State.Realtime) return;
 			double bal = AcctCash();
 			if (double.IsNaN(highWater) || bal > highWater) highWater = bal;
-			if (EvalTarget > 0 && !targetHit && PropMode != NQMasterPropMode.Funded)
+			if (EvalTarget > 0 && !targetHit && PropMode != NQMasterPropMode.Funded && !cyOn)
 			{
 				// Lucid-style consistency: the best day may be at most ConsistencyPct % of the total profit -> the real target can be higher
 				double eqNow = bal + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar);
@@ -2116,6 +2132,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				double pnl = SystemPerformance.AllTrades[i].ProfitCurrency;
 				totalTrades++; netPnl += pnl;
+				StatTrade(pnl, SystemPerformance.AllTrades[i].Commission, Times[0][0]);
 				if (pnl > 0) { totalWins++; grossWin += pnl; } else grossLoss -= pnl;
 				if (netPnl > eqPeak) eqPeak = netPnl;
 			}
@@ -2143,30 +2160,404 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (PrintLog) Print(line);
 			LogFile(line);
 		}
+		// <propcycle> ---- prop-account rules engine (2026-10-21). No NinjaTrader types: tools/propcycle_test feeds the same day paths to
+		// this class and to the research simulators (research/mine/prop_wf.py race(), acct1c_lib.fu_flex / fu_pro, mffu_rapid.fu_m)
+		// and requires identical passes, busts and payouts. All amounts are $ of profit over the start balance.
+		public class PropCycle
+		{
+			public string Firm = "";
+			public int Model;                 // funded payout rule: 0 Lucid Flex, 1 Lucid Pro / FundedNext (buffer), 2 MFFU (keep a balance)
+			public double T, D, Cons, Lock = 100, Q, Cap1, Cap2, X, Buf, PCons = 0.4, Split = 0.9, Fee, Act;
+			public int MinDays = 1, NpMax = 5, CycleMinDays = 3;
+			public bool Funded, Alive;
+			public double Raw, Withdrawn, Pk, DayStart, Best, CycStart, CycBest = -1e9;
+			public int Days, Qd, Nd, Pays;
+			public bool Locked;
+			public double Bal { get { return Raw - Withdrawn; } }
+			public double Thr { get { return (Locked || Pk >= D + Lock) ? Lock : Pk - D; } }
+			public double Cushion { get { return Bal - Thr; } }
+			public void Start(bool funded)
+			{
+				Funded = funded; Alive = true; Raw = 0; Withdrawn = 0; Pk = 0; DayStart = 0; Best = -1e9; CycStart = 0; CycBest = -1e9;
+				Days = 0; Qd = 0; Nd = 0; Pays = 0; Locked = false;
+			}
+			// eval target with the consistency rule (best day <= Cons x total profit)
+			public bool TargetMet(double prof)
+			{
+				if (prof < T) return false;
+				return Cons <= 0 || Math.Max(Best, prof - DayStart) <= Cons * prof;
+			}
+			// intraday, every bar: rawLow / rawClose = strategy P&L since the account start incl. the open position at the bar's adverse
+			// extreme / close. Returns -1 account lost, 1 eval target reached (flatten), 0 nothing.
+			public int Bar(double rawLow, double rawClose)
+			{
+				if (!Alive) return 0;
+				if (rawLow - Withdrawn <= Thr) { Alive = false; return -1; }
+				if (!Funded && TargetMet(rawClose - Withdrawn)) { Alive = false; return 1; }
+				return 0;
+			}
+			// end of a trading day (flat): returns the payout requested at this close (0 = none)
+			public double DayClose(double rawClose)
+			{
+				Raw = rawClose; Days++;
+				double bal = Bal, c = bal - DayStart, amt = 0;
+				if (!Funded)
+				{
+					if (c > Best) Best = c;
+					if (bal > Pk) Pk = bal;
+					DayStart = bal; return 0;
+				}
+				Nd++;
+				if (bal > Pk) Pk = bal;
+				if (Model == 0)
+				{
+					if (c >= Q) Qd++;
+					if (Qd >= 5 && bal - CycStart > 0 && bal >= X)
+					{
+						double a = Math.Min(Cap1, 0.5 * bal);
+						if (a >= 500) { amt = a; Qd = 0; Locked = true; }
+					}
+				}
+				else if (Model == 1)
+				{
+					if (c > CycBest) CycBest = c;
+					double prof = bal - CycStart, cap = Pays == 0 ? Cap1 : Cap2, a = Math.Min(cap, bal - Buf);
+					if (Nd >= CycleMinDays && prof >= 500 && a >= Math.Max(500, Math.Min(X, cap)) && CycBest <= PCons * prof) { amt = a; CycBest = -1e9; Nd = 0; }
+				}
+				else if (bal - X >= 500) amt = bal - X;
+				if (amt > 0) { Withdrawn += amt; Pays++; CycStart = Bal; }
+				DayStart = Bal;
+				if (amt > 0 && NpMax > 0 && Pays >= NpMax) Alive = false;   // last payout: the account moves on (Lucid: to Live) and the seat restarts
+				return amt;
+			}
+			// what is missing for the next payout (dashboard text)
+			public string NextPayout(Func<double, string> usd)
+			{
+				double bal = Bal;
+				if (Model == 0)
+				{
+					string s = "";
+					if (bal < X) s += "faltan " + usd(X - bal) + " de ganancia";
+					if (Qd < 5) s += (s.Length > 0 ? " y " : "faltan ") + (5 - Qd) + " días >= " + usd(Q);
+					if (bal - CycStart <= 0 && Pays > 0) s += (s.Length > 0 ? " y " : "falta ") + "ganancia en el ciclo";
+					return s.Length > 0 ? s : "listo para pedir al cierre";
+				}
+				if (Model == 1)
+				{
+					double cap = Pays == 0 ? Cap1 : Cap2, need = Buf + Math.Max(500, Math.Min(X, cap)), prof = bal - CycStart;
+					string s = "";
+					if (bal < need) s += "faltan " + usd(need - bal) + " de saldo";
+					if (prof < 500) s += (s.Length > 0 ? " y " : "faltan ") + usd(500 - prof) + " de ganancia en el ciclo";
+					if (Nd < CycleMinDays) s += (s.Length > 0 ? " y " : "faltan ") + (CycleMinDays - Nd) + " días";
+					if (prof > 0 && CycBest > PCons * prof) s += (s.Length > 0 ? " y " : "") + "el mejor día supera el " + (PCons * 100).ToString("0") + "% del ciclo";
+					return s.Length > 0 ? s : "listo para pedir al cierre";
+				}
+				return bal >= X + 500 ? "listo para pedir al cierre" : "faltan " + usd(X + 500 - bal) + " de ganancia";
+			}
+		}
+		// </propcycle>
+		// ---- account cycle simulation (2026-10-21, Federico: 'calculate payouts, show them, whether it burned, how many burned, buying a new
+		// eval the next day'). With a firm preset and PropMode Eval/Funded, the backtest runs the whole seat: buy an eval -> pass (flatten at
+		// the target, firm minimum days) or lose it -> next session a new eval (fee) or the funded account (activation) -> payouts at the
+		// close with the firm rule -> lost or completed (last payout) -> new eval. Eval and funded sizes and stops are the preset's, switched
+		// at each phase change. Rules engine = PropCycle (audited against the research simulators by tools/propcycle_test/run_test.py).
+		// Runs on history and, on a Sim/Playback account, live; on a real prop account it stops at go-live (the firm's account is the truth).
+		private PropCycle cy; private bool cyOn, cyStarted, cyHalt, cyFrozen, presetQuiet; private NQMasterPropMode realMode = NQMasterPropMode.Off;
+		private double cyBase; private int cyNext, cyWait, cyEvalN, cyEvPass, cyEvBust, cyFundN, cyFuBust, cyFuDone, cyPayN; private int cySeat = 1;
+		private double cyPayGross, cyPayCash, cyFeeEval, cyFeeAct; private DateTime cyFirst = DateTime.MinValue, cyLastDay = DateTime.MinValue, cyFrozenAt;
+		private string cyStatus = ""; private List<string> cyEvents = new List<string>();
+		private double[] presetSnap;
+		private bool CyLive { get { return cy != null && cyOn && cy.Alive; } }
+		private double CyOffset() { return cy != null && cyStarted ? cyBase + cy.Withdrawn : 0; }
+		// every account setting ApplyPreset() writes: restored before each phase change so a phase never inherits the other phase's values
+		private double[] SnapPreset()
+		{
+			return new double[] { EvalMode ? 1 : 0, AdaptiveSize ? 1 : 0, EvalCushionFull, EvalDailyStop, FundedCushionSafe, FundedCushionFull, FundedHighFull ? 1 : 0,
+				DailyLossLimit, FundedStepUpCushion, FundedLadderStep, DailyLossPerContract, NewsBlackout ? 1 : 0, StartBalance, PropTrailingDD, ConsistencyPct,
+				EvalTarget, EvalProfitStop, EvalRiskCapCushion, MaxOpenContracts, EvalHighWrMultiplier, RiskCapPerContract, FundedRiskCapCushion, FundedPayoutAt,
+				FundedProfitStop, Contracts, FundedStepUpContracts, FundedLadderMax };
+		}
+		private void RestorePreset(double[] s)
+		{
+			int i = 0;
+			EvalMode = s[i++] > 0; AdaptiveSize = s[i++] > 0; EvalCushionFull = s[i++]; EvalDailyStop = s[i++]; FundedCushionSafe = s[i++]; FundedCushionFull = s[i++]; FundedHighFull = s[i++] > 0;
+			DailyLossLimit = s[i++]; FundedStepUpCushion = s[i++]; FundedLadderStep = s[i++]; DailyLossPerContract = s[i++]; NewsBlackout = s[i++] > 0; StartBalance = s[i++]; PropTrailingDD = s[i++]; ConsistencyPct = s[i++];
+			EvalTarget = s[i++]; EvalProfitStop = s[i++]; EvalRiskCapCushion = s[i++]; MaxOpenContracts = (int)s[i++]; EvalHighWrMultiplier = (int)s[i++]; RiskCapPerContract = s[i++]; FundedRiskCapCushion = s[i++]; FundedPayoutAt = s[i++];
+			FundedProfitStop = s[i++]; Contracts = (int)s[i++]; FundedStepUpContracts = (int)s[i++]; FundedLadderMax = (int)s[i++];
+		}
+		private void ApplyPhase(NQMasterPropMode mode, bool quiet)
+		{
+			PropMode = mode; RestorePreset(presetSnap); presetQuiet = quiet; ApplyPreset(); presetQuiet = false;
+		}
+		// firm rules per preset (research: acct1c_lib.py / smallacct_life2.py / month80.py / mffu_rapid.py / prop_wf.py FIRMS; list prices)
+		private PropCycle FirmRules()
+		{
+			PropCycle p = new PropCycle();
+			switch (PropPreset)
+			{
+				case NQMasterPropPreset.Lucid25K: p.Firm = "Lucid Flex 25K"; p.Model = 0; p.Q = 100; p.Cap1 = p.Cap2 = 1000; p.Fee = 89; break;
+				case NQMasterPropPreset.Lucid50K: p.Firm = "Lucid Flex 50K"; p.Model = 0; p.Q = 150; p.Cap1 = p.Cap2 = 2000; p.Fee = 146; break;
+				case NQMasterPropPreset.Lucid150K: p.Firm = "Lucid Flex 150K"; p.Model = 0; p.Q = 250; p.Cap1 = p.Cap2 = 3000; p.Fee = 285; break;
+				case NQMasterPropPreset.LucidPro25K: p.Firm = "Lucid Pro 25K"; p.Model = 1; p.Cap1 = 1000; p.Cap2 = 1500; p.Fee = 123; break;
+				case NQMasterPropPreset.LucidPro50K: p.Firm = "Lucid Pro 50K"; p.Model = 1; p.Cap1 = 2000; p.Cap2 = 2500; p.Fee = 192; break;
+				case NQMasterPropPreset.FundedNext25K: p.Firm = "FundedNext Rapid Pro 25K (aprox.)"; p.Model = 1; p.Cap1 = p.Cap2 = 1200; p.Fee = 80; break;
+				case NQMasterPropPreset.Mffu50K: case NQMasterPropPreset.Mffu50KLadder: p.Firm = "MFFU Rapid EOD 50K"; p.Model = 2; p.NpMax = 0; p.MinDays = 4; p.Fee = 157; break;
+				default: return null;
+			}
+			if (EvalPrice > 0) p.Fee = EvalPrice;
+			p.Act = ActivationFee;
+			return p;
+		}
+		private void CycleInit()
+		{
+			realMode = PropMode; presetSnap = SnapPreset(); cy = null; cyOn = false;
+			if (!CycleSim || PropMode == NQMasterPropMode.Off || PropPreset == NQMasterPropPreset.Manual || FirmRules() == null) { ApplyPreset(); return; }
+			cy = FirmRules();
+			ApplyPhase(NQMasterPropMode.Funded, false);			// funded rule values (payout level) for the engine, printed once
+			cy.D = PropTrailingDD; cy.Buf = PropTrailingDD + 100;
+			if (cy.Model == 0) cy.X = FundedPayoutAt;
+			else if (cy.Model == 1) cy.X = Math.Max(500, FundedPayoutAt - cy.Buf);
+			else cy.X = FundedPayoutAt - 500;                   // MFFU: request at FundedPayoutAt, keep FundedPayoutAt - 500
+			ApplyPhase(NQMasterPropMode.Eval, false);
+			cy.T = EvalTarget; cy.Cons = ConsistencyPct / 100.0;
+			cyOn = true;
+			Print(string.Format("NQMaster | CICLO DE CUENTA ({0}): eval ${1:0} objetivo, drawdown ${2:0}, consistencia {3:0}%, precio eval ${4:0}; fondeada: retiro con ganancia >= ${5:0}. La primera eval empieza al terminar el calentamiento.",
+				cy.Firm, cy.T, cy.D, ConsistencyPct, cy.Fee, FundedPayoutAt));
+		}
+		private void CyEvent(DateTime day, string s)
+		{
+			cyEvents.Add(day.ToString("dd-MM-yy", CultureInfo.InvariantCulture) + "  " + s);
+			if (cyEvents.Count > 400) cyEvents.RemoveAt(0);
+			Log("CICLO: " + s);
+		}
+		private void CyStart(bool funded, DateTime day)
+		{
+			ApplyPhase(funded ? NQMasterPropMode.Funded : NQMasterPropMode.Eval, true);
+			cyBase = netPnl; cy.Start(funded); cyStarted = true;
+			propPeak = StartBalance; propDayStart = double.NaN; propBestDay = 0; targetHit = false;
+			if (funded) { cyFundN++; cyFeeAct += cy.Act; CyEvent(day, string.Format("Fondeada #{0} activada{1}", cyFundN, cy.Act > 0 ? " (" + Usd(cy.Act) + ")" : "")); }
+			else { cyEvalN++; cyFeeEval += cy.Fee; CyEvent(day, string.Format("Eval #{0} comprada ({1})", cyEvalN, Usd(cy.Fee))); }
+			if (cyFirst == DateTime.MinValue) cyFirst = day;
+		}
+		// first bar of a session, before PropSessionStart(): close the last day, then start what is pending
+		private void CycleSessionStart(DateTime tradeDay)
+		{
+			if (!cyOn) return;
+			cyHalt = false; cyLastDay = tradeDay;
+			if (cyStarted && cy.Alive)
+			{
+				DateTime prev = cyPrevDay == DateTime.MinValue ? tradeDay : cyPrevDay;
+				double amt = cy.DayClose(netPnl - cyBase);
+				if (amt > 0)
+				{
+					cyPayN++; cyPayGross += amt; cyPayCash += cy.Split * amt;
+					CyEvent(prev, string.Format("RETIRO #{0} de la fondeada #{1}: {2} (cobrás {3})", cy.Pays, cyFundN, Usd(amt), Usd(cy.Split * amt)));
+				}
+				if (!cy.Alive) { cyFuDone++; cyNext = 1; cyWait = 0; CyEvent(prev, string.Format("Fondeada #{0} COMPLETADA ({1} retiros: pasa a cuenta real); nueva eval", cyFundN, cy.Pays)); }
+			}
+			if (!cyStarted) { if (rthDaysSeen >= WarmupDays && atrCount >= AtrMin) CyStart(false, tradeDay); else { cyHalt = true; cyStatus = "calentamiento: la primera eval empieza al completarlo"; } }
+			else if (!cy.Alive && cyNext != 0)
+			{
+				if (cyWait > 0) { cyWait--; cyHalt = true; cyStatus = "eval aprobada: esperando los días mínimos de la firma"; }
+				else { bool f = cyNext == 2; cyNext = 0; CyStart(f, tradeDay); }
+			}
+			cyPrevDay = tradeDay;
+		}
+		private DateTime cyPrevDay = DateTime.MinValue;
+		// every 1-minute bar: account lost (equity incl. the open position at the bar's adverse extreme <= threshold) or eval target reached
+		private void CycleBar()
+		{
+			if (!CyLive || cyHalt) return;
+			double raw = netPnl - cyBase, oc = 0, ol = 0;
+			if (Position.MarketPosition != MarketPosition.Flat)
+			{
+				try
+				{
+					oc = Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Closes[0][0]);
+					ol = Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Position.MarketPosition == MarketPosition.Long ? Lows[0][0] : Highs[0][0]);
+				}
+				catch { }
+			}
+			int r = cy.Bar(raw + Math.Min(ol, oc), raw + oc);
+			if (r == 0) return;
+			cyHalt = true; DateTime day = cyLastDay == DateTime.MinValue ? Times[0][0].Date : cyLastDay;
+			if (r == -1)
+			{
+				FlattenAll("SIM: cuenta perdida");
+				if (cy.Funded) { cyFuBust++; CyEvent(day, string.Format("Fondeada #{0} PERDIDA (día {1}, {2} retiros cobrados); mañana se compra otra eval", cyFundN, cy.Days + 1, cy.Pays)); }
+				else { cyEvBust++; CyEvent(day, string.Format("Eval #{0} PERDIDA (día {1}); mañana se compra otra", cyEvalN, cy.Days + 1)); }
+				cyNext = 1; cyWait = 0; cyStatus = "cuenta perdida: nueva eval en la próxima sesión";
+			}
+			else
+			{
+				FlattenAll("SIM: objetivo de la eval");
+				cyEvPass++; cyNext = 2; cyWait = Math.Max(0, cy.MinDays - (cy.Days + 1));
+				CyEvent(day, string.Format("Eval #{0} APROBADA en {1} días", cyEvalN, cy.Days + 1));
+				cyStatus = "eval aprobada: la fondeada empieza en la próxima sesión";
+			}
+		}
+		// go-live: a real prop account is the truth -> freeze the simulation, back to the account's real phase and preset values
+		private void CycleGoLive()
+		{
+			if (!cyOn || SimAccount) return;
+			cyOn = false; cyFrozen = true; cyFrozenAt = cyLastDay;
+			ApplyPhase(realMode, false); targetHit = false;
+		}
+
+		// ---- performance statistics for the dashboard (closed trades, as NinjaTrader books them: net of commission when a commission
+		// template is set)
+		private double statPeak, statMaxDd, statComm, statBestDay = double.NaN, statWorstDay = double.NaN; private int statDays, statGreenDays, statDayTrades0;
+		private DateTime statFirst = DateTime.MinValue, statLast = DateTime.MinValue;
+		private double liveStartPnl = double.NaN; private int liveStartTrades, liveDays, histDays; private DateTime liveStart;
+		private void StatTrade(double pnl, double comm, DateTime t)
+		{
+			statComm += comm; if (statFirst == DateTime.MinValue) statFirst = t; statLast = t;
+			if (netPnl > statPeak) statPeak = netPnl;
+			statMaxDd = Math.Max(statMaxDd, statPeak - netPnl);
+		}
+		private void StatDayClose()
+		{
+			if (totalTrades == statDayTrades0) { if (statFirst != DateTime.MinValue) { if (double.IsNaN(liveStartPnl)) histDays++; else liveDays++; } return; }
+			double d = netPnl - dayStartPnl; statDays++; if (d > 0) statGreenDays++;
+			statBestDay = double.IsNaN(statBestDay) ? d : Math.Max(statBestDay, d); statWorstDay = double.IsNaN(statWorstDay) ? d : Math.Min(statWorstDay, d);
+			if (double.IsNaN(liveStartPnl)) histDays++; else liveDays++;
+			statDayTrades0 = totalTrades;
+		}
+		private static string Usd(double v)
+		{
+			string s = Math.Abs(v).ToString("#,0", CultureInfo.InvariantCulture).Replace(',', '.');
+			return (v < -0.5 ? "-$" : "$") + s;
+		}
+		private static string Pct(double v) { return v.ToString("0.0", CultureInfo.InvariantCulture).Replace('.', ',') + "%"; }
+		private static string Dec(double v) { return v.ToString("0.00", CultureInfo.InvariantCulture).Replace('.', ','); }
+		private string PhaseName(NQMasterPropMode m) { return m == NQMasterPropMode.Eval ? "Evaluación" : m == NQMasterPropMode.Funded ? "Fondeada" : "Off"; }
+		// ---- dashboard (2026-10-21 redesign): top right = system and performance, top left = account (simulated cycle and/or the real
+		// account), bottom left = warnings. Spanish, $ with thousands dots. Drawn on the last historical bars and on every live bar.
+		private const string DashLine = "────────────────────────────────────────────────";
 		private void UpdateDashboard()
 		{
 			if (!ShowDashboard || (State == State.Historical && CurrentBars[0] < Count - 2)) return;
+			Draw.TextFixed(this, "NQM_Dash", DashSystem(), TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 80);
+			string acct = DashAccount();
+			if (acct.Length > 0) Draw.TextFixed(this, "NQM_Acct", acct, TextPosition.TopLeft, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 80);
+			string warn = DashWarnings();
+			if (warn.Length > 0) Draw.TextFixed(this, "NQM_Warn", warn, TextPosition.BottomLeft, Brushes.Orange, dashFont, Brushes.Transparent, Brushes.Black, 80);
+			else RemoveDrawObject("NQM_Warn");
+		}
+		private string DashSystem()
+		{
+			StringBuilder b = new StringBuilder();
 			double pf = grossLoss > 0 ? grossWin / grossLoss : 0;
-			StringBuilder mm = new StringBuilder();
-			foreach (Mod m in mods) if (m.On) mm.Append(m.Sig + (m.InTrade ? "*" : Working(m.Entry) ? "~" : "") + " ");
-			string txt = string.Format("NQ MASTER ({0}) | {1}\ntrend {2} | ATRd {3:0.0} | pullback day {4}\n{5}\nTotal {6} tr | WR {7:0.0}% | PF {8:0.00} | ${9:0.00}",
-				Profile, status, trendDir == 1 ? "UP" : trendDir == -1 ? "DOWN" : "-", todayAtr, pullbackDay ? "yes" : "no", mm.ToString(),
-				totalTrades, totalTrades > 0 ? 100.0 * totalWins / totalTrades : 0, pf, netPnl);
-			if (zombieCount > 0) txt += string.Format("\nStale orders dropped: {0} (see Output)", zombieCount);
-			if (capCuts > 0) txt += string.Format("\nMax open contracts {0}: {1} entries cut", MaxOpenContracts, capCuts);
-			if (shortSession) txt += string.Format("\nShort session: closes {0:00}:{1:00} ET", sessEndMin / 60, sessEndMin % 60);
-			if (UseOrderFlowBoost) txt += "\n" + OfStatus();
-			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0) txt += string.Format("\nEdge monitor: {0:0}% of alarm ({1} days){2}", 100 * edgeS / edgeH, edgeDays, edgeFbLeft > 0 ? string.Format(" | FALLBACK {0} days left", edgeFbLeft) : (edgeAlarm ? " | ALARM" : ""));
-			if (PropMode != NQMasterPropMode.Off) txt += string.Format("\nProp {0}: mode {1}{4} | cushion ${2:0} (threshold ${3:0}){5}", PropMode, gate, propCushion, propThr,
-				PropMode == NQMasterPropMode.Eval && gate == GateMode.Safe && EvalSafeSet == NQMasterSafeSet.Estable ? " (Estable)" : "",
-				State == State.Realtime && SimAccount ? " | sim account rebased" : "");
-			if (PropMode != NQMasterPropMode.Off && RiskCapPerContract > 0) txt += string.Format("\nRisk cap ${0:0}/contract: {1} (cushion ${2:0} vs ${3:0}) | skipped {4}", RiskCapPerContract,
-				RiskCapActive ? "ACTIVE" : "off", propCushion, PropMode == NQMasterPropMode.Eval ? EvalRiskCapCushion : FundedRiskCapCushion, riskSkips);
-			if (PropMode == NQMasterPropMode.Funded && FundedStepUpCushion > 0) txt += string.Format("\nSize: {0} contracts per module ({1}{2})", Qty(), StepUpOn ? "step-up on" : string.Format("step-up at cushion ${0:0}", FundedStepUpCushion),
-				FundedLadderStep > 0 ? string.Format(", ladder +1 per ${0:0} up to {1}", FundedLadderStep, FundedLadderMax) : "");
-			if (PropMode == NQMasterPropMode.Funded && PropEquity() - StartBalance >= FundedPayoutAt) txt += "\nPAYOUT: " + payoutHint;	// text per firm, set in ApplyPreset (round 5 C3)
-			if (AtrStartMax > 0 && !double.IsNaN(atrStartRatio)) txt += string.Format("\nATR ratio {0:0.00}: {1}", atrStartRatio, atrStartRatio < AtrStartMax ? "OK to start a new eval" : "do NOT start a new eval today");
-			Draw.TextFixed(this, "NQM_Dash", txt, TextPosition.TopRight, Brushes.White, dashFont, Brushes.Transparent, Brushes.Black, 75);
+			string mode = State == State.Realtime ? (SimAccount ? "EN VIVO (simulación)" : "EN VIVO") : "BACKTEST";
+			b.AppendLine(string.Format("NQMASTER  ·  {0}  ·  {1}  ·  {2}", Profile, Instrument != null ? Instrument.FullName : "", mode));
+			b.AppendLine("Estado: " + StatusEs());
+			b.AppendLine(string.Format("Tendencia {0}  ·  ATR diario {1}  ·  día de pullback: {2}", trendDir == 1 ? "ALCISTA" : trendDir == -1 ? "BAJISTA" : "-",
+				double.IsNaN(todayAtr) ? "-" : todayAtr.ToString("0"), pullbackDay ? "sí" : "no"));
+			StringBuilder mm = new StringBuilder(); int n = 0;
+			foreach (Mod m in mods) if (m.On) { mm.Append(m.Sig + (m.InTrade ? "●" : Working(m.Entry) ? "○" : "") + " "); if (++n % 9 == 0) mm.Append("\n         "); }
+			b.AppendLine("Módulos: " + mm.ToString().TrimEnd() + "   (● en posición, ○ orden puesta)");
+			b.AppendLine(DashLine);
+			b.AppendLine(string.Format("RENDIMIENTO{0}", statFirst != DateTime.MinValue ? "  desde " + statFirst.ToString("dd-MM-yy", CultureInfo.InvariantCulture) : ""));
+			if (totalTrades == 0) b.AppendLine("Sin trades todavía" + (rthDaysSeen < WarmupDays ? string.Format(" (calentamiento {0}/{1} días)", rthDaysSeen, WarmupDays) : ""));
+			else
+			{
+				double months = statFirst != DateTime.MinValue ? Math.Max(1.0, (statLast - statFirst).TotalDays) / 30.44 : 1;
+				b.AppendLine(string.Format("Trades {0}  ·  Ganadoras {1}  ·  Factor de beneficio {2}", totalTrades, Pct(100.0 * totalWins / totalTrades), Dec(pf)));
+				b.AppendLine(string.Format("Neto {0}  ·  por trade {1}  ·  por mes {2}", Usd(netPnl), Usd(netPnl / totalTrades), Usd(netPnl / months)));
+				b.AppendLine(string.Format("Caída máxima {0}  ·  días positivos {1}", Usd(statMaxDd), statDays > 0 ? Pct(100.0 * statGreenDays / statDays) : "-"));
+				if (statDays > 0) b.AppendLine(string.Format("Mejor día {0}  ·  peor día {1}", Usd(statBestDay), Usd(statWorstDay)));
+				b.AppendLine(statComm > 0.005 ? string.Format("Comisiones incluidas ({0})  ·  deslizamiento {1} tick", Usd(statComm), Slippage)
+					: "SIN comisiones: resultado optimista (cargar $1,90 por contrato ida y vuelta)");
+			}
+			if (EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0)
+				b.AppendLine(string.Format("Monitor de borde: {0} de la alarma ({1} días){2}", Pct(100 * edgeS / edgeH), edgeDays,
+					edgeFbLeft > 0 ? string.Format("  ·  MODO DEFENSIVO {0} días", edgeFbLeft) : edgeAlarm ? "  ·  ALARMA" : 100 * edgeS / edgeH >= 35 ? "  ·  AVISO" : "  ·  OK"));
+			if (!double.IsNaN(liveStartPnl))
+			{
+				int lt = totalTrades - liveStartTrades; double lp = netPnl - liveStartPnl;
+				double exp = histDays > 0 ? (liveStartPnl / histDays) * liveDays : 0;
+				b.AppendLine(DashLine);
+				b.AppendLine(string.Format("EN VIVO desde {0}: {1} sesiones, {2} trades, {3}", liveStart.ToString("dd-MM-yy", CultureInfo.InvariantCulture), liveDays, lt, Usd(lp)));
+				if (liveDays > 0) b.AppendLine(string.Format("Esperado por el backtest para {0} sesiones: {1}{2}", liveDays, Usd(exp),
+					liveDays < 40 ? "  (menos de 40 sesiones: todavía es ruido)" : lp >= 0.5 * exp ? "  ·  rinde" : "  ·  rinde POR DEBAJO"));
+			}
+			return b.ToString().TrimEnd();
+		}
+		private string StatusEs()
+		{
+			switch (status)
+			{
+				case "trading": return "operando";
+				case "waiting": return "esperando datos";
+				default: return status;
+			}
+		}
+		private string DashAccount()
+		{
+			StringBuilder b = new StringBuilder();
+			if (cy != null && (cyOn || cyFrozen))
+			{
+				double months = cyFirst != DateTime.MinValue ? Math.Max(1.0, (cyLastDay - cyFirst).TotalDays) / 30.44 : 1;
+				double fees = cyFeeEval + cyFeeAct, net = cyPayCash - fees;
+				b.AppendLine(string.Format("SIMULACIÓN DE CUENTA  ·  {0}{1}", cy.Firm, cyFrozen ? "  (backtest hasta " + cyFrozenAt.ToString("dd-MM-yy", CultureInfo.InvariantCulture) + ")" : ""));
+				b.AppendLine("Regla: si se pierde una cuenta, se compra otra eval al día siguiente");
+				b.AppendLine(DashLine);
+				b.AppendLine(string.Format("Evals compradas   {0,3}   aprobadas {1,3} ({2})   perdidas {3,3}", cyEvalN, cyEvPass, cyEvalN > 0 ? Pct(100.0 * cyEvPass / Math.Max(1, cyEvPass + cyEvBust)) : "-", cyEvBust));
+				b.AppendLine(string.Format("Fondeadas         {0,3}   perdidas  {1,3}          completadas {2}", cyFundN, cyFuBust, cyFuDone));
+				b.AppendLine(string.Format("Retiros           {0,3}   pedidos {1}   cobrados {2} ({3:0}%)", cyPayN, Usd(cyPayGross), Usd(cyPayCash), cy.Split * 100));
+				b.AppendLine(string.Format("Costos            evals {0}{1}", Usd(cyFeeEval), cyFeeAct > 0 ? "  +  activaciones " + Usd(cyFeeAct) : ""));
+				b.AppendLine(string.Format("RESULTADO NETO    {0}   ≈ {1} por mes  ({2} meses)", Usd(net), Usd(net / months), months.ToString("0.0", CultureInfo.InvariantCulture).Replace('.', ',')));
+				b.AppendLine(DashLine);
+				if (!cyStarted) b.AppendLine(string.Format("La primera eval empieza al terminar el calentamiento ({0}/{1} días)", rthDaysSeen, WarmupDays));
+				else if (cyFrozen) b.AppendLine("Simulación congelada al pasar a vivo: la cuenta real se muestra abajo");
+				else if (cy.Alive)
+				{
+					double prof = netPnl - cyBase - cy.Withdrawn, bal = StartBalance + prof;
+					if (!cy.Funded)
+						b.AppendLine(string.Format("Cuenta actual: EVAL #{0}  ·  día {1}  ·  ganancia {2} de {3}", cyEvalN, cy.Days + 1, Usd(prof), Usd(cy.T)));
+					else
+						b.AppendLine(string.Format("Cuenta actual: FONDEADA #{0}  ·  día {1}  ·  retiros {2}", cyFundN, cy.Days + 1, cy.Pays));
+					b.AppendLine(string.Format("Saldo {0}  ·  límite de pérdida {1}  ·  colchón {2}", Usd(bal), Usd(StartBalance + cy.Thr), Usd(prof - cy.Thr)));
+					if (!cy.Funded && cy.Cons > 0 && cy.Bal > 0 && cy.Best > cy.Cons * Math.Max(cy.T, cy.Bal))
+						b.AppendLine(string.Format("Consistencia: el mejor día ({0}) obliga a llegar a {1}", Usd(cy.Best), Usd(cy.Best / cy.Cons)));
+					if (cy.Funded) b.AppendLine("Próximo retiro: " + cy.NextPayout(Usd));
+				}
+				else b.AppendLine("Cuenta actual: " + (cyStatus.Length > 0 ? cyStatus : "-"));
+				int k = Math.Min(8, cyEvents.Count);
+				if (k > 0)
+				{
+					b.AppendLine("Últimos eventos:");
+					for (int i = cyEvents.Count - 1; i >= cyEvents.Count - k; i--) b.AppendLine("  " + cyEvents[i]);
+				}
+			}
+			else if (PropMode != NQMasterPropMode.Off && cy == null && State != State.Realtime)
+				b.AppendLine(PropPreset == NQMasterPropPreset.Manual ? "Para simular retiros y cuentas perdidas elegí un preset de firma (Lucid, MFFU...)"
+					: "Simulación del ciclo apagada (Backtest: simular el ciclo = false)");
+			// the real prop account (live, not a Sim account)
+			if (State == State.Realtime && !SimAccount && PropMode != NQMasterPropMode.Off && !double.IsNaN(propThr))
+			{
+				if (b.Length > 0) b.AppendLine(DashLine);
+				double eq = PropEquity();
+				b.AppendLine(string.Format("CUENTA REAL  ·  {0}  ·  {1}", Account != null ? Account.Name : "", PhaseName(PropMode)));
+				b.AppendLine(string.Format("Saldo {0} ({1})  ·  límite {2}  ·  colchón {3}", Usd(eq), Usd(eq - StartBalance), Usd(propThr), Usd(eq - propThr)));
+				if (!double.IsNaN(propDayStart)) b.AppendLine("Hoy: " + Usd(eq - propDayStart));
+				if (eq <= propThr) b.AppendLine("ATENCIÓN: el saldo está en el límite: verificá la cuenta en la firma");
+				if (PropMode == NQMasterPropMode.Eval && EvalTarget > 0) b.AppendLine(string.Format("Objetivo: {0} de {1}", Usd(eq - StartBalance), Usd(EvalTarget)));
+				if (PropMode == NQMasterPropMode.Funded) b.AppendLine((eq - StartBalance >= FundedPayoutAt ? "RETIRO DISPONIBLE: " : "Retiro: ") + payoutHint);
+			}
+			return b.ToString().TrimEnd();
+		}
+		private string DashWarnings()
+		{
+			StringBuilder b = new StringBuilder();
+			if (zombieCount > 0) b.AppendLine(string.Format("! {0} órdenes trabadas descartadas (ver Output)", zombieCount));
+			if (capCuts > 0) b.AppendLine(string.Format("! Tope de {0} contratos abiertos: {1} entradas recortadas", MaxOpenContracts, capCuts));
+			if (shortSession) b.AppendLine(string.Format("! Sesión corta: cierra {0:00}:{1:00} ET", sessEndMin / 60, sessEndMin % 60));
+			if (edgeAlarm) b.AppendLine("! ALARMA del monitor de borde: revisar antes de seguir");
+			if (State == State.Realtime && (atrCount < AtrMin || rthDaysSeen < WarmupDays)) b.AppendLine(string.Format("! Calentamiento incompleto: {0}/{1} días (cargar 45+ días)", rthDaysSeen, WarmupDays));
+			if (State == State.Realtime && SimAccount && PropMode != NQMasterPropMode.Off) b.AppendLine("Cuenta de simulación: el saldo es el de la cuenta simulada, no el de Sim101");
+			if (RiskCapPerContract > 0 && PropMode != NQMasterPropMode.Off && riskSkips > 0) b.AppendLine(string.Format("Tope de riesgo {0}/contrato: {1} trades salteados con colchón chico", Usd(RiskCapPerContract), riskSkips));
+			return b.ToString().TrimEnd();
 		}
 		#endregion
 
@@ -2260,132 +2651,135 @@ namespace NinjaTrader.NinjaScript.Strategies
 		#endregion
 
 		#region Properties
-		[NinjaScriptProperty][Display(Name = "Account sync guard: account and strategy position apart 2 bars -> flatten this instrument and stop (off if anything else trades it on this account)", Order = 1, GroupName = "10. Operations (safety)")] public bool AccountSyncGuard { get; set; }
-		[NinjaScriptProperty][Display(Name = "Skip holiday / half-day sessions (early close)", Order = 2, GroupName = "10. Operations (safety)")] public bool SkipShortSessions { get; set; }
-		[NinjaScriptProperty][Range(0, 500)][Display(Name = "Max open contracts, whole account (Lucid 50K funded 20, MFFU 50K 30; 0 = off)", Order = 3, GroupName = "10. Operations (safety)")] public int MaxOpenContracts { get; set; }
-		[NinjaScriptProperty][Display(Name = "Roll guard: no new entries from the roll date of the chart's contract", Order = 4, GroupName = "10. Operations (safety)")] public bool RollGuard { get; set; }
-		[NinjaScriptProperty][Display(Name = "Log file (Documents\\NinjaTrader 8\\nqmaster_logs, realtime)", Order = 5, GroupName = "10. Operations (safety)")] public bool LogToFile { get; set; }
-		[NinjaScriptProperty][Display(Name = "Module health report (Output window: win rate / PF per module, all + last 365 days)", Order = 6, GroupName = "10. Operations (safety)")] public bool ModuleHealthReport { get; set; }
-		[NinjaScriptProperty][Display(Name = "Disable modules (comma list, any profile; yearly review, e.g. REV06)", Order = 7, GroupName = "10. Operations (safety)")] public string DisableModules { get; set; }
-		[NinjaScriptProperty][Display(Name = "Inactivity alarm (a module or a direction stops trading for longer than ever in 2020-26)", Order = 8, GroupName = "10. Operations (safety)")] public bool InactivityAlarm { get; set; }
-		[NinjaScriptProperty][Display(Name = "Cross-account guard: skip entries opposite to another account's NQ position (Lucid / MFFU hedging ban)", Order = 9, GroupName = "10. Operations (safety)")] public bool CrossAccountGuard { get; set; }
-		[NinjaScriptProperty][Display(Name = "Cross-account group (accounts with the same text check each other; one per prop firm)", Order = 10, GroupName = "10. Operations (safety)")] public string HedgeGroup { get; set; }
-		[NinjaScriptProperty][Range(0.0, 1.0)][Display(Name = "Min stop for structure modules (x daily ATR; 0.10, 0 = off)", Order = 26, GroupName = "02. Edge")] public double MinStopAtr { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Risk cap: skip trades risking more than $ per base contract (300; 0 = off)", Order = 18, GroupName = "07. Prop account (cushion gating)")] public double RiskCapPerContract { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Risk cap active in Eval while cushion < $ (1200)", Order = 19, GroupName = "07. Prop account (cushion gating)")] public double EvalRiskCapCushion { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Risk cap active in Funded while cushion < $ (2000)", Order = 20, GroupName = "07. Prop account (cushion gating)")] public double FundedRiskCapCushion { get; set; }
-		[NinjaScriptProperty][Display(Name = "Profile", Order = 0, GroupName = "00. Profile")] public NQMasterProfile Profile { get; set; }
-		[NinjaScriptProperty][Display(Name = "ORB on ", Order = 1, GroupName = "01. Module switches (any profile)")] public bool UseOrb { get; set; }
-		[NinjaScriptProperty][Range(15, 120)][Display(Name = "ORB range min ", Order = 2, GroupName = "01. Module switches (any profile)")] public int OrbRangeMin { get; set; }
-		[NinjaScriptProperty][Range(0.2, 5.0)][Display(Name = "ORB target R ", Order = 3, GroupName = "01. Module switches (any profile)")] public double OrbTargetR { get; set; }
-		[NinjaScriptProperty][Display(Name = "ORB pullback-day filter ", Order = 4, GroupName = "01. Module switches (any profile)")] public bool OrbPullbackFilter { get; set; }
-		[NinjaScriptProperty][Display(Name = "MSEQ on ", Order = 5, GroupName = "01. Module switches (any profile)")] public bool UseMseq { get; set; }
-		[NinjaScriptProperty][Display(Name = "CRT11 on ", Order = 6, GroupName = "01. Module switches (any profile)")] public bool UseCrt { get; set; }
-		[NinjaScriptProperty][Display(Name = "MOM11 on ", Order = 7, GroupName = "01. Module switches (any profile)")] public bool UseMom11 { get; set; }
-		[NinjaScriptProperty][Display(Name = "MOM13 on ", Order = 8, GroupName = "01. Module switches (any profile)")] public bool UseMom13 { get; set; }
-		[NinjaScriptProperty][Display(Name = "MOM1030 on ", Order = 9, GroupName = "01. Module switches (any profile)")] public bool UseMom1030 { get; set; }
-		[NinjaScriptProperty][Display(Name = "ON07 on ", Order = 10, GroupName = "01. Module switches (any profile)")] public bool UseOn07 { get; set; }
-		[NinjaScriptProperty][Display(Name = "REV06 on ", Order = 11, GroupName = "01. Module switches (any profile)")] public bool UseRev06 { get; set; }
-		[NinjaScriptProperty][Display(Name = "LON on ", Order = 12, GroupName = "01. Module switches (any profile)")] public bool UseLon { get; set; }
-		[NinjaScriptProperty][Display(Name = "ICT on ", Order = 13, GroupName = "01. Module switches (any profile)")] public bool UseIct { get; set; }
-		[NinjaScriptProperty][Display(Name = "MOM1130 on ", Order = 14, GroupName = "01. Module switches (any profile)")] public bool UseMom1130 { get; set; }
-		[NinjaScriptProperty][Display(Name = "RSI2 on ", Order = 15, GroupName = "01. Module switches (any profile)")] public bool UseRsi2 { get; set; }
-		[NinjaScriptProperty][Display(Name = "ORB90 on ", Order = 16, GroupName = "01. Module switches (any profile)")] public bool UseOrb90 { get; set; }
-		[NinjaScriptProperty][Display(Name = "MSEQS on ", Order = 17, GroupName = "01. Module switches (any profile)")] public bool UseMseqShort { get; set; }
-		[NinjaScriptProperty][Display(Name = "LATE15 on (15:00 trend-day continuation; Ultra / WR70Plus / Core)", Order = 18, GroupName = "01. Module switches (any profile)")] public bool UseLate15 { get; set; }
-		[NinjaScriptProperty][Display(Name = "ENG10 on (06-10 4H candle breakout with the trend; Ultra)", Order = 19, GroupName = "01. Module switches (any profile)")] public bool UseEng10 { get; set; }
-		[NinjaScriptProperty][Display(Name = "Six-year modules on (Ultra; default: SO04 RV11 ORFAIL CAM3 = the four that held on 2010-19; CA04V GD03 ENG26 off)", Order = 1, GroupName = "11. Six-year modules (2020-26)")] public bool SixYearModules { get; set; }
-		[NinjaScriptProperty][Display(Name = "CA04V on (04:00 momentum vs session VWAP, >= 0.20 ATR, stop 0.15 ATR, 1R)", Order = 2, GroupName = "11. Six-year modules (2020-26)")] public bool UseCa04v { get; set; }
-		[NinjaScriptProperty][Display(Name = "SO04 on (04:00 momentum vs 18:00 open, >= 0.35 ATR, with trend, 1R)", Order = 3, GroupName = "11. Six-year modules (2020-26)")] public bool UseSo04 { get; set; }
-		[NinjaScriptProperty][Display(Name = "GD03 on (05:00 fade of the move since 03:00, with trend, 2R)", Order = 4, GroupName = "11. Six-year modules (2020-26)")] public bool UseGd03 { get; set; }
-		[NinjaScriptProperty][Display(Name = "RV11 on (11:00 low relative volume continuation vs prior close, 1R)", Order = 5, GroupName = "11. Six-year modules (2020-26)")] public bool UseRv11 { get; set; }
-		[NinjaScriptProperty][Display(Name = "ENG26 on (4H 02-06 engulfs 22-02, entry 09:30, 0.5R)", Order = 6, GroupName = "11. Six-year modules (2020-26)")] public bool UseEng26 { get; set; }
-		[NinjaScriptProperty][Display(Name = "ORFAIL on (failed 15-min opening-range break, with trend)", Order = 7, GroupName = "11. Six-year modules (2020-26)")] public bool UseOrFail { get; set; }
-		[NinjaScriptProperty][Display(Name = "CAM3 on (Camarilla L3/H3 fade to VWAP, with trend)", Order = 8, GroupName = "11. Six-year modules (2020-26)")] public bool UseCam3 { get; set; }
-		[NinjaScriptProperty][Display(Name = "LATEFH on (15:00, first half hour + RTH move agree; Ultra)", Order = 20, GroupName = "01. Module switches (any profile)")] public bool UseLateFh { get; set; }
-		[NinjaScriptProperty][Display(Name = "VW13 wide on Ultra (0.15 ATR, x2 at 0.30)", Order = 21, GroupName = "01. Module switches (any profile)")] public bool Vw13Wide { get; set; }
-		[NinjaScriptProperty][Display(Name = "NF05 on (05:00 fade of the move since 20:00; Ultra)", Order = 22, GroupName = "01. Module switches (any profile)")] public bool UseNf05 { get; set; }
-		[NinjaScriptProperty][Display(Name = "LF0315 on (03:15 fade of the London first 15 min; Ultra, off by default)", Order = 23, GroupName = "01. Module switches (any profile)")] public bool UseLf0315 { get; set; }
-		[NinjaScriptProperty][Display(Name = "LF06 on (06:00 fade of the move since 04:00; Ultra)", Order = 24, GroupName = "01. Module switches (any profile)")] public bool UseLf06 { get; set; }
-		[NinjaScriptProperty][Display(Name = "LF0430 on (04:30 fade with the trend of the move since 04:00; Ultra)", Order = 25, GroupName = "01. Module switches (any profile)")] public bool UseLf0430 { get; set; }
-		[NinjaScriptProperty][Display(Name = "Night modules also in WR70Plus (NF05 / LF06 / LF0430)", Order = 26, GroupName = "01. Module switches (any profile)")] public bool NightOnWr70 { get; set; }
-		[NinjaScriptProperty][Display(Name = "CPI09 on (CPI days: 09:30 fade of the 08:30 release move; Ultra / UltraQ / WR70Plus)", Order = 27, GroupName = "01. Module switches (any profile)")] public bool UseCpi09 { get; set; }
-		[NinjaScriptProperty][Display(Name = "Extra CPI release dates (yyyy-MM-dd list; built in 2024-2027)", Order = 28, GroupName = "01. Module switches (any profile)")] public string CpiDates { get; set; }
-		[NinjaScriptProperty][Range(1, 4)][Display(Name = "CPI09 size multiplier (4 = validated: ~80% win-rate module)", Order = 29, GroupName = "01. Module switches (any profile)")] public int Cpi09Multiplier { get; set; }
-		[NinjaScriptProperty][Range(1, 4)][Display(Name = "MOM1030 size multiplier (4 = validated: ~80% win-rate module)", Order = 30, GroupName = "01. Module switches (any profile)")] public int Mom1030Multiplier { get; set; }
-		[NinjaScriptProperty][Range(-5.0, 5.0)][Display(Name = "Pullback max prior-day move (x ATRd)", Order = 20, GroupName = "02. Edge")] public double PullbackMaxRet { get; set; }
-		[NinjaScriptProperty][Range(0.05, 1.0)][Display(Name = "ORB stop cap (x ATRd)", Order = 21, GroupName = "02. Edge")] public double StopCapAtr { get; set; }
-		[NinjaScriptProperty][Range(-1.0, 2.0)][Display(Name = "ORB: breakout must clear the prior close by x ATR (0.10; -1 = off)", Order = 22, GroupName = "02. Edge")] public double OrbPriorCloseAtr { get; set; }
-		[NinjaScriptProperty][Display(Name = "VOLB 2R (Ultra): stop to entry + 0.1R after +0.75R", Order = 23, GroupName = "02. Edge")] public bool VolbBreakEven { get; set; }
-		[NinjaScriptProperty][Display(Name = "MOM1030 / MOM13 (Ultra): only with another module open the same way", Order = 24, GroupName = "02. Edge")] public bool MomAgreement { get; set; }
-		[NinjaScriptProperty][Range(0, 2359)][Display(Name = "VOLB trend-only (WR70Plus / Estable): last entry HHMM ET (1047; 0 = off)", Order = 25, GroupName = "02. Edge")] public int VolbTrendLastEntry { get; set; }
-		[NinjaScriptProperty][Display(Name = "VOLB 2R: second attempt after a stop-out (same levels, either side; +$58/mo, max DD +6%: opt-in, 2026-10-17)", Order = 27, GroupName = "02. Edge")] public bool VolbReArm { get; set; }
-		[NinjaScriptProperty][Display(Name = "News blackout: flat, no orders 2 min around CPI / NFP / FOMC minutes (MFFU funded)", Order = 1, GroupName = "08. News blackout")] public bool NewsBlackout { get; set; }
-		[NinjaScriptProperty][Display(Name = "Extra Tier-1 times ET (yyyy-MM-dd HH:mm, comma list; 2027 CPI / NFP)", Order = 2, GroupName = "08. News blackout")] public string NewsTimes { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Contracts per module", Order = 30, GroupName = "03. Risk / account")] public int Contracts { get; set; }
-		[NinjaScriptProperty][Range(1000, 1659)][Display(Name = "Flatten time (ET HHmm)", Order = 31, GroupName = "03. Risk / account")] public int FlattenTime { get; set; }
-		[NinjaScriptProperty][Display(Name = "Skip FOMC days", Order = 32, GroupName = "03. Risk / account")] public bool SkipFomc { get; set; }
-		[NinjaScriptProperty][Display(Name = "FOMC dates (yyyy-MM-dd list)", Order = 33, GroupName = "03. Risk / account")] public string FomcDates { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Start balance $", Order = 34, GroupName = "03. Risk / account")] public double StartBalance { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval target $ (0 = off, realtime)", Order = 35, GroupName = "03. Risk / account")] public double EvalTarget { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Max drawdown $ (0 = off, realtime)", Order = 36, GroupName = "03. Risk / account")] public double MaxDrawdown { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Drawdown buffer $", Order = 37, GroupName = "03. Risk / account")] public double DrawdownBuffer { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Daily loss limit $ (0 = off; eval: 800, funded: 500)", Order = 46, GroupName = "03. Risk / account")] public double DailyLossLimit { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: daily loss limit $ per contract per module, realized + open (0 = off; 1500 with the size ladder)", Order = 49, GroupName = "03. Risk / account")] public double DailyLossPerContract { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Min daily ATR (points) to trade (0 = off)", Order = 47, GroupName = "03. Risk / account")] public double MinAtrPoints { get; set; }
-		[NinjaScriptProperty][Range(2, 15)][Display(Name = "Warm-up days (15 = validated; 2 = trade from day 3 with short ATR / trend averages)", Order = 48, GroupName = "03. Risk / account")] public int WarmupDays { get; set; }
-		[NinjaScriptProperty][Display(Name = "Eval mode (late size-up)", Order = 1, GroupName = "05. Evaluation mode")] public bool EvalMode { get; set; }
-		[NinjaScriptProperty][Display(Name = "Eval start date (yyyy-MM-dd)", Order = 2, GroupName = "05. Evaluation mode")] public string EvalStartDate { get; set; }
-		[NinjaScriptProperty][Range(1, 30)][Display(Name = "Late day (sessions since start, 0-based)", Order = 3, GroupName = "05. Evaluation mode")] public int EvalLateDay { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late goal $ (size up if profit below)", Order = 4, GroupName = "05. Evaluation mode")] public double EvalLateGoal { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Late contracts", Order = 5, GroupName = "05. Evaluation mode")] public int EvalLateContracts { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Late size only if cushion >= $ (0 = off; 'pass easy' 1000, needs PropMode Eval)", Order = 6, GroupName = "05. Evaluation mode")] public double EvalLateMinCushion { get; set; }
-		[NinjaScriptProperty][Display(Name = "Pause file", Order = 38, GroupName = "03. Risk / account")] public string PauseFile { get; set; }
-		[NinjaScriptProperty][Display(Name = "Context rules: x2 ORB60/ORB90/CRT11/MSEQ in favourable context, skip ON07 after a counter day", Order = 45, GroupName = "03. Risk / account")] public bool UseContextRules { get; set; }
-		[NinjaScriptProperty][Display(Name = "VOLB on ", Order = 19, GroupName = "01. Module switches (any profile)")] public bool UseVolBreak { get; set; }
-		[NinjaScriptProperty][Display(Name = "VW13 on ", Order = 18, GroupName = "01. Module switches (any profile)")] public bool UseVw13 { get; set; }
-		[NinjaScriptProperty][Display(Name = "Confluence rules: x2 late trades vs MOM11 + with overnight, skip REV06 after same-dir LON", Order = 44, GroupName = "03. Risk / account")] public bool UseConfluence { get; set; }
-		[NinjaScriptProperty][Range(1, 5)][Display(Name = "ICT size multiplier (equal-risk: ICT stops are the smallest)", Order = 43, GroupName = "03. Risk / account")] public int IctMultiplier { get; set; }
-		[NinjaScriptProperty][Display(Name = "Adaptive size (eval mode)", Order = 39, GroupName = "03. Risk / account")] public bool AdaptiveSize { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Adaptive: size normal", Order = 40, GroupName = "03. Risk / account")] public int SizeHigh { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Adaptive: size after drawdown", Order = 41, GroupName = "03. Risk / account")] public int SizeLow { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Adaptive: drawdown $ to size down", Order = 42, GroupName = "03. Risk / account")] public double SizeDownDrawdown { get; set; }
-		[Display(Name = "Show dashboard", Order = 50, GroupName = "04. Display")] public bool ShowDashboard { get; set; }
-		[Display(Name = "Print log", Order = 51, GroupName = "04. Display")] public bool PrintLog { get; set; }
-		[NinjaScriptProperty][Display(Name = "Edge monitor on (CUSUM of live vs backtested edge)", Order = 1, GroupName = "06. Edge monitor")] public bool EdgeMonitor { get; set; }
-		[NinjaScriptProperty][Display(Name = "Pause new entries on alarm", Order = 2, GroupName = "06. Edge monitor")] public bool EdgeMonitorPause { get; set; }
-		[NinjaScriptProperty][Display(Name = "Edge monitor start date (yyyy-MM-dd)", Order = 3, GroupName = "06. Edge monitor")] public string EdgeMonitorStart { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "k (0 = profile calibration)", Order = 4, GroupName = "06. Edge monitor")] public double EdgeK { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "h (0 = profile calibration)", Order = 5, GroupName = "06. Edge monitor")] public double EdgeH { get; set; }
-		[NinjaScriptProperty][Display(Name = "On alarm: switch off the modules that failed the yearly review (pause must be off)", Order = 6, GroupName = "06. Edge monitor")] public bool EdgeAlarmFallback { get; set; }
-		[NinjaScriptProperty][Range(1, 1000)][Display(Name = "Fallback length (monitored trading days; 252 = 1 year)", Order = 7, GroupName = "06. Edge monitor")] public int EdgeFallbackDays { get; set; }
-		[NinjaScriptProperty][Display(Name = "Fallback modules off (empty = built-in yearly review table)", Order = 8, GroupName = "06. Edge monitor")] public string EdgeFallbackOff { get; set; }
-		[NinjaScriptProperty][Display(Name = "Prop mode (Off / Eval / Funded)", Order = 1, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropMode PropMode { get; set; }
-		[NinjaScriptProperty][Display(Name = "Account preset (Lucid 25K / Lucid 50K / MFFU 50K / LucidPro 25K + FundedNext 25K / MFFU ladder / Lucid 150K / LucidPro 50K: eval 4 contracts, funded 1 + daily profit stop 1,000): fills balance, drawdown, target, profit stop, risk cap and contract cap for the chosen mode", Order = 0, GroupName = "07. Prop account (cushion gating)")] public NQMasterPropPreset PropPreset { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Trailing drawdown $ (EOD, locks at start+100)", Order = 2, GroupName = "07. Prop account (cushion gating)")] public double PropTrailingDD { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: full mode when cushion >= $", Order = 3, GroupName = "07. Prop account (cushion gating)")] public double EvalCushionFull { get; set; }
-		[NinjaScriptProperty][Display(Name = "Eval: modules below the cushion (Estable = stable set, recommended; Classic = old SAFE)", Order = 3, GroupName = "07. Prop account (cushion gating)")] public NQMasterSafeSet EvalSafeSet { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: account daily stop $ (0 = off)", Order = 4, GroupName = "07. Prop account (cushion gating)")] public double EvalDailyStop { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: safe mode when cushion < $", Order = 5, GroupName = "07. Prop account (cushion gating)")] public double FundedCushionSafe { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: request payout at profit >= $", Order = 6, GroupName = "07. Prop account (cushion gating)")] public double FundedPayoutAt { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Highest end-of-day balance so far $ (0 = auto)", Order = 7, GroupName = "07. Prop account (cushion gating)")] public double PropPeakOverride { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Liquidation threshold $ override (0 = auto)", Order = 8, GroupName = "07. Prop account (cushion gating)")] public double PropThresholdOverride { get; set; }
-		[NinjaScriptProperty][Range(0, 10)][Display(Name = "Show eval-start ATR check: ATR / 60-day median < (0 = off)", Order = 9, GroupName = "07. Prop account (cushion gating)")] public double AtrStartMax { get; set; }
-		[NinjaScriptProperty][Display(Name = "Funded: full profile above the safe cushion (off = no x2)", Order = 10, GroupName = "07. Prop account (cushion gating)")] public bool FundedHighFull { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: no-x2 between safe cushion and this $, full above (0 = off; EQ2: 1500)", Order = 13, GroupName = "07. Prop account (cushion gating)")] public double FundedCushionFull { get; set; }
-		[NinjaScriptProperty][Range(0, 100)][Display(Name = "Eval consistency % (best day <= % of profit; Lucid 50, 0 = off)", Order = 11, GroupName = "07. Prop account (cushion gating)")] public double ConsistencyPct { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: best day so far $ (after a restart)", Order = 12, GroupName = "07. Prop account (cushion gating)")] public double EvalBestDaySoFar { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: stop the day at +$ (whole account; 0.9 x consistency % x target: Lucid 50K 1350, Lucid 25K 560, MFFU 50K 800; 0 = off)", Order = 14, GroupName = "07. Prop account (cushion gating)")] public double EvalProfitStop { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: stop the day at +$ (whole account; LucidPro 40% consistency: 500 with 2 contracts; 0 = off)", Order = 15, GroupName = "07. Prop account (cushion gating)")] public double FundedProfitStop { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: step-up when cushion >= $ (0 = off; MyFundedFutures 3000)", Order = 16, GroupName = "07. Prop account (cushion gating)")] public double FundedStepUpCushion { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: step-up contracts per module", Order = 17, GroupName = "07. Prop account (cushion gating)")] public int FundedStepUpContracts { get; set; }
-		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Funded: ladder, +1 contract per further $ of cushion (0 = off; MFFU 3000 with step-up 3000, max 4, payout at 11600)", Order = 22, GroupName = "07. Prop account (cushion gating)")] public double FundedLadderStep { get; set; }
-		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Funded: ladder max contracts per module (4 on MFFU 50K: 30-micro cap)", Order = 23, GroupName = "07. Prop account (cushion gating)")] public int FundedLadderMax { get; set; }
-		[NinjaScriptProperty][Range(0, 8)][Display(Name = "Eval: MOM1030 / CPI09 multiplier (0 = normal x4; 8 on 50K evals at 1 contract; presets Lucid50K / Mffu50K set 8)", Order = 21, GroupName = "07. Prop account (cushion gating)")] public int EvalHighWrMultiplier { get; set; }
-		[NinjaScriptProperty][Display(Name = "Order-flow boost on (FAILED out-of-sample test: keep OFF; backtests need Tick Replay)", Order = 1, GroupName = "09. Order flow (experimental)")] public bool UseOrderFlowBoost { get; set; }
-		[NinjaScriptProperty][Range(0.0, 1.0)][Display(Name = "Session delta with the trade >= (0.015 = research top 20%)", Order = 2, GroupName = "09. Order flow (experimental)")] public double OrderFlowCvdMin { get; set; }
-		[NinjaScriptProperty][Range(1, 5)][Display(Name = "Size multiplier when the delta agrees", Order = 3, GroupName = "09. Order flow (experimental)")] public int OrderFlowBoost { get; set; }
-		[NinjaScriptProperty][Display(Name = "Stack on other x2 boosts (off = never above multiplier x base size)", Order = 4, GroupName = "09. Order flow (experimental)")] public bool OrderFlowStack { get; set; }
+		[NinjaScriptProperty][Display(Name = "Control: posición de la cuenta = posición de la estrategia", Order = 9, GroupName = "03. Operación y seguridad")] public bool AccountSyncGuard { get; set; }
+		[NinjaScriptProperty][Display(Name = "No operar feriados ni medias jornadas", Order = 7, GroupName = "03. Operación y seguridad")] public bool SkipShortSessions { get; set; }
+		[NinjaScriptProperty][Range(0, 500)][Display(Name = "Máximo de contratos abiertos en la cuenta (0 = sin tope)", Order = 15, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public int MaxOpenContracts { get; set; }
+		[NinjaScriptProperty][Display(Name = "Frenar entradas desde la fecha de roll del contrato", Order = 8, GroupName = "03. Operación y seguridad")] public bool RollGuard { get; set; }
+		[NinjaScriptProperty][Display(Name = "Guardar log en archivo (Documentos\\NinjaTrader 8\\nqmaster_logs)", Order = 12, GroupName = "03. Operación y seguridad")] public bool LogToFile { get; set; }
+		[NinjaScriptProperty][Display(Name = "Reporte por módulo en Output (ganadoras / PF / neto)", Order = 7, GroupName = "04. Monitor y revisión")] public bool ModuleHealthReport { get; set; }
+		[NinjaScriptProperty][Display(Name = "Apagar módulos (lista separada por comas, ej. REV06)", Order = 8, GroupName = "04. Monitor y revisión")] public string DisableModules { get; set; }
+		[NinjaScriptProperty][Display(Name = "Alarma si un módulo o una dirección deja de operar", Order = 6, GroupName = "04. Monitor y revisión")] public bool InactivityAlarm { get; set; }
+		[NinjaScriptProperty][Display(Name = "Control entre cuentas de la misma firma (prohibido el hedge)", Order = 10, GroupName = "03. Operación y seguridad")] public bool CrossAccountGuard { get; set; }
+		[NinjaScriptProperty][Display(Name = "Grupo de cuentas para ese control (uno por firma; vacío = automático)", Order = 11, GroupName = "03. Operación y seguridad")] public string HedgeGroup { get; set; }
+		[Browsable(false)] public double MinStopAtr { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Tope de riesgo por trade $ por contrato (activo con colchón chico)", Order = 12, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double RiskCapPerContract { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: tope de riesgo activo con colchón < $", Order = 13, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double EvalRiskCapCushion { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Fondeada: tope de riesgo activo con colchón < $", Order = 14, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double FundedRiskCapCushion { get; set; }
+		[NinjaScriptProperty][Display(Name = "Perfil (Ultra = recomendado)", Order = 1, GroupName = "01. Perfil y cuenta")] public NQMasterProfile Profile { get; set; }
+		[NinjaScriptProperty][Display(Name = "Backtest: simular el ciclo (eval, fondeada, retiros, cuentas perdidas, recompra al día siguiente)", Order = 4, GroupName = "01. Perfil y cuenta")] public bool CycleSim { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Precio pagado por cada eval $ (0 = precio de lista; poné el precio con cupón)", Order = 5, GroupName = "01. Perfil y cuenta")] public double EvalPrice { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Costo de activación de la fondeada $", Order = 6, GroupName = "01. Perfil y cuenta")] public double ActivationFee { get; set; }
+		[NinjaScriptProperty][Display(Name = "ORB60 activo", Order = 1, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseOrb { get; set; }
+		[NinjaScriptProperty][Range(15, 120)][Display(Name = "ORB: minutos del rango (Custom)", Order = 2, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public int OrbRangeMin { get; set; }
+		[NinjaScriptProperty][Range(0.2, 5.0)][Display(Name = "ORB: objetivo en R (Custom)", Order = 3, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public double OrbTargetR { get; set; }
+		[NinjaScriptProperty][Display(Name = "ORB: solo días de pullback (Custom)", Order = 4, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool OrbPullbackFilter { get; set; }
+		[NinjaScriptProperty][Display(Name = "MSEQ activo", Order = 6, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseMseq { get; set; }
+		[NinjaScriptProperty][Display(Name = "CRT11 activo", Order = 8, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseCrt { get; set; }
+		[NinjaScriptProperty][Display(Name = "MOM11 activo", Order = 9, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseMom11 { get; set; }
+		[NinjaScriptProperty][Display(Name = "MOM13 activo", Order = 10, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseMom13 { get; set; }
+		[NinjaScriptProperty][Display(Name = "MOM1030 activo", Order = 11, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseMom1030 { get; set; }
+		[NinjaScriptProperty][Display(Name = "ON07 activo", Order = 12, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseOn07 { get; set; }
+		[NinjaScriptProperty][Display(Name = "REV06 activo", Order = 13, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseRev06 { get; set; }
+		[NinjaScriptProperty][Display(Name = "LON (Londres) activo", Order = 14, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseLon { get; set; }
+		[NinjaScriptProperty][Display(Name = "ICT activo", Order = 15, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseIct { get; set; }
+		[Browsable(false)] public bool UseMom1130 { get; set; }
+		[Browsable(false)] public bool UseRsi2 { get; set; }
+		[NinjaScriptProperty][Display(Name = "ORB90 activo", Order = 5, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseOrb90 { get; set; }
+		[NinjaScriptProperty][Display(Name = "MSEQS activo", Order = 7, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseMseqShort { get; set; }
+		[NinjaScriptProperty][Display(Name = "LATE15 activo", Order = 18, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseLate15 { get; set; }
+		[Browsable(false)] public bool UseEng10 { get; set; }
+		[NinjaScriptProperty][Display(Name = "Módulos de 6 años (SO04 RV11 ORFAIL CAM3)", Order = 23, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool SixYearModules { get; set; }
+		[Browsable(false)] public bool UseCa04v { get; set; }
+		[NinjaScriptProperty][Display(Name = "SO04 activo", Order = 24, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseSo04 { get; set; }
+		[Browsable(false)] public bool UseGd03 { get; set; }
+		[NinjaScriptProperty][Display(Name = "RV11 activo", Order = 25, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseRv11 { get; set; }
+		[Browsable(false)] public bool UseEng26 { get; set; }
+		[NinjaScriptProperty][Display(Name = "ORFAIL activo", Order = 26, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseOrFail { get; set; }
+		[NinjaScriptProperty][Display(Name = "CAM3 activo", Order = 27, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseCam3 { get; set; }
+		[Browsable(false)] public bool UseLateFh { get; set; }
+		[Browsable(false)] public bool Vw13Wide { get; set; }
+		[NinjaScriptProperty][Display(Name = "NF05 activo", Order = 19, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseNf05 { get; set; }
+		[Browsable(false)] public bool UseLf0315 { get; set; }
+		[NinjaScriptProperty][Display(Name = "LF06 activo", Order = 20, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseLf06 { get; set; }
+		[NinjaScriptProperty][Display(Name = "LF0430 activo", Order = 21, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseLf0430 { get; set; }
+		[NinjaScriptProperty][Display(Name = "WR70Plus: incluir los módulos nocturnos NF05 / LF06 / LF0430", Order = 8, GroupName = "01. Perfil y cuenta")] public bool NightOnWr70 { get; set; }
+		[NinjaScriptProperty][Display(Name = "CPI09 (días de CPI) activo", Order = 22, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseCpi09 { get; set; }
+		[NinjaScriptProperty][Display(Name = "Fechas CPI extra (yyyy-MM-dd)", Order = 2, GroupName = "05. Calendario (fechas extra)")] public string CpiDates { get; set; }
+		[Browsable(false)] public int Cpi09Multiplier { get; set; }
+		[Browsable(false)] public int Mom1030Multiplier { get; set; }
+		[Browsable(false)] public double PullbackMaxRet { get; set; }
+		[Browsable(false)] public double StopCapAtr { get; set; }
+		[Browsable(false)] public double OrbPriorCloseAtr { get; set; }
+		[Browsable(false)] public bool VolbBreakEven { get; set; }
+		[Browsable(false)] public bool MomAgreement { get; set; }
+		[Browsable(false)] public int VolbTrendLastEntry { get; set; }
+		[Browsable(false)] public bool VolbReArm { get; set; }
+		[NinjaScriptProperty][Display(Name = "Sin posiciones ni órdenes 2 min alrededor de CPI / NFP / actas FOMC (MFFU fondeada)", Order = 3, GroupName = "03. Operación y seguridad")] public bool NewsBlackout { get; set; }
+		[NinjaScriptProperty][Display(Name = "Noticias Tier-1 extra (yyyy-MM-dd HH:mm ET)", Order = 3, GroupName = "05. Calendario (fechas extra)")] public string NewsTimes { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Contratos por módulo (los presets lo ajustan)", Order = 7, GroupName = "01. Perfil y cuenta")] public int Contracts { get; set; }
+		[NinjaScriptProperty][Range(1000, 1659)][Display(Name = "Hora de cierre de todo (ET, HHmm)", Order = 1, GroupName = "03. Operación y seguridad")] public int FlattenTime { get; set; }
+		[NinjaScriptProperty][Display(Name = "No operar los días de FOMC", Order = 2, GroupName = "03. Operación y seguridad")] public bool SkipFomc { get; set; }
+		[NinjaScriptProperty][Display(Name = "Fechas FOMC extra (yyyy-MM-dd, separadas por comas)", Order = 1, GroupName = "05. Calendario (fechas extra)")] public string FomcDates { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Saldo inicial $", Order = 1, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double StartBalance { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: objetivo de ganancia $", Order = 3, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double EvalTarget { get; set; }
+		[Browsable(false)] public double MaxDrawdown { get; set; }
+		[Browsable(false)] public double DrawdownBuffer { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Cortar el día al perder $ en trades cerrados (0 = no)", Order = 10, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double DailyLossLimit { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Fondeada: cortar el día al perder $ por contrato, abierto + cerrado (0 = no)", Order = 11, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double DailyLossPerContract { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "ATR diario mínimo para operar (puntos; 150 = validado)", Order = 4, GroupName = "03. Operación y seguridad")] public double MinAtrPoints { get; set; }
+		[NinjaScriptProperty][Range(2, 15)][Display(Name = "Días de calentamiento (15 = validado)", Order = 5, GroupName = "03. Operación y seguridad")] public int WarmupDays { get; set; }
+		[Browsable(false)] public bool EvalMode { get; set; }
+		[NinjaScriptProperty][Display(Name = "Fecha de inicio de la cuenta real (yyyy-MM-dd)", Order = 1, GroupName = "06. Recuperación (reinicio a mitad de una cuenta real)")] public string EvalStartDate { get; set; }
+		[Browsable(false)] public int EvalLateDay { get; set; }
+		[Browsable(false)] public double EvalLateGoal { get; set; }
+		[Browsable(false)] public int EvalLateContracts { get; set; }
+		[Browsable(false)] public double EvalLateMinCushion { get; set; }
+		[NinjaScriptProperty][Display(Name = "Archivo de pausa manual (si existe, no abre trades)", Order = 6, GroupName = "03. Operación y seguridad")] public string PauseFile { get; set; }
+		[Browsable(false)] public bool UseContextRules { get; set; }
+		[NinjaScriptProperty][Display(Name = "VOLB activo", Order = 16, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseVolBreak { get; set; }
+		[NinjaScriptProperty][Display(Name = "VW13 activo", Order = 17, GroupName = "08. Avanzado: módulos (perfil Custom o apagar)")] public bool UseVw13 { get; set; }
+		[Browsable(false)] public bool UseConfluence { get; set; }
+		[Browsable(false)] public int IctMultiplier { get; set; }
+		[Browsable(false)] public bool AdaptiveSize { get; set; }
+		[Browsable(false)] public int SizeHigh { get; set; }
+		[Browsable(false)] public int SizeLow { get; set; }
+		[Browsable(false)] public double SizeDownDrawdown { get; set; }
+		[Display(Name = "Mostrar el panel", Order = 1, GroupName = "07. Panel")] public bool ShowDashboard { get; set; }
+		[Display(Name = "Imprimir el log en Output", Order = 2, GroupName = "07. Panel")] public bool PrintLog { get; set; }
+		[NinjaScriptProperty][Display(Name = "Monitor de borde (compara el rendimiento en vivo con el backtest)", Order = 1, GroupName = "04. Monitor y revisión")] public bool EdgeMonitor { get; set; }
+		[Browsable(false)] public bool EdgeMonitorPause { get; set; }
+		[NinjaScriptProperty][Display(Name = "Monitor: fecha de inicio (yyyy-MM-dd)", Order = 2, GroupName = "04. Monitor y revisión")] public string EdgeMonitorStart { get; set; }
+		[Browsable(false)] public double EdgeK { get; set; }
+		[Browsable(false)] public double EdgeH { get; set; }
+		[NinjaScriptProperty][Display(Name = "Con alarma: modo defensivo (apaga los módulos de la revisión anual)", Order = 3, GroupName = "04. Monitor y revisión")] public bool EdgeAlarmFallback { get; set; }
+		[NinjaScriptProperty][Range(1, 1000)][Display(Name = "Duración del modo defensivo (días operables; 252 = 1 año)", Order = 4, GroupName = "04. Monitor y revisión")] public int EdgeFallbackDays { get; set; }
+		[NinjaScriptProperty][Display(Name = "Módulos del modo defensivo (vacío = tabla interna)", Order = 5, GroupName = "04. Monitor y revisión")] public string EdgeFallbackOff { get; set; }
+		[NinjaScriptProperty][Display(Name = "Fase REAL de la cuenta en vivo (Off = sin reglas de fondeo)", Order = 3, GroupName = "01. Perfil y cuenta")] public NQMasterPropMode PropMode { get; set; }
+		[NinjaScriptProperty][Display(Name = "Firma / cuenta (preset): completa saldo, drawdown, objetivo, tamaño y retiros", Order = 2, GroupName = "01. Perfil y cuenta")] public NQMasterPropPreset PropPreset { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Drawdown máximo $ (al cierre; se fija en saldo inicial + 100)", Order = 2, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double PropTrailingDD { get; set; }
+		[Browsable(false)] public double EvalCushionFull { get; set; }
+		[Browsable(false)] public NQMasterSafeSet EvalSafeSet { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: cortar el día al perder $ (0 = no)", Order = 6, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double EvalDailyStop { get; set; }
+		[Browsable(false)] public double FundedCushionSafe { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Fondeada: pedir retiro con ganancia >= $", Order = 8, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double FundedPayoutAt { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Saldo de cierre más alto hasta ahora $ (0 = automático)", Order = 3, GroupName = "06. Recuperación (reinicio a mitad de una cuenta real)")] public double PropPeakOverride { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Límite de liquidación $ (0 = automático)", Order = 4, GroupName = "06. Recuperación (reinicio a mitad de una cuenta real)")] public double PropThresholdOverride { get; set; }
+		[Browsable(false)] public double AtrStartMax { get; set; }
+		[Browsable(false)] public bool FundedHighFull { get; set; }
+		[Browsable(false)] public double FundedCushionFull { get; set; }
+		[NinjaScriptProperty][Range(0, 100)][Display(Name = "Eval: consistencia % (mejor día <= % de la ganancia; 0 = sin regla)", Order = 4, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double ConsistencyPct { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: mejor día hasta ahora $", Order = 2, GroupName = "06. Recuperación (reinicio a mitad de una cuenta real)")] public double EvalBestDaySoFar { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Eval: cortar el día al ganar $ (0 = no)", Order = 5, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double EvalProfitStop { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Fondeada: cortar el día al ganar $ (0 = no)", Order = 9, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double FundedProfitStop { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Fondeada: subir de tamaño con colchón >= $ (0 = no)", Order = 16, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double FundedStepUpCushion { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Fondeada: contratos al subir", Order = 17, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public int FundedStepUpContracts { get; set; }
+		[NinjaScriptProperty][Range(0, double.MaxValue)][Display(Name = "Fondeada: escalera, +1 contrato cada $ de colchón (0 = no)", Order = 18, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public double FundedLadderStep { get; set; }
+		[NinjaScriptProperty][Range(1, 50)][Display(Name = "Fondeada: escalera, máximo de contratos", Order = 19, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public int FundedLadderMax { get; set; }
+		[NinjaScriptProperty][Range(0, 8)][Display(Name = "Eval: lotes totales de MOM1030 / CPI09 (0 = normal, 4 por contrato)", Order = 7, GroupName = "02. Reglas de la cuenta (las completa el preset)")] public int EvalHighWrMultiplier { get; set; }
+		[Browsable(false)] public bool UseOrderFlowBoost { get; set; }
+		[Browsable(false)] public double OrderFlowCvdMin { get; set; }
+		[Browsable(false)] public int OrderFlowBoost { get; set; }
+		[Browsable(false)] public bool OrderFlowStack { get; set; }
 		#endregion
 	}
 }

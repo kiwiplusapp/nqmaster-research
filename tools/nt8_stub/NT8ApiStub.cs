@@ -5,7 +5,7 @@ namespace System.ComponentModel.DataAnnotations {
  public class DisplayAttribute : System.Attribute { public string Name {get;set;} public int Order {get;set;} public string GroupName {get;set;} public string Description {get;set;} }
  public class RangeAttribute : System.Attribute { public RangeAttribute(int a, int b){} public RangeAttribute(double a, double b){} }
 }
-namespace System.Windows.Media { public class Brush {} public static class Brushes { public static Brush White, Black, Red, Transparent, Yellow; } }
+namespace System.Windows.Media { public class Brush {} public static class Brushes { public static Brush White, Black, Red, Transparent, Yellow, Orange, LimeGreen; } }
 namespace NinjaTrader.Core { public class GeneralOptionsC { public TimeZoneInfo TimeZoneInfo; } public static class Globals { public static string UserDataDir, InstallDir; public static DateTime Now; public static GeneralOptionsC GeneralOptions; } }
 namespace NinjaTrader.Gui { public class Stroke {} }
 namespace NinjaTrader.Gui.Tools { public class SimpleFont { public SimpleFont(string n, int s){} } }
@@ -49,7 +49,7 @@ namespace NinjaTrader.NinjaScript {
  public enum CalculationMode { Ticks, Price, Currency, Percent }
  public enum Priority { High, Medium, Low }
  public class ISeries<T> { public T this[int i] { get { return default(T); } } }
- public class Trade { public double ProfitCurrency; public Execution Entry, Exit; public int Quantity; }
+ public class Trade { public double ProfitCurrency, Commission; public Execution Entry, Exit; public int Quantity; }
  public class TradeCollection : List<Trade> {}
  public class SystemPerformanceC { public TradeCollection AllTrades; }
  public class StrategyBase {
@@ -65,7 +65,7 @@ namespace NinjaTrader.NinjaScript {
   protected virtual void OnOrderUpdate(Order order, double limitPrice, double stopPrice, int quantity, int filled, double averageFillPrice, OrderState orderState, DateTime time, ErrorCode error, string nativeError){}
   protected virtual void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity, MarketPosition marketPosition, string orderId, DateTime time){}
   protected virtual void OnMarketData(MarketDataEventArgs e){}
-  public void Print(object o){} public void AddDataSeries(BarsPeriodType t, int v){} public void SetState(State s){}
+  public void RemoveDrawObject(string tag){} public void Print(object o){} public void AddDataSeries(BarsPeriodType t, int v){} public void SetState(State s){}
   public void Alert(string id, Priority p, string msg, string sound, int rearm, System.Windows.Media.Brush b, System.Windows.Media.Brush f){}
   public Order EnterLong(int q, string s){return null;} public Order EnterShort(int q, string s){return null;}
   public Order EnterLong(int bip, int q, string s){return null;} public Order EnterShort(int bip, int q, string s){return null;}
@@ -82,6 +82,6 @@ namespace NinjaTrader.NinjaScript {
 }
 namespace NinjaTrader.NinjaScript.Strategies { public class Strategy : NinjaTrader.NinjaScript.Strategy {} }
 namespace NinjaTrader.NinjaScript.DrawingTools {
- public enum TextPosition { TopRight, TopLeft }
+ public enum TextPosition { TopRight, TopLeft, BottomLeft, BottomRight, Center }
  public static class Draw { public static object TextFixed(object owner, string tag, string text, TextPosition p, System.Windows.Media.Brush b, NinjaTrader.Gui.Tools.SimpleFont f, System.Windows.Media.Brush o, System.Windows.Media.Brush a, int op){return null;} }
 }

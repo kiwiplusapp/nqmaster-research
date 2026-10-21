@@ -1,14 +1,54 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
-## 2026-10-21: cuentas de simulación (Sim101 / Playback)
+## ★★★★★★★★★★★★★★★★★★ 2026-10-21: panel nuevo, simulación del ciclo de cuenta y configuración limpia
 
-En tiempo real, NQMaster lee el saldo de la cuenta del gráfico para el colchón, el umbral, el aviso de PAYOUT, el objetivo de la evaluación y los stops diarios. `StartBalance` es solo la referencia; el saldo lo lee de la cuenta.
+### Qué cambió
+- **Panel en español, en tres bloques.**
+  - Arriba a la derecha: el sistema (estado, módulos) y el rendimiento: trades, % ganadoras, factor de beneficio, neto, por trade, por mes, caída máxima, mejor y peor día, días positivos, si hay comisiones y el monitor de borde. En vivo también muestra "esperado por el backtest" contra lo real.
+  - Arriba a la izquierda: la **simulación de la cuenta** y, en vivo sobre una cuenta real, la **cuenta real**.
+  - Abajo a la izquierda: avisos (órdenes trabadas, tope de contratos, sesión corta, calentamiento, alarma).
+- **Simulación del ciclo de cuenta** (propiedad *Backtest: simular el ciclo*, activada por defecto). Con un preset de firma y la fase en Eval o Funded, el backtest hace lo mismo que harías vos:
+  1. Compra una eval al terminar el calentamiento y la opera con el tamaño y los cortes de la eval del preset.
+  2. Si llega al objetivo (con la regla de consistencia), cierra todo y al día siguiente arranca la fondeada (MFFU: después de los 4 días mínimos).
+  3. Si toca el límite de pérdida (contando la posición abierta en el peor precio de cada barra), la cuenta se pierde y **al día siguiente compra otra eval**.
+  4. En la fondeada pide los retiros al cierre con la regla de la firma y los descuenta del saldo.
+  5. Lucid termina la fondeada al quinto retiro (pasa a cuenta real) y se compra otra eval.
+  6. El panel cuenta evals compradas, aprobadas y perdidas, fondeadas perdidas y completadas, retiros pedidos y cobrados (90%), costos y el resultado neto por mes, con los últimos eventos fechados.
+- **Precio de la eval:** por defecto el de lista (Lucid Flex 25K $89, 50K $146, 150K $285, Pro 25K $123, Pro 50K $192, MFFU 50K $157, FundedNext 25K $80). Cargá el precio con cupón en *Precio pagado por cada eval*.
+- **Cuenta de simulación en vivo (Sim101 / Playback):** la simulación sigue corriendo y el saldo es el de la cuenta simulada, nunca el de Sim101. En una cuenta real de la firma la simulación se congela al pasar a vivo y el panel muestra el saldo, el límite, el colchón y el retiro de la cuenta real.
+- **Configuración limpia:** 8 grupos en español y 83 propiedades visibles.
+  - 46 propiedades quedaron **ocultas y forzadas** a su valor validado, así que un template viejo no las puede volver a prender:
+    - Ideas que fallaron fuera de muestra o fueron reemplazadas: boost de order flow, tamaño adaptativo, subida de tamaño tardía en la eval, gating por colchón (Estable / Safe), chequeo de ATR para arrancar evals, pausa del monitor, re-armado de VOLB y los módulos MOM1130, RSI2, LF0315, CA04V, GD03, ENG26, ENG10 y LATEFH.
+    - Parámetros del edge que ningún test cambió: pullback 0,44, tope de stop 0,35, ORB contra cierre previo 0,10, break-even de VOLB, acuerdo MOM, VOLB 10:47, stop mínimo 0,10, reglas de contexto y confluencia, ICT x2, VW13 ancho, CPI09 x4, MOM1030 x4.
+  - Los interruptores de módulos quedan en el grupo 08 "Avanzado". Para apagar un módulo alcanza con *Apagar módulos*.
+- **LucidPro25K fondeada:** pide el retiro con $2.100 de ganancia (colchón 1.100 + primer retiro 1.000), igual que la investigación.
 
-En una cuenta de simulación de NinjaTrader (Sim101 arranca en $100.000 y guarda su propio historial), ese saldo no tiene nada que ver con la cuenta de fondeo. Ejemplo: Sim101 con $51.426 y el preset Lucid25K daba un colchón de $26.326.
+### Auditoría de los cálculos
+- `tools/propcycle_test/run_test.py` pasa los mismos caminos aleatorios por tres implementaciones: el motor de cuentas en C# de NQMaster, su versión Python (`research/mine/propcycle.py`) y los simuladores de investigación (`prop_wf.race`, `fu_flex`, `fu_pro`, `fu_m`).
+  - Resultado: **780 y 1.950 casos, 0 diferencias** en aprobaciones, cuentas perdidas, días, cantidad de retiros y dinero cobrado (solo redondeo de 1 centavo).
+  - Hay que correrlo de nuevo cada vez que se toque el motor.
+- `research/mine/dash_cycle_ref.py` reproduce el panel desde un CSV de trades exportado del Strategy Analyzer, o desde los trades de investigación:
+  - `python3 dash_cycle_ref.py --csv "trades.csv" --preset Lucid25K --fee 89`
+  - Como solo ve trades cerrados, puede conservar una cuenta que el panel da por perdida por la posición abierta. El tope de riesgo no se aplica a los trades de investigación.
 
-Ahora, en cuentas cuyo nombre empieza con `Sim` o `Playback`, el saldo se rebasa una vez al pasar a tiempo real: el patrimonio sigue desde `StartBalance` + la ganancia propia de la estrategia en el backtest, y se le suman los cambios reales de la cuenta. El panel muestra "sim account rebased" y el Output imprime "SIM ACCOUNT ...". Las cuentas reales de fondeo se leen sin cambios.
+### Qué muestra con los trades de investigación (1 contrato base, ene-2024 a oct-2026, un solo camino histórico)
 
-El backtest no simula retiros: la ganancia del panel es la acumulada total. Para contar payouts, exportar los trades y simularlos con la regla de la firma.
+| Preset | Evals compradas / aprobadas / perdidas | Fondeadas perdidas / completadas | Retiros | Neto por mes: borde completo | −35% | borde cero |
+|---|---|---|---|---|---|---|
+| Lucid Flex 25K | 23 / 16 / 7 | 8 / 7 | 41 | ~$1.019 | ~$469 | ~$35 |
+| Lucid Flex 150K | 23 / 16 / 7 | 9 / 6 | 34 | ~$2.569 | ~$2.149 | ~$135 |
+| Lucid Pro 50K | 9 / 6 / 3 | 1 / 4 | 24 | ~$1.482 | ~$867 | ~$52 |
+| MFFU 50K | 2 / 1 / 1 | 0 / 0 | 96 | ~$2.189 | ~$1.333 | ~$76 |
+
+- Lucid Flex 25K del 15-jul al 8-oct-2026 (la ventana del gráfico de 120 días): 5 evals compradas (3 aprobadas, 2 perdidas), 3 fondeadas (2 perdidas), **2 retiros** de $1.000, neto +$1.355. Antes dije 5 retiros: esa cuenta suponía una fondeada desde el primer día.
+- Con borde cero el neto queda cerca de cero y no negativo porque la firma absorbe las pérdidas y los retiros se llevan la suerte; en remuestreos (secciones de cuentas de abajo) el borde cero da mediana negativa.
+
+### Cómo usarlo
+1. Copiá `NQMaster.cs` y apretá F5. No está compilado en NinjaTrader; solo pasó el chequeo de sintaxis.
+2. Strategy Analyzer o gráfico: elegí el preset de la firma, *Fase REAL de la cuenta* = Eval, *Backtest: simular el ciclo* = true y cargá el precio que pagás por la eval.
+3. Leé el bloque **SIMULACIÓN DE CUENTA**. El neto del Strategy Analyzer **no** descuenta retiros ni costos de evals; el panel sí.
+4. Para verificar, exportá los trades y corré `dash_cycle_ref.py` con el mismo preset.
+5. Parity con la investigación: sigue siendo con *Fase REAL* = Off (sin simulación), igual que antes.
 
 ## ★★★★★★★★★★★★★★★★★ 2026-10-21: plan de cuentas (ronda 5)
 
