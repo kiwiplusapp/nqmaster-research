@@ -497,7 +497,7 @@ def stage_merge():
         for part in ("sel", "pay90"):
             p = os.path.join(OWN, f"prop_wf_{part}_{f}.json")
             if os.path.exists(p): R[part] = json.load(open(p))
-        e = EV[EV.firm == f]; piv = {hc: e[e.hc == hc].pivot_table(index="policy", columns="per") for hc in HC}
+        e = EV[EV.firm == f]; piv = {hc: e[e.hc == hc].drop(columns=["firm"]).pivot_table(index="policy", columns="per") for hc in HC}
         q1 = {}
         for met in ("p10_1", "p22_1", "p10_3", "p22_3", "p120_3"):
             a = piv[0.0][met]; b = a.T1.idxmax()
