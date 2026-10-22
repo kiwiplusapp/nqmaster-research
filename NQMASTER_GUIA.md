@@ -43,6 +43,15 @@
 - Lucid Flex 25K del 15-jul al 8-oct-2026 (la ventana del gráfico de 120 días): 5 evals compradas (3 aprobadas, 2 perdidas), 3 fondeadas (2 perdidas), **2 retiros** de $1.000, neto +$1.355. Antes dije 5 retiros: esa cuenta suponía una fondeada desde el primer día.
 - Con borde cero el neto queda cerca de cero y no negativo porque la firma absorbe las pérdidas y los retiros se llevan la suerte; en remuestreos (secciones de cuentas de abajo) el borde cero da mediana negativa.
 
+### Revisión independiente del código (21-oct)
+`research/mine/review_dashboard_2026-10-21.md`: 1 problema grave y 4 medios, todos en el pasaje a vivo o en cuentas Sim; corregidos con `patch_dashboard_review.py`.
+- Grave: si la simulación terminaba el historial con la cuenta "frenada" (perdida o aprobada ese día), la cuenta real no operaba nunca. Ahora el freno simulado se borra al pasar a vivo y solo actúa mientras corre la simulación.
+- Órdenes estacionadas y el reintento de MSEQ se re-dimensionan al tamaño real al pasar a vivo.
+- Sim101 sin simulación del ciclo: arranca una cuenta nueva desde que pasa a vivo.
+- Al detener la estrategia se devuelven tus valores (fase, contratos); igual, no guardes el template mientras la simulación corre en Sim.
+- "Esperado por el backtest" se calcula por contrato base y por día operable, multiplicado por el tamaño en vivo.
+- Los días de FOMC, ATR bajo o feriado no cuentan como días de la cuenta (igual que la investigación); el "por mes" se calcula sobre al menos un mes; PF sin pérdidas dice "sin pérdidas".
+
 ### Cómo usarlo
 1. Copiá `NQMaster.cs` y apretá F5. No está compilado en NinjaTrader; solo pasó el chequeo de sintaxis.
 2. Strategy Analyzer o gráfico: elegí el preset de la firma, *Fase REAL de la cuenta* = Eval, *Backtest: simular el ciclo* = true y cargá el precio que pagás por la eval.

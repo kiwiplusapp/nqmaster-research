@@ -383,7 +383,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 				Profile = NQMasterProfile.Ultra;
 				UseOrb = true; OrbRangeMin = 60; OrbTargetR = 0.6; OrbPullbackFilter = true; PullbackMaxRet = 0.44; StopCapAtr = 0.35;
-				UseMseq = true; UseCrt = true; UseMom11 = true; UseMom1130 = true; UseRsi2 = true; UseOrb90 = true; UseMseqShort = true; UseMom13 = true; UseMom1030 = true; UseOn07 = true; UseRev06 = true; UseLon = true; UseIct = true;
+				UseMseq = true; UseCrt = true; UseMom11 = true; UseMom1130 = false; UseRsi2 = false; UseOrb90 = true; UseMseqShort = true; UseMom13 = true; UseMom1030 = true; UseOn07 = true; UseRev06 = true; UseLon = true; UseIct = true;
 				Contracts = 1; FlattenTime = 1556; SkipFomc = true;
 				AdaptiveSize = false; SizeHigh = 2; SizeLow = 1; SizeDownDrawdown = 600; IctMultiplier = 2; UseConfluence = true; UseContextRules = true; UseVw13 = true; UseVolBreak = true; UseLate15 = true; UseEng10 = false; UseLateFh = false; Vw13Wide = true; UseNf05 = true; UseLf0315 = false; UseLf06 = true; UseLf0430 = true; NightOnWr70 = false; UseCpi09 = true; CpiDates = ""; Cpi09Multiplier = 4; Mom1030Multiplier = 4; EvalHighWrMultiplier = 0;
 				SixYearModules = true; UseCa04v = false; UseSo04 = true; UseGd03 = false; UseRv11 = true; UseEng26 = false; UseOrFail = true; UseCam3 = true;	// research/mine/six_oos.py (2026-10-19): only the four that held on 2010-19 (never used to choose them)
@@ -464,6 +464,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 					int want = Math.Max(1, (int)Math.Round(m.Entry.Quantity * (double)lq / hq));
 					if (want != m.Entry.Quantity) { try { ChangeOrder(m.Entry, want, m.Entry.LimitPrice, m.Entry.StopPrice); Log(string.Format("{0} entry re-sized {1} -> {2} at go-live (cushion size {3} -> {4})", m.Sig, m.Entry.Quantity, want, hq, lq)); } catch { } }
 				}
+				if (lq != hq)	// review 2026-10-21 M2: parked setups and the pending MSEQ / MSEQS retry carry the history size as well
+				{
+					foreach (Mod m in mods) if (m.Parked) m.ParkQty = Math.Max(1, (int)Math.Round(m.ParkQty * (double)lq / hq));
+					if (pend5 != null) pend5Qty = Math.Max(1, (int)Math.Round(pend5Qty * (double)lq / hq));
+				}
+				edgeDayQty = Qty(); statQty = Qty();	// review L14
 				syncArmed = false; desyncBars = 0; NewsListCheck();
 				if (atrCount < AtrMin || rthDaysSeen < WarmupDays) Warn("nqm_warmup", string.Format("NQMaster | WARNING: only {0} RTH days loaded, the warm-up needs {1}: modules stay idle until then (set Days to load >= 45).", rthDaysSeen, WarmupDays));
 				rollHalt = RollDue(); if (rollHalt) Warn("nqm_roll", "NQMaster | ROLL DATE reached for " + Instrument.FullName + ": no new entries. Move the strategy to the next contract (same settings).");
@@ -472,6 +478,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			else if (State == State.Terminated)
 			{
+				if (presetSnap != null && cy != null) { RestorePreset(presetSnap); PropMode = realMode; }	// review M4: never leave the simulated phase in the properties
 				try { if (CrossAccountGuard && PosFile != null && File.Exists(PosFile)) File.Delete(PosFile); } catch { }
 				if (zombieCount > 0)
 					Print(string.Format("NQMaster | {0} stale entry order(s) were dropped during this run (Output lines 'STALE ORDER'). Before this fix each one blocked a module and the opposite direction for good.", zombieCount));
@@ -634,6 +641,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 				NewSession();
 				PropSessionStart();
 				edgeDayQty = Qty();                                  // after the prop cushion is known (funded step-up)
+				statQty = Qty(); statDayHalted = cyOn && cyHalt;
+				cyPrevTradable = !fomcToday && !(MinAtrPoints > 0 && !double.IsNaN(todayAtr) && todayAtr < MinAtrPoints) && !(SkipShortSessions && shortSession) && !rollHalt;
+				if (cyOn && cyHalt) edgeDayTradable = false;	// review L6
 				sessHi = High[0]; sessLo = Low[0];
 			}
 			sessHi = Math.Max(sessHi, High[0]); sessLo = Math.Min(sessLo, Low[0]);
@@ -1743,10 +1753,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// $100,000 and keeps its own history) that cash has nothing to do with the prop account (Federico's chart: Sim at $51,426 -> cushion
 		// $26,326 on a 25K preset), so Sim/Playback accounts use the strategy's own account: start balance + its P&L since the simulated
 		// account started - simulated payouts (the account-cycle simulation keeps running live there). Real prop accounts are read as is.
+		private double simBase = double.NaN;	// review M3: Sim / Playback without the cycle simulation starts a fresh account at go-live
 		private bool SimAccount { get { string n = Account != null ? Account.Name ?? "" : ""; return n.StartsWith("Sim") || n.StartsWith("Playback"); } }
 		private double AcctCash()
 		{
-			if (SimAccount) return StartBalance + netPnl - CyOffset();
+			if (SimAccount) return cyOn ? StartBalance + netPnl - CyOffset() : StartBalance + netPnl - (double.IsNaN(simBase) ? netPnl : simBase);
 			return Account.Get(AccountItem.CashValue, Currency.UsDollar);
 		}
 
@@ -1758,7 +1769,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void PropGoLive()
 		{
 			if (PropMode == NQMasterPropMode.Off) return;
-			if (SimAccount) return;	// Sim / Playback: keep the backtest's account state (no prop file)
+			if (SimAccount)	// Sim / Playback: no prop file. With the cycle simulation the simulated seat continues; without it a fresh account starts now
+			{
+				if (cyOn) return;
+				simBase = netPnl; propPeak = StartBalance; propDayStart = double.NaN; propBestDay = EvalBestDaySoFar; targetHit = false;
+				PropSessionStart(); return;
+			}
 			propLive = true; propPeak = StartBalance; propDayStart = double.NaN; propBestDay = EvalBestDaySoFar;
 			DateTime et = ToEt(Times[0][0]); DateTime td = et.Hour >= 18 ? et.Date.AddDays(1) : et.Date; int today = td.Year * 10000 + td.Month * 100 + td.Day;
 			try
@@ -1843,7 +1859,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			double lossStop = evalMode ? EvalDailyStop : (PropMode == NQMasterPropMode.Funded && DailyLossPerContract > 0 ? DailyLossPerContract * Math.Max(1, edgeDayQty) : 0);
 			double profitStop = evalMode ? EvalProfitStop : (PropMode == NQMasterPropMode.Funded ? FundedProfitStop : 0);
 			if ((lossStop <= 0 && profitStop <= 0) || propStopped || double.IsNaN(propDayStart)) return;
-			double now = State == State.Realtime ? AcctCash() + Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar)
+			double now = State == State.Realtime ? AcctCash() + (SimAccount ? (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Closes[0][0])) : Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar))
 				: StartBalance + netPnl - CyOffset() + (Position.MarketPosition == MarketPosition.Flat ? 0 : Position.GetUnrealizedProfitLoss(PerformanceUnit.Currency, Closes[0][0]));
 			if (lossStop > 0 && !evalMode && State != State.Realtime && Position.MarketPosition != MarketPosition.Flat)
 			{	// historical: mirror the research (minute low of the day's equity) with the bar's adverse extreme
@@ -1889,7 +1905,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (rollHalt) { status = "ROLL DATE: move the strategy to the next contract"; return false; }
 			if (newsBlock5 && BarsInProgress == 1) { status = "NEWS BLACKOUT"; return false; }
 			if (fomcToday) { status = "FOMC day: no trading"; return false; }
-			if (cyHalt) { status = cyStatus.Length > 0 ? cyStatus : "simulaci\u00f3n de cuenta: sin operar"; return false; }
+			if (cyOn && cyHalt) { status = cyStatus.Length > 0 ? cyStatus : "simulaci\u00f3n de cuenta: sin operar"; return false; }
 			if (targetHit) { status = "eval target reached"; return false; }
 			if (ddTripped) { status = "drawdown guard"; return false; }
 			if (dayStopped) { status = "daily loss limit"; return false; }
@@ -2314,6 +2330,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!CycleSim || PropMode == NQMasterPropMode.Off || PropPreset == NQMasterPropPreset.Manual || FirmRules() == null) { ApplyPreset(); return; }
 			cy = FirmRules();
 			ApplyPhase(NQMasterPropMode.Funded, false);			// funded rule values (payout level) for the engine, printed once
+			double fundedPayoutAt = FundedPayoutAt;
 			cy.D = PropTrailingDD; cy.Buf = PropTrailingDD + 100;
 			if (cy.Model == 0) cy.X = FundedPayoutAt;
 			else if (cy.Model == 1) cy.X = Math.Max(500, FundedPayoutAt - cy.Buf);
@@ -2322,7 +2339,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			cy.T = EvalTarget; cy.Cons = ConsistencyPct / 100.0;
 			cyOn = true;
 			Print(string.Format("NQMaster | CICLO DE CUENTA ({0}): eval ${1:0} objetivo, drawdown ${2:0}, consistencia {3:0}%, precio eval ${4:0}; fondeada: retiro con ganancia >= ${5:0}. La primera eval empieza al terminar el calentamiento.",
-				cy.Firm, cy.T, cy.D, ConsistencyPct, cy.Fee, FundedPayoutAt));
+				cy.Firm, cy.T, cy.D, ConsistencyPct, cy.Fee, fundedPayoutAt));
 		}
 		private void CyEvent(DateTime day, string s)
 		{
@@ -2343,8 +2360,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void CycleSessionStart(DateTime tradeDay)
 		{
 			if (!cyOn) return;
-			cyHalt = false; cyLastDay = tradeDay;
-			if (cyStarted && cy.Alive)
+			cyHalt = false; cyLastDay = tradeDay; cyWaitPrev = cyWaitNow; cyWaitNow = false;
+			if (cyStarted && cy.Alive && cyPrevTradable)	// review L7: FOMC / low-ATR / skipped sessions are not account days (research day lists skip them)
 			{
 				DateTime prev = cyPrevDay == DateTime.MinValue ? tradeDay : cyPrevDay;
 				double amt = cy.DayClose(netPnl - cyBase);
@@ -2358,12 +2375,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!cyStarted) { if (rthDaysSeen >= WarmupDays && atrCount >= AtrMin) CyStart(false, tradeDay); else { cyHalt = true; cyStatus = "calentamiento: la primera eval empieza al completarlo"; } }
 			else if (!cy.Alive && cyNext != 0)
 			{
-				if (cyWait > 0) { cyWait--; cyHalt = true; cyStatus = "eval aprobada: esperando los días mínimos de la firma"; }
+				if (cyWaitPrev && cyPrevTradable && cyWait > 0) cyWait--;
+				if (cyWait > 0) { cyHalt = true; cyWaitNow = true; cyStatus = "eval aprobada: esperando los días mínimos de la firma"; }
 				else { bool f = cyNext == 2; cyNext = 0; CyStart(f, tradeDay); }
 			}
 			cyPrevDay = tradeDay;
 		}
-		private DateTime cyPrevDay = DateTime.MinValue;
+		private DateTime cyPrevDay = DateTime.MinValue; private bool cyPrevTradable = true, cyWaitPrev, cyWaitNow;
 		// every 1-minute bar: account lost (equity incl. the open position at the bar's adverse extreme <= threshold) or eval target reached
 		private void CycleBar()
 		{
@@ -2400,7 +2418,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private void CycleGoLive()
 		{
 			if (!cyOn || SimAccount) return;
-			cyOn = false; cyFrozen = true; cyFrozenAt = cyLastDay;
+			cyOn = false; cyFrozen = true; cyFrozenAt = cyLastDay; cyHalt = false; cyStatus = "";	// review H1: a simulated halt never blocks the real account
 			ApplyPhase(realMode, false); targetHit = false;
 		}
 
@@ -2415,13 +2433,19 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (netPnl > statPeak) statPeak = netPnl;
 			statMaxDd = Math.Max(statMaxDd, statPeak - netPnl);
 		}
+		private int statQty = 1; private bool statDayHalted; private double histUnitSum, liveExpect;
+		// review M5: the live expectation is the history's P&L per base contract per tradable day (simulation halts excluded) x the live size
 		private void StatDayClose()
 		{
-			if (totalTrades == statDayTrades0) { if (statFirst != DateTime.MinValue) { if (double.IsNaN(liveStartPnl)) histDays++; else liveDays++; } return; }
-			double d = netPnl - dayStartPnl; statDays++; if (d > 0) statGreenDays++;
-			statBestDay = double.IsNaN(statBestDay) ? d : Math.Max(statBestDay, d); statWorstDay = double.IsNaN(statWorstDay) ? d : Math.Min(statWorstDay, d);
-			if (double.IsNaN(liveStartPnl)) histDays++; else liveDays++;
-			statDayTrades0 = totalTrades;
+			double d = netPnl - dayStartPnl; bool traded = totalTrades != statDayTrades0; statDayTrades0 = totalTrades;
+			if (traded)
+			{
+				statDays++; if (d > 0) statGreenDays++;
+				statBestDay = double.IsNaN(statBestDay) ? d : Math.Max(statBestDay, d); statWorstDay = double.IsNaN(statWorstDay) ? d : Math.Min(statWorstDay, d);
+			}
+			if (statFirst == DateTime.MinValue || statDayHalted) return;
+			if (double.IsNaN(liveStartPnl)) { histUnitSum += d / Math.Max(1, statQty); histDays++; }
+			else { liveDays++; liveExpect += (histDays > 0 ? histUnitSum / histDays : 0) * Math.Max(1, statQty); }
 		}
 		private static string Usd(double v)
 		{
@@ -2461,8 +2485,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (totalTrades == 0) b.AppendLine("Sin trades todavía" + (rthDaysSeen < WarmupDays ? string.Format(" (calentamiento {0}/{1} días)", rthDaysSeen, WarmupDays) : ""));
 			else
 			{
-				double months = statFirst != DateTime.MinValue ? Math.Max(1.0, (statLast - statFirst).TotalDays) / 30.44 : 1;
-				b.AppendLine(string.Format("Trades {0}  ·  Ganadoras {1}  ·  Factor de beneficio {2}", totalTrades, Pct(100.0 * totalWins / totalTrades), Dec(pf)));
+				double months = statFirst != DateTime.MinValue ? Math.Max(1.0, (statLast - statFirst).TotalDays / 30.44) : 1;
+				b.AppendLine(string.Format("Trades {0}  ·  Ganadoras {1}  ·  Factor de beneficio {2}", totalTrades, Pct(100.0 * totalWins / totalTrades), grossLoss > 0 ? Dec(pf) : "sin pérdidas"));
 				b.AppendLine(string.Format("Neto {0}  ·  por trade {1}  ·  por mes {2}", Usd(netPnl), Usd(netPnl / totalTrades), Usd(netPnl / months)));
 				b.AppendLine(string.Format("Caída máxima {0}  ·  días positivos {1}", Usd(statMaxDd), statDays > 0 ? Pct(100.0 * statGreenDays / statDays) : "-"));
 				if (statDays > 0) b.AppendLine(string.Format("Mejor día {0}  ·  peor día {1}", Usd(statBestDay), Usd(statWorstDay)));
@@ -2475,7 +2499,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!double.IsNaN(liveStartPnl))
 			{
 				int lt = totalTrades - liveStartTrades; double lp = netPnl - liveStartPnl;
-				double exp = histDays > 0 ? (liveStartPnl / histDays) * liveDays : 0;
+				double exp = liveExpect;
 				b.AppendLine(DashLine);
 				b.AppendLine(string.Format("EN VIVO desde {0}: {1} sesiones, {2} trades, {3}", liveStart.ToString("dd-MM-yy", CultureInfo.InvariantCulture), liveDays, lt, Usd(lp)));
 				if (liveDays > 0) b.AppendLine(string.Format("Esperado por el backtest para {0} sesiones: {1}{2}", liveDays, Usd(exp),
@@ -2497,7 +2521,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			StringBuilder b = new StringBuilder();
 			if (cy != null && (cyOn || cyFrozen))
 			{
-				double months = cyFirst != DateTime.MinValue ? Math.Max(1.0, (cyLastDay - cyFirst).TotalDays) / 30.44 : 1;
+				double months = cyFirst != DateTime.MinValue ? Math.Max(1.0, (cyLastDay - cyFirst).TotalDays / 30.44) : 1;
 				double fees = cyFeeEval + cyFeeAct, net = cyPayCash - fees;
 				b.AppendLine(string.Format("SIMULACIÓN DE CUENTA  ·  {0}{1}", cy.Firm, cyFrozen ? "  (backtest hasta " + cyFrozenAt.ToString("dd-MM-yy", CultureInfo.InvariantCulture) + ")" : ""));
 				b.AppendLine("Regla: si se pierde una cuenta, se compra otra eval al día siguiente");
@@ -2555,7 +2579,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (shortSession) b.AppendLine(string.Format("! Sesión corta: cierra {0:00}:{1:00} ET", sessEndMin / 60, sessEndMin % 60));
 			if (edgeAlarm) b.AppendLine("! ALARMA del monitor de borde: revisar antes de seguir");
 			if (State == State.Realtime && (atrCount < AtrMin || rthDaysSeen < WarmupDays)) b.AppendLine(string.Format("! Calentamiento incompleto: {0}/{1} días (cargar 45+ días)", rthDaysSeen, WarmupDays));
-			if (State == State.Realtime && SimAccount && PropMode != NQMasterPropMode.Off) b.AppendLine("Cuenta de simulación: el saldo es el de la cuenta simulada, no el de Sim101");
+			if (State == State.Realtime && SimAccount && PropMode != NQMasterPropMode.Off) b.AppendLine(cyOn ? "Cuenta de simulación con el ciclo corriendo: no guardes el template mientras corre (la fase cambia sola)" : "Cuenta de simulación: el saldo es una cuenta nueva desde que pasó a vivo, no el de Sim101");
 			if (RiskCapPerContract > 0 && PropMode != NQMasterPropMode.Off && riskSkips > 0) b.AppendLine(string.Format("Tope de riesgo {0}/contrato: {1} trades salteados con colchón chico", Usd(RiskCapPerContract), riskSkips));
 			return b.ToString().TrimEnd();
 		}
