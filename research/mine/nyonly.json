@@ -1,0 +1,1720 @@
+{
+ "stats": {
+  "ALL 1c": {
+   "2020-23": {
+    "trades_day": 5.08,
+    "wr": 66.1,
+    "pf": 1.48,
+    "usd_month": 1856,
+    "maxdd": 3675,
+    "worst_day": -1181,
+    "best_day": 2299
+   },
+   "2024-26": {
+    "trades_day": 4.93,
+    "wr": 64.8,
+    "pf": 1.48,
+    "usd_month": 2378,
+    "maxdd": 4352,
+    "worst_day": -1587,
+    "best_day": 2149
+   }
+  },
+  "ALL 2c": {
+   "2020-23": {
+    "trades_day": 5.08,
+    "wr": 66.1,
+    "pf": 1.48,
+    "usd_month": 3713,
+    "maxdd": 7350,
+    "worst_day": -2362,
+    "best_day": 4598
+   },
+   "2024-26": {
+    "trades_day": 4.93,
+    "wr": 64.8,
+    "pf": 1.48,
+    "usd_month": 4757,
+    "maxdd": 8704,
+    "worst_day": -3175,
+    "best_day": 4298
+   }
+  },
+  "ALL 4c": {
+   "2020-23": {
+    "trades_day": 5.08,
+    "wr": 66.1,
+    "pf": 1.48,
+    "usd_month": 7425,
+    "maxdd": 14700,
+    "worst_day": -4723,
+    "best_day": 9196
+   },
+   "2024-26": {
+    "trades_day": 4.93,
+    "wr": 64.8,
+    "pf": 1.48,
+    "usd_month": 9513,
+    "maxdd": 17408,
+    "worst_day": -6349,
+    "best_day": 8596
+   }
+  },
+  "NY 1c": {
+   "2020-23": {
+    "trades_day": 3.66,
+    "wr": 68.5,
+    "pf": 1.51,
+    "usd_month": 1582,
+    "maxdd": 3742,
+    "worst_day": -1229,
+    "best_day": 2020
+   },
+   "2024-26": {
+    "trades_day": 3.49,
+    "wr": 66.9,
+    "pf": 1.52,
+    "usd_month": 1979,
+    "maxdd": 4666,
+    "worst_day": -1569,
+    "best_day": 2028
+   }
+  },
+  "NY 2c": {
+   "2020-23": {
+    "trades_day": 3.66,
+    "wr": 68.5,
+    "pf": 1.51,
+    "usd_month": 3165,
+    "maxdd": 7485,
+    "worst_day": -2459,
+    "best_day": 4040
+   },
+   "2024-26": {
+    "trades_day": 3.49,
+    "wr": 66.9,
+    "pf": 1.52,
+    "usd_month": 3957,
+    "maxdd": 9332,
+    "worst_day": -3138,
+    "best_day": 4055
+   }
+  },
+  "NY 4c": {
+   "2020-23": {
+    "trades_day": 3.66,
+    "wr": 68.5,
+    "pf": 1.51,
+    "usd_month": 6329,
+    "maxdd": 14969,
+    "worst_day": -4918,
+    "best_day": 8080
+   },
+   "2024-26": {
+    "trades_day": 3.49,
+    "wr": 66.9,
+    "pf": 1.52,
+    "usd_month": 7915,
+    "maxdd": 18664,
+    "worst_day": -6275,
+    "best_day": 8110
+   }
+  }
+ },
+ "max_open_micros": {
+  "ALL 1c": 10.0,
+  "ALL 2c": 20.0,
+  "ALL 4c": 40.0,
+  "NY 1c": 10.0,
+  "NY 2c": 20.0,
+  "NY 4c": 40.0
+ },
+ "eval": {
+  "ALL | 1c | Lucid Flex 50K | edge-0% | T1": {
+   "single22": 31.7,
+   "bust22": 4.5,
+   "serial3_22": 31.8
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-0% | T2": {
+   "single22": 40.8,
+   "bust22": 19.5,
+   "serial3_22": 46.9
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-0% | T1": {
+   "single22": 31.4,
+   "bust22": 4.5,
+   "serial3_22": 31.7
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-0% | T2": {
+   "single22": 42.9,
+   "bust22": 19.2,
+   "serial3_22": 47.5
+  },
+  "ALL | 1c | MFFU 50K | edge-0% | T1": {
+   "single22": 28.6,
+   "bust22": 4.3,
+   "serial3_22": 28.6
+  },
+  "ALL | 1c | MFFU 50K | edge-0% | T2": {
+   "single22": 34.4,
+   "bust22": 19.5,
+   "serial3_22": 39.6
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-0% | T1": {
+   "single22": 1.8,
+   "bust22": 0.0,
+   "serial3_22": 1.8
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-0% | T2": {
+   "single22": 3.0,
+   "bust22": 0.0,
+   "serial3_22": 3.0
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-0% | T1": {
+   "single22": 55.3,
+   "bust22": 36.1,
+   "serial3_22": 67.6
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-0% | T2": {
+   "single22": 50.6,
+   "bust22": 44.2,
+   "serial3_22": 75.7
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-0% | T1": {
+   "single22": 56.4,
+   "bust22": 35.8,
+   "serial3_22": 71.6
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-0% | T2": {
+   "single22": 55.5,
+   "bust22": 39.1,
+   "serial3_22": 77.8
+  },
+  "ALL | 2c | MFFU 50K | edge-0% | T1": {
+   "single22": 48.8,
+   "bust22": 38.1,
+   "serial3_22": 57.9
+  },
+  "ALL | 2c | MFFU 50K | edge-0% | T2": {
+   "single22": 54.0,
+   "bust22": 41.5,
+   "serial3_22": 73.7
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-0% | T1": {
+   "single22": 16.3,
+   "bust22": 2.5,
+   "serial3_22": 16.3
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-0% | T2": {
+   "single22": 22.8,
+   "bust22": 12.9,
+   "serial3_22": 23.8
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-0% | T1": {
+   "single22": 48.8,
+   "bust22": 51.2,
+   "serial3_22": 88.4
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-0% | T2": {
+   "single22": 47.2,
+   "bust22": 52.8,
+   "serial3_22": 81.0
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-0% | T1": {
+   "single22": 50.8,
+   "bust22": 49.2,
+   "serial3_22": 88.6
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-0% | T2": {
+   "single22": 51.2,
+   "bust22": 48.8,
+   "serial3_22": 85.7
+  },
+  "ALL | 4c | MFFU 50K | edge-0% | T1": {
+   "single22": 45.3,
+   "bust22": 54.7,
+   "serial3_22": 77.8
+  },
+  "ALL | 4c | MFFU 50K | edge-0% | T2": {
+   "single22": 44.6,
+   "bust22": 55.4,
+   "serial3_22": 80.2
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-0% | T1": {
+   "single22": 43.1,
+   "bust22": 31.4,
+   "serial3_22": 50.9
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-0% | T2": {
+   "single22": 46.7,
+   "bust22": 39.0,
+   "serial3_22": 64.3
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-35% | T1": {
+   "single22": 25.4,
+   "bust22": 11.2,
+   "serial3_22": 25.5
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-35% | T2": {
+   "single22": 28.7,
+   "bust22": 24.4,
+   "serial3_22": 33.3
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-35% | T1": {
+   "single22": 26.1,
+   "bust22": 11.2,
+   "serial3_22": 26.2
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-35% | T2": {
+   "single22": 30.1,
+   "bust22": 23.8,
+   "serial3_22": 34.5
+  },
+  "ALL | 1c | MFFU 50K | edge-35% | T1": {
+   "single22": 20.7,
+   "bust22": 11.2,
+   "serial3_22": 20.7
+  },
+  "ALL | 1c | MFFU 50K | edge-35% | T2": {
+   "single22": 23.2,
+   "bust22": 25.7,
+   "serial3_22": 25.6
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-35% | T1": {
+   "single22": 1.4,
+   "bust22": 0.0,
+   "serial3_22": 1.4
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-35% | T2": {
+   "single22": 1.8,
+   "bust22": 1.2,
+   "serial3_22": 1.8
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-35% | T1": {
+   "single22": 38.6,
+   "bust22": 54.9,
+   "serial3_22": 57.8
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-35% | T2": {
+   "single22": 38.1,
+   "bust22": 57.6,
+   "serial3_22": 61.2
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-35% | T1": {
+   "single22": 39.9,
+   "bust22": 53.2,
+   "serial3_22": 60.4
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-35% | T2": {
+   "single22": 44.6,
+   "bust22": 51.0,
+   "serial3_22": 67.9
+  },
+  "ALL | 2c | MFFU 50K | edge-35% | T1": {
+   "single22": 34.5,
+   "bust22": 56.7,
+   "serial3_22": 48.3
+  },
+  "ALL | 2c | MFFU 50K | edge-35% | T2": {
+   "single22": 29.9,
+   "bust22": 60.9,
+   "serial3_22": 46.0
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-35% | T1": {
+   "single22": 10.4,
+   "bust22": 5.4,
+   "serial3_22": 10.4
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-35% | T2": {
+   "single22": 18.5,
+   "bust22": 21.7,
+   "serial3_22": 20.7
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-35% | T1": {
+   "single22": 36.0,
+   "bust22": 63.6,
+   "serial3_22": 67.5
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-35% | T2": {
+   "single22": 30.4,
+   "bust22": 69.6,
+   "serial3_22": 65.2
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-35% | T1": {
+   "single22": 40.5,
+   "bust22": 59.4,
+   "serial3_22": 74.3
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-35% | T2": {
+   "single22": 37.6,
+   "bust22": 62.4,
+   "serial3_22": 72.6
+  },
+  "ALL | 4c | MFFU 50K | edge-35% | T1": {
+   "single22": 29.6,
+   "bust22": 68.4,
+   "serial3_22": 56.9
+  },
+  "ALL | 4c | MFFU 50K | edge-35% | T2": {
+   "single22": 25.3,
+   "bust22": 74.7,
+   "serial3_22": 53.6
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-35% | T1": {
+   "single22": 27.4,
+   "bust22": 46.9,
+   "serial3_22": 36.5
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-35% | T2": {
+   "single22": 32.4,
+   "bust22": 55.7,
+   "serial3_22": 48.2
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-100% | T1": {
+   "single22": 13.2,
+   "bust22": 37.6,
+   "serial3_22": 14.4
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-100% | T2": {
+   "single22": 16.1,
+   "bust22": 55.8,
+   "serial3_22": 21.6
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-100% | T1": {
+   "single22": 14.0,
+   "bust22": 37.6,
+   "serial3_22": 15.2
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-100% | T2": {
+   "single22": 16.2,
+   "bust22": 56.4,
+   "serial3_22": 22.0
+  },
+  "ALL | 1c | MFFU 50K | edge-100% | T1": {
+   "single22": 10.6,
+   "bust22": 37.4,
+   "serial3_22": 11.9
+  },
+  "ALL | 1c | MFFU 50K | edge-100% | T2": {
+   "single22": 12.5,
+   "bust22": 56.7,
+   "serial3_22": 16.4
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-100% | T1": {
+   "single22": 0.6,
+   "bust22": 0.0,
+   "serial3_22": 0.6
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-100% | T2": {
+   "single22": 0.7,
+   "bust22": 5.8,
+   "serial3_22": 0.7
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-100% | T1": {
+   "single22": 18.1,
+   "bust22": 77.1,
+   "serial3_22": 33.3
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-100% | T2": {
+   "single22": 17.7,
+   "bust22": 81.2,
+   "serial3_22": 33.5
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-100% | T1": {
+   "single22": 21.7,
+   "bust22": 74.5,
+   "serial3_22": 37.4
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-100% | T2": {
+   "single22": 22.5,
+   "bust22": 76.3,
+   "serial3_22": 45.8
+  },
+  "ALL | 2c | MFFU 50K | edge-100% | T1": {
+   "single22": 15.1,
+   "bust22": 78.6,
+   "serial3_22": 23.7
+  },
+  "ALL | 2c | MFFU 50K | edge-100% | T2": {
+   "single22": 12.6,
+   "bust22": 85.9,
+   "serial3_22": 25.9
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-100% | T1": {
+   "single22": 3.9,
+   "bust22": 33.3,
+   "serial3_22": 4.0
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-100% | T2": {
+   "single22": 8.8,
+   "bust22": 47.6,
+   "serial3_22": 10.0
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-100% | T1": {
+   "single22": 14.5,
+   "bust22": 85.5,
+   "serial3_22": 38.4
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-100% | T2": {
+   "single22": 12.4,
+   "bust22": 87.6,
+   "serial3_22": 31.2
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-100% | T1": {
+   "single22": 22.6,
+   "bust22": 77.4,
+   "serial3_22": 55.4
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-100% | T2": {
+   "single22": 20.5,
+   "bust22": 79.5,
+   "serial3_22": 47.5
+  },
+  "ALL | 4c | MFFU 50K | edge-100% | T1": {
+   "single22": 9.5,
+   "bust22": 89.9,
+   "serial3_22": 25.3
+  },
+  "ALL | 4c | MFFU 50K | edge-100% | T2": {
+   "single22": 8.2,
+   "bust22": 91.8,
+   "serial3_22": 20.8
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-100% | T1": {
+   "single22": 14.9,
+   "bust22": 75.7,
+   "serial3_22": 23.9
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-100% | T2": {
+   "single22": 15.6,
+   "bust22": 78.9,
+   "serial3_22": 25.7
+  },
+  "NY | 1c | Lucid Flex 50K | edge-0% | T1": {
+   "single22": 27.7,
+   "bust22": 6.1,
+   "serial3_22": 28.0
+  },
+  "NY | 1c | Lucid Flex 50K | edge-0% | T2": {
+   "single22": 39.3,
+   "bust22": 14.3,
+   "serial3_22": 41.4
+  },
+  "NY | 1c | Lucid Pro 50K | edge-0% | T1": {
+   "single22": 28.6,
+   "bust22": 6.1,
+   "serial3_22": 28.9
+  },
+  "NY | 1c | Lucid Pro 50K | edge-0% | T2": {
+   "single22": 38.7,
+   "bust22": 14.6,
+   "serial3_22": 40.8
+  },
+  "NY | 1c | MFFU 50K | edge-0% | T1": {
+   "single22": 22.8,
+   "bust22": 6.1,
+   "serial3_22": 22.9
+  },
+  "NY | 1c | MFFU 50K | edge-0% | T2": {
+   "single22": 31.4,
+   "bust22": 14.7,
+   "serial3_22": 32.1
+  },
+  "NY | 1c | Lucid Flex 150K | edge-0% | T1": {
+   "single22": 0.7,
+   "bust22": 0.0,
+   "serial3_22": 0.7
+  },
+  "NY | 1c | Lucid Flex 150K | edge-0% | T2": {
+   "single22": 0.4,
+   "bust22": 0.6,
+   "serial3_22": 0.4
+  },
+  "NY | 2c | Lucid Flex 50K | edge-0% | T1": {
+   "single22": 49.9,
+   "bust22": 35.8,
+   "serial3_22": 65.5
+  },
+  "NY | 2c | Lucid Flex 50K | edge-0% | T2": {
+   "single22": 49.1,
+   "bust22": 44.6,
+   "serial3_22": 71.9
+  },
+  "NY | 2c | Lucid Pro 50K | edge-0% | T1": {
+   "single22": 50.8,
+   "bust22": 34.9,
+   "serial3_22": 66.3
+  },
+  "NY | 2c | Lucid Pro 50K | edge-0% | T2": {
+   "single22": 53.3,
+   "bust22": 40.6,
+   "serial3_22": 75.6
+  },
+  "NY | 2c | MFFU 50K | edge-0% | T1": {
+   "single22": 43.6,
+   "bust22": 37.3,
+   "serial3_22": 56.7
+  },
+  "NY | 2c | MFFU 50K | edge-0% | T2": {
+   "single22": 42.1,
+   "bust22": 49.6,
+   "serial3_22": 61.5
+  },
+  "NY | 2c | Lucid Flex 150K | edge-0% | T1": {
+   "single22": 11.5,
+   "bust22": 1.8,
+   "serial3_22": 11.5
+  },
+  "NY | 2c | Lucid Flex 150K | edge-0% | T2": {
+   "single22": 18.8,
+   "bust22": 12.5,
+   "serial3_22": 18.8
+  },
+  "NY | 4c | Lucid Flex 50K | edge-0% | T1": {
+   "single22": 50.8,
+   "bust22": 49.1,
+   "serial3_22": 81.5
+  },
+  "NY | 4c | Lucid Flex 50K | edge-0% | T2": {
+   "single22": 41.4,
+   "bust22": 58.6,
+   "serial3_22": 77.2
+  },
+  "NY | 4c | Lucid Pro 50K | edge-0% | T1": {
+   "single22": 52.8,
+   "bust22": 47.2,
+   "serial3_22": 84.7
+  },
+  "NY | 4c | Lucid Pro 50K | edge-0% | T2": {
+   "single22": 49.4,
+   "bust22": 50.6,
+   "serial3_22": 80.7
+  },
+  "NY | 4c | MFFU 50K | edge-0% | T1": {
+   "single22": 46.3,
+   "bust22": 52.9,
+   "serial3_22": 69.8
+  },
+  "NY | 4c | MFFU 50K | edge-0% | T2": {
+   "single22": 42.1,
+   "bust22": 57.4,
+   "serial3_22": 77.2
+  },
+  "NY | 4c | Lucid Flex 150K | edge-0% | T1": {
+   "single22": 39.4,
+   "bust22": 27.7,
+   "serial3_22": 46.8
+  },
+  "NY | 4c | Lucid Flex 150K | edge-0% | T2": {
+   "single22": 46.1,
+   "bust22": 38.7,
+   "serial3_22": 58.3
+  },
+  "NY | 1c | Lucid Flex 50K | edge-35% | T1": {
+   "single22": 21.4,
+   "bust22": 11.9,
+   "serial3_22": 21.6
+  },
+  "NY | 1c | Lucid Flex 50K | edge-35% | T2": {
+   "single22": 28.4,
+   "bust22": 23.7,
+   "serial3_22": 30.8
+  },
+  "NY | 1c | Lucid Pro 50K | edge-35% | T1": {
+   "single22": 22.6,
+   "bust22": 11.9,
+   "serial3_22": 23.4
+  },
+  "NY | 1c | Lucid Pro 50K | edge-35% | T2": {
+   "single22": 27.5,
+   "bust22": 23.8,
+   "serial3_22": 29.3
+  },
+  "NY | 1c | MFFU 50K | edge-35% | T1": {
+   "single22": 17.6,
+   "bust22": 12.1,
+   "serial3_22": 17.6
+  },
+  "NY | 1c | MFFU 50K | edge-35% | T2": {
+   "single22": 21.4,
+   "bust22": 24.1,
+   "serial3_22": 22.8
+  },
+  "NY | 1c | Lucid Flex 150K | edge-35% | T1": {
+   "single22": 0.4,
+   "bust22": 0.0,
+   "serial3_22": 0.4
+  },
+  "NY | 1c | Lucid Flex 150K | edge-35% | T2": {
+   "single22": 0.0,
+   "bust22": 1.2,
+   "serial3_22": 0.0
+  },
+  "NY | 2c | Lucid Flex 50K | edge-35% | T1": {
+   "single22": 38.0,
+   "bust22": 52.0,
+   "serial3_22": 53.9
+  },
+  "NY | 2c | Lucid Flex 50K | edge-35% | T2": {
+   "single22": 38.7,
+   "bust22": 57.7,
+   "serial3_22": 60.7
+  },
+  "NY | 2c | Lucid Pro 50K | edge-35% | T1": {
+   "single22": 39.7,
+   "bust22": 51.3,
+   "serial3_22": 57.9
+  },
+  "NY | 2c | Lucid Pro 50K | edge-35% | T2": {
+   "single22": 44.6,
+   "bust22": 52.7,
+   "serial3_22": 69.9
+  },
+  "NY | 2c | MFFU 50K | edge-35% | T1": {
+   "single22": 34.1,
+   "bust22": 54.1,
+   "serial3_22": 45.2
+  },
+  "NY | 2c | MFFU 50K | edge-35% | T2": {
+   "single22": 29.8,
+   "bust22": 61.9,
+   "serial3_22": 47.9
+  },
+  "NY | 2c | Lucid Flex 150K | edge-35% | T1": {
+   "single22": 7.9,
+   "bust22": 7.6,
+   "serial3_22": 7.9
+  },
+  "NY | 2c | Lucid Flex 150K | edge-35% | T2": {
+   "single22": 14.0,
+   "bust22": 15.3,
+   "serial3_22": 14.0
+  },
+  "NY | 4c | Lucid Flex 50K | edge-35% | T1": {
+   "single22": 36.4,
+   "bust22": 63.5,
+   "serial3_22": 66.7
+  },
+  "NY | 4c | Lucid Flex 50K | edge-35% | T2": {
+   "single22": 25.4,
+   "bust22": 74.6,
+   "serial3_22": 57.7
+  },
+  "NY | 4c | Lucid Pro 50K | edge-35% | T1": {
+   "single22": 43.0,
+   "bust22": 57.0,
+   "serial3_22": 76.1
+  },
+  "NY | 4c | Lucid Pro 50K | edge-35% | T2": {
+   "single22": 34.2,
+   "bust22": 65.8,
+   "serial3_22": 68.8
+  },
+  "NY | 4c | MFFU 50K | edge-35% | T1": {
+   "single22": 27.6,
+   "bust22": 70.8,
+   "serial3_22": 56.8
+  },
+  "NY | 4c | MFFU 50K | edge-35% | T2": {
+   "single22": 25.9,
+   "bust22": 74.1,
+   "serial3_22": 54.9
+  },
+  "NY | 4c | Lucid Flex 150K | edge-35% | T1": {
+   "single22": 24.8,
+   "bust22": 42.9,
+   "serial3_22": 33.9
+  },
+  "NY | 4c | Lucid Flex 150K | edge-35% | T2": {
+   "single22": 31.5,
+   "bust22": 57.0,
+   "serial3_22": 44.5
+  },
+  "NY | 1c | Lucid Flex 50K | edge-100% | T1": {
+   "single22": 12.5,
+   "bust22": 33.3,
+   "serial3_22": 13.4
+  },
+  "NY | 1c | Lucid Flex 50K | edge-100% | T2": {
+   "single22": 13.2,
+   "bust22": 48.8,
+   "serial3_22": 16.5
+  },
+  "NY | 1c | Lucid Pro 50K | edge-100% | T1": {
+   "single22": 12.5,
+   "bust22": 32.8,
+   "serial3_22": 13.4
+  },
+  "NY | 1c | Lucid Pro 50K | edge-100% | T2": {
+   "single22": 13.2,
+   "bust22": 48.8,
+   "serial3_22": 16.2
+  },
+  "NY | 1c | MFFU 50K | edge-100% | T1": {
+   "single22": 9.4,
+   "bust22": 33.3,
+   "serial3_22": 10.2
+  },
+  "NY | 1c | MFFU 50K | edge-100% | T2": {
+   "single22": 10.1,
+   "bust22": 50.6,
+   "serial3_22": 12.8
+  },
+  "NY | 1c | Lucid Flex 150K | edge-100% | T1": {
+   "single22": 0.0,
+   "bust22": 0.0,
+   "serial3_22": 0.0
+  },
+  "NY | 1c | Lucid Flex 150K | edge-100% | T2": {
+   "single22": 0.0,
+   "bust22": 4.5,
+   "serial3_22": 0.0
+  },
+  "NY | 2c | Lucid Flex 50K | edge-100% | T1": {
+   "single22": 18.6,
+   "bust22": 75.7,
+   "serial3_22": 31.7
+  },
+  "NY | 2c | Lucid Flex 50K | edge-100% | T2": {
+   "single22": 16.7,
+   "bust22": 81.0,
+   "serial3_22": 29.3
+  },
+  "NY | 2c | Lucid Pro 50K | edge-100% | T1": {
+   "single22": 22.2,
+   "bust22": 71.7,
+   "serial3_22": 36.3
+  },
+  "NY | 2c | Lucid Pro 50K | edge-100% | T2": {
+   "single22": 24.6,
+   "bust22": 74.0,
+   "serial3_22": 45.8
+  },
+  "NY | 2c | MFFU 50K | edge-100% | T1": {
+   "single22": 16.7,
+   "bust22": 74.1,
+   "serial3_22": 25.5
+  },
+  "NY | 2c | MFFU 50K | edge-100% | T2": {
+   "single22": 12.5,
+   "bust22": 84.8,
+   "serial3_22": 19.8
+  },
+  "NY | 2c | Lucid Flex 150K | edge-100% | T1": {
+   "single22": 4.0,
+   "bust22": 24.1,
+   "serial3_22": 4.0
+  },
+  "NY | 2c | Lucid Flex 150K | edge-100% | T2": {
+   "single22": 8.6,
+   "bust22": 38.7,
+   "serial3_22": 9.5
+  },
+  "NY | 4c | Lucid Flex 50K | edge-100% | T1": {
+   "single22": 14.4,
+   "bust22": 85.6,
+   "serial3_22": 38.1
+  },
+  "NY | 4c | Lucid Flex 50K | edge-100% | T2": {
+   "single22": 10.1,
+   "bust22": 89.9,
+   "serial3_22": 32.3
+  },
+  "NY | 4c | Lucid Pro 50K | edge-100% | T1": {
+   "single22": 24.8,
+   "bust22": 75.2,
+   "serial3_22": 56.4
+  },
+  "NY | 4c | Lucid Pro 50K | edge-100% | T2": {
+   "single22": 17.9,
+   "bust22": 82.1,
+   "serial3_22": 47.5
+  },
+  "NY | 4c | MFFU 50K | edge-100% | T1": {
+   "single22": 9.9,
+   "bust22": 89.6,
+   "serial3_22": 27.7
+  },
+  "NY | 4c | MFFU 50K | edge-100% | T2": {
+   "single22": 5.2,
+   "bust22": 94.8,
+   "serial3_22": 17.9
+  },
+  "NY | 4c | Lucid Flex 150K | edge-100% | T1": {
+   "single22": 13.9,
+   "bust22": 73.2,
+   "serial3_22": 21.6
+  },
+  "NY | 4c | Lucid Flex 150K | edge-100% | T2": {
+   "single22": 13.7,
+   "bust22": 76.8,
+   "serial3_22": 23.5
+  }
+ },
+ "funded": {
+  "ALL | 1c | Lucid Flex 50K | edge-0% | T1": {
+   "cash_median": 9000,
+   "payouts_mean": 3.8,
+   "lost_pct": 29.3,
+   "lost_within_60d": 13.8
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-0% | T2": {
+   "cash_median": 9000,
+   "payouts_mean": 3.1,
+   "lost_pct": 48.3,
+   "lost_within_60d": 32.6
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-0% | T1": {
+   "cash_median": 10500,
+   "payouts_mean": 3.8,
+   "lost_pct": 27.1,
+   "lost_within_60d": 13.3
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-0% | T2": {
+   "cash_median": 10610,
+   "payouts_mean": 3.3,
+   "lost_pct": 38.2,
+   "lost_within_60d": 30.3
+  },
+  "ALL | 1c | MFFU 50K | edge-0% | T1": {
+   "cash_median": 12586,
+   "payouts_mean": 18.9,
+   "lost_pct": 17.1,
+   "lost_within_60d": 12.7
+  },
+  "ALL | 1c | MFFU 50K | edge-0% | T2": {
+   "cash_median": 21791,
+   "payouts_mean": 18.5,
+   "lost_pct": 44.9,
+   "lost_within_60d": 29.2
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-0% | T1": {
+   "cash_median": 13500,
+   "payouts_mean": 3.9,
+   "lost_pct": 6.6,
+   "lost_within_60d": 0.0
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-0% | T2": {
+   "cash_median": 13500,
+   "payouts_mean": 4.7,
+   "lost_pct": 10.1,
+   "lost_within_60d": 1.1
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-0% | T1": {
+   "cash_median": 3600,
+   "payouts_mean": 2.4,
+   "lost_pct": 57.5,
+   "lost_within_60d": 53.0
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-0% | T2": {
+   "cash_median": 1800,
+   "payouts_mean": 2.0,
+   "lost_pct": 66.3,
+   "lost_within_60d": 62.9
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-0% | T1": {
+   "cash_median": 3980,
+   "payouts_mean": 2.4,
+   "lost_pct": 50.8,
+   "lost_within_60d": 47.5
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-0% | T2": {
+   "cash_median": 1800,
+   "payouts_mean": 2.3,
+   "lost_pct": 56.2,
+   "lost_within_60d": 56.2
+  },
+  "ALL | 2c | MFFU 50K | edge-0% | T1": {
+   "cash_median": 4127,
+   "payouts_mean": 17.1,
+   "lost_pct": 75.1,
+   "lost_within_60d": 49.7
+  },
+  "ALL | 2c | MFFU 50K | edge-0% | T2": {
+   "cash_median": 1542,
+   "payouts_mean": 12.4,
+   "lost_pct": 96.6,
+   "lost_within_60d": 61.8
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-0% | T1": {
+   "cash_median": 13500,
+   "payouts_mean": 3.8,
+   "lost_pct": 30.9,
+   "lost_within_60d": 17.1
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-0% | T2": {
+   "cash_median": 10800,
+   "payouts_mean": 3.0,
+   "lost_pct": 52.8,
+   "lost_within_60d": 37.1
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-0% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.5,
+   "lost_pct": 74.0,
+   "lost_within_60d": 74.0
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-0% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.5,
+   "lost_pct": 76.4,
+   "lost_within_60d": 75.3
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-0% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.5,
+   "lost_pct": 70.7,
+   "lost_within_60d": 69.1
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-0% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.6,
+   "lost_pct": 69.7,
+   "lost_within_60d": 69.7
+  },
+  "ALL | 4c | MFFU 50K | edge-0% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 3.5,
+   "lost_pct": 100.0,
+   "lost_within_60d": 92.8
+  },
+  "ALL | 4c | MFFU 50K | edge-0% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 4.1,
+   "lost_pct": 100.0,
+   "lost_within_60d": 94.4
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-0% | T1": {
+   "cash_median": 2700,
+   "payouts_mean": 2.4,
+   "lost_pct": 58.0,
+   "lost_within_60d": 56.9
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-0% | T2": {
+   "cash_median": 2700,
+   "payouts_mean": 2.3,
+   "lost_pct": 61.8,
+   "lost_within_60d": 60.7
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-35% | T1": {
+   "cash_median": 1800,
+   "payouts_mean": 2.2,
+   "lost_pct": 69.6,
+   "lost_within_60d": 38.1
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.9,
+   "lost_pct": 67.4,
+   "lost_within_60d": 43.8
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-35% | T1": {
+   "cash_median": 1800,
+   "payouts_mean": 2.0,
+   "lost_pct": 67.4,
+   "lost_within_60d": 38.1
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.8,
+   "lost_pct": 66.3,
+   "lost_within_60d": 43.8
+  },
+  "ALL | 1c | MFFU 50K | edge-35% | T1": {
+   "cash_median": 2925,
+   "payouts_mean": 9.2,
+   "lost_pct": 66.9,
+   "lost_within_60d": 36.5
+  },
+  "ALL | 1c | MFFU 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 7.1,
+   "lost_pct": 66.3,
+   "lost_within_60d": 42.7
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-35% | T1": {
+   "cash_median": 5400,
+   "payouts_mean": 2.6,
+   "lost_pct": 44.8,
+   "lost_within_60d": 2.8
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-35% | T2": {
+   "cash_median": 13500,
+   "payouts_mean": 3.4,
+   "lost_pct": 30.3,
+   "lost_within_60d": 10.1
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.4,
+   "lost_pct": 79.0,
+   "lost_within_60d": 70.7
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.4,
+   "lost_pct": 79.8,
+   "lost_within_60d": 76.4
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.2,
+   "lost_pct": 79.6,
+   "lost_within_60d": 65.2
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.3,
+   "lost_pct": 77.5,
+   "lost_within_60d": 71.9
+  },
+  "ALL | 2c | MFFU 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 4.6,
+   "lost_pct": 100.0,
+   "lost_within_60d": 71.3
+  },
+  "ALL | 2c | MFFU 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 6.3,
+   "lost_pct": 96.6,
+   "lost_within_60d": 78.7
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-35% | T1": {
+   "cash_median": 5400,
+   "payouts_mean": 2.6,
+   "lost_pct": 60.8,
+   "lost_within_60d": 32.6
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-35% | T2": {
+   "cash_median": 2700,
+   "payouts_mean": 2.2,
+   "lost_pct": 66.3,
+   "lost_within_60d": 42.7
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.8,
+   "lost_pct": 87.8,
+   "lost_within_60d": 87.3
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.8,
+   "lost_pct": 87.6,
+   "lost_within_60d": 87.6
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.7,
+   "lost_pct": 85.1,
+   "lost_within_60d": 81.8
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.8,
+   "lost_pct": 85.4,
+   "lost_within_60d": 85.4
+  },
+  "ALL | 4c | MFFU 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.2,
+   "lost_pct": 100.0,
+   "lost_within_60d": 99.4
+  },
+  "ALL | 4c | MFFU 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 2.0,
+   "lost_pct": 100.0,
+   "lost_within_60d": 97.8
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.7,
+   "lost_pct": 73.5,
+   "lost_within_60d": 71.3
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.5,
+   "lost_pct": 77.5,
+   "lost_within_60d": 76.4
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.7,
+   "lost_pct": 89.5,
+   "lost_within_60d": 64.6
+  },
+  "ALL | 1c | Lucid Flex 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.2,
+   "lost_pct": 100.0,
+   "lost_within_60d": 92.1
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.5,
+   "lost_pct": 88.4,
+   "lost_within_60d": 64.1
+  },
+  "ALL | 1c | Lucid Pro 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.2,
+   "lost_pct": 100.0,
+   "lost_within_60d": 91.0
+  },
+  "ALL | 1c | MFFU 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.5,
+   "lost_pct": 99.4,
+   "lost_within_60d": 61.3
+  },
+  "ALL | 1c | MFFU 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.8,
+   "lost_pct": 100.0,
+   "lost_within_60d": 86.5
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.9,
+   "lost_pct": 84.0,
+   "lost_within_60d": 26.5
+  },
+  "ALL | 1c | Lucid Flex 150K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.5,
+   "lost_pct": 100.0,
+   "lost_within_60d": 34.8
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.3,
+   "lost_pct": 97.8,
+   "lost_within_60d": 95.6
+  },
+  "ALL | 2c | Lucid Flex 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.3,
+   "lost_pct": 100.0,
+   "lost_within_60d": 97.8
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.2,
+   "lost_pct": 96.1,
+   "lost_within_60d": 89.5
+  },
+  "ALL | 2c | Lucid Pro 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.2,
+   "lost_pct": 100.0,
+   "lost_within_60d": 93.3
+  },
+  "ALL | 2c | MFFU 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.5,
+   "lost_pct": 100.0,
+   "lost_within_60d": 96.7
+  },
+  "ALL | 2c | MFFU 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.6,
+   "lost_pct": 100.0,
+   "lost_within_60d": 100.0
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.7,
+   "lost_pct": 92.8,
+   "lost_within_60d": 71.3
+  },
+  "ALL | 2c | Lucid Flex 150K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.5,
+   "lost_pct": 100.0,
+   "lost_within_60d": 83.1
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.2,
+   "lost_pct": 98.3,
+   "lost_within_60d": 97.8
+  },
+  "ALL | 4c | Lucid Flex 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.1,
+   "lost_pct": 100.0,
+   "lost_within_60d": 97.8
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.1,
+   "lost_pct": 97.2,
+   "lost_within_60d": 95.6
+  },
+  "ALL | 4c | Lucid Pro 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.1,
+   "lost_pct": 100.0,
+   "lost_within_60d": 97.8
+  },
+  "ALL | 4c | MFFU 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.3,
+   "lost_pct": 100.0,
+   "lost_within_60d": 100.0
+  },
+  "ALL | 4c | MFFU 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.3,
+   "lost_pct": 100.0,
+   "lost_within_60d": 100.0
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.5,
+   "lost_pct": 95.6,
+   "lost_within_60d": 94.5
+  },
+  "ALL | 4c | Lucid Flex 150K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.4,
+   "lost_pct": 100.0,
+   "lost_within_60d": 96.6
+  },
+  "NY | 1c | Lucid Flex 50K | edge-0% | T1": {
+   "cash_median": 9000,
+   "payouts_mean": 3.7,
+   "lost_pct": 29.8,
+   "lost_within_60d": 20.4
+  },
+  "NY | 1c | Lucid Flex 50K | edge-0% | T2": {
+   "cash_median": 5400,
+   "payouts_mean": 2.9,
+   "lost_pct": 52.8,
+   "lost_within_60d": 32.6
+  },
+  "NY | 1c | Lucid Pro 50K | edge-0% | T1": {
+   "cash_median": 10255,
+   "payouts_mean": 3.6,
+   "lost_pct": 33.1,
+   "lost_within_60d": 19.9
+  },
+  "NY | 1c | Lucid Pro 50K | edge-0% | T2": {
+   "cash_median": 10432,
+   "payouts_mean": 3.1,
+   "lost_pct": 42.7,
+   "lost_within_60d": 31.5
+  },
+  "NY | 1c | MFFU 50K | edge-0% | T1": {
+   "cash_median": 10429,
+   "payouts_mean": 14.9,
+   "lost_pct": 21.5,
+   "lost_within_60d": 19.3
+  },
+  "NY | 1c | MFFU 50K | edge-0% | T2": {
+   "cash_median": 15803,
+   "payouts_mean": 14.3,
+   "lost_pct": 48.3,
+   "lost_within_60d": 30.3
+  },
+  "NY | 1c | Lucid Flex 150K | edge-0% | T1": {
+   "cash_median": 10800,
+   "payouts_mean": 3.7,
+   "lost_pct": 7.7,
+   "lost_within_60d": 0.0
+  },
+  "NY | 1c | Lucid Flex 150K | edge-0% | T2": {
+   "cash_median": 13500,
+   "payouts_mean": 3.9,
+   "lost_pct": 32.6,
+   "lost_within_60d": 9.0
+  },
+  "NY | 2c | Lucid Flex 50K | edge-0% | T1": {
+   "cash_median": 1800,
+   "payouts_mean": 2.3,
+   "lost_pct": 59.1,
+   "lost_within_60d": 54.1
+  },
+  "NY | 2c | Lucid Flex 50K | edge-0% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.8,
+   "lost_pct": 73.0,
+   "lost_within_60d": 71.9
+  },
+  "NY | 2c | Lucid Pro 50K | edge-0% | T1": {
+   "cash_median": 1800,
+   "payouts_mean": 2.4,
+   "lost_pct": 54.7,
+   "lost_within_60d": 48.6
+  },
+  "NY | 2c | Lucid Pro 50K | edge-0% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.9,
+   "lost_pct": 65.2,
+   "lost_within_60d": 64.0
+  },
+  "NY | 2c | MFFU 50K | edge-0% | T1": {
+   "cash_median": 3524,
+   "payouts_mean": 12.4,
+   "lost_pct": 74.6,
+   "lost_within_60d": 50.3
+  },
+  "NY | 2c | MFFU 50K | edge-0% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 9.6,
+   "lost_pct": 96.6,
+   "lost_within_60d": 64.0
+  },
+  "NY | 2c | Lucid Flex 150K | edge-0% | T1": {
+   "cash_median": 13500,
+   "payouts_mean": 3.9,
+   "lost_pct": 27.6,
+   "lost_within_60d": 15.5
+  },
+  "NY | 2c | Lucid Flex 150K | edge-0% | T2": {
+   "cash_median": 8100,
+   "payouts_mean": 2.9,
+   "lost_pct": 59.6,
+   "lost_within_60d": 38.2
+  },
+  "NY | 4c | Lucid Flex 50K | edge-0% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.6,
+   "lost_pct": 73.5,
+   "lost_within_60d": 72.9
+  },
+  "NY | 4c | Lucid Flex 50K | edge-0% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.4,
+   "lost_pct": 79.8,
+   "lost_within_60d": 79.8
+  },
+  "NY | 4c | Lucid Pro 50K | edge-0% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.7,
+   "lost_pct": 68.0,
+   "lost_within_60d": 64.6
+  },
+  "NY | 4c | Lucid Pro 50K | edge-0% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.4,
+   "lost_pct": 74.2,
+   "lost_within_60d": 74.2
+  },
+  "NY | 4c | MFFU 50K | edge-0% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 3.3,
+   "lost_pct": 100.0,
+   "lost_within_60d": 92.3
+  },
+  "NY | 4c | MFFU 50K | edge-0% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 3.0,
+   "lost_pct": 100.0,
+   "lost_within_60d": 96.6
+  },
+  "NY | 4c | Lucid Flex 150K | edge-0% | T1": {
+   "cash_median": 8100,
+   "payouts_mean": 2.6,
+   "lost_pct": 55.2,
+   "lost_within_60d": 51.9
+  },
+  "NY | 4c | Lucid Flex 150K | edge-0% | T2": {
+   "cash_median": 2700,
+   "payouts_mean": 1.9,
+   "lost_pct": 70.8,
+   "lost_within_60d": 68.5
+  },
+  "NY | 1c | Lucid Flex 50K | edge-35% | T1": {
+   "cash_median": 3600,
+   "payouts_mean": 2.2,
+   "lost_pct": 63.5,
+   "lost_within_60d": 33.1
+  },
+  "NY | 1c | Lucid Flex 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.6,
+   "lost_pct": 79.8,
+   "lost_within_60d": 58.4
+  },
+  "NY | 1c | Lucid Pro 50K | edge-35% | T1": {
+   "cash_median": 3907,
+   "payouts_mean": 2.1,
+   "lost_pct": 58.6,
+   "lost_within_60d": 32.6
+  },
+  "NY | 1c | Lucid Pro 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.3,
+   "lost_pct": 74.2,
+   "lost_within_60d": 58.4
+  },
+  "NY | 1c | MFFU 50K | edge-35% | T1": {
+   "cash_median": 4011,
+   "payouts_mean": 8.1,
+   "lost_pct": 52.5,
+   "lost_within_60d": 32.0
+  },
+  "NY | 1c | MFFU 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 5.0,
+   "lost_pct": 70.8,
+   "lost_within_60d": 56.2
+  },
+  "NY | 1c | Lucid Flex 150K | edge-35% | T1": {
+   "cash_median": 5400,
+   "payouts_mean": 2.5,
+   "lost_pct": 34.3,
+   "lost_within_60d": 5.0
+  },
+  "NY | 1c | Lucid Flex 150K | edge-35% | T2": {
+   "cash_median": 10800,
+   "payouts_mean": 3.0,
+   "lost_pct": 37.1,
+   "lost_within_60d": 10.1
+  },
+  "NY | 2c | Lucid Flex 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.3,
+   "lost_pct": 83.4,
+   "lost_within_60d": 72.4
+  },
+  "NY | 2c | Lucid Flex 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.9,
+   "lost_pct": 91.0,
+   "lost_within_60d": 88.8
+  },
+  "NY | 2c | Lucid Pro 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.2,
+   "lost_pct": 76.8,
+   "lost_within_60d": 68.0
+  },
+  "NY | 2c | Lucid Pro 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.9,
+   "lost_pct": 85.4,
+   "lost_within_60d": 79.8
+  },
+  "NY | 2c | MFFU 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 3.9,
+   "lost_pct": 100.0,
+   "lost_within_60d": 71.3
+  },
+  "NY | 2c | MFFU 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 2.3,
+   "lost_pct": 100.0,
+   "lost_within_60d": 88.8
+  },
+  "NY | 2c | Lucid Flex 150K | edge-35% | T1": {
+   "cash_median": 5400,
+   "payouts_mean": 2.2,
+   "lost_pct": 68.0,
+   "lost_within_60d": 33.7
+  },
+  "NY | 2c | Lucid Flex 150K | edge-35% | T2": {
+   "cash_median": 2700,
+   "payouts_mean": 1.7,
+   "lost_pct": 83.1,
+   "lost_within_60d": 56.2
+  },
+  "NY | 4c | Lucid Flex 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.9,
+   "lost_pct": 87.3,
+   "lost_within_60d": 85.6
+  },
+  "NY | 4c | Lucid Flex 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.7,
+   "lost_pct": 92.1,
+   "lost_within_60d": 92.1
+  },
+  "NY | 4c | Lucid Pro 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.9,
+   "lost_pct": 80.7,
+   "lost_within_60d": 78.5
+  },
+  "NY | 4c | Lucid Pro 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.5,
+   "lost_pct": 91.0,
+   "lost_within_60d": 89.9
+  },
+  "NY | 4c | MFFU 50K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.3,
+   "lost_pct": 100.0,
+   "lost_within_60d": 98.3
+  },
+  "NY | 4c | MFFU 50K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.0,
+   "lost_pct": 100.0,
+   "lost_within_60d": 100.0
+  },
+  "NY | 4c | Lucid Flex 150K | edge-35% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 1.6,
+   "lost_pct": 77.9,
+   "lost_within_60d": 73.5
+  },
+  "NY | 4c | Lucid Flex 150K | edge-35% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 1.2,
+   "lost_pct": 84.3,
+   "lost_within_60d": 83.1
+  },
+  "NY | 1c | Lucid Flex 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.5,
+   "lost_pct": 93.4,
+   "lost_within_60d": 63.5
+  },
+  "NY | 1c | Lucid Flex 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.1,
+   "lost_pct": 100.0,
+   "lost_within_60d": 91.0
+  },
+  "NY | 1c | Lucid Pro 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.3,
+   "lost_pct": 90.1,
+   "lost_within_60d": 63.0
+  },
+  "NY | 1c | Lucid Pro 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.0,
+   "lost_pct": 100.0,
+   "lost_within_60d": 89.9
+  },
+  "NY | 1c | MFFU 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.9,
+   "lost_pct": 100.0,
+   "lost_within_60d": 62.4
+  },
+  "NY | 1c | MFFU 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.1,
+   "lost_pct": 100.0,
+   "lost_within_60d": 89.9
+  },
+  "NY | 1c | Lucid Flex 150K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.7,
+   "lost_pct": 90.6,
+   "lost_within_60d": 21.5
+  },
+  "NY | 1c | Lucid Flex 150K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.2,
+   "lost_pct": 100.0,
+   "lost_within_60d": 27.0
+  },
+  "NY | 2c | Lucid Flex 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.4,
+   "lost_pct": 96.7,
+   "lost_within_60d": 93.9
+  },
+  "NY | 2c | Lucid Flex 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.3,
+   "lost_pct": 100.0,
+   "lost_within_60d": 98.9
+  },
+  "NY | 2c | Lucid Pro 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.2,
+   "lost_pct": 95.0,
+   "lost_within_60d": 88.4
+  },
+  "NY | 2c | Lucid Pro 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.1,
+   "lost_pct": 100.0,
+   "lost_within_60d": 94.4
+  },
+  "NY | 2c | MFFU 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.8,
+   "lost_pct": 100.0,
+   "lost_within_60d": 95.0
+  },
+  "NY | 2c | MFFU 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.4,
+   "lost_pct": 100.0,
+   "lost_within_60d": 100.0
+  },
+  "NY | 2c | Lucid Flex 150K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.6,
+   "lost_pct": 92.3,
+   "lost_within_60d": 67.4
+  },
+  "NY | 2c | Lucid Flex 150K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.4,
+   "lost_pct": 100.0,
+   "lost_within_60d": 87.6
+  },
+  "NY | 4c | Lucid Flex 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.3,
+   "lost_pct": 97.2,
+   "lost_within_60d": 97.2
+  },
+  "NY | 4c | Lucid Flex 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.1,
+   "lost_pct": 100.0,
+   "lost_within_60d": 98.9
+  },
+  "NY | 4c | Lucid Pro 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.1,
+   "lost_pct": 97.2,
+   "lost_within_60d": 95.6
+  },
+  "NY | 4c | Lucid Pro 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.0,
+   "lost_pct": 100.0,
+   "lost_within_60d": 97.8
+  },
+  "NY | 4c | MFFU 50K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.3,
+   "lost_pct": 100.0,
+   "lost_within_60d": 100.0
+  },
+  "NY | 4c | MFFU 50K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.1,
+   "lost_pct": 100.0,
+   "lost_within_60d": 100.0
+  },
+  "NY | 4c | Lucid Flex 150K | edge-100% | T1": {
+   "cash_median": 0,
+   "payouts_mean": 0.5,
+   "lost_pct": 95.0,
+   "lost_within_60d": 94.5
+  },
+  "NY | 4c | Lucid Flex 150K | edge-100% | T2": {
+   "cash_median": 0,
+   "payouts_mean": 0.3,
+   "lost_pct": 100.0,
+   "lost_within_60d": 97.8
+  }
+ }
+}
