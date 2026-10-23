@@ -1,0 +1,356 @@
+{
+ "cells": 1296,
+ "stages": {
+  "s1": 128,
+  "s2": 40,
+  "s3": 19,
+  "s4": 19,
+  "s5": 6,
+  "s6": 3
+ },
+ "base_rate_T2": 0.134,
+ "P_T2_given_T1": 0.312,
+ "survivors": [
+  {
+   "j": 14,
+   "params": "{'lon': '0200-0500', 'cmp': 'hi', 'vw': 'sess', 'tf': 0, 'ent': 'brk15', 'st': 0.15, 'R': 0.0}",
+   "T1_n": 336,
+   "T1_wr": 30.1,
+   "T1_pf": 1.41,
+   "T2_n": 236,
+   "T2_wr": 30.1,
+   "T2_pf": 1.247,
+   "T2_pf4": 1.203,
+   "A_pf": 1.131,
+   "B_pf": 1.483
+  },
+  {
+   "j": 953,
+   "params": "{'lon': '0200-0830', 'cmp': 'hi', 'vw': 'none', 'tf': 0, 'ent': 'brk15', 'st': 0.25, 'R': 0.0}",
+   "T1_n": 183,
+   "T1_wr": 38.8,
+   "T1_pf": 1.368,
+   "T2_n": 124,
+   "T2_wr": 47.6,
+   "T2_pf": 1.395,
+   "T2_pf4": 1.357,
+   "A_pf": 1.084,
+   "B_pf": 1.212
+  },
+  {
+   "j": 269,
+   "params": "{'lon': '0200-0500', 'cmp': 'mid', 'vw': 'none', 'tf': 1, 'ent': 'brk15', 'st': 0.25, 'R': 0.0}",
+   "T1_n": 328,
+   "T1_wr": 41.2,
+   "T1_pf": 1.307,
+   "T2_n": 201,
+   "T2_wr": 43.3,
+   "T2_pf": 1.289,
+   "T2_pf4": 1.253,
+   "A_pf": 1.004,
+   "B_pf": 1.061
+  }
+ ],
+ "portfolio": [
+  {
+   "label": "FRANKLIN #14",
+   "cand_n": 490,
+   "cand_kept": 456,
+   "base": {
+    "T1p": {
+     "n": 2734,
+     "tpd": 5.101,
+     "wr": 66.57,
+     "pf": 1.568,
+     "sharpe": 4.138,
+     "net": 61446,
+     "maxdd": 2254,
+     "worst_month": -1176,
+     "avg": 22.47
+    },
+    "T2p": {
+     "n": 4664,
+     "tpd": 4.962,
+     "wr": 64.49,
+     "pf": 1.44,
+     "sharpe": 3.575,
+     "net": 98637,
+     "maxdd": 4667,
+     "worst_month": -2182,
+     "avg": 21.15
+    }
+   },
+   "comb": {
+    "T1p": {
+     "n": 2872,
+     "tpd": 5.358,
+     "wr": 64.97,
+     "pf": 1.579,
+     "sharpe": 4.072,
+     "net": 66777,
+     "maxdd": 3340,
+     "worst_month": -1358,
+     "avg": 23.25
+    },
+    "T2p": {
+     "n": 4932,
+     "tpd": 5.247,
+     "wr": 62.49,
+     "pf": 1.428,
+     "sharpe": 3.471,
+     "net": 103635,
+     "maxdd": 5158,
+     "worst_month": -2343,
+     "avg": 21.01
+    }
+   },
+   "delta": {
+    "T1p": {
+     "sharpe": -0.066,
+     "wr": -1.6,
+     "pf": 0.011,
+     "maxdd_pct": 48.2,
+     "worst_month_pct": 15.5,
+     "net": 5331,
+     "tpd": 0.257,
+     "n": 138
+    },
+    "T2p": {
+     "sharpe": -0.104,
+     "wr": -2.0,
+     "pf": -0.012,
+     "maxdd_pct": 10.5,
+     "worst_month_pct": 7.4,
+     "net": 4998,
+     "tpd": 0.285,
+     "n": 268
+    }
+   },
+   "boot": {
+    "T1p": {
+     "median": -0.06,
+     "p5": -0.23,
+     "p95": 0.117,
+     "p_gt0": 0.287
+    },
+    "T2p": {
+     "median": -0.081,
+     "p5": -0.247,
+     "p95": 0.072,
+     "p_gt0": 0.178
+    }
+   },
+   "corr": 0.222,
+   "corr_T1p": 0.307,
+   "corr_T2p": 0.181,
+   "base_blocked": 50,
+   "checks": {
+    "sharpe_up": false,
+    "maxdd": false,
+    "worst_month": false,
+    "corr": true
+   },
+   "pass": false
+  },
+  {
+   "label": "FRANKLIN #953",
+   "cand_n": 265,
+   "cand_kept": 242,
+   "base": {
+    "T1p": {
+     "n": 2734,
+     "tpd": 5.101,
+     "wr": 66.57,
+     "pf": 1.568,
+     "sharpe": 4.138,
+     "net": 61446,
+     "maxdd": 2254,
+     "worst_month": -1176,
+     "avg": 22.47
+    },
+    "T2p": {
+     "n": 4664,
+     "tpd": 4.962,
+     "wr": 64.49,
+     "pf": 1.44,
+     "sharpe": 3.575,
+     "net": 98637,
+     "maxdd": 4667,
+     "worst_month": -2182,
+     "avg": 21.15
+    }
+   },
+   "comb": {
+    "T1p": {
+     "n": 2808,
+     "tpd": 5.239,
+     "wr": 65.99,
+     "pf": 1.584,
+     "sharpe": 4.109,
+     "net": 66151,
+     "maxdd": 2546,
+     "worst_month": -1287,
+     "avg": 23.56
+    },
+    "T2p": {
+     "n": 4788,
+     "tpd": 5.094,
+     "wr": 63.76,
+     "pf": 1.433,
+     "sharpe": 3.523,
+     "net": 101707,
+     "maxdd": 4908,
+     "worst_month": -2094,
+     "avg": 21.24
+    }
+   },
+   "delta": {
+    "T1p": {
+     "sharpe": -0.029,
+     "wr": -0.58,
+     "pf": 0.016,
+     "maxdd_pct": 13.0,
+     "worst_month_pct": 9.4,
+     "net": 4705,
+     "tpd": 0.138,
+     "n": 74
+    },
+    "T2p": {
+     "sharpe": -0.052,
+     "wr": -0.73,
+     "pf": -0.007,
+     "maxdd_pct": 5.2,
+     "worst_month_pct": -4.0,
+     "net": 3070,
+     "tpd": 0.132,
+     "n": 124
+    }
+   },
+   "boot": {
+    "T1p": {
+     "median": -0.019,
+     "p5": -0.187,
+     "p95": 0.168,
+     "p_gt0": 0.436
+    },
+    "T2p": {
+     "median": -0.034,
+     "p5": -0.228,
+     "p95": 0.155,
+     "p_gt0": 0.383
+    }
+   },
+   "corr": 0.166,
+   "corr_T1p": 0.274,
+   "corr_T2p": 0.11,
+   "base_blocked": 44,
+   "checks": {
+    "sharpe_up": false,
+    "maxdd": false,
+    "worst_month": false,
+    "corr": true
+   },
+   "pass": false
+  },
+  {
+   "label": "FRANKLIN #269",
+   "cand_n": 442,
+   "cand_kept": 428,
+   "base": {
+    "T1p": {
+     "n": 2734,
+     "tpd": 5.101,
+     "wr": 66.57,
+     "pf": 1.568,
+     "sharpe": 4.138,
+     "net": 61446,
+     "maxdd": 2254,
+     "worst_month": -1176,
+     "avg": 22.47
+    },
+    "T2p": {
+     "n": 4664,
+     "tpd": 4.962,
+     "wr": 64.49,
+     "pf": 1.44,
+     "sharpe": 3.575,
+     "net": 98637,
+     "maxdd": 4667,
+     "worst_month": -2182,
+     "avg": 21.15
+    }
+   },
+   "comb": {
+    "T1p": {
+     "n": 2895,
+     "tpd": 5.401,
+     "wr": 65.18,
+     "pf": 1.55,
+     "sharpe": 3.793,
+     "net": 66433,
+     "maxdd": 2720,
+     "worst_month": -1222,
+     "avg": 22.95
+    },
+    "T2p": {
+     "n": 4915,
+     "tpd": 5.229,
+     "wr": 63.21,
+     "pf": 1.42,
+     "sharpe": 3.322,
+     "net": 103778,
+     "maxdd": 5104,
+     "worst_month": -2444,
+     "avg": 21.11
+    }
+   },
+   "delta": {
+    "T1p": {
+     "sharpe": -0.345,
+     "wr": -1.39,
+     "pf": -0.018,
+     "maxdd_pct": 20.7,
+     "worst_month_pct": 3.9,
+     "net": 4987,
+     "tpd": 0.3,
+     "n": 161
+    },
+    "T2p": {
+     "sharpe": -0.253,
+     "wr": -1.28,
+     "pf": -0.02,
+     "maxdd_pct": 9.4,
+     "worst_month_pct": 12.0,
+     "net": 5141,
+     "tpd": 0.267,
+     "n": 251
+    }
+   },
+   "boot": {
+    "T1p": {
+     "median": -0.337,
+     "p5": -0.496,
+     "p95": -0.183,
+     "p_gt0": 0.001
+    },
+    "T2p": {
+     "median": -0.255,
+     "p5": -0.405,
+     "p95": -0.095,
+     "p_gt0": 0.002
+    }
+   },
+   "corr": 0.418,
+   "corr_T1p": 0.504,
+   "corr_T2p": 0.372,
+   "base_blocked": 16,
+   "checks": {
+    "sharpe_up": false,
+    "maxdd": false,
+    "worst_month": false,
+    "corr": false
+   },
+   "pass": false
+  }
+ ]
+}
