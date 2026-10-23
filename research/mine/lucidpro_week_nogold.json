@@ -1,0 +1,2238 @@
+{
+ "mu_per_contract_day": [
+  90.0,
+  120.5
+ ],
+ "edge-0% | DLL OFF | 5d | T1": {
+  "single 1c x4": {
+   "pass_": 2.2,
+   "bust": 0.8
+  },
+  "single 2c x4": {
+   "pass_": 17.6,
+   "bust": 13.7
+  },
+  "single 2c x8": {
+   "pass_": 19.7,
+   "bust": 23.8
+  },
+  "single 3c x4": {
+   "pass_": 31.6,
+   "bust": 32.3
+  },
+  "single 3c x8": {
+   "pass_": 33.9,
+   "bust": 38.6
+  },
+  "single 4c x4": {
+   "pass_": 39.9,
+   "bust": 45.1
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 2.2,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 18.3,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 21.5,
+   "evals": 1.2
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 36.3,
+   "evals": 1.3
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 40.2,
+   "evals": 1.4
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 50.8,
+   "evals": 1.5
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 21.3,
+   "mean_funded": 0.4
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 43.6,
+   "mean_funded": 1.1
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 42.9,
+   "mean_funded": 0.7
+  }
+ },
+ "edge-0% | DLL OFF | 5d | T2": {
+  "single 1c x4": {
+   "pass_": 4.6,
+   "bust": 2.4
+  },
+  "single 2c x4": {
+   "pass_": 23.7,
+   "bust": 21.0
+  },
+  "single 2c x8": {
+   "pass_": 25.7,
+   "bust": 27.7
+  },
+  "single 3c x4": {
+   "pass_": 37.6,
+   "bust": 37.3
+  },
+  "single 3c x8": {
+   "pass_": 38.8,
+   "bust": 41.3
+  },
+  "single 4c x4": {
+   "pass_": 41.6,
+   "bust": 49.0
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 4.6,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 27.2,
+   "evals": 1.2
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 31.3,
+   "evals": 1.3
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 48.4,
+   "evals": 1.4
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 51.6,
+   "evals": 1.4
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 60.5,
+   "evals": 1.6
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 29.0,
+   "mean_funded": 0.5
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 49.3,
+   "mean_funded": 1.2
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 47.9,
+   "mean_funded": 0.8
+  }
+ },
+ "edge-0% | DLL OFF | 10d | T1": {
+  "single 1c x4": {
+   "pass_": 11.8,
+   "bust": 4.0
+  },
+  "single 2c x4": {
+   "pass_": 35.6,
+   "bust": 27.7
+  },
+  "single 2c x8": {
+   "pass_": 36.6,
+   "bust": 38.9
+  },
+  "single 3c x4": {
+   "pass_": 45.6,
+   "bust": 46.2
+  },
+  "single 3c x8": {
+   "pass_": 44.6,
+   "bust": 49.9
+  },
+  "single 4c x4": {
+   "pass_": 45.6,
+   "bust": 53.4
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 11.8,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 40.7,
+   "evals": 1.3
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 44.6,
+   "evals": 1.4
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 60.8,
+   "evals": 1.6
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 65.9,
+   "evals": 1.7
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 74.7,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 41.2,
+   "mean_funded": 0.8
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 54.0,
+   "mean_funded": 1.4
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 54.9,
+   "mean_funded": 1.0
+  }
+ },
+ "edge-0% | DLL OFF | 10d | T2": {
+  "single 1c x4": {
+   "pass_": 15.7,
+   "bust": 9.6
+  },
+  "single 2c x4": {
+   "pass_": 43.6,
+   "bust": 32.6
+  },
+  "single 2c x8": {
+   "pass_": 45.1,
+   "bust": 36.7
+  },
+  "single 3c x4": {
+   "pass_": 50.3,
+   "bust": 44.0
+  },
+  "single 3c x8": {
+   "pass_": 50.7,
+   "bust": 46.0
+  },
+  "single 4c x4": {
+   "pass_": 46.7,
+   "bust": 52.1
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 16.2,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 54.5,
+   "evals": 1.4
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 62.4,
+   "evals": 1.5
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 75.3,
+   "evals": 1.6
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 79.0,
+   "evals": 1.6
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 81.6,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 51.8,
+   "mean_funded": 1.0
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 58.8,
+   "mean_funded": 1.5
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 58.4,
+   "mean_funded": 1.1
+  }
+ },
+ "edge-0% | DLL OFF | 20d | T1": {
+  "single 1c x4": {
+   "pass_": 31.5,
+   "bust": 10.5
+  },
+  "single 2c x4": {
+   "pass_": 51.3,
+   "bust": 40.8
+  },
+  "single 2c x8": {
+   "pass_": 48.4,
+   "bust": 48.7
+  },
+  "single 3c x4": {
+   "pass_": 49.2,
+   "bust": 50.8
+  },
+  "single 3c x8": {
+   "pass_": 47.2,
+   "bust": 52.8
+  },
+  "single 4c x4": {
+   "pass_": 45.8,
+   "bust": 54.2
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 31.7,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 68.7,
+   "evals": 1.5
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 72.3,
+   "evals": 1.7
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 80.4,
+   "evals": 1.8
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 82.9,
+   "evals": 1.8
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 85.0,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 62.3,
+   "mean_funded": 1.3
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 57.3,
+   "mean_funded": 1.4
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 63.5,
+   "mean_funded": 1.3
+  }
+ },
+ "edge-0% | DLL OFF | 20d | T2": {
+  "single 1c x4": {
+   "pass_": 42.5,
+   "bust": 18.6
+  },
+  "single 2c x4": {
+   "pass_": 56.1,
+   "bust": 37.7
+  },
+  "single 2c x8": {
+   "pass_": 57.3,
+   "bust": 40.6
+  },
+  "single 3c x4": {
+   "pass_": 54.6,
+   "bust": 44.9
+  },
+  "single 3c x8": {
+   "pass_": 53.3,
+   "bust": 46.6
+  },
+  "single 4c x4": {
+   "pass_": 47.9,
+   "bust": 52.1
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 47.5,
+   "evals": 1.2
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 79.0,
+   "evals": 1.5
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 87.1,
+   "evals": 1.6
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 89.8,
+   "evals": 1.7
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 87.3,
+   "evals": 1.7
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 87.6,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 70.4,
+   "mean_funded": 1.6
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 61.7,
+   "mean_funded": 1.6
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 72.5,
+   "mean_funded": 1.5
+  }
+ },
+ "edge-0% | DLL 1200 | 5d | T1": {
+  "single 1c x4": {
+   "pass_": 2.2,
+   "bust": 0.8
+  },
+  "single 2c x4": {
+   "pass_": 16.2,
+   "bust": 13.1
+  },
+  "single 2c x8": {
+   "pass_": 18.5,
+   "bust": 15.3
+  },
+  "single 3c x4": {
+   "pass_": 30.7,
+   "bust": 27.6
+  },
+  "single 3c x8": {
+   "pass_": 32.2,
+   "bust": 30.4
+  },
+  "single 4c x4": {
+   "pass_": 39.2,
+   "bust": 38.1
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 2.2,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 16.7,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 19.1,
+   "evals": 1.1
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 34.3,
+   "evals": 1.2
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 36.3,
+   "evals": 1.3
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 45.3,
+   "evals": 1.3
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 20.1,
+   "mean_funded": 0.4
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 42.0,
+   "mean_funded": 1.0
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 41.8,
+   "mean_funded": 0.7
+  }
+ },
+ "edge-0% | DLL 1200 | 5d | T2": {
+  "single 1c x4": {
+   "pass_": 4.8,
+   "bust": 1.8
+  },
+  "single 2c x4": {
+   "pass_": 23.2,
+   "bust": 17.7
+  },
+  "single 2c x8": {
+   "pass_": 24.6,
+   "bust": 19.3
+  },
+  "single 3c x4": {
+   "pass_": 35.3,
+   "bust": 31.4
+  },
+  "single 3c x8": {
+   "pass_": 38.2,
+   "bust": 33.2
+  },
+  "single 4c x4": {
+   "pass_": 37.7,
+   "bust": 44.9
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 4.8,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 25.0,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 26.3,
+   "evals": 1.1
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 41.8,
+   "evals": 1.3
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 45.5,
+   "evals": 1.3
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 47.5,
+   "evals": 1.5
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 27.8,
+   "mean_funded": 0.5
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 46.6,
+   "mean_funded": 1.1
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 43.9,
+   "mean_funded": 0.8
+  }
+ },
+ "edge-0% | DLL 1200 | 10d | T1": {
+  "single 1c x4": {
+   "pass_": 11.8,
+   "bust": 4.0
+  },
+  "single 2c x4": {
+   "pass_": 33.6,
+   "bust": 25.7
+  },
+  "single 2c x8": {
+   "pass_": 36.9,
+   "bust": 29.8
+  },
+  "single 3c x4": {
+   "pass_": 46.0,
+   "bust": 42.4
+  },
+  "single 3c x8": {
+   "pass_": 45.9,
+   "bust": 45.1
+  },
+  "single 4c x4": {
+   "pass_": 48.0,
+   "bust": 49.6
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 11.8,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 38.1,
+   "evals": 1.3
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 42.4,
+   "evals": 1.3
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 59.4,
+   "evals": 1.5
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 61.2,
+   "evals": 1.5
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 70.6,
+   "evals": 1.7
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 39.6,
+   "mean_funded": 0.8
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 55.5,
+   "mean_funded": 1.4
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 55.7,
+   "mean_funded": 1.1
+  }
+ },
+ "edge-0% | DLL 1200 | 10d | T2": {
+  "single 1c x4": {
+   "pass_": 16.0,
+   "bust": 9.4
+  },
+  "single 2c x4": {
+   "pass_": 43.0,
+   "bust": 30.8
+  },
+  "single 2c x8": {
+   "pass_": 46.4,
+   "bust": 31.0
+  },
+  "single 3c x4": {
+   "pass_": 49.3,
+   "bust": 41.2
+  },
+  "single 3c x8": {
+   "pass_": 50.6,
+   "bust": 42.5
+  },
+  "single 4c x4": {
+   "pass_": 47.6,
+   "bust": 50.9
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 16.5,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 52.7,
+   "evals": 1.4
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 55.7,
+   "evals": 1.4
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 68.6,
+   "evals": 1.5
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 74.1,
+   "evals": 1.5
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 72.9,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 51.6,
+   "mean_funded": 1.1
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 58.8,
+   "mean_funded": 1.5
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 57.9,
+   "mean_funded": 1.1
+  }
+ },
+ "edge-0% | DLL 1200 | 20d | T1": {
+  "single 1c x4": {
+   "pass_": 31.5,
+   "bust": 10.5
+  },
+  "single 2c x4": {
+   "pass_": 49.7,
+   "bust": 39.2
+  },
+  "single 2c x8": {
+   "pass_": 50.3,
+   "bust": 42.4
+  },
+  "single 3c x4": {
+   "pass_": 51.2,
+   "bust": 48.0
+  },
+  "single 3c x8": {
+   "pass_": 50.8,
+   "bust": 48.7
+  },
+  "single 4c x4": {
+   "pass_": 49.0,
+   "bust": 51.0
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 31.7,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 65.0,
+   "evals": 1.5
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 69.3,
+   "evals": 1.6
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 82.6,
+   "evals": 1.7
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 82.4,
+   "evals": 1.7
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 85.0,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 61.2,
+   "mean_funded": 1.3
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 59.5,
+   "mean_funded": 1.5
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 65.5,
+   "mean_funded": 1.3
+  }
+ },
+ "edge-0% | DLL 1200 | 20d | T2": {
+  "single 1c x4": {
+   "pass_": 42.4,
+   "bust": 18.4
+  },
+  "single 2c x4": {
+   "pass_": 56.7,
+   "bust": 36.2
+  },
+  "single 2c x8": {
+   "pass_": 60.2,
+   "bust": 35.3
+  },
+  "single 3c x4": {
+   "pass_": 57.2,
+   "bust": 42.8
+  },
+  "single 3c x8": {
+   "pass_": 55.5,
+   "bust": 44.5
+  },
+  "single 4c x4": {
+   "pass_": 48.8,
+   "bust": 51.2
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 46.7,
+   "evals": 1.2
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 79.5,
+   "evals": 1.5
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 83.4,
+   "evals": 1.5
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 86.7,
+   "evals": 1.6
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 86.7,
+   "evals": 1.6
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 81.3,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 71.1,
+   "mean_funded": 1.6
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 63.2,
+   "mean_funded": 1.6
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 72.2,
+   "mean_funded": 1.5
+  }
+ },
+ "edge-35% | DLL OFF | 5d | T1": {
+  "single 1c x4": {
+   "pass_": 1.7,
+   "bust": 1.1
+  },
+  "single 2c x4": {
+   "pass_": 14.3,
+   "bust": 18.6
+  },
+  "single 2c x8": {
+   "pass_": 16.9,
+   "bust": 29.6
+  },
+  "single 3c x4": {
+   "pass_": 25.8,
+   "bust": 40.7
+  },
+  "single 3c x8": {
+   "pass_": 28.0,
+   "bust": 43.6
+  },
+  "single 4c x4": {
+   "pass_": 32.0,
+   "bust": 53.9
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 1.7,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 14.9,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 19.1,
+   "evals": 1.3
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 31.0,
+   "evals": 1.4
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 34.5,
+   "evals": 1.4
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 44.0,
+   "evals": 1.6
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 18.6,
+   "mean_funded": 0.3
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 37.0,
+   "mean_funded": 0.9
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 36.0,
+   "mean_funded": 0.6
+  }
+ },
+ "edge-35% | DLL OFF | 5d | T2": {
+  "single 1c x4": {
+   "pass_": 3.7,
+   "bust": 4.2
+  },
+  "single 2c x4": {
+   "pass_": 19.3,
+   "bust": 26.5
+  },
+  "single 2c x8": {
+   "pass_": 21.6,
+   "bust": 31.7
+  },
+  "single 3c x4": {
+   "pass_": 30.4,
+   "bust": 45.8
+  },
+  "single 3c x8": {
+   "pass_": 31.1,
+   "bust": 48.5
+  },
+  "single 4c x4": {
+   "pass_": 31.1,
+   "bust": 60.6
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 3.7,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 22.8,
+   "evals": 1.2
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 27.4,
+   "evals": 1.3
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 39.8,
+   "evals": 1.5
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 42.7,
+   "evals": 1.5
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 49.0,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 24.3,
+   "mean_funded": 0.4
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 39.1,
+   "mean_funded": 0.9
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 38.5,
+   "mean_funded": 0.7
+  }
+ },
+ "edge-35% | DLL OFF | 10d | T1": {
+  "single 1c x4": {
+   "pass_": 9.3,
+   "bust": 6.3
+  },
+  "single 2c x4": {
+   "pass_": 27.7,
+   "bust": 38.8
+  },
+  "single 2c x8": {
+   "pass_": 27.5,
+   "bust": 49.9
+  },
+  "single 3c x4": {
+   "pass_": 35.4,
+   "bust": 58.2
+  },
+  "single 3c x8": {
+   "pass_": 36.7,
+   "bust": 57.4
+  },
+  "single 4c x4": {
+   "pass_": 35.8,
+   "bust": 62.2
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 9.3,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 33.1,
+   "evals": 1.4
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 37.3,
+   "evals": 1.6
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 53.0,
+   "evals": 1.7
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 56.1,
+   "evals": 1.8
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 66.2,
+   "evals": 1.9
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 31.5,
+   "mean_funded": 0.6
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 44.7,
+   "mean_funded": 1.1
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 44.7,
+   "mean_funded": 0.8
+  }
+ },
+ "edge-35% | DLL OFF | 10d | T2": {
+  "single 1c x4": {
+   "pass_": 13.0,
+   "bust": 14.4
+  },
+  "single 2c x4": {
+   "pass_": 33.1,
+   "bust": 43.7
+  },
+  "single 2c x8": {
+   "pass_": 34.9,
+   "bust": 47.6
+  },
+  "single 3c x4": {
+   "pass_": 38.9,
+   "bust": 56.7
+  },
+  "single 3c x8": {
+   "pass_": 39.2,
+   "bust": 57.3
+  },
+  "single 4c x4": {
+   "pass_": 36.4,
+   "bust": 63.2
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 13.0,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 46.6,
+   "evals": 1.5
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 53.9,
+   "evals": 1.6
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 62.9,
+   "evals": 1.8
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 66.6,
+   "evals": 1.8
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 69.8,
+   "evals": 2.0
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 40.7,
+   "mean_funded": 0.8
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 48.4,
+   "mean_funded": 1.1
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 49.7,
+   "mean_funded": 0.9
+  }
+ },
+ "edge-35% | DLL OFF | 20d | T1": {
+  "single 1c x4": {
+   "pass_": 24.3,
+   "bust": 14.4
+  },
+  "single 2c x4": {
+   "pass_": 36.7,
+   "bust": 54.8
+  },
+  "single 2c x8": {
+   "pass_": 34.5,
+   "bust": 63.2
+  },
+  "single 3c x4": {
+   "pass_": 37.3,
+   "bust": 62.6
+  },
+  "single 3c x8": {
+   "pass_": 38.1,
+   "bust": 61.6
+  },
+  "single 4c x4": {
+   "pass_": 36.4,
+   "bust": 63.6
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 24.6,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 57.3,
+   "evals": 1.7
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 61.2,
+   "evals": 1.9
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 69.3,
+   "evals": 2.0
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 69.4,
+   "evals": 2.0
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 73.8,
+   "evals": 2.0
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 47.6,
+   "mean_funded": 1.0
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 45.7,
+   "mean_funded": 1.1
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 51.1,
+   "mean_funded": 1.0
+  }
+ },
+ "edge-35% | DLL OFF | 20d | T2": {
+  "single 1c x4": {
+   "pass_": 30.8,
+   "bust": 24.1
+  },
+  "single 2c x4": {
+   "pass_": 42.2,
+   "bust": 51.0
+  },
+  "single 2c x8": {
+   "pass_": 43.1,
+   "bust": 53.6
+  },
+  "single 3c x4": {
+   "pass_": 41.6,
+   "bust": 58.4
+  },
+  "single 3c x8": {
+   "pass_": 41.8,
+   "bust": 58.2
+  },
+  "single 4c x4": {
+   "pass_": 36.8,
+   "bust": 63.2
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 34.7,
+   "evals": 1.3
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 67.1,
+   "evals": 1.8
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 76.3,
+   "evals": 1.8
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 77.2,
+   "evals": 1.9
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 78.9,
+   "evals": 1.9
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 76.2,
+   "evals": 2.0
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 55.8,
+   "mean_funded": 1.2
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 49.9,
+   "mean_funded": 1.2
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 58.1,
+   "mean_funded": 1.1
+  }
+ },
+ "edge-35% | DLL 1200 | 5d | T1": {
+  "single 1c x4": {
+   "pass_": 1.7,
+   "bust": 1.2
+  },
+  "single 2c x4": {
+   "pass_": 13.2,
+   "bust": 17.6
+  },
+  "single 2c x8": {
+   "pass_": 16.3,
+   "bust": 19.6
+  },
+  "single 3c x4": {
+   "pass_": 25.2,
+   "bust": 35.5
+  },
+  "single 3c x8": {
+   "pass_": 26.8,
+   "bust": 37.7
+  },
+  "single 4c x4": {
+   "pass_": 32.3,
+   "bust": 48.0
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 1.7,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 13.7,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 17.1,
+   "evals": 1.1
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 29.4,
+   "evals": 1.3
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 31.3,
+   "evals": 1.3
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 40.0,
+   "evals": 1.4
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 17.6,
+   "mean_funded": 0.3
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 35.7,
+   "mean_funded": 0.8
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 35.0,
+   "mean_funded": 0.6
+  }
+ },
+ "edge-35% | DLL 1200 | 5d | T2": {
+  "single 1c x4": {
+   "pass_": 3.4,
+   "bust": 3.3
+  },
+  "single 2c x4": {
+   "pass_": 18.9,
+   "bust": 23.5
+  },
+  "single 2c x8": {
+   "pass_": 20.4,
+   "bust": 24.9
+  },
+  "single 3c x4": {
+   "pass_": 26.8,
+   "bust": 42.2
+  },
+  "single 3c x8": {
+   "pass_": 28.6,
+   "bust": 44.0
+  },
+  "single 4c x4": {
+   "pass_": 28.6,
+   "bust": 57.9
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 3.4,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 20.7,
+   "evals": 1.2
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 22.3,
+   "evals": 1.2
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 31.9,
+   "evals": 1.4
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 35.3,
+   "evals": 1.4
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 39.4,
+   "evals": 1.6
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 23.1,
+   "mean_funded": 0.4
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 35.9,
+   "mean_funded": 0.8
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 34.7,
+   "mean_funded": 0.6
+  }
+ },
+ "edge-35% | DLL 1200 | 10d | T1": {
+  "single 1c x4": {
+   "pass_": 9.3,
+   "bust": 6.8
+  },
+  "single 2c x4": {
+   "pass_": 26.5,
+   "bust": 38.4
+  },
+  "single 2c x8": {
+   "pass_": 28.2,
+   "bust": 41.0
+  },
+  "single 3c x4": {
+   "pass_": 35.4,
+   "bust": 56.1
+  },
+  "single 3c x8": {
+   "pass_": 37.1,
+   "bust": 55.8
+  },
+  "single 4c x4": {
+   "pass_": 36.7,
+   "bust": 61.1
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 9.3,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 31.5,
+   "evals": 1.4
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 34.5,
+   "evals": 1.4
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 50.9,
+   "evals": 1.7
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 53.5,
+   "evals": 1.7
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 63.0,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 30.7,
+   "mean_funded": 0.6
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 44.9,
+   "mean_funded": 1.1
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 45.1,
+   "mean_funded": 0.8
+  }
+ },
+ "edge-35% | DLL 1200 | 10d | T2": {
+  "single 1c x4": {
+   "pass_": 12.6,
+   "bust": 14.1
+  },
+  "single 2c x4": {
+   "pass_": 32.5,
+   "bust": 41.6
+  },
+  "single 2c x8": {
+   "pass_": 35.3,
+   "bust": 41.9
+  },
+  "single 3c x4": {
+   "pass_": 34.7,
+   "bust": 57.0
+  },
+  "single 3c x8": {
+   "pass_": 36.4,
+   "bust": 58.2
+  },
+  "single 4c x4": {
+   "pass_": 32.9,
+   "bust": 66.6
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 12.6,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 44.0,
+   "evals": 1.5
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 46.3,
+   "evals": 1.5
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 52.7,
+   "evals": 1.8
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 59.3,
+   "evals": 1.8
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 60.6,
+   "evals": 2.0
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 40.1,
+   "mean_funded": 0.8
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 44.8,
+   "mean_funded": 1.0
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 44.5,
+   "mean_funded": 0.8
+  }
+ },
+ "edge-35% | DLL 1200 | 20d | T1": {
+  "single 1c x4": {
+   "pass_": 24.6,
+   "bust": 14.5
+  },
+  "single 2c x4": {
+   "pass_": 35.7,
+   "bust": 55.8
+  },
+  "single 2c x8": {
+   "pass_": 36.7,
+   "bust": 57.2
+  },
+  "single 3c x4": {
+   "pass_": 37.6,
+   "bust": 61.9
+  },
+  "single 3c x8": {
+   "pass_": 38.9,
+   "bust": 60.4
+  },
+  "single 4c x4": {
+   "pass_": 37.3,
+   "bust": 62.7
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 24.6,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 55.8,
+   "evals": 1.7
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 59.3,
+   "evals": 1.8
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 67.7,
+   "evals": 2.0
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 72.8,
+   "evals": 2.0
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 74.4,
+   "evals": 2.0
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 46.8,
+   "mean_funded": 1.0
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 46.3,
+   "mean_funded": 1.1
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 53.1,
+   "mean_funded": 1.0
+  }
+ },
+ "edge-35% | DLL 1200 | 20d | T2": {
+  "single 1c x4": {
+   "pass_": 29.9,
+   "bust": 24.1
+  },
+  "single 2c x4": {
+   "pass_": 41.2,
+   "bust": 51.0
+  },
+  "single 2c x8": {
+   "pass_": 44.9,
+   "bust": 49.3
+  },
+  "single 3c x4": {
+   "pass_": 38.9,
+   "bust": 60.8
+  },
+  "single 3c x8": {
+   "pass_": 39.5,
+   "bust": 60.5
+  },
+  "single 4c x4": {
+   "pass_": 32.9,
+   "bust": 67.1
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 34.0,
+   "evals": 1.3
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 67.5,
+   "evals": 1.7
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 74.1,
+   "evals": 1.7
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 69.3,
+   "evals": 2.0
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 75.1,
+   "evals": 1.9
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 67.5,
+   "evals": 2.1
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 55.5,
+   "mean_funded": 1.2
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 47.2,
+   "mean_funded": 1.1
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 53.4,
+   "mean_funded": 1.0
+  }
+ },
+ "edge-100% | DLL OFF | 5d | T1": {
+  "single 1c x4": {
+   "pass_": 1.4,
+   "bust": 2.3
+  },
+  "single 2c x4": {
+   "pass_": 11.0,
+   "bust": 31.7
+  },
+  "single 2c x8": {
+   "pass_": 12.3,
+   "bust": 40.6
+  },
+  "single 3c x4": {
+   "pass_": 17.2,
+   "bust": 56.8
+  },
+  "single 3c x8": {
+   "pass_": 18.7,
+   "bust": 58.0
+  },
+  "single 4c x4": {
+   "pass_": 20.4,
+   "bust": 71.3
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 1.4,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 11.9,
+   "evals": 1.2
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 14.3,
+   "evals": 1.3
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 22.7,
+   "evals": 1.5
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 26.3,
+   "evals": 1.6
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 33.3,
+   "evals": 1.8
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 13.7,
+   "mean_funded": 0.2
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 25.2,
+   "mean_funded": 0.6
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 24.2,
+   "mean_funded": 0.4
+  }
+ },
+ "edge-100% | DLL OFF | 5d | T2": {
+  "single 1c x4": {
+   "pass_": 2.4,
+   "bust": 7.9
+  },
+  "single 2c x4": {
+   "pass_": 12.6,
+   "bust": 40.4
+  },
+  "single 2c x8": {
+   "pass_": 14.1,
+   "bust": 45.2
+  },
+  "single 3c x4": {
+   "pass_": 16.5,
+   "bust": 69.2
+  },
+  "single 3c x8": {
+   "pass_": 17.7,
+   "bust": 70.7
+  },
+  "single 4c x4": {
+   "pass_": 17.2,
+   "bust": 79.0
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 2.4,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 17.2,
+   "evals": 1.4
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 20.7,
+   "evals": 1.4
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 28.1,
+   "evals": 1.8
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 32.2,
+   "evals": 1.8
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 34.1,
+   "evals": 2.1
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 16.6,
+   "mean_funded": 0.3
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 22.2,
+   "mean_funded": 0.5
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 21.6,
+   "mean_funded": 0.4
+  }
+ },
+ "edge-100% | DLL OFF | 10d | T1": {
+  "single 1c x4": {
+   "pass_": 5.9,
+   "bust": 12.0
+  },
+  "single 2c x4": {
+   "pass_": 18.6,
+   "bust": 61.8
+  },
+  "single 2c x8": {
+   "pass_": 20.4,
+   "bust": 66.1
+  },
+  "single 3c x4": {
+   "pass_": 21.3,
+   "bust": 74.5
+  },
+  "single 3c x8": {
+   "pass_": 21.7,
+   "bust": 74.4
+  },
+  "single 4c x4": {
+   "pass_": 21.7,
+   "bust": 78.3
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 5.9,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 23.9,
+   "evals": 1.7
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 29.8,
+   "evals": 1.8
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 39.0,
+   "evals": 2.1
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 42.1,
+   "evals": 2.1
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 50.8,
+   "evals": 2.3
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 23.7,
+   "mean_funded": 0.4
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 29.2,
+   "mean_funded": 0.6
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 28.9,
+   "mean_funded": 0.5
+  }
+ },
+ "edge-100% | DLL OFF | 10d | T2": {
+  "single 1c x4": {
+   "pass_": 7.5,
+   "bust": 22.3
+  },
+  "single 2c x4": {
+   "pass_": 17.2,
+   "bust": 66.2
+  },
+  "single 2c x8": {
+   "pass_": 19.3,
+   "bust": 68.0
+  },
+  "single 3c x4": {
+   "pass_": 19.3,
+   "bust": 79.0
+  },
+  "single 3c x8": {
+   "pass_": 20.7,
+   "bust": 78.0
+  },
+  "single 4c x4": {
+   "pass_": 17.7,
+   "bust": 82.3
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 7.6,
+   "evals": 1.2
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 30.1,
+   "evals": 1.9
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 38.2,
+   "evals": 1.9
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 44.2,
+   "evals": 2.3
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 50.3,
+   "evals": 2.3
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 43.1,
+   "evals": 2.5
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 23.1,
+   "mean_funded": 0.4
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 25.3,
+   "mean_funded": 0.6
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 26.6,
+   "mean_funded": 0.4
+  }
+ },
+ "edge-100% | DLL OFF | 20d | T1": {
+  "single 1c x4": {
+   "pass_": 15.5,
+   "bust": 41.5
+  },
+  "single 2c x4": {
+   "pass_": 22.0,
+   "bust": 75.3
+  },
+  "single 2c x8": {
+   "pass_": 23.3,
+   "bust": 76.1
+  },
+  "single 3c x4": {
+   "pass_": 21.5,
+   "bust": 78.5
+  },
+  "single 3c x8": {
+   "pass_": 22.1,
+   "bust": 77.9
+  },
+  "single 4c x4": {
+   "pass_": 21.7,
+   "bust": 78.3
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 17.4,
+   "evals": 1.4
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 37.4,
+   "evals": 2.2
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 47.8,
+   "evals": 2.3
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 48.6,
+   "evals": 2.4
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 52.0,
+   "evals": 2.4
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 53.8,
+   "evals": 2.4
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 28.6,
+   "mean_funded": 0.6
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 29.5,
+   "mean_funded": 0.7
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 33.0,
+   "mean_funded": 0.6
+  }
+ },
+ "edge-100% | DLL OFF | 20d | T2": {
+  "single 1c x4": {
+   "pass_": 15.9,
+   "bust": 52.4
+  },
+  "single 2c x4": {
+   "pass_": 19.0,
+   "bust": 79.6
+  },
+  "single 2c x8": {
+   "pass_": 22.5,
+   "bust": 76.3
+  },
+  "single 3c x4": {
+   "pass_": 19.8,
+   "bust": 80.1
+  },
+  "single 3c x8": {
+   "pass_": 21.4,
+   "bust": 78.6
+  },
+  "single 4c x4": {
+   "pass_": 17.7,
+   "bust": 82.3
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 21.0,
+   "evals": 1.6
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 44.9,
+   "evals": 2.3
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 56.3,
+   "evals": 2.3
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 49.4,
+   "evals": 2.4
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 56.0,
+   "evals": 2.4
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 44.6,
+   "evals": 2.5
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 30.8,
+   "mean_funded": 0.6
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 26.0,
+   "mean_funded": 0.6
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 32.2,
+   "mean_funded": 0.5
+  }
+ },
+ "edge-100% | DLL 1200 | 5d | T1": {
+  "single 1c x4": {
+   "pass_": 1.4,
+   "bust": 2.5
+  },
+  "single 2c x4": {
+   "pass_": 9.8,
+   "bust": 29.6
+  },
+  "single 2c x8": {
+   "pass_": 11.5,
+   "bust": 31.7
+  },
+  "single 3c x4": {
+   "pass_": 15.9,
+   "bust": 53.0
+  },
+  "single 3c x8": {
+   "pass_": 18.6,
+   "bust": 54.1
+  },
+  "single 4c x4": {
+   "pass_": 17.4,
+   "bust": 71.3
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 1.4,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 10.8,
+   "evals": 1.2
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 12.7,
+   "evals": 1.2
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 20.2,
+   "evals": 1.4
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 24.1,
+   "evals": 1.5
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 25.8,
+   "evals": 1.7
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 12.5,
+   "mean_funded": 0.2
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 23.1,
+   "mean_funded": 0.5
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 21.7,
+   "mean_funded": 0.3
+  }
+ },
+ "edge-100% | DLL 1200 | 5d | T2": {
+  "single 1c x4": {
+   "pass_": 2.2,
+   "bust": 7.3
+  },
+  "single 2c x4": {
+   "pass_": 12.4,
+   "bust": 40.7
+  },
+  "single 2c x8": {
+   "pass_": 13.3,
+   "bust": 42.8
+  },
+  "single 3c x4": {
+   "pass_": 13.2,
+   "bust": 69.9
+  },
+  "single 3c x8": {
+   "pass_": 15.6,
+   "bust": 68.7
+  },
+  "single 4c x4": {
+   "pass_": 13.8,
+   "bust": 80.2
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 2.2,
+   "evals": 1.0
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 14.4,
+   "evals": 1.3
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 15.9,
+   "evals": 1.3
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 19.3,
+   "evals": 1.7
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 23.4,
+   "evals": 1.7
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 26.2,
+   "evals": 1.9
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 15.6,
+   "mean_funded": 0.3
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 19.2,
+   "mean_funded": 0.4
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 18.4,
+   "mean_funded": 0.3
+  }
+ },
+ "edge-100% | DLL 1200 | 10d | T1": {
+  "single 1c x4": {
+   "pass_": 6.0,
+   "bust": 12.4
+  },
+  "single 2c x4": {
+   "pass_": 16.9,
+   "bust": 63.2
+  },
+  "single 2c x8": {
+   "pass_": 20.0,
+   "bust": 63.0
+  },
+  "single 3c x4": {
+   "pass_": 19.4,
+   "bust": 75.8
+  },
+  "single 3c x8": {
+   "pass_": 21.7,
+   "bust": 73.5
+  },
+  "single 4c x4": {
+   "pass_": 18.6,
+   "bust": 81.0
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 6.0,
+   "evals": 1.1
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 21.8,
+   "evals": 1.7
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 26.8,
+   "evals": 1.7
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 35.8,
+   "evals": 2.1
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 40.1,
+   "evals": 2.1
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 42.4,
+   "evals": 2.4
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 22.4,
+   "mean_funded": 0.4
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 26.5,
+   "mean_funded": 0.6
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 25.8,
+   "mean_funded": 0.4
+  }
+ },
+ "edge-100% | DLL 1200 | 10d | T2": {
+  "single 1c x4": {
+   "pass_": 7.0,
+   "bust": 24.3
+  },
+  "single 2c x4": {
+   "pass_": 16.8,
+   "bust": 67.2
+  },
+  "single 2c x8": {
+   "pass_": 18.0,
+   "bust": 69.3
+  },
+  "single 3c x4": {
+   "pass_": 15.3,
+   "bust": 82.9
+  },
+  "single 3c x8": {
+   "pass_": 17.5,
+   "bust": 80.2
+  },
+  "single 4c x4": {
+   "pass_": 14.2,
+   "bust": 85.8
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 7.2,
+   "evals": 1.2
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 27.4,
+   "evals": 1.9
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 29.0,
+   "evals": 1.9
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 34.7,
+   "evals": 2.4
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 40.1,
+   "evals": 2.3
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 38.0,
+   "evals": 2.5
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 22.6,
+   "mean_funded": 0.4
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 21.1,
+   "mean_funded": 0.5
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 22.8,
+   "mean_funded": 0.4
+  }
+ },
+ "edge-100% | DLL 1200 | 20d | T1": {
+  "single 1c x4": {
+   "pass_": 15.6,
+   "bust": 41.5
+  },
+  "single 2c x4": {
+   "pass_": 20.8,
+   "bust": 76.4
+  },
+  "single 2c x8": {
+   "pass_": 23.2,
+   "bust": 74.7
+  },
+  "single 3c x4": {
+   "pass_": 19.6,
+   "bust": 80.4
+  },
+  "single 3c x8": {
+   "pass_": 21.7,
+   "bust": 78.3
+  },
+  "single 4c x4": {
+   "pass_": 18.7,
+   "bust": 81.3
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 17.4,
+   "evals": 1.4
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 36.6,
+   "evals": 2.2
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 43.6,
+   "evals": 2.2
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 47.6,
+   "evals": 2.4
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 51.7,
+   "evals": 2.3
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 47.0,
+   "evals": 2.5
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 27.7,
+   "mean_funded": 0.6
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 26.6,
+   "mean_funded": 0.6
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 31.9,
+   "mean_funded": 0.5
+  }
+ },
+ "edge-100% | DLL 1200 | 20d | T2": {
+  "single 1c x4": {
+   "pass_": 15.9,
+   "bust": 53.1
+  },
+  "single 2c x4": {
+   "pass_": 18.0,
+   "bust": 80.8
+  },
+  "single 2c x8": {
+   "pass_": 20.1,
+   "bust": 78.7
+  },
+  "single 3c x4": {
+   "pass_": 15.4,
+   "bust": 84.6
+  },
+  "single 3c x8": {
+   "pass_": 17.7,
+   "bust": 82.3
+  },
+  "single 4c x4": {
+   "pass_": 14.2,
+   "bust": 85.8
+  },
+  "serial 3 x 1c x4": {
+   "pass_": 20.1,
+   "evals": 1.6
+  },
+  "serial 3 x 2c x4": {
+   "pass_": 42.2,
+   "evals": 2.3
+  },
+  "serial 3 x 2c x8": {
+   "pass_": 47.2,
+   "evals": 2.3
+  },
+  "serial 3 x 3c x4": {
+   "pass_": 40.6,
+   "evals": 2.5
+  },
+  "serial 3 x 3c x8": {
+   "pass_": 47.6,
+   "evals": 2.5
+  },
+  "serial 3 x 4c x4": {
+   "pass_": 39.2,
+   "evals": 2.6
+  },
+  "ladder 1c x4+2c x4+2c x8": {
+   "pass_any": 30.7,
+   "mean_funded": 0.5
+  },
+  "ladder 3c x4+3c x8+4c x4": {
+   "pass_any": 21.3,
+   "mean_funded": 0.5
+  },
+  "ladder 1c x4+3c x4+4c x4": {
+   "pass_any": 28.9,
+   "mean_funded": 0.5
+  }
+ }
+}

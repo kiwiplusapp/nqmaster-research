@@ -1,0 +1,243 @@
+{
+ "stage1_T1norm": 160,
+ "stage1_and_2": 9,
+ "final": 0,
+ "p_T2pf12_given_stage1": 0.1187,
+ "p_T2pf12_all": 0.0487,
+ "p_T2pf12_given_T1n_1_12": 0.1287,
+ "kept_trades_missing": 86,
+ "stage1_by_family": {
+  "ENGULF_4H": 42,
+  "RVOL_DRIVE": 21,
+  "ONHL_TEST": 17,
+  "G_DRIVE": 16,
+  "NQ_DRIVE": 15,
+  "G_ORB": 9,
+  "TREND_SCALP": 9,
+  "OPEN_DRIVE": 7,
+  "ER_PERSIST": 7,
+  "RANGE_BREAK": 4,
+  "VOL_BREAK": 3,
+  "ROUND_NUM": 3,
+  "CLOCK_ANCHOR": 2,
+  "PIVOT_BREAK": 2,
+  "PD_ACCEPT": 1,
+  "ON_POS": 1,
+  "NDAY_BRK": 1
+ },
+ "stage12_by_family": {
+  "ENGULF_4H": 2,
+  "G_DRIVE": 2,
+  "NQ_DRIVE": 2,
+  "RVOL_DRIVE": 2,
+  "PD_ACCEPT": 1
+ },
+ "final_by_family": {},
+ "finalists": [
+  {
+   "fam": "NQ_DRIVE",
+   "j": 3616,
+   "params": "{'A': 700, 'T': 15, 'x': 0.1, 'mode': -1, 'tf': 0, 'k': 0.35, 'stop': 0, 'R': 1.0, 'hold': 240}",
+   "T1n_n": 128,
+   "T1n_wr": 64.1,
+   "T1n_pf": 1.693,
+   "T1_real_pf": 1.363,
+   "T2_n": 58,
+   "T2_wr": 67.2,
+   "T2_pf": 2.111,
+   "A_pf": 1.005,
+   "T2_pf_4t": 2.009,
+   "plateau": false,
+   "final": false,
+   "T1_corr": -0.04,
+   "T1_dsh": 0.041,
+   "T1_dd": [
+    4667,
+    4564
+   ],
+   "T1_wm": [
+    -1176,
+    -1194
+   ],
+   "T1_cand_per_month": 21,
+   "T1_boot": {
+    "median": 0.04,
+    "p05": -0.002,
+    "p95": 0.101,
+    "p_gain_pos": 0.939
+   },
+   "T2_corr": -0.023,
+   "T2_dsh": 0.077,
+   "T2_dd": [
+    3586,
+    3654
+   ],
+   "T2_wm": [
+    -2182,
+    -2089
+   ],
+   "T2_cand_per_month": 51,
+   "T2_boot": {
+    "median": 0.074,
+    "p05": 0.027,
+    "p95": 0.122,
+    "p_gain_pos": 0.993
+   },
+   "accept": false
+  },
+  {
+   "fam": "NQ_DRIVE",
+   "j": 3617,
+   "params": "{'A': 700, 'T': 15, 'x': 0.1, 'mode': -1, 'tf': 0, 'k': 0.35, 'stop': 0, 'R': 2.0, 'hold': 240}",
+   "T1n_n": 128,
+   "T1n_wr": 58.6,
+   "T1n_pf": 1.822,
+   "T1_real_pf": 1.641,
+   "T2_n": 58,
+   "T2_wr": 58.6,
+   "T2_pf": 1.847,
+   "A_pf": 1.061,
+   "T2_pf_4t": 1.76,
+   "plateau": false,
+   "final": false,
+   "T1_corr": -0.027,
+   "T1_dsh": 0.073,
+   "T1_dd": [
+    4667,
+    4499
+   ],
+   "T1_wm": [
+    -1176,
+    -1194
+   ],
+   "T1_cand_per_month": 41,
+   "T1_boot": {
+    "median": 0.072,
+    "p05": 0.009,
+    "p95": 0.171,
+    "p_gain_pos": 0.974
+   },
+   "T2_corr": -0.016,
+   "T2_dsh": 0.065,
+   "T2_dd": [
+    3586,
+    3654
+   ],
+   "T2_wm": [
+    -2182,
+    -2125
+   ],
+   "T2_cand_per_month": 45,
+   "T2_boot": {
+    "median": 0.058,
+    "p05": 0.005,
+    "p95": 0.111,
+    "p_gain_pos": 0.965
+   },
+   "accept": false
+  },
+  {
+   "fam": "G_DRIVE",
+   "j": 405,
+   "params": "{'A': 1800, 'T': 60, 'x': 0.2, 'mode': 1, 'tf': 0, 'k': 0.35, 'stop': 1, 'R': 1.0, 'hold': 600}",
+   "T1n_n": 134,
+   "T1n_wr": 59.0,
+   "T1n_pf": 1.334,
+   "T1_real_pf": 1.494,
+   "T2_n": 82,
+   "T2_wr": 57.3,
+   "T2_pf": 1.483,
+   "A_pf": 1.012,
+   "T2_pf_4t": 1.409,
+   "plateau": false,
+   "final": false,
+   "T1_corr": 0.05,
+   "T1_dsh": 0.041,
+   "T1_dd": [
+    4667,
+    4776
+   ],
+   "T1_wm": [
+    -1176,
+    -1258
+   ],
+   "T1_cand_per_month": 30,
+   "T1_boot": {
+    "median": 0.041,
+    "p05": -0.002,
+    "p95": 0.095,
+    "p_gain_pos": 0.935
+   },
+   "T2_corr": -0.04,
+   "T2_dsh": 0.06,
+   "T2_dd": [
+    3586,
+    3646
+   ],
+   "T2_wm": [
+    -2182,
+    -2078
+   ],
+   "T2_cand_per_month": 38,
+   "T2_boot": {
+    "median": 0.066,
+    "p05": -0.012,
+    "p95": 0.142,
+    "p_gain_pos": 0.916
+   },
+   "accept": false
+  },
+  {
+   "fam": "G_DRIVE",
+   "j": 3570,
+   "params": "{'A': 300, 'T': 60, 'x': 0.2, 'mode': 1, 'tf': 0, 'k': 0.35, 'stop': 1, 'R': 0.5, 'hold': 240}",
+   "T1n_n": 133,
+   "T1n_wr": 73.7,
+   "T1n_pf": 1.624,
+   "T1_real_pf": 1.292,
+   "T2_n": 62,
+   "T2_wr": 66.1,
+   "T2_pf": 1.361,
+   "A_pf": 1.117,
+   "T2_pf_4t": 1.234,
+   "plateau": false,
+   "final": false,
+   "T1_corr": -0.002,
+   "T1_dsh": 0.018,
+   "T1_dd": [
+    4667,
+    4665
+   ],
+   "T1_wm": [
+    -1176,
+    -1153
+   ],
+   "T1_cand_per_month": 11,
+   "T1_boot": {
+    "median": 0.018,
+    "p05": -0.004,
+    "p95": 0.047,
+    "p_gain_pos": 0.894
+   },
+   "T2_corr": -0.032,
+   "T2_dsh": 0.02,
+   "T2_dd": [
+    3586,
+    3524
+   ],
+   "T2_wm": [
+    -2182,
+    -2025
+   ],
+   "T2_cand_per_month": 12,
+   "T2_boot": {
+    "median": 0.028,
+    "p05": 0.003,
+    "p95": 0.057,
+    "p_gain_pos": 0.968
+   },
+   "accept": false
+  }
+ ],
+ "accepted": 0
+}

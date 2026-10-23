@@ -1,0 +1,1779 @@
+{
+ "seats": {
+  "L150 6c/3c | hc0.0 | T1": {
+   "med": 2467,
+   "p10": 1494,
+   "Pneg": 0.0,
+   "busts": 1.51,
+   "evals": 8.7,
+   "pay62": 79.7,
+   "med_list": 2391,
+   "Pneg_list": 0.1,
+   "med_end": 1089
+  },
+  "Flex50 2c/2c | hc0.0 | T1": {
+   "med": 1589,
+   "p10": 945,
+   "Pneg": 0.1,
+   "busts": 2.42,
+   "evals": 8.3,
+   "pay62": 73.9,
+   "med_list": 1565,
+   "Pneg_list": 0.2,
+   "med_end": 732
+  },
+  "Flex50 2c/1c | hc0.0 | T1": {
+   "med": 1182,
+   "p10": 715,
+   "Pneg": 0.1,
+   "busts": 0.32,
+   "evals": 4.2,
+   "pay62": 61.6,
+   "med_list": 1176,
+   "Pneg_list": 0.1,
+   "med_end": 741
+  },
+  "Pro50 4c/1c | hc0.0 | T1": {
+   "med": 1209,
+   "p10": 826,
+   "Pneg": 0.0,
+   "busts": 0.3,
+   "evals": 4.6,
+   "pay62": 68.6,
+   "med_list": 1190,
+   "Pneg_list": 0.0,
+   "med_end": 874
+  },
+  "Pro50 4c/2c | hc0.0 | T1": {
+   "med": 1723,
+   "p10": 1030,
+   "Pneg": 0.0,
+   "busts": 3.34,
+   "evals": 10.3,
+   "pay62": 83.7,
+   "med_list": 1672,
+   "Pneg_list": 0.2,
+   "med_end": 881
+  },
+  "MFFU 1x8 | hc0.0 | T1": {
+   "med": 1414,
+   "p10": 660,
+   "Pneg": 0.7,
+   "busts": 0.14,
+   "evals": 1.4,
+   "pay62": 35.0,
+   "med_list": 1414,
+   "Pneg_list": 0.7
+  },
+  "MFFU fix2 | hc0.0 | T1": {
+   "med": 1486,
+   "p10": 754,
+   "Pneg": 0.4,
+   "busts": 0.14,
+   "evals": 2.0,
+   "pay62": 45.2,
+   "med_list": 1486,
+   "Pneg_list": 0.4
+  },
+  "MFFU fix3 | hc0.0 | T1": {
+   "med": 1524,
+   "p10": 795,
+   "Pneg": 0.1,
+   "busts": 0.14,
+   "evals": 2.5,
+   "pay62": 49.6,
+   "med_list": 1524,
+   "Pneg_list": 0.1
+  },
+  "L150 6c/3c | hc0.0 | T2": {
+   "med": 2260,
+   "p10": 1252,
+   "Pneg": 0.1,
+   "busts": 2.75,
+   "evals": 12.7,
+   "pay62": 78.1,
+   "med_list": 2190,
+   "Pneg_list": 0.2,
+   "med_end": 1107
+  },
+  "Flex50 2c/2c | hc0.0 | T2": {
+   "med": 1412,
+   "p10": 750,
+   "Pneg": 0.1,
+   "busts": 3.69,
+   "evals": 12.1,
+   "pay62": 70.4,
+   "med_list": 1378,
+   "Pneg_list": 0.4,
+   "med_end": 741
+  },
+  "Flex50 2c/1c | hc0.0 | T2": {
+   "med": 1121,
+   "p10": 627,
+   "Pneg": 0.2,
+   "busts": 1.52,
+   "evals": 6.7,
+   "pay62": 56.1,
+   "med_list": 1090,
+   "Pneg_list": 0.5,
+   "med_end": 732
+  },
+  "Pro50 4c/1c | hc0.0 | T2": {
+   "med": 1131,
+   "p10": 618,
+   "Pneg": 0.1,
+   "busts": 1.58,
+   "evals": 7.3,
+   "pay62": 64.7,
+   "med_list": 1074,
+   "Pneg_list": 0.3,
+   "med_end": 862
+  },
+  "Pro50 4c/2c | hc0.0 | T2": {
+   "med": 1628,
+   "p10": 858,
+   "Pneg": 0.2,
+   "busts": 5.21,
+   "evals": 17.3,
+   "pay62": 81.2,
+   "med_list": 1522,
+   "Pneg_list": 0.9,
+   "med_end": 890
+  },
+  "MFFU 1x8 | hc0.0 | T2": {
+   "med": 1163,
+   "p10": 338,
+   "Pneg": 2.7,
+   "busts": 0.64,
+   "evals": 2.5,
+   "pay62": 29.9,
+   "med_list": 1163,
+   "Pneg_list": 2.7
+  },
+  "MFFU fix2 | hc0.0 | T2": {
+   "med": 1240,
+   "p10": 423,
+   "Pneg": 2.1,
+   "busts": 0.6,
+   "evals": 3.4,
+   "pay62": 40.8,
+   "med_list": 1240,
+   "Pneg_list": 2.1
+  },
+  "MFFU fix3 | hc0.0 | T2": {
+   "med": 1249,
+   "p10": 503,
+   "Pneg": 1.8,
+   "busts": 0.59,
+   "evals": 4.3,
+   "pay62": 44.6,
+   "med_list": 1249,
+   "Pneg_list": 1.8
+  },
+  "L150 6c/3c | hc0.35 | T1": {
+   "med": 1423,
+   "p10": 388,
+   "Pneg": 3.4,
+   "busts": 2.46,
+   "evals": 13.7,
+   "pay62": 58.2,
+   "med_list": 1361,
+   "Pneg_list": 4.8,
+   "med_end": 1071
+  },
+  "Flex50 2c/2c | hc0.35 | T1": {
+   "med": 945,
+   "p10": 264,
+   "Pneg": 3.1,
+   "busts": 3.36,
+   "evals": 12.1,
+   "pay62": 55.9,
+   "med_list": 904,
+   "Pneg_list": 5.3,
+   "med_end": 724
+  },
+  "Flex50 2c/1c | hc0.35 | T1": {
+   "med": 706,
+   "p10": 221,
+   "Pneg": 3.3,
+   "busts": 1.23,
+   "evals": 6.5,
+   "pay62": 42.4,
+   "med_list": 689,
+   "Pneg_list": 4.1,
+   "med_end": 715
+  },
+  "Pro50 4c/1c | hc0.35 | T1": {
+   "med": 804,
+   "p10": 251,
+   "Pneg": 2.2,
+   "busts": 1.22,
+   "evals": 6.8,
+   "pay62": 49.1,
+   "med_list": 751,
+   "Pneg_list": 3.5,
+   "med_end": 823
+  },
+  "Pro50 4c/2c | hc0.35 | T1": {
+   "med": 916,
+   "p10": 219,
+   "Pneg": 3.5,
+   "busts": 6.53,
+   "evals": 18.8,
+   "pay62": 64.8,
+   "med_list": 794,
+   "Pneg_list": 8.1,
+   "med_end": 842
+  },
+  "MFFU 1x8 | hc0.35 | T1": {
+   "med": 717,
+   "p10": -52,
+   "Pneg": 13.7,
+   "busts": 0.64,
+   "evals": 2.9,
+   "pay62": 20.9,
+   "med_list": 717,
+   "Pneg_list": 13.7
+  },
+  "MFFU fix2 | hc0.35 | T1": {
+   "med": 801,
+   "p10": -30,
+   "Pneg": 11.5,
+   "busts": 0.66,
+   "evals": 4.4,
+   "pay62": 27.8,
+   "med_list": 801,
+   "Pneg_list": 11.5
+  },
+  "MFFU fix3 | hc0.35 | T1": {
+   "med": 816,
+   "p10": -8,
+   "Pneg": 10.4,
+   "busts": 0.72,
+   "evals": 5.6,
+   "pay62": 30.3,
+   "med_list": 816,
+   "Pneg_list": 10.4
+  },
+  "L150 6c/3c | hc0.35 | T2": {
+   "med": 1406,
+   "p10": 351,
+   "Pneg": 4.6,
+   "busts": 3.29,
+   "evals": 18.1,
+   "pay62": 60.8,
+   "med_list": 1314,
+   "Pneg_list": 7.0,
+   "med_end": 1053
+  },
+  "Flex50 2c/2c | hc0.35 | T2": {
+   "med": 777,
+   "p10": 107,
+   "Pneg": 7.1,
+   "busts": 4.68,
+   "evals": 16.6,
+   "pay62": 49.7,
+   "med_list": 726,
+   "Pneg_list": 8.6,
+   "med_end": 706
+  },
+  "Flex50 2c/1c | hc0.35 | T2": {
+   "med": 671,
+   "p10": 97,
+   "Pneg": 4.5,
+   "busts": 2.31,
+   "evals": 9.5,
+   "pay62": 39.6,
+   "med_list": 640,
+   "Pneg_list": 7.0,
+   "med_end": 689
+  },
+  "Pro50 4c/1c | hc0.35 | T2": {
+   "med": 682,
+   "p10": 87,
+   "Pneg": 6.0,
+   "busts": 2.45,
+   "evals": 10.8,
+   "pay62": 42.8,
+   "med_list": 614,
+   "Pneg_list": 10.0,
+   "med_end": 684
+  },
+  "Pro50 4c/2c | hc0.35 | T2": {
+   "med": 906,
+   "p10": 180,
+   "Pneg": 4.4,
+   "busts": 6.89,
+   "evals": 25.6,
+   "pay62": 67.0,
+   "med_list": 752,
+   "Pneg_list": 10.9,
+   "med_end": 823
+  },
+  "MFFU 1x8 | hc0.35 | T2": {
+   "med": 503,
+   "p10": -92,
+   "Pneg": 18.4,
+   "busts": 1.21,
+   "evals": 4.3,
+   "pay62": 17.0,
+   "med_list": 503,
+   "Pneg_list": 18.4
+  },
+  "MFFU fix2 | hc0.35 | T2": {
+   "med": 568,
+   "p10": -92,
+   "Pneg": 15.4,
+   "busts": 1.27,
+   "evals": 6.7,
+   "pay62": 25.3,
+   "med_list": 568,
+   "Pneg_list": 15.4
+  },
+  "MFFU fix3 | hc0.35 | T2": {
+   "med": 571,
+   "p10": -131,
+   "Pneg": 16.9,
+   "busts": 1.3,
+   "evals": 9.7,
+   "pay62": 25.4,
+   "med_list": 571,
+   "Pneg_list": 16.9
+  },
+  "L150 6c/3c | hc1.0 | T1": {
+   "med": -38,
+   "p10": -609,
+   "Pneg": 52.1,
+   "busts": 3.34,
+   "evals": 29.2,
+   "pay62": 30.1,
+   "med_list": -209,
+   "Pneg_list": 60.2,
+   "med_end": -38
+  },
+  "Flex50 2c/2c | hc1.0 | T1": {
+   "med": 98,
+   "p10": -245,
+   "Pneg": 41.6,
+   "busts": 3.51,
+   "evals": 23.1,
+   "pay62": 29.5,
+   "med_list": 20,
+   "Pneg_list": 47.0,
+   "med_end": 98
+  },
+  "Flex50 2c/1c | hc1.0 | T1": {
+   "med": -8,
+   "p10": -219,
+   "Pneg": 51.1,
+   "busts": 2.58,
+   "evals": 18.1,
+   "pay62": 15.5,
+   "med_list": -69,
+   "Pneg_list": 58.1,
+   "med_end": -8
+  },
+  "Pro50 4c/1c | hc1.0 | T1": {
+   "med": -42,
+   "p10": -318,
+   "Pneg": 56.6,
+   "busts": 4.15,
+   "evals": 24.2,
+   "pay62": 19.5,
+   "med_list": -202,
+   "Pneg_list": 68.5,
+   "med_end": -42
+  },
+  "Pro50 4c/2c | hc1.0 | T1": {
+   "med": -215,
+   "p10": -510,
+   "Pneg": 73.0,
+   "busts": 9.84,
+   "evals": 45.9,
+   "pay62": 28.5,
+   "med_list": -511,
+   "Pneg_list": 87.6,
+   "med_end": -215
+  },
+  "MFFU 1x8 | hc1.0 | T1": {
+   "med": -131,
+   "p10": -183,
+   "Pneg": 74.7,
+   "busts": 1.49,
+   "evals": 10.3,
+   "pay62": 7.2,
+   "med_list": -131,
+   "Pneg_list": 74.7
+  },
+  "MFFU fix2 | hc1.0 | T1": {
+   "med": -222,
+   "p10": -340,
+   "Pneg": 74.5,
+   "busts": 1.92,
+   "evals": 18.1,
+   "pay62": 7.0,
+   "med_list": -222,
+   "Pneg_list": 74.5
+  },
+  "MFFU fix3 | hc1.0 | T1": {
+   "med": -392,
+   "p10": -615,
+   "Pneg": 81.3,
+   "busts": 1.53,
+   "evals": 31.9,
+   "pay62": 8.4,
+   "med_list": -392,
+   "Pneg_list": 81.3
+  },
+  "L150 6c/3c | hc1.0 | T2": {
+   "med": -52,
+   "p10": -717,
+   "Pneg": 52.6,
+   "busts": 3.59,
+   "evals": 33.4,
+   "pay62": 32.3,
+   "med_list": -239,
+   "Pneg_list": 60.6,
+   "med_end": -52
+  },
+  "Flex50 2c/2c | hc1.0 | T2": {
+   "med": -78,
+   "p10": -307,
+   "Pneg": 54.8,
+   "busts": 4.28,
+   "evals": 29.0,
+   "pay62": 20.7,
+   "med_list": -166,
+   "Pneg_list": 62.8,
+   "med_end": -78
+  },
+  "Flex50 2c/1c | hc1.0 | T2": {
+   "med": -43,
+   "p10": -254,
+   "Pneg": 56.1,
+   "busts": 2.86,
+   "evals": 21.0,
+   "pay62": 13.4,
+   "med_list": -118,
+   "Pneg_list": 62.7,
+   "med_end": -43
+  },
+  "Pro50 4c/1c | hc1.0 | T2": {
+   "med": -114,
+   "p10": -394,
+   "Pneg": 62.2,
+   "busts": 4.87,
+   "evals": 28.7,
+   "pay62": 17.3,
+   "med_list": -287,
+   "Pneg_list": 74.5,
+   "med_end": -114
+  },
+  "Pro50 4c/2c | hc1.0 | T2": {
+   "med": -133,
+   "p10": -577,
+   "Pneg": 61.2,
+   "busts": 10.19,
+   "evals": 53.2,
+   "pay62": 35.8,
+   "med_list": -452,
+   "Pneg_list": 80.3,
+   "med_end": -133
+  },
+  "MFFU 1x8 | hc1.0 | T2": {
+   "med": -131,
+   "p10": -196,
+   "Pneg": 75.9,
+   "busts": 1.52,
+   "evals": 10.5,
+   "pay62": 2.3,
+   "med_list": -131,
+   "Pneg_list": 75.9
+  },
+  "MFFU fix2 | hc1.0 | T2": {
+   "med": -222,
+   "p10": -392,
+   "Pneg": 75.3,
+   "busts": 1.83,
+   "evals": 19.6,
+   "pay62": 4.3,
+   "med_list": -222,
+   "Pneg_list": 75.3
+  },
+  "MFFU fix3 | hc1.0 | T2": {
+   "med": -297,
+   "p10": -563,
+   "Pneg": 75.6,
+   "busts": 2.08,
+   "evals": 27.2,
+   "pay62": 7.0,
+   "med_list": -297,
+   "Pneg_list": 75.6
+  }
+ },
+ "paired": {
+  "Flex50 2c/2c vs L150 6c/3c | coupon | hc0.0 | T1": {
+   "med": -857,
+   "ci90": [
+    -1389,
+    -310
+   ],
+   "P": 0.008
+  },
+  "Flex50 2c/2c vs L150 6c/3c | coupon | hc0.0 | T2": {
+   "med": -817,
+   "ci90": [
+    -1559,
+    -202
+   ],
+   "P": 0.017
+  },
+  "Flex50 2c/2c vs L150 6c/3c | coupon | hc0.35 | T1": {
+   "med": -486,
+   "ci90": [
+    -1153,
+    95
+   ],
+   "P": 0.087
+  },
+  "Flex50 2c/2c vs L150 6c/3c | coupon | hc0.35 | T2": {
+   "med": -553,
+   "ci90": [
+    -1437,
+    146
+   ],
+   "P": 0.095
+  },
+  "Flex50 2c/2c vs L150 6c/3c | coupon | hc1.0 | T1": {
+   "med": 150,
+   "ci90": [
+    -476,
+    491
+   ],
+   "P": 0.65
+  },
+  "Flex50 2c/2c vs L150 6c/3c | coupon | hc1.0 | T2": {
+   "med": 40,
+   "ci90": [
+    -780,
+    500
+   ],
+   "P": 0.541
+  },
+  "Flex50 2c/2c vs L150 6c/3c | list | hc0.0 | T1": {
+   "med": -834,
+   "ci90": [
+    -1380,
+    -275
+   ],
+   "P": 0.011
+  },
+  "Flex50 2c/2c vs L150 6c/3c | list | hc0.0 | T2": {
+   "med": -788,
+   "ci90": [
+    -1542,
+    -154
+   ],
+   "P": 0.023
+  },
+  "Flex50 2c/2c vs L150 6c/3c | list | hc0.35 | T1": {
+   "med": -449,
+   "ci90": [
+    -1143,
+    147
+   ],
+   "P": 0.109
+  },
+  "Flex50 2c/2c vs L150 6c/3c | list | hc0.35 | T2": {
+   "med": -500,
+   "ci90": [
+    -1403,
+    198
+   ],
+   "P": 0.131
+  },
+  "Flex50 2c/2c vs L150 6c/3c | list | hc1.0 | T1": {
+   "med": 235,
+   "ci90": [
+    -425,
+    622
+   ],
+   "P": 0.729
+  },
+  "Flex50 2c/2c vs L150 6c/3c | list | hc1.0 | T2": {
+   "med": 134,
+   "ci90": [
+    -741,
+    642
+   ],
+   "P": 0.618
+  },
+  "Pro50 4c/1c vs L150 6c/3c | coupon | hc0.0 | T1": {
+   "med": -1217,
+   "ci90": [
+    -1857,
+    -383
+   ],
+   "P": 0.006
+  },
+  "Pro50 4c/1c vs L150 6c/3c | coupon | hc0.0 | T2": {
+   "med": -1153,
+   "ci90": [
+    -1936,
+    -255
+   ],
+   "P": 0.009
+  },
+  "Pro50 4c/1c vs L150 6c/3c | coupon | hc0.35 | T1": {
+   "med": -645,
+   "ci90": [
+    -1493,
+    111
+   ],
+   "P": 0.082
+  },
+  "Pro50 4c/1c vs L150 6c/3c | coupon | hc0.35 | T2": {
+   "med": -768,
+   "ci90": [
+    -1617,
+    119
+   ],
+   "P": 0.076
+  },
+  "Pro50 4c/1c vs L150 6c/3c | coupon | hc1.0 | T1": {
+   "med": -18,
+   "ci90": [
+    -775,
+    475
+   ],
+   "P": 0.483
+  },
+  "Pro50 4c/1c vs L150 6c/3c | coupon | hc1.0 | T2": {
+   "med": -62,
+   "ci90": [
+    -980,
+    473
+   ],
+   "P": 0.45
+  },
+  "Pro50 4c/1c vs L150 6c/3c | list | hc0.0 | T1": {
+   "med": -1200,
+   "ci90": [
+    -1847,
+    -371
+   ],
+   "P": 0.007
+  },
+  "Pro50 4c/1c vs L150 6c/3c | list | hc0.0 | T2": {
+   "med": -1129,
+   "ci90": [
+    -1923,
+    -219
+   ],
+   "P": 0.014
+  },
+  "Pro50 4c/1c vs L150 6c/3c | list | hc0.35 | T1": {
+   "med": -608,
+   "ci90": [
+    -1481,
+    161
+   ],
+   "P": 0.099
+  },
+  "Pro50 4c/1c vs L150 6c/3c | list | hc0.35 | T2": {
+   "med": -734,
+   "ci90": [
+    -1599,
+    186
+   ],
+   "P": 0.09
+  },
+  "Pro50 4c/1c vs L150 6c/3c | list | hc1.0 | T1": {
+   "med": -1,
+   "ci90": [
+    -767,
+    520
+   ],
+   "P": 0.498
+  },
+  "Pro50 4c/1c vs L150 6c/3c | list | hc1.0 | T2": {
+   "med": -59,
+   "ci90": [
+    -997,
+    536
+   ],
+   "P": 0.448
+  },
+  "Pro50 4c/2c vs L150 6c/3c | coupon | hc0.0 | T1": {
+   "med": -748,
+   "ci90": [
+    -1418,
+    -10
+   ],
+   "P": 0.048
+  },
+  "Pro50 4c/2c vs L150 6c/3c | coupon | hc0.0 | T2": {
+   "med": -650,
+   "ci90": [
+    -1471,
+    91
+   ],
+   "P": 0.068
+  },
+  "Pro50 4c/2c vs L150 6c/3c | coupon | hc0.35 | T1": {
+   "med": -494,
+   "ci90": [
+    -1296,
+    178
+   ],
+   "P": 0.145
+  },
+  "Pro50 4c/2c vs L150 6c/3c | coupon | hc0.35 | T2": {
+   "med": -475,
+   "ci90": [
+    -1341,
+    323
+   ],
+   "P": 0.163
+  },
+  "Pro50 4c/2c vs L150 6c/3c | coupon | hc1.0 | T1": {
+   "med": -158,
+   "ci90": [
+    -963,
+    260
+   ],
+   "P": 0.324
+  },
+  "Pro50 4c/2c vs L150 6c/3c | coupon | hc1.0 | T2": {
+   "med": -99,
+   "ci90": [
+    -993,
+    435
+   ],
+   "P": 0.421
+  },
+  "Pro50 4c/2c vs L150 6c/3c | list | hc0.0 | T1": {
+   "med": -758,
+   "ci90": [
+    -1440,
+    -21
+   ],
+   "P": 0.046
+  },
+  "Pro50 4c/2c vs L150 6c/3c | list | hc0.0 | T2": {
+   "med": -682,
+   "ci90": [
+    -1514,
+    88
+   ],
+   "P": 0.065
+  },
+  "Pro50 4c/2c vs L150 6c/3c | list | hc0.35 | T1": {
+   "med": -529,
+   "ci90": [
+    -1347,
+    146
+   ],
+   "P": 0.122
+  },
+  "Pro50 4c/2c vs L150 6c/3c | list | hc0.35 | T2": {
+   "med": -533,
+   "ci90": [
+    -1445,
+    287
+   ],
+   "P": 0.135
+  },
+  "Pro50 4c/2c vs L150 6c/3c | list | hc1.0 | T1": {
+   "med": -278,
+   "ci90": [
+    -1107,
+    168
+   ],
+   "P": 0.166
+  },
+  "Pro50 4c/2c vs L150 6c/3c | list | hc1.0 | T2": {
+   "med": -248,
+   "ci90": [
+    -1125,
+    317
+   ],
+   "P": 0.263
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | coupon | hc0.0 | T1": {
+   "med": 355,
+   "ci90": [
+    -147,
+    784
+   ],
+   "P": 0.879
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | coupon | hc0.0 | T2": {
+   "med": 344,
+   "ci90": [
+    -296,
+    834
+   ],
+   "P": 0.818
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | coupon | hc0.35 | T1": {
+   "med": 173,
+   "ci90": [
+    -288,
+    657
+   ],
+   "P": 0.733
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | coupon | hc0.35 | T2": {
+   "med": 188,
+   "ci90": [
+    -351,
+    748
+   ],
+   "P": 0.69
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | coupon | hc1.0 | T1": {
+   "med": 151,
+   "ci90": [
+    -186,
+    569
+   ],
+   "P": 0.795
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | coupon | hc1.0 | T2": {
+   "med": 105,
+   "ci90": [
+    -321,
+    568
+   ],
+   "P": 0.695
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | list | hc0.0 | T1": {
+   "med": 354,
+   "ci90": [
+    -150,
+    783
+   ],
+   "P": 0.882
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | list | hc0.0 | T2": {
+   "med": 348,
+   "ci90": [
+    -298,
+    841
+   ],
+   "P": 0.824
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | list | hc0.35 | T1": {
+   "med": 176,
+   "ci90": [
+    -302,
+    675
+   ],
+   "P": 0.741
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | list | hc0.35 | T2": {
+   "med": 206,
+   "ci90": [
+    -352,
+    777
+   ],
+   "P": 0.7
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | list | hc1.0 | T1": {
+   "med": 239,
+   "ci90": [
+    -142,
+    665
+   ],
+   "P": 0.852
+  },
+  "Flex50 2c/2c vs Pro50 4c/1c | list | hc1.0 | T2": {
+   "med": 210,
+   "ci90": [
+    -284,
+    676
+   ],
+   "P": 0.783
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | coupon | hc0.0 | T1": {
+   "med": -132,
+   "ci90": [
+    -590,
+    385
+   ],
+   "P": 0.348
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | coupon | hc0.0 | T2": {
+   "med": -186,
+   "ci90": [
+    -781,
+    420
+   ],
+   "P": 0.329
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | coupon | hc0.35 | T1": {
+   "med": 14,
+   "ci90": [
+    -458,
+    528
+   ],
+   "P": 0.521
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | coupon | hc0.35 | T2": {
+   "med": -75,
+   "ci90": [
+    -765,
+    594
+   ],
+   "P": 0.417
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | coupon | hc1.0 | T1": {
+   "med": 313,
+   "ci90": [
+    16,
+    739
+   ],
+   "P": 0.958
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | coupon | hc1.0 | T2": {
+   "med": 166,
+   "ci90": [
+    -368,
+    581
+   ],
+   "P": 0.71
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | list | hc0.0 | T1": {
+   "med": -94,
+   "ci90": [
+    -568,
+    427
+   ],
+   "P": 0.384
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | list | hc0.0 | T2": {
+   "med": -114,
+   "ci90": [
+    -742,
+    524
+   ],
+   "P": 0.4
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | list | hc0.35 | T1": {
+   "med": 95,
+   "ci90": [
+    -416,
+    633
+   ],
+   "P": 0.62
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | list | hc0.35 | T2": {
+   "med": 41,
+   "ci90": [
+    -715,
+    735
+   ],
+   "P": 0.542
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | list | hc1.0 | T1": {
+   "med": 536,
+   "ci90": [
+    186,
+    971
+   ],
+   "P": 0.985
+  },
+  "Flex50 2c/2c vs Pro50 4c/2c | list | hc1.0 | T2": {
+   "med": 419,
+   "ci90": [
+    -204,
+    863
+   ],
+   "P": 0.887
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | coupon | hc0.0 | T1": {
+   "med": -355,
+   "ci90": [
+    -784,
+    147
+   ],
+   "P": 0.121
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | coupon | hc0.0 | T2": {
+   "med": -344,
+   "ci90": [
+    -834,
+    296
+   ],
+   "P": 0.182
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | coupon | hc0.35 | T1": {
+   "med": -173,
+   "ci90": [
+    -657,
+    288
+   ],
+   "P": 0.267
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | coupon | hc0.35 | T2": {
+   "med": -188,
+   "ci90": [
+    -748,
+    351
+   ],
+   "P": 0.31
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | coupon | hc1.0 | T1": {
+   "med": -151,
+   "ci90": [
+    -569,
+    186
+   ],
+   "P": 0.205
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | coupon | hc1.0 | T2": {
+   "med": -105,
+   "ci90": [
+    -568,
+    321
+   ],
+   "P": 0.305
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | list | hc0.0 | T1": {
+   "med": -354,
+   "ci90": [
+    -783,
+    150
+   ],
+   "P": 0.118
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | list | hc0.0 | T2": {
+   "med": -348,
+   "ci90": [
+    -841,
+    298
+   ],
+   "P": 0.176
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | list | hc0.35 | T1": {
+   "med": -176,
+   "ci90": [
+    -675,
+    302
+   ],
+   "P": 0.259
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | list | hc0.35 | T2": {
+   "med": -206,
+   "ci90": [
+    -777,
+    352
+   ],
+   "P": 0.3
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | list | hc1.0 | T1": {
+   "med": -239,
+   "ci90": [
+    -665,
+    142
+   ],
+   "P": 0.148
+  },
+  "Pro50 4c/1c vs Flex50 2c/2c | list | hc1.0 | T2": {
+   "med": -210,
+   "ci90": [
+    -676,
+    284
+   ],
+   "P": 0.217
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | coupon | hc0.0 | T1": {
+   "med": 132,
+   "ci90": [
+    -385,
+    590
+   ],
+   "P": 0.652
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | coupon | hc0.0 | T2": {
+   "med": 186,
+   "ci90": [
+    -420,
+    781
+   ],
+   "P": 0.671
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | coupon | hc0.35 | T1": {
+   "med": -14,
+   "ci90": [
+    -528,
+    458
+   ],
+   "P": 0.479
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | coupon | hc0.35 | T2": {
+   "med": 75,
+   "ci90": [
+    -594,
+    765
+   ],
+   "P": 0.583
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | coupon | hc1.0 | T1": {
+   "med": -313,
+   "ci90": [
+    -739,
+    -16
+   ],
+   "P": 0.042
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | coupon | hc1.0 | T2": {
+   "med": -166,
+   "ci90": [
+    -581,
+    368
+   ],
+   "P": 0.29
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | list | hc0.0 | T1": {
+   "med": 94,
+   "ci90": [
+    -427,
+    568
+   ],
+   "P": 0.616
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | list | hc0.0 | T2": {
+   "med": 114,
+   "ci90": [
+    -524,
+    742
+   ],
+   "P": 0.6
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | list | hc0.35 | T1": {
+   "med": -95,
+   "ci90": [
+    -633,
+    416
+   ],
+   "P": 0.38
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | list | hc0.35 | T2": {
+   "med": -41,
+   "ci90": [
+    -735,
+    715
+   ],
+   "P": 0.458
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | list | hc1.0 | T1": {
+   "med": -536,
+   "ci90": [
+    -971,
+    -186
+   ],
+   "P": 0.015
+  },
+  "Pro50 4c/2c vs Flex50 2c/2c | list | hc1.0 | T2": {
+   "med": -419,
+   "ci90": [
+    -863,
+    204
+   ],
+   "P": 0.113
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | coupon | hc0.0 | T1": {
+   "med": -84,
+   "ci90": [
+    -321,
+    216
+   ],
+   "P": 0.326
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | coupon | hc0.0 | T2": {
+   "med": -56,
+   "ci90": [
+    -342,
+    275
+   ],
+   "P": 0.411
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | coupon | hc0.35 | T1": {
+   "med": -31,
+   "ci90": [
+    -286,
+    275
+   ],
+   "P": 0.412
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | coupon | hc0.35 | T2": {
+   "med": 15,
+   "ci90": [
+    -281,
+    331
+   ],
+   "P": 0.527
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | coupon | hc1.0 | T1": {
+   "med": 80,
+   "ci90": [
+    -183,
+    328
+   ],
+   "P": 0.708
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | coupon | hc1.0 | T2": {
+   "med": 91,
+   "ci90": [
+    -171,
+    322
+   ],
+   "P": 0.781
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | list | hc0.0 | T1": {
+   "med": -66,
+   "ci90": [
+    -307,
+    242
+   ],
+   "P": 0.35
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | list | hc0.0 | T2": {
+   "med": -28,
+   "ci90": [
+    -331,
+    296
+   ],
+   "P": 0.454
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | list | hc0.35 | T1": {
+   "med": -16,
+   "ci90": [
+    -270,
+    295
+   ],
+   "P": 0.462
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | list | hc0.35 | T2": {
+   "med": 46,
+   "ci90": [
+    -253,
+    377
+   ],
+   "P": 0.614
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | list | hc1.0 | T1": {
+   "med": 173,
+   "ci90": [
+    -137,
+    467
+   ],
+   "P": 0.817
+  },
+  "Flex50 2c/1c vs Pro50 4c/1c | list | hc1.0 | T2": {
+   "med": 207,
+   "ci90": [
+    -107,
+    507
+   ],
+   "P": 0.868
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | coupon | hc0.0 | T1": {
+   "med": 84,
+   "ci90": [
+    -216,
+    321
+   ],
+   "P": 0.674
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | coupon | hc0.0 | T2": {
+   "med": 56,
+   "ci90": [
+    -275,
+    342
+   ],
+   "P": 0.589
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | coupon | hc0.35 | T1": {
+   "med": 31,
+   "ci90": [
+    -275,
+    286
+   ],
+   "P": 0.588
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | coupon | hc0.35 | T2": {
+   "med": -15,
+   "ci90": [
+    -331,
+    281
+   ],
+   "P": 0.473
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | coupon | hc1.0 | T1": {
+   "med": -80,
+   "ci90": [
+    -328,
+    183
+   ],
+   "P": 0.292
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | coupon | hc1.0 | T2": {
+   "med": -91,
+   "ci90": [
+    -322,
+    171
+   ],
+   "P": 0.219
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | list | hc0.0 | T1": {
+   "med": 66,
+   "ci90": [
+    -242,
+    307
+   ],
+   "P": 0.65
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | list | hc0.0 | T2": {
+   "med": 28,
+   "ci90": [
+    -296,
+    331
+   ],
+   "P": 0.546
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | list | hc0.35 | T1": {
+   "med": 16,
+   "ci90": [
+    -295,
+    270
+   ],
+   "P": 0.538
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | list | hc0.35 | T2": {
+   "med": -46,
+   "ci90": [
+    -377,
+    253
+   ],
+   "P": 0.386
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | list | hc1.0 | T1": {
+   "med": -173,
+   "ci90": [
+    -467,
+    137
+   ],
+   "P": 0.183
+  },
+  "Pro50 4c/1c vs Flex50 2c/1c | list | hc1.0 | T2": {
+   "med": -207,
+   "ci90": [
+    -507,
+    107
+   ],
+   "P": 0.132
+  },
+  "L150 6c/3c vs Flex50 2c/2c | coupon | hc0.0 | T1": {
+   "med": 857,
+   "ci90": [
+    310,
+    1389
+   ],
+   "P": 0.992
+  },
+  "L150 6c/3c vs Flex50 2c/2c | coupon | hc0.0 | T2": {
+   "med": 817,
+   "ci90": [
+    202,
+    1559
+   ],
+   "P": 0.983
+  },
+  "L150 6c/3c vs Flex50 2c/2c | coupon | hc0.35 | T1": {
+   "med": 486,
+   "ci90": [
+    -95,
+    1153
+   ],
+   "P": 0.913
+  },
+  "L150 6c/3c vs Flex50 2c/2c | coupon | hc0.35 | T2": {
+   "med": 553,
+   "ci90": [
+    -146,
+    1437
+   ],
+   "P": 0.905
+  },
+  "L150 6c/3c vs Flex50 2c/2c | coupon | hc1.0 | T1": {
+   "med": -150,
+   "ci90": [
+    -491,
+    476
+   ],
+   "P": 0.35
+  },
+  "L150 6c/3c vs Flex50 2c/2c | coupon | hc1.0 | T2": {
+   "med": -40,
+   "ci90": [
+    -500,
+    780
+   ],
+   "P": 0.459
+  },
+  "L150 6c/3c vs Flex50 2c/2c | list | hc0.0 | T1": {
+   "med": 834,
+   "ci90": [
+    275,
+    1380
+   ],
+   "P": 0.989
+  },
+  "L150 6c/3c vs Flex50 2c/2c | list | hc0.0 | T2": {
+   "med": 788,
+   "ci90": [
+    154,
+    1542
+   ],
+   "P": 0.977
+  },
+  "L150 6c/3c vs Flex50 2c/2c | list | hc0.35 | T1": {
+   "med": 449,
+   "ci90": [
+    -147,
+    1143
+   ],
+   "P": 0.891
+  },
+  "L150 6c/3c vs Flex50 2c/2c | list | hc0.35 | T2": {
+   "med": 500,
+   "ci90": [
+    -198,
+    1403
+   ],
+   "P": 0.869
+  },
+  "L150 6c/3c vs Flex50 2c/2c | list | hc1.0 | T1": {
+   "med": -235,
+   "ci90": [
+    -622,
+    425
+   ],
+   "P": 0.271
+  },
+  "L150 6c/3c vs Flex50 2c/2c | list | hc1.0 | T2": {
+   "med": -134,
+   "ci90": [
+    -642,
+    741
+   ],
+   "P": 0.381
+  },
+  "L150 6c/3c vs Pro50 4c/1c | coupon | hc0.0 | T1": {
+   "med": 1217,
+   "ci90": [
+    383,
+    1857
+   ],
+   "P": 0.994
+  },
+  "L150 6c/3c vs Pro50 4c/1c | coupon | hc0.0 | T2": {
+   "med": 1153,
+   "ci90": [
+    255,
+    1936
+   ],
+   "P": 0.991
+  },
+  "L150 6c/3c vs Pro50 4c/1c | coupon | hc0.35 | T1": {
+   "med": 645,
+   "ci90": [
+    -111,
+    1493
+   ],
+   "P": 0.918
+  },
+  "L150 6c/3c vs Pro50 4c/1c | coupon | hc0.35 | T2": {
+   "med": 768,
+   "ci90": [
+    -119,
+    1617
+   ],
+   "P": 0.924
+  },
+  "L150 6c/3c vs Pro50 4c/1c | coupon | hc1.0 | T1": {
+   "med": 18,
+   "ci90": [
+    -475,
+    775
+   ],
+   "P": 0.517
+  },
+  "L150 6c/3c vs Pro50 4c/1c | coupon | hc1.0 | T2": {
+   "med": 62,
+   "ci90": [
+    -473,
+    980
+   ],
+   "P": 0.55
+  },
+  "L150 6c/3c vs Pro50 4c/1c | list | hc0.0 | T1": {
+   "med": 1200,
+   "ci90": [
+    371,
+    1847
+   ],
+   "P": 0.993
+  },
+  "L150 6c/3c vs Pro50 4c/1c | list | hc0.0 | T2": {
+   "med": 1129,
+   "ci90": [
+    219,
+    1923
+   ],
+   "P": 0.986
+  },
+  "L150 6c/3c vs Pro50 4c/1c | list | hc0.35 | T1": {
+   "med": 608,
+   "ci90": [
+    -161,
+    1481
+   ],
+   "P": 0.901
+  },
+  "L150 6c/3c vs Pro50 4c/1c | list | hc0.35 | T2": {
+   "med": 734,
+   "ci90": [
+    -186,
+    1599
+   ],
+   "P": 0.91
+  },
+  "L150 6c/3c vs Pro50 4c/1c | list | hc1.0 | T1": {
+   "med": 1,
+   "ci90": [
+    -520,
+    767
+   ],
+   "P": 0.5
+  },
+  "L150 6c/3c vs Pro50 4c/1c | list | hc1.0 | T2": {
+   "med": 59,
+   "ci90": [
+    -536,
+    997
+   ],
+   "P": 0.552
+  },
+  "MFFU fix2 vs MFFU 1x8 | coupon | hc0.0 | T1": {
+   "med": 55,
+   "ci90": [
+    -81,
+    328
+   ],
+   "P": 0.716
+  },
+  "MFFU fix2 vs MFFU 1x8 | coupon | hc0.0 | T2": {
+   "med": 51,
+   "ci90": [
+    -96,
+    383
+   ],
+   "P": 0.695
+  },
+  "MFFU fix2 vs MFFU 1x8 | coupon | hc0.35 | T1": {
+   "med": 33,
+   "ci90": [
+    -118,
+    379
+   ],
+   "P": 0.621
+  },
+  "MFFU fix2 vs MFFU 1x8 | coupon | hc0.35 | T2": {
+   "med": 24,
+   "ci90": [
+    -145,
+    414
+   ],
+   "P": 0.576
+  },
+  "MFFU fix2 vs MFFU 1x8 | coupon | hc1.0 | T1": {
+   "med": -105,
+   "ci90": [
+    -209,
+    176
+   ],
+   "P": 0.191
+  },
+  "MFFU fix2 vs MFFU 1x8 | coupon | hc1.0 | T2": {
+   "med": -105,
+   "ci90": [
+    -262,
+    221
+   ],
+   "P": 0.184
+  },
+  "MFFU fix2 vs MFFU 1x8 | list | hc0.0 | T1": {
+   "med": 55,
+   "ci90": [
+    -81,
+    328
+   ],
+   "P": 0.716
+  },
+  "MFFU fix2 vs MFFU 1x8 | list | hc0.0 | T2": {
+   "med": 51,
+   "ci90": [
+    -96,
+    383
+   ],
+   "P": 0.695
+  },
+  "MFFU fix2 vs MFFU 1x8 | list | hc0.35 | T1": {
+   "med": 33,
+   "ci90": [
+    -118,
+    379
+   ],
+   "P": 0.621
+  },
+  "MFFU fix2 vs MFFU 1x8 | list | hc0.35 | T2": {
+   "med": 24,
+   "ci90": [
+    -145,
+    414
+   ],
+   "P": 0.576
+  },
+  "MFFU fix2 vs MFFU 1x8 | list | hc1.0 | T1": {
+   "med": -105,
+   "ci90": [
+    -209,
+    176
+   ],
+   "P": 0.191
+  },
+  "MFFU fix2 vs MFFU 1x8 | list | hc1.0 | T2": {
+   "med": -105,
+   "ci90": [
+    -262,
+    221
+   ],
+   "P": 0.184
+  },
+  "MFFU fix3 vs MFFU 1x8 | coupon | hc0.0 | T1": {
+   "med": 88,
+   "ci90": [
+    -79,
+    389
+   ],
+   "P": 0.792
+  },
+  "MFFU fix3 vs MFFU 1x8 | coupon | hc0.0 | T2": {
+   "med": 88,
+   "ci90": [
+    -124,
+    478
+   ],
+   "P": 0.751
+  },
+  "MFFU fix3 vs MFFU 1x8 | coupon | hc0.35 | T1": {
+   "med": 50,
+   "ci90": [
+    -183,
+    420
+   ],
+   "P": 0.649
+  },
+  "MFFU fix3 vs MFFU 1x8 | coupon | hc0.35 | T2": {
+   "med": 15,
+   "ci90": [
+    -222,
+    397
+   ],
+   "P": 0.545
+  },
+  "MFFU fix3 vs MFFU 1x8 | coupon | hc1.0 | T1": {
+   "med": -288,
+   "ci90": [
+    -510,
+    148
+   ],
+   "P": 0.108
+  },
+  "MFFU fix3 vs MFFU 1x8 | coupon | hc1.0 | T2": {
+   "med": -183,
+   "ci90": [
+    -436,
+    242
+   ],
+   "P": 0.197
+  },
+  "MFFU fix3 vs MFFU 1x8 | list | hc0.0 | T1": {
+   "med": 88,
+   "ci90": [
+    -79,
+    389
+   ],
+   "P": 0.792
+  },
+  "MFFU fix3 vs MFFU 1x8 | list | hc0.0 | T2": {
+   "med": 88,
+   "ci90": [
+    -124,
+    478
+   ],
+   "P": 0.751
+  },
+  "MFFU fix3 vs MFFU 1x8 | list | hc0.35 | T1": {
+   "med": 50,
+   "ci90": [
+    -183,
+    420
+   ],
+   "P": 0.649
+  },
+  "MFFU fix3 vs MFFU 1x8 | list | hc0.35 | T2": {
+   "med": 15,
+   "ci90": [
+    -222,
+    397
+   ],
+   "P": 0.545
+  },
+  "MFFU fix3 vs MFFU 1x8 | list | hc1.0 | T1": {
+   "med": -288,
+   "ci90": [
+    -510,
+    148
+   ],
+   "P": 0.108
+  },
+  "MFFU fix3 vs MFFU 1x8 | list | hc1.0 | T2": {
+   "med": -183,
+   "ci90": [
+    -436,
+    242
+   ],
+   "P": 0.197
+  }
+ },
+ "rule": {
+  "Flex50 2c/2c replaces L150 6c/3c": false,
+  "Pro50 4c/1c replaces L150 6c/3c": false,
+  "Pro50 4c/2c replaces L150 6c/3c": false,
+  "Flex50 2c/2c replaces Pro50 4c/1c": false,
+  "Flex50 2c/2c replaces Pro50 4c/2c": false,
+  "Pro50 4c/1c replaces Flex50 2c/2c": false,
+  "Pro50 4c/2c replaces Flex50 2c/2c": false,
+  "Flex50 2c/1c replaces Pro50 4c/1c": false,
+  "Pro50 4c/1c replaces Flex50 2c/1c": false,
+  "L150 6c/3c replaces Flex50 2c/2c": true,
+  "L150 6c/3c replaces Pro50 4c/1c": true,
+  "MFFU fix2 replaces MFFU 1x8": false,
+  "MFFU fix3 replaces MFFU 1x8": false
+ }
+}

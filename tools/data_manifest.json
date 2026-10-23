@@ -1,4 +1,8 @@
 {
+ "research/data/btc_1m.npz": {
+  "sha256": "00867324ea89b8d0cbf4a58cab0bde5a14065f1403603ae6a3d7d07564aa9bf3",
+  "size": 208748304
+ },
  "research/data/es_hd.npz": {
   "sha256": "716eeb8ba36de725df2b82ae52c266f6f1c8c2873d07b11a672ee9508b2cb5e6",
   "size": 141972920

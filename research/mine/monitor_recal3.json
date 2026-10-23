@@ -1,0 +1,20 @@
+{
+ "Ultra + durable four": {
+  "warn": {
+   "h": 9.22,
+   "h_sd": 12.5,
+   "P_false_1y": 0.225,
+   "median_days_dead_edge": 66.0
+  },
+  "alarm": {
+   "k": 0.0899,
+   "h": 26.93,
+   "h_sd": 36.5,
+   "mean_z": 0.1797,
+   "P_false_1y": 0.0,
+   "P_false_3y": 0.002,
+   "median_days_dead_edge": 246.5,
+   "median_days_negative_edge": 137.0
+  }
+ }
+}

@@ -1,0 +1,386 @@
+{
+ "LW_OOPS": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'g': 0.0, 'exp': 1100, 'sk': 0.0, 'R': 1.0, 'tf': 0}",
+    "n_events": 1632
+   },
+   {
+    "j": 121,
+    "params": "{'g': 0.05, 'exp': 1300, 'sk': 0.25, 'R': 2.0, 'tf': 1}",
+    "n_events": 528
+   },
+   {
+    "j": 242,
+    "params": "{'g': 0.15, 'exp': 1500, 'sk': 0.5, 'R': 0.0, 'tf': -1}",
+    "n_events": 586
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "LW_SMASH": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'mode': 'smash', 'off': 0.0, 'exp': 1100, 'sk': 0.0, 'R': 1.0, 'tf': 0}",
+    "n_events": 1453
+   },
+   {
+    "j": 162,
+    "params": "{'mode': 'hidden', 'off': 0.0, 'exp': 1100, 'sk': 0.0, 'R': 1.0, 'tf': 0}",
+    "n_events": 1308
+   },
+   {
+    "j": 323,
+    "params": "{'mode': 'hidden', 'off': 0.05, 'exp': 1500, 'sk': 0.5, 'R': 0.0, 'tf': -1}",
+    "n_events": 1474
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "LW_INOUT": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'pat': 'in', 'sk': 0.0, 'R': 1.0, 'exp': 1100, 'tf': 0}",
+    "n_events": 146
+   },
+   {
+    "j": 3,
+    "params": "{'pat': 'in', 'sk': 0.0, 'R': 1.0, 'exp': 1300, 'tf': 1}",
+    "n_events": 80
+   },
+   {
+    "j": 81,
+    "params": "{'pat': 'out_cont', 'sk': 0.25, 'R': 2.0, 'exp': 1300, 'tf': 1}",
+    "n_events": 143
+   },
+   {
+    "j": 100,
+    "params": "{'pat': 'out_cont', 'sk': 0.5, 'R': 2.0, 'exp': 1500, 'tf': 0}",
+    "n_events": 308
+   },
+   {
+    "j": 161,
+    "params": "{'pat': 'out_rev', 'sk': 0.5, 'R': 0.0, 'exp': 1500, 'tf': 1}",
+    "n_events": 178
+   }
+  ],
+  "events": 60,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "RC_TSOUP": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'src': 'ts1', 'N': 10, 'x': 0.0, 'sk': 0.0, 'R': 1.0, 'exp': 1200, 'tf': 0}",
+    "n_events": 637
+   },
+   {
+    "j": 144,
+    "params": "{'src': 'tsi', 'N': 10, 'x': 0.0, 'sk': 0.0, 'R': 1.0, 'exp': 1200, 'tf': 0}",
+    "n_events": 1399
+   },
+   {
+    "j": 287,
+    "params": "{'src': 'tsi', 'N': 20, 'x': 0.05, 'sk': 0.35, 'R': 0.0, 'exp': 1500, 'tf': -1}",
+    "n_events": 1102
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "RC_8020": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'pct': 0.2, 'x': 0.05, 'sk': 0.0, 'R': 1.0, 'exp': 1200, 'tf': 0}",
+    "n_events": 456
+   },
+   {
+    "j": 108,
+    "params": "{'pct': 0.3, 'x': 0.05, 'sk': 0.0, 'R': 1.0, 'exp': 1200, 'tf': 0}",
+    "n_events": 682
+   },
+   {
+    "j": 215,
+    "params": "{'pct': 0.3, 'x': 0.1, 'sk': 0.5, 'R': 0.0, 'exp': 1500, 'tf': -1}",
+    "n_events": 483
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "RC_PINBALL": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'thr': 30.0, 'orl': 1030, 'sk': 0.0, 'R': 1.0, 'exp': 1300, 'tf': 0}",
+    "n_events": 2323
+   },
+   {
+    "j": 72,
+    "params": "{'thr': 20.0, 'orl': 1030, 'sk': 0.0, 'R': 1.0, 'exp': 1300, 'tf': 0}",
+    "n_events": 1413
+   },
+   {
+    "j": 143,
+    "params": "{'thr': 20.0, 'orl': 1000, 'sk': 0.5, 'R': 0.0, 'exp': 1500, 'tf': 1}",
+    "n_events": 36
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "RC_HOLYGRAIL": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'tf': 15, 'adx': 25.0, 'ema': 10, 'sk': 0.0, 'R': 1.0, 'nb': 2, 'dtf': 0}",
+    "n_events": 1153
+   },
+   {
+    "j": 96,
+    "params": "{'tf': 60, 'adx': 25.0, 'ema': 10, 'sk': 0.0, 'R': 1.0, 'nb': 2, 'dtf': 0}",
+    "n_events": 398
+   },
+   {
+    "j": 191,
+    "params": "{'tf': 60, 'adx': 30.0, 'ema': 20, 'sk': 0.3, 'R': 0.0, 'nb': 4, 'dtf': 1}",
+    "n_events": 55
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "RC_ANTI": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'tf': 15, 'kp': 7, 'sk': 0.0, 'R': 1.0, 'nb': 2, 'dtf': 0}",
+    "n_events": 3469
+   },
+   {
+    "j": 48,
+    "params": "{'tf': 30, 'kp': 7, 'sk': 0.0, 'R': 1.0, 'nb': 2, 'dtf': 0}",
+    "n_events": 2612
+   },
+   {
+    "j": 95,
+    "params": "{'tf': 30, 'kp': 14, 'sk': 0.3, 'R': 0.0, 'nb': 4, 'dtf': 1}",
+    "n_events": 1375
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "CRABEL_NR": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'cond': 'NR4', 'orl': 945, 'sk': 0.0, 'R': 1.0, 'exp': 1200, 'tf': 0}",
+    "n_events": 1085
+   },
+   {
+    "j": 108,
+    "params": "{'cond': 'IDNR4', 'orl': 1000, 'sk': 0.0, 'R': 1.0, 'exp': 1200, 'tf': 0}",
+    "n_events": 236
+   },
+   {
+    "j": 215,
+    "params": "{'cond': 'NR2', 'orl': 1000, 'sk': 0.5, 'R': 0.0, 'exp': 1400, 'tf': 1}",
+    "n_events": 150
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "CRABEL_STRETCH": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'m': 1.0, 'cond': 'any', 'sk': 0.0, 'R': 1.0, 'exp': 1100, 'tf': 0}",
+    "n_events": 3781
+   },
+   {
+    "j": 108,
+    "params": "{'m': 1.5, 'cond': 'any', 'sk': 0.0, 'R': 1.0, 'exp': 1100, 'tf': 0}",
+    "n_events": 3206
+   },
+   {
+    "j": 215,
+    "params": "{'m': 1.5, 'cond': 'IDNR4', 'sk': 0.5, 'R': 0.0, 'exp': 1500, 'tf': 1}",
+    "n_events": 102
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "CN_DOUBLE7": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'N': 5, 'filt': 0, 'ent': 'open', 'sk': 0.5, 'R': 1.0, 't0': 930}",
+    "n_events": 2417
+   },
+   {
+    "j": 72,
+    "params": "{'N': 7, 'filt': 1, 'ent': 'open', 'sk': 0.5, 'R': 1.0, 't0': 930}",
+    "n_events": 617
+   },
+   {
+    "j": 143,
+    "params": "{'N': 10, 'filt': 1, 'ent': 'dip', 'sk': 1.0, 'R': 0.0, 't0': 1000}",
+    "n_events": 311
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "CN_PCTB": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'thr': 0.0, 'filt': 0, 'ent': 'open', 'sk': 0.5, 'R': 1.0, 't0': 930}",
+    "n_events": 468
+   },
+   {
+    "j": 48,
+    "params": "{'thr': 0.2, 'filt': 0, 'ent': 'open', 'sk': 0.5, 'R': 1.0, 't0': 930}",
+    "n_events": 2059
+   },
+   {
+    "j": 95,
+    "params": "{'thr': 0.2, 'filt': 1, 'ent': 'dip', 'sk': 1.0, 'R': 0.0, 't0': 1000}",
+    "n_events": 320
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "CN_R3": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'thr3': 10.0, 'filt': 0, 'ent': 'open', 'sk': 0.5, 'R': 1.0, 't0': 930}",
+    "n_events": 970
+   },
+   {
+    "j": 48,
+    "params": "{'thr3': 20.0, 'filt': 0, 'ent': 'open', 'sk': 0.5, 'R': 1.0, 't0': 930}",
+    "n_events": 1221
+   },
+   {
+    "j": 95,
+    "params": "{'thr3': 20.0, 'filt': 1, 'ent': 'dip', 'sk': 1.0, 'R': 0.0, 't0': 1000}",
+    "n_events": 208
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "TAYLOR": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'anchor': 'low', 'mode': 'viol', 'x': 0.05, 'sk': 0.25, 'tgt': 'prior', 'days': 'bs', 'exp': 1100}",
+    "n_events": 2371
+   },
+   {
+    "j": 144,
+    "params": "{'anchor': 'high', 'mode': 'viol', 'x': 0.05, 'sk': 0.25, 'tgt': 'prior', 'days': 'bs', 'exp': 1100}",
+    "n_events": 2801
+   },
+   {
+    "j": 287,
+    "params": "{'anchor': 'high', 'mode': 'fail', 'x': 0.1, 'sk': 0.5, 'tgt': 0.0, 'days': 's', 'exp': 1300}",
+    "n_events": 551
+   }
+  ],
+  "events": 36,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "STEID_OPEN": {
+  "configs": [
+   {
+    "j": 0,
+    "params": "{'typ': 'drive', 'W': 30, 'x': 0.15, 'ent': 'mkt', 'sk': 0.0, 'R': 1.0, 'tf': 0}",
+    "n_events": 974
+   },
+   {
+    "j": 3,
+    "params": "{'typ': 'drive', 'W': 30, 'x': 0.15, 'ent': 'mkt', 'sk': 0.0, 'R': 2.0, 'tf': 1}",
+    "n_events": 467
+   },
+   {
+    "j": 100,
+    "params": "{'typ': 'test', 'W': 30, 'x': 0.15, 'ent': 'mkt', 'sk': 0.0, 'R': 0.0, 'tf': 0}",
+    "n_events": 806
+   },
+   {
+    "j": 192,
+    "params": "{'typ': 'rejrev', 'W': 30, 'x': 0.15, 'ent': 'mkt', 'sk': 0.0, 'R': 1.0, 'tf': 0}",
+    "n_events": 2891
+   },
+   {
+    "j": 197,
+    "params": "{'typ': 'rejrev', 'W': 30, 'x': 0.15, 'ent': 'mkt', 'sk': 0.0, 'R': 0.0, 'tf': 1}",
+    "n_events": 1401
+   }
+  ],
+  "events": 60,
+  "violations": 0,
+  "max_diff": 0.0,
+  "missing": 0,
+  "details": []
+ },
+ "_total": {
+  "events": 588,
+  "violations": 0
+ }
+}

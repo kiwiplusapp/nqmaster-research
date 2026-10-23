@@ -3,6 +3,7 @@ __pycache__/
 research/tmp/
 *.part
 # >>> big originals (restored by tools/restore_data.py)
+/research/data/btc_1m.npz
 /research/data/es_hd.npz
 /research/data/es_hd_utc.pkl
 /research/data/es_long.npz

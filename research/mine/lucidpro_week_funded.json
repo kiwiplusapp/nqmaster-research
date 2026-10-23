@@ -1,0 +1,272 @@
+{
+ "edge-0% | T1 | 1c no stop": {
+  "median_month": 1012,
+  "p10_month": 683,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 55.5,
+  "funded_busts_yr": 0.56,
+  "payouts_yr": 6.46,
+  "evals_yr": 6.16
+ },
+ "edge-0% | T1 | 1c stop 500": {
+  "median_month": 898,
+  "p10_month": 486,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 36.0,
+  "funded_busts_yr": 0.84,
+  "payouts_yr": 6.08,
+  "evals_yr": 6.39
+ },
+ "edge-0% | T1 | 1c stop 700": {
+  "median_month": 1051,
+  "p10_month": 629,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 54.0,
+  "funded_busts_yr": 0.87,
+  "payouts_yr": 6.75,
+  "evals_yr": 6.69
+ },
+ "edge-0% | T1 | 1c stop 1000": {
+  "median_month": 1128,
+  "p10_month": 702,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 62.5,
+  "funded_busts_yr": 0.65,
+  "payouts_yr": 6.81,
+  "evals_yr": 6.24
+ },
+ "edge-0% | T1 | 2c stop 500": {
+  "median_month": 1283,
+  "p10_month": 558,
+  "P_neg_year": 0.5,
+  "P_ge_1000": 68.0,
+  "funded_busts_yr": 4.61,
+  "payouts_yr": 8.8,
+  "evals_yr": 15.77
+ },
+ "edge-0% | T2 | 1c no stop": {
+  "median_month": 1377,
+  "p10_month": 847,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 80.5,
+  "funded_busts_yr": 1.17,
+  "payouts_yr": 8.56,
+  "evals_yr": 7.89
+ },
+ "edge-0% | T2 | 1c stop 500": {
+  "median_month": 1404,
+  "p10_month": 921,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 87.0,
+  "funded_busts_yr": 1.6,
+  "payouts_yr": 9.1,
+  "evals_yr": 8.12
+ },
+ "edge-0% | T2 | 1c stop 700": {
+  "median_month": 1511,
+  "p10_month": 973,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 88.0,
+  "funded_busts_yr": 1.88,
+  "payouts_yr": 9.51,
+  "evals_yr": 9.25
+ },
+ "edge-0% | T2 | 1c stop 1000": {
+  "median_month": 1545,
+  "p10_month": 989,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 89.0,
+  "funded_busts_yr": 1.56,
+  "payouts_yr": 9.35,
+  "evals_yr": 8.9
+ },
+ "edge-0% | T2 | 2c stop 500": {
+  "median_month": 1932,
+  "p10_month": 1232,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 95.0,
+  "funded_busts_yr": 5.88,
+  "payouts_yr": 12.61,
+  "evals_yr": 19.76
+ },
+ "edge-35% | T1 | 1c no stop": {
+  "median_month": 651,
+  "p10_month": 206,
+  "P_neg_year": 5.5,
+  "P_ge_1000": 15.5,
+  "funded_busts_yr": 1.26,
+  "payouts_yr": 4.09,
+  "evals_yr": 8.15
+ },
+ "edge-35% | T1 | 1c stop 500": {
+  "median_month": 467,
+  "p10_month": 48,
+  "P_neg_year": 7.5,
+  "P_ge_1000": 6.0,
+  "funded_busts_yr": 2.03,
+  "payouts_yr": 3.58,
+  "evals_yr": 9.89
+ },
+ "edge-35% | T1 | 1c stop 700": {
+  "median_month": 628,
+  "p10_month": 96,
+  "P_neg_year": 6.5,
+  "P_ge_1000": 14.5,
+  "funded_busts_yr": 1.88,
+  "payouts_yr": 4.29,
+  "evals_yr": 10.26
+ },
+ "edge-35% | T1 | 1c stop 1000": {
+  "median_month": 713,
+  "p10_month": 204,
+  "P_neg_year": 4.0,
+  "P_ge_1000": 20.0,
+  "funded_busts_yr": 1.51,
+  "payouts_yr": 4.56,
+  "evals_yr": 8.86
+ },
+ "edge-35% | T1 | 2c stop 500": {
+  "median_month": 597,
+  "p10_month": -37,
+  "P_neg_year": 11.0,
+  "P_ge_1000": 28.0,
+  "funded_busts_yr": 5.99,
+  "payouts_yr": 5.42,
+  "evals_yr": 22.62
+ },
+ "edge-35% | T2 | 1c no stop": {
+  "median_month": 798,
+  "p10_month": 370,
+  "P_neg_year": 0.0,
+  "P_ge_1000": 25.5,
+  "funded_busts_yr": 1.99,
+  "payouts_yr": 5.3,
+  "evals_yr": 10.04
+ },
+ "edge-35% | T2 | 1c stop 500": {
+  "median_month": 710,
+  "p10_month": 275,
+  "P_neg_year": 1.5,
+  "P_ge_1000": 23.5,
+  "funded_busts_yr": 3.07,
+  "payouts_yr": 5.28,
+  "evals_yr": 11.69
+ },
+ "edge-35% | T2 | 1c stop 700": {
+  "median_month": 778,
+  "p10_month": 279,
+  "P_neg_year": 2.0,
+  "P_ge_1000": 34.5,
+  "funded_busts_yr": 3.44,
+  "payouts_yr": 5.72,
+  "evals_yr": 13.6
+ },
+ "edge-35% | T2 | 1c stop 1000": {
+  "median_month": 843,
+  "p10_month": 370,
+  "P_neg_year": 0.5,
+  "P_ge_1000": 28.5,
+  "funded_busts_yr": 2.81,
+  "payouts_yr": 5.76,
+  "evals_yr": 12.09
+ },
+ "edge-35% | T2 | 2c stop 500": {
+  "median_month": 686,
+  "p10_month": 73,
+  "P_neg_year": 7.5,
+  "P_ge_1000": 30.5,
+  "funded_busts_yr": 9.44,
+  "payouts_yr": 6.34,
+  "evals_yr": 32.95
+ },
+ "edge-100% | T1 | 1c no stop": {
+  "median_month": -90,
+  "p10_month": -365,
+  "P_neg_year": 56.5,
+  "P_ge_1000": 0.0,
+  "funded_busts_yr": 3.63,
+  "payouts_yr": 1.38,
+  "evals_yr": 25.57
+ },
+ "edge-100% | T1 | 1c stop 500": {
+  "median_month": -228,
+  "p10_month": -414,
+  "P_neg_year": 79.0,
+  "P_ge_1000": 0.0,
+  "funded_busts_yr": 4.51,
+  "payouts_yr": 0.68,
+  "evals_yr": 29.07
+ },
+ "edge-100% | T1 | 1c stop 700": {
+  "median_month": -185,
+  "p10_month": -414,
+  "P_neg_year": 70.0,
+  "P_ge_1000": 0.0,
+  "funded_busts_yr": 4.22,
+  "payouts_yr": 1.0,
+  "evals_yr": 28.53
+ },
+ "edge-100% | T1 | 1c stop 1000": {
+  "median_month": -81,
+  "p10_month": -394,
+  "P_neg_year": 60.0,
+  "P_ge_1000": 0.0,
+  "funded_busts_yr": 4.01,
+  "payouts_yr": 1.5,
+  "evals_yr": 27.4
+ },
+ "edge-100% | T1 | 2c stop 500": {
+  "median_month": -302,
+  "p10_month": -529,
+  "P_neg_year": 81.5,
+  "P_ge_1000": 0.0,
+  "funded_busts_yr": 8.39,
+  "payouts_yr": 1.23,
+  "evals_yr": 45.44
+ },
+ "edge-100% | T2 | 1c no stop": {
+  "median_month": -126,
+  "p10_month": -567,
+  "P_neg_year": 60.5,
+  "P_ge_1000": 0.0,
+  "funded_busts_yr": 5.17,
+  "payouts_yr": 1.91,
+  "evals_yr": 40.26
+ },
+ "edge-100% | T2 | 1c stop 500": {
+  "median_month": -365,
+  "p10_month": -590,
+  "P_neg_year": 84.0,
+  "P_ge_1000": 0.0,
+  "funded_busts_yr": 6.39,
+  "payouts_yr": 1.06,
+  "evals_yr": 47.86
+ },
+ "edge-100% | T2 | 1c stop 700": {
+  "median_month": -239,
+  "p10_month": -558,
+  "P_neg_year": 72.5,
+  "P_ge_1000": 0.0,
+  "funded_busts_yr": 6.22,
+  "payouts_yr": 1.73,
+  "evals_yr": 45.76
+ },
+ "edge-100% | T2 | 1c stop 1000": {
+  "median_month": -229,
+  "p10_month": -587,
+  "P_neg_year": 67.0,
+  "P_ge_1000": 0.5,
+  "funded_busts_yr": 6.0,
+  "payouts_yr": 1.84,
+  "evals_yr": 44.63
+ },
+ "edge-100% | T2 | 2c stop 500": {
+  "median_month": -540,
+  "p10_month": -817,
+  "P_neg_year": 92.0,
+  "P_ge_1000": 0.0,
+  "funded_busts_yr": 11.44,
+  "payouts_yr": 1.48,
+  "evals_yr": 74.53
+ }
+}

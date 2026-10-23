@@ -1,0 +1,800 @@
+{
+ "edge-0%": {
+  "T1": {
+   "seats": {
+    "LF25": {
+     "median_day": 21,
+     "p10_day": 9,
+     "mean_day": 21,
+     "P_neg_year": 0.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 8.01
+    },
+    "LP25": {
+     "median_day": 20,
+     "p10_day": 11,
+     "mean_day": 21,
+     "P_neg_year": 1.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 6.78
+    },
+    "LF50": {
+     "median_day": 45,
+     "p10_day": 22,
+     "mean_day": 45,
+     "P_neg_year": 1.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 7.21
+    },
+    "L150": {
+     "median_day": 69,
+     "p10_day": 32,
+     "mean_day": 69,
+     "P_neg_year": 1.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 8.36
+    },
+    "MF1": {
+     "median_day": 40,
+     "p10_day": 13,
+     "mean_day": 40,
+     "P_neg_year": 4.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 0.94
+    },
+    "MFL": {
+     "median_day": 112,
+     "p10_day": 14,
+     "mean_day": 115,
+     "P_neg_year": 8.0,
+     "P_ge_200_day": 13.7,
+     "P_ge_300_day": 0.7,
+     "accounts_lost_per_year": 0.88
+    }
+   },
+   "plans": {
+    "5 x Lucid Flex 25K": {
+     "median_day": 106,
+     "p10_day": 51,
+     "mean_day": 106,
+     "P_neg_year": 0.7,
+     "P_ge_200_day": 1.3,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x LucidPro 25K": {
+     "median_day": 105,
+     "p10_day": 57,
+     "mean_day": 106,
+     "P_neg_year": 1.0,
+     "P_ge_200_day": 1.3,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid Flex 50K 2c": {
+     "median_day": 230,
+     "p10_day": 107,
+     "mean_day": 225,
+     "P_neg_year": 1.3,
+     "P_ge_200_day": 63.7,
+     "P_ge_300_day": 20.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid 150K": {
+     "median_day": 352,
+     "p10_day": 170,
+     "mean_day": 344,
+     "P_neg_year": 1.0,
+     "P_ge_200_day": 85.7,
+     "P_ge_300_day": 65.0,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU 1c": {
+     "median_day": 119,
+     "p10_day": 43,
+     "mean_day": 120,
+     "P_neg_year": 4.3,
+     "P_ge_200_day": 11.0,
+     "P_ge_300_day": 0.3,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU ladder": {
+     "median_day": 335,
+     "p10_day": 34,
+     "mean_day": 345,
+     "P_neg_year": 7.0,
+     "P_ge_200_day": 71.0,
+     "P_ge_300_day": 57.0,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 25K": {
+     "median_day": 444,
+     "p10_day": 94,
+     "mean_day": 451,
+     "P_neg_year": 1.0,
+     "P_ge_200_day": 80.0,
+     "P_ge_300_day": 69.7,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 150K": {
+     "median_day": 691,
+     "p10_day": 230,
+     "mean_day": 690,
+     "P_neg_year": 1.0,
+     "P_ge_200_day": 91.0,
+     "P_ge_300_day": 85.3,
+     "accounts_lost_per_year": null
+    }
+   }
+  },
+  "T2": {
+   "seats": {
+    "LF25": {
+     "median_day": 27,
+     "p10_day": 14,
+     "mean_day": 27,
+     "P_neg_year": 0.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 11.4
+    },
+    "LP25": {
+     "median_day": 27,
+     "p10_day": 13,
+     "mean_day": 27,
+     "P_neg_year": 0.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 9.21
+    },
+    "LF50": {
+     "median_day": 54,
+     "p10_day": 28,
+     "mean_day": 55,
+     "P_neg_year": 0.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 11.11
+    },
+    "L150": {
+     "median_day": 94,
+     "p10_day": 57,
+     "mean_day": 91,
+     "P_neg_year": 0.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 10.01
+    },
+    "MF1": {
+     "median_day": 64,
+     "p10_day": 28,
+     "mean_day": 65,
+     "P_neg_year": 1.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 1.13
+    },
+    "MFL": {
+     "median_day": 193,
+     "p10_day": 64,
+     "mean_day": 192,
+     "P_neg_year": 2.0,
+     "P_ge_200_day": 46.0,
+     "P_ge_300_day": 15.0,
+     "accounts_lost_per_year": 1.04
+    }
+   },
+   "plans": {
+    "5 x Lucid Flex 25K": {
+     "median_day": 132,
+     "p10_day": 69,
+     "mean_day": 132,
+     "P_neg_year": 0.7,
+     "P_ge_200_day": 7.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x LucidPro 25K": {
+     "median_day": 137,
+     "p10_day": 67,
+     "mean_day": 134,
+     "P_neg_year": 0.0,
+     "P_ge_200_day": 9.3,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid Flex 50K 2c": {
+     "median_day": 281,
+     "p10_day": 144,
+     "mean_day": 277,
+     "P_neg_year": 0.7,
+     "P_ge_200_day": 79.0,
+     "P_ge_300_day": 40.7,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid 150K": {
+     "median_day": 459,
+     "p10_day": 294,
+     "mean_day": 456,
+     "P_neg_year": 0.0,
+     "P_ge_200_day": 96.7,
+     "P_ge_300_day": 89.7,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU 1c": {
+     "median_day": 193,
+     "p10_day": 88,
+     "mean_day": 194,
+     "P_neg_year": 1.0,
+     "P_ge_200_day": 45.3,
+     "P_ge_300_day": 9.7,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU ladder": {
+     "median_day": 575,
+     "p10_day": 174,
+     "mean_day": 576,
+     "P_neg_year": 2.0,
+     "P_ge_200_day": 89.0,
+     "P_ge_300_day": 80.0,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 25K": {
+     "median_day": 704,
+     "p10_day": 270,
+     "mean_day": 708,
+     "P_neg_year": 0.7,
+     "P_ge_200_day": 93.7,
+     "P_ge_300_day": 88.0,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 150K": {
+     "median_day": 1021,
+     "p10_day": 498,
+     "mean_day": 1029,
+     "P_neg_year": 0.0,
+     "P_ge_200_day": 98.7,
+     "P_ge_300_day": 96.7,
+     "accounts_lost_per_year": null
+    }
+   }
+  }
+ },
+ "edge-35%": {
+  "T1": {
+   "seats": {
+    "LF25": {
+     "median_day": 11,
+     "p10_day": 0,
+     "mean_day": 12,
+     "P_neg_year": 10.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 12.75
+    },
+    "LP25": {
+     "median_day": 11,
+     "p10_day": -1,
+     "mean_day": 10,
+     "P_neg_year": 11.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 12.04
+    },
+    "LF50": {
+     "median_day": 24,
+     "p10_day": 3,
+     "mean_day": 25,
+     "P_neg_year": 9.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 12.72
+    },
+    "L150": {
+     "median_day": 36,
+     "p10_day": 6,
+     "mean_day": 39,
+     "P_neg_year": 7.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 13.8
+    },
+    "MF1": {
+     "median_day": 16,
+     "p10_day": -3,
+     "mean_day": 19,
+     "P_neg_year": 23.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 3.14
+    },
+    "MFL": {
+     "median_day": 26,
+     "p10_day": -3,
+     "mean_day": 47,
+     "P_neg_year": 36.7,
+     "P_ge_200_day": 1.7,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 3.07
+    }
+   },
+   "plans": {
+    "5 x Lucid Flex 25K": {
+     "median_day": 56,
+     "p10_day": 0,
+     "mean_day": 58,
+     "P_neg_year": 10.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x LucidPro 25K": {
+     "median_day": 57,
+     "p10_day": -8,
+     "mean_day": 52,
+     "P_neg_year": 12.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid Flex 50K 2c": {
+     "median_day": 119,
+     "p10_day": 22,
+     "mean_day": 127,
+     "P_neg_year": 8.3,
+     "P_ge_200_day": 23.3,
+     "P_ge_300_day": 1.7,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid 150K": {
+     "median_day": 189,
+     "p10_day": 36,
+     "mean_day": 196,
+     "P_neg_year": 7.3,
+     "P_ge_200_day": 46.0,
+     "P_ge_300_day": 24.0,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU 1c": {
+     "median_day": 46,
+     "p10_day": -9,
+     "mean_day": 56,
+     "P_neg_year": 21.3,
+     "P_ge_200_day": 0.7,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU ladder": {
+     "median_day": 78,
+     "p10_day": -9,
+     "mean_day": 139,
+     "P_neg_year": 34.0,
+     "P_ge_200_day": 29.7,
+     "P_ge_300_day": 18.3,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 25K": {
+     "median_day": 138,
+     "p10_day": -3,
+     "mean_day": 198,
+     "P_neg_year": 11.0,
+     "P_ge_200_day": 42.0,
+     "P_ge_300_day": 27.0,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 150K": {
+     "median_day": 273,
+     "p10_day": 17,
+     "mean_day": 337,
+     "P_neg_year": 6.7,
+     "P_ge_200_day": 60.3,
+     "P_ge_300_day": 47.0,
+     "accounts_lost_per_year": null
+    }
+   }
+  },
+  "T2": {
+   "seats": {
+    "LF25": {
+     "median_day": 14,
+     "p10_day": 0,
+     "mean_day": 14,
+     "P_neg_year": 8.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 18.68
+    },
+    "LP25": {
+     "median_day": 13,
+     "p10_day": -1,
+     "mean_day": 13,
+     "P_neg_year": 11.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 17.45
+    },
+    "LF50": {
+     "median_day": 31,
+     "p10_day": 5,
+     "mean_day": 31,
+     "P_neg_year": 7.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 18.05
+    },
+    "L150": {
+     "median_day": 53,
+     "p10_day": 14,
+     "mean_day": 52,
+     "P_neg_year": 4.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 17.38
+    },
+    "MF1": {
+     "median_day": 27,
+     "p10_day": -3,
+     "mean_day": 30,
+     "P_neg_year": 12.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 3.47
+    },
+    "MFL": {
+     "median_day": 53,
+     "p10_day": -3,
+     "mean_day": 77,
+     "P_neg_year": 24.7,
+     "P_ge_200_day": 9.7,
+     "P_ge_300_day": 2.0,
+     "accounts_lost_per_year": 3.32
+    }
+   },
+   "plans": {
+    "5 x Lucid Flex 25K": {
+     "median_day": 65,
+     "p10_day": 6,
+     "mean_day": 68,
+     "P_neg_year": 8.7,
+     "P_ge_200_day": 0.3,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x LucidPro 25K": {
+     "median_day": 61,
+     "p10_day": -3,
+     "mean_day": 62,
+     "P_neg_year": 10.7,
+     "P_ge_200_day": 1.7,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid Flex 50K 2c": {
+     "median_day": 153,
+     "p10_day": 23,
+     "mean_day": 152,
+     "P_neg_year": 7.0,
+     "P_ge_200_day": 35.3,
+     "P_ge_300_day": 6.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid 150K": {
+     "median_day": 266,
+     "p10_day": 73,
+     "mean_day": 260,
+     "P_neg_year": 3.3,
+     "P_ge_200_day": 65.3,
+     "P_ge_300_day": 38.7,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU 1c": {
+     "median_day": 81,
+     "p10_day": -6,
+     "mean_day": 91,
+     "P_neg_year": 12.0,
+     "P_ge_200_day": 8.3,
+     "P_ge_300_day": 1.7,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU ladder": {
+     "median_day": 156,
+     "p10_day": -9,
+     "mean_day": 230,
+     "P_neg_year": 23.0,
+     "P_ge_200_day": 43.0,
+     "P_ge_300_day": 28.3,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 25K": {
+     "median_day": 212,
+     "p10_day": 9,
+     "mean_day": 298,
+     "P_neg_year": 7.0,
+     "P_ge_200_day": 53.0,
+     "P_ge_300_day": 40.0,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 150K": {
+     "median_day": 406,
+     "p10_day": 82,
+     "mean_day": 488,
+     "P_neg_year": 4.0,
+     "P_ge_200_day": 77.7,
+     "P_ge_300_day": 64.3,
+     "accounts_lost_per_year": null
+    }
+   }
+  }
+ },
+ "edge-50%": {
+  "T1": {
+   "seats": {
+    "LF25": {
+     "median_day": 8,
+     "p10_day": -3,
+     "mean_day": 8,
+     "P_neg_year": 21.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 15.53
+    },
+    "LP25": {
+     "median_day": 7,
+     "p10_day": -7,
+     "mean_day": 6,
+     "P_neg_year": 27.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 16.65
+    },
+    "LF50": {
+     "median_day": 19,
+     "p10_day": -4,
+     "mean_day": 19,
+     "P_neg_year": 16.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 15.18
+    },
+    "L150": {
+     "median_day": 28,
+     "p10_day": -7,
+     "mean_day": 28,
+     "P_neg_year": 15.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 16.58
+    },
+    "MF1": {
+     "median_day": 9,
+     "p10_day": -4,
+     "mean_day": 11,
+     "P_neg_year": 36.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 4.68
+    },
+    "MFL": {
+     "median_day": 0,
+     "p10_day": -4,
+     "mean_day": 26,
+     "P_neg_year": 51.3,
+     "P_ge_200_day": 0.7,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 4.63
+    }
+   },
+   "plans": {
+    "5 x Lucid Flex 25K": {
+     "median_day": 39,
+     "p10_day": -12,
+     "mean_day": 39,
+     "P_neg_year": 18.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x LucidPro 25K": {
+     "median_day": 35,
+     "p10_day": -34,
+     "mean_day": 29,
+     "P_neg_year": 29.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid Flex 50K 2c": {
+     "median_day": 91,
+     "p10_day": -21,
+     "mean_day": 93,
+     "P_neg_year": 15.0,
+     "P_ge_200_day": 9.7,
+     "P_ge_300_day": 1.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid 150K": {
+     "median_day": 136,
+     "p10_day": -35,
+     "mean_day": 140,
+     "P_neg_year": 15.3,
+     "P_ge_200_day": 32.0,
+     "P_ge_300_day": 10.7,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU 1c": {
+     "median_day": 26,
+     "p10_day": -12,
+     "mean_day": 34,
+     "P_neg_year": 35.7,
+     "P_ge_200_day": 0.3,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU ladder": {
+     "median_day": -1,
+     "p10_day": -12,
+     "mean_day": 76,
+     "P_neg_year": 51.0,
+     "P_ge_200_day": 15.3,
+     "P_ge_300_day": 7.3,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 25K": {
+     "median_day": 52,
+     "p10_day": -23,
+     "mean_day": 116,
+     "P_neg_year": 23.3,
+     "P_ge_200_day": 22.7,
+     "P_ge_300_day": 13.0,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 150K": {
+     "median_day": 157,
+     "p10_day": -44,
+     "mean_day": 215,
+     "P_neg_year": 16.3,
+     "P_ge_200_day": 41.0,
+     "P_ge_300_day": 28.3,
+     "accounts_lost_per_year": null
+    }
+   }
+  },
+  "T2": {
+   "seats": {
+    "LF25": {
+     "median_day": 8,
+     "p10_day": -3,
+     "mean_day": 9,
+     "P_neg_year": 17.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 22.52
+    },
+    "LP25": {
+     "median_day": 7,
+     "p10_day": -7,
+     "mean_day": 6,
+     "P_neg_year": 27.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 23.64
+    },
+    "LF50": {
+     "median_day": 19,
+     "p10_day": -2,
+     "mean_day": 21,
+     "P_neg_year": 13.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 22.34
+    },
+    "L150": {
+     "median_day": 31,
+     "p10_day": 0,
+     "mean_day": 33,
+     "P_neg_year": 10.3,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 22.61
+    },
+    "MF1": {
+     "median_day": 10,
+     "p10_day": -4,
+     "mean_day": 16,
+     "P_neg_year": 29.7,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 5.62
+    },
+    "MFL": {
+     "median_day": 2,
+     "p10_day": -4,
+     "mean_day": 37,
+     "P_neg_year": 49.3,
+     "P_ge_200_day": 2.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": 5.52
+    }
+   },
+   "plans": {
+    "5 x Lucid Flex 25K": {
+     "median_day": 41,
+     "p10_day": -13,
+     "mean_day": 45,
+     "P_neg_year": 16.0,
+     "P_ge_200_day": 0.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x LucidPro 25K": {
+     "median_day": 35,
+     "p10_day": -37,
+     "mean_day": 30,
+     "P_neg_year": 25.7,
+     "P_ge_200_day": 0.3,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid Flex 50K 2c": {
+     "median_day": 91,
+     "p10_day": -14,
+     "mean_day": 101,
+     "P_neg_year": 12.7,
+     "P_ge_200_day": 14.7,
+     "P_ge_300_day": 2.0,
+     "accounts_lost_per_year": null
+    },
+    "5 x Lucid 150K": {
+     "median_day": 152,
+     "p10_day": -1,
+     "mean_day": 165,
+     "P_neg_year": 10.7,
+     "P_ge_200_day": 39.0,
+     "P_ge_300_day": 17.7,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU 1c": {
+     "median_day": 32,
+     "p10_day": -12,
+     "mean_day": 48,
+     "P_neg_year": 28.7,
+     "P_ge_200_day": 2.0,
+     "P_ge_300_day": 0.0,
+     "accounts_lost_per_year": null
+    },
+    "3 x MFFU ladder": {
+     "median_day": 23,
+     "p10_day": -12,
+     "mean_day": 113,
+     "P_neg_year": 46.7,
+     "P_ge_200_day": 23.3,
+     "P_ge_300_day": 13.3,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 25K": {
+     "median_day": 79,
+     "p10_day": -24,
+     "mean_day": 158,
+     "P_neg_year": 20.7,
+     "P_ge_200_day": 31.3,
+     "P_ge_300_day": 20.7,
+     "accounts_lost_per_year": null
+    },
+    "3 MFFU ladder + 5 Lucid 150K": {
+     "median_day": 210,
+     "p10_day": -11,
+     "mean_day": 276,
+     "P_neg_year": 12.3,
+     "P_ge_200_day": 52.3,
+     "P_ge_300_day": 36.7,
+     "accounts_lost_per_year": null
+    }
+   }
+  }
+ }
+}

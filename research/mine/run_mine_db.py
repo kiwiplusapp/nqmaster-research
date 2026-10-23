@@ -25,10 +25,35 @@ try:
     from families8 import FAMILIES8
 except ImportError:
     FAMILIES8 = {}
-FAMILIES = {**OLD, **FAMILIES5, **FAMILIES6, **FAMILIES7, **FAMILIES8}
-FLAT = int(os.environ.get("MINE_FLAT", "955")); NORM = 0.00345
-PARTS_R = (("T1", 20200101, 20240101), ("T2", 20240101, 20991231))
-PARTS_N = (("A", 20100601, 20150101), ("B", 20150101, 20200101), ("T1n", 20200101, 20240101), ("T2n", 20240101, 20991231))
+try:
+    from families9 import FAMILIES9
+except ImportError:
+    FAMILIES9 = {}
+try:
+    from families10 import FAMILIES10
+except ImportError:
+    FAMILIES10 = {}
+try:
+    from families11 import FAMILIES11
+except ImportError:
+    FAMILIES11 = {}
+try:
+    from families12 import FAMILIES12
+except ImportError:
+    FAMILIES12 = {}
+try:
+    from families13 import FAMILIES13
+except ImportError:
+    FAMILIES13 = {}
+try:
+    from families14 import FAMILIES14
+except ImportError:
+    FAMILIES14 = {}
+FAMILIES = {**OLD, **FAMILIES14, **FAMILIES5, **FAMILIES6, **FAMILIES7, **FAMILIES8, **FAMILIES9, **FAMILIES10, **FAMILIES11, **FAMILIES12, **FAMILIES13}
+FLAT = int(os.environ.get("MINE_FLAT", "955")); NORM = float(os.environ.get("MINE_NORM", "0.00345"))   # MINE_NORM: cost as a fraction of the daily ATR (gold 0.0096, gold16 round 2026-10-19)
+T1S = int(os.environ.get("MINE_T1", "20200101")); T2S = int(os.environ.get("MINE_T2", "20240101"))     # period cut-offs (batch 11 used MINE_T1=20190101 MINE_T2=20230101); defaults unchanged
+PARTS_R = (("T1", T1S, T2S), ("T2", T2S, 20991231))
+PARTS_N = (("A", 20100601, 20150101), ("B", 20150101, T1S), ("T1n", T1S, T2S), ("T2n", T2S, 20991231))
 G = {}
 
 
