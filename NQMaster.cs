@@ -79,6 +79,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public Order SeenOrd, CancelOrd; public int SeenBar = -1, CancelBar = -1;	// stale-order watchdog (PurgeStaleEntries)
 			public int OfQ0, OfWant; public Order OfChangeOrd, OfNoChange; public int OfChangeBar = -1;	// order-flow boost: size before the boost, last re-size
 			public int OpenQty, RejToday;
+			public double TradePnl;	// this module's own round trip ($, after commission), booked from its own fills
 			public double FixTgt = double.NaN; public bool StructStop, WinHas, Six; public double WinH, WinL, RvolMax;	// six-year modules (2026-10-16)	// lots still open (multi-lot entries close in parts), rejected orders this session
 		}
 		private List<Mod> mods;
@@ -565,18 +566,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!ModuleHealthReport) return;
 			try
 			{
-				if (SystemPerformance == null || SystemPerformance.AllTrades == null || SystemPerformance.AllTrades.Count == 0) return;
+				Dictionary<string, double[]> st = ModuleStats(); if (st.Count == 0) return;
+				List<string> order = new List<string>(st.Keys); DateTime last = modTrades[modTrades.Count - 1].Time;
 				TradeCollection all = SystemPerformance.AllTrades;
-				DateTime last = all[all.Count - 1].Exit.Time, fromTime = last.AddDays(-365);
-				Dictionary<string, double[]> st = new Dictionary<string, double[]>(); List<string> order = new List<string>();
-				foreach (Trade t in all)
-				{
-					string k = t.Entry != null && !string.IsNullOrEmpty(t.Entry.Name) ? t.Entry.Name : "?";
-					double[] a; if (!st.TryGetValue(k, out a)) { a = new double[8]; st[k] = a; order.Add(k); }
-					double p = t.ProfitCurrency; bool yr = t.Exit != null && t.Exit.Time >= fromTime;
-					a[0] += 1; if (p > 0) { a[1] += 1; a[2] += p; } else a[3] -= p;
-					if (yr) { a[4] += 1; if (p > 0) { a[5] += 1; a[6] += p; } else a[7] -= p; }
-				}
 				order.Sort();
 				Print(string.Format("NQMaster | MODULE HEALTH ({0}; {1} trades, last exit {2:yyyy-MM-dd}; 'last 365 d' ends there)", label, all.Count, last));
 				foreach (string k in order)
@@ -2101,7 +2093,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				if (execution.Order.Filled <= 0) return;
 				bool first = !m.InTrade;
-				m.InTrade = true; m.EntryPx = execution.Order.AverageFillPrice; m.OpenQty += quantity;
+				m.InTrade = true; m.EntryPx = execution.Order.AverageFillPrice; m.OpenQty += quantity; m.TradePnl -= execution.Commission;
 				if (first)
 				{
 				if (UseOrderFlowBoost) { ofEntries++; if (m.OfQ0 > 0 && execution.Order.Quantity > m.OfQ0) ofBoosted++; }
@@ -2132,6 +2124,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			Mod exitMod = BySig(execution.Order.FromEntrySignal);
 			if (exitMod != null)
 			{
+				BookExit(exitMod, price, Math.Min(quantity, Math.Max(0, exitMod.OpenQty)), execution.Commission, execution.Time);
 				exitMod.OpenQty = Math.Max(0, exitMod.OpenQty - quantity); if (exitMod.OpenQty == 0) exitMod.InTrade = false;
 				Log(string.Format("{0} exit fill: {1} x{2} @ {3}{4}", exitMod.Sig, execution.Order.Name, quantity, Fmt(price), State == State.Realtime ? string.Format(" | account cash {0:0}", AcctCash()) : ""));
 				// research/mine/reentry_lab.py (2026-10-17): VOLB 2R re-armed once after a stop-out (not after the break-even stop), same levels, either
@@ -2140,7 +2133,46 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (exitMod == volb && exitMod.OpenQty == 0 && VolbReArm && !volbTrendOnly && volb.R >= 1.5 && !volbBeSet && volbTrades < 2 && !Working(volb.Entry) && execution.Order.Name == "Stop loss")
 				{ volbDone = false; Log("VOLB stopped out: re-armed for a second attempt (VolbReArm)"); }
 			}
-			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; }
+			else if (execution.Order.OrderAction == OrderAction.Sell || execution.Order.OrderAction == OrderAction.BuyToCover)
+			{	// exit without an entry signal (flatten, end of day, session close): the open modules on that side, in entry order
+				int left = quantity, side = execution.Order.OrderAction == OrderAction.Sell ? 1 : -1;
+				foreach (Mod x in mods)
+				{
+					if (left <= 0) break;
+					if (x.OpenQty <= 0 || x.Dir != side) continue;
+					int q = Math.Min(left, x.OpenQty);
+					BookExit(x, price, q, execution.Commission * q / Math.Max(1, quantity), execution.Time);
+					x.OpenQty -= q; left -= q; if (x.OpenQty == 0) x.InTrade = false;
+				}
+			}
+			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; x.TradePnl = 0; }
+		}
+		// ---- per-module results (2026-10-23): NinjaTrader's trade list (and the lines on the chart) pairs entries and exits FIFO across
+		// the whole strategy, so with two modules open on the same side an exit is shown on the other module's trade (e.g. NF05's entry
+		// joined to ON07's time exit). The account total is right; the per-module split is not. Each module's own fills are booked here.
+		private class ModTrade { public DateTime Time; public string Sig; public double Pnl; }
+		private List<ModTrade> modTrades = new List<ModTrade>();
+		private void BookExit(Mod x, double price, int q, double comm, DateTime t)
+		{
+			if (q <= 0) return;
+			double pv = Instrument != null && Instrument.MasterInstrument != null && Instrument.MasterInstrument.PointValue > 0 ? Instrument.MasterInstrument.PointValue : 2.0;
+			x.TradePnl += (price - x.EntryPx) * x.Dir * q * pv - comm;
+			if (x.OpenQty - q <= 0) { ModTrade r = new ModTrade(); r.Time = t; r.Sig = x.Sig; r.Pnl = x.TradePnl; modTrades.Add(r); x.TradePnl = 0; }
+		}
+		// per module: all trades + last 365 days {n, wins, gross win, gross loss, n365, wins365, win365, loss365}
+		private Dictionary<string, double[]> ModuleStats()
+		{
+			Dictionary<string, double[]> st = new Dictionary<string, double[]>();
+			if (modTrades.Count == 0) return st;
+			DateTime fromTime = modTrades[modTrades.Count - 1].Time.AddDays(-365);
+			foreach (ModTrade t in modTrades)
+			{
+				double[] a; if (!st.TryGetValue(t.Sig, out a)) { a = new double[8]; st[t.Sig] = a; }
+				double p = t.Pnl; bool yr = t.Time >= fromTime;
+				a[0] += 1; if (p > 0) { a[1] += 1; a[2] += p; } else a[3] -= p;
+				if (yr) { a[4] += 1; if (p > 0) { a[5] += 1; a[6] += p; } else a[7] -= p; }
+			}
+			return st;
 		}
 
 		private void ProcessClosedTrades()
@@ -2468,9 +2500,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// ---- panel window (NQMasterPanel.cs): an immutable snapshot for NQMasterUI.Hub; only on a chart (never in the Strategy Analyzer)
 		private List<DateTime> eqDays = new List<DateTime>(); private List<double> eqVals = new List<double>();
 		private List<NQMasterUI.EventRow> cyEvRows = new List<NQMasterUI.EventRow>(); private List<DateTime> cashDays = new List<DateTime>(); private List<double> cashVals = new List<double>();
-		private string panelKey; private bool panelKeyHooked;
+		private string panelKey; private bool panelKeyHooked; private NinjaTrader.Gui.Chart.ChartControl panelChart;
 		private static DateTime IntDay(int d) { try { return new DateTime(d / 10000, d / 100 % 100, d % 100); } catch { return DateTime.MinValue; } }
-		private bool PanelWanted { get { return ShowPanelWindow && ChartControl != null; } }
+		private bool PanelWanted { get { return ShowPanelWindow && (ChartControl != null || State == State.Realtime); } }
 		private void PanelPublish()
 		{
 			if (!PanelWanted || (State == State.Historical && CurrentBars[0] < Count - 2)) return;
@@ -2480,13 +2512,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			if (!PanelWanted) return;
 			PanelPublish(); NQMasterUI.Hub.Open();
-			if (panelKeyHooked) return;
-			try { ChartControl.Dispatcher.InvokeAsync(new Action(() => { try { ChartControl.PreviewKeyDown += OnPanelKey; panelKeyHooked = true; } catch { } })); } catch { }
+			if (panelKeyHooked || ChartControl == null) return;
+			panelChart = ChartControl; panelKeyHooked = true; NinjaTrader.Gui.Chart.ChartControl cc = panelChart;
+			try { cc.Dispatcher.InvokeAsync(new Action(() => { try { cc.AddHandler(System.Windows.UIElement.PreviewKeyDownEvent, new System.Windows.Input.KeyEventHandler(OnPanelKey), true); } catch { } })); } catch { }
 		}
 		private void PanelClose()
 		{
 			try { if (panelKey != null) NQMasterUI.Hub.Remove(panelKey); } catch { }
-			try { if (panelKeyHooked && ChartControl != null) ChartControl.Dispatcher.InvokeAsync(new Action(() => { try { ChartControl.PreviewKeyDown -= OnPanelKey; } catch { } })); } catch { }
+			NinjaTrader.Gui.Chart.ChartControl cc = panelChart; panelChart = null; panelKeyHooked = false;
+			try { if (cc != null) cc.Dispatcher.InvokeAsync(new Action(() => { try { cc.RemoveHandler(System.Windows.UIElement.PreviewKeyDownEvent, new System.Windows.Input.KeyEventHandler(OnPanelKey)); } catch { } })); } catch { }
 		}
 		// Ctrl+Shift+P on the chart reopens the panel window
 		private void OnPanelKey(object sender, System.Windows.Input.KeyEventArgs e)
@@ -2518,20 +2552,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			s.Live = !double.IsNaN(liveStartPnl); if (s.Live) { s.LiveDays = liveDays; s.LiveTrades = totalTrades - liveStartTrades; s.LivePnl = netPnl - liveStartPnl; s.LiveExpected = liveExpect; }
 			s.EdgeOn = EdgeMonitor && !double.IsNaN(edgeH) && edgeH > 0;
 			if (s.EdgeOn) { s.EdgePct = 100 * edgeS / edgeH; s.EdgeDays = edgeDays; s.EdgeState = edgeFbLeft > 0 ? "MODO DEFENSIVO" : edgeAlarm ? "ALARMA" : (edgeHw > 0 && edgeS >= edgeHw ? "AVISO" : "OK"); }
-			// modules: every closed trade by its entry name (all + last 365 days), plus the live state of each module
-			Dictionary<string, double[]> st = new Dictionary<string, double[]>();
-			if (SystemPerformance != null && SystemPerformance.AllTrades != null && SystemPerformance.AllTrades.Count > 0)
-			{
-				TradeCollection all = SystemPerformance.AllTrades; DateTime from = all[all.Count - 1].Exit.Time.AddDays(-365);
-				foreach (Trade t in all)
-				{
-					string k = t.Entry != null && !string.IsNullOrEmpty(t.Entry.Name) ? t.Entry.Name : "?"; double[] a;
-					if (!st.TryGetValue(k, out a)) { a = new double[8]; st[k] = a; }
-					double p = t.ProfitCurrency; bool yr = t.Exit != null && t.Exit.Time >= from;
-					a[0] += 1; if (p > 0) { a[1] += 1; a[2] += p; } else a[3] -= p;
-					if (yr) { a[4] += 1; if (p > 0) { a[5] += 1; a[6] += p; } else a[7] -= p; }
-				}
-			}
+			// modules: each module's own round trips (ModuleStats; NinjaTrader's trade list pairs exits FIFO across modules), plus the live state
+			Dictionary<string, double[]> st = ModuleStats();
 			HashSet<string> seen = new HashSet<string>();
 			foreach (Mod m in mods)
 			{
@@ -2549,7 +2571,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				s.PayGross = cyPayGross; s.PayCash = cyPayCash; s.Fees = cyFeeEval + cyFeeAct; s.SimNet = cyPayCash - s.Fees;
 				s.SimMonths = cyFirst != DateTime.MinValue ? Math.Max(1.0, (cyLastDay - cyFirst).TotalDays / 30.44) : 1; s.SimPerMonth = s.SimNet / s.SimMonths;
 				s.Events.AddRange(cyEvRows.Count > 60 ? cyEvRows.GetRange(cyEvRows.Count - 60, 60) : cyEvRows);
-				s.CashDays.AddRange(cashDays); s.CashVals.AddRange(cashVals);
+				int cstep = Math.Max(1, cashVals.Count / 600); for (int i = 0; i < cashVals.Count; i += cstep) { s.CashDays.Add(cashDays[i]); s.CashVals.Add(cashVals[i]); }
+				if (cashVals.Count > 0 && (cashVals.Count - 1) % cstep != 0) { s.CashDays.Add(cashDays[cashDays.Count - 1]); s.CashVals.Add(cashVals[cashVals.Count - 1]); }
 				if (!cyStarted) s.SimStatus = string.Format("La primera evaluación empieza al terminar el calentamiento ({0}/{1} días)", rthDaysSeen, WarmupDays);
 				else if (cy.Alive && !cyFrozen)
 				{
@@ -2573,9 +2596,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (edgeAlarm && !s.Warnings.Contains("ALARMA del monitor de borde: revisar antes de seguir")) s.Warnings.Add("ALARMA del monitor de borde: revisar antes de seguir");
 			return s;
 		}
-		private static NQMasterUI.ModuleRow ModRow(string name, bool on, string state, double[] a)
+		private static NQMasterUI.ModuleRow ModRow(string name, bool isOn, string state, double[] a)
 		{
-			NQMasterUI.ModuleRow r = new NQMasterUI.ModuleRow(); r.Name = name; r.On = on; r.State = state;
+			NQMasterUI.ModuleRow r = new NQMasterUI.ModuleRow(); r.Name = name; r.On = isOn; r.State = state;
 			if (a != null)
 			{
 				r.Trades = (int)a[0]; r.Wr = a[0] > 0 ? 100 * a[1] / a[0] : 0; r.Pf = a[3] > 0 ? a[2] / a[3] : 0; r.Net = a[2] - a[3];

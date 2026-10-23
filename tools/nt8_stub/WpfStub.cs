@@ -24,10 +24,12 @@ namespace System.Windows
 	public struct FontWeight { }
 	public static class FontWeights { public static FontWeight SemiBold { get { return new FontWeight(); } } public static FontWeight Bold { get { return new FontWeight(); } } }
 	public class Freezable : System.Windows.Threading.DispatcherObject { public void Freeze() { } }
-	public class UIElement : System.Windows.Threading.DispatcherObject { public event System.Windows.Input.KeyEventHandler PreviewKeyDown; }
-	public class FrameworkElement : UIElement { public double Width, Height, MinWidth; public Thickness Margin; public VerticalAlignment VerticalAlignment; public HorizontalAlignment HorizontalAlignment; }
-	public class Window : System.Windows.Controls.ContentControl { public string Title; public WindowState WindowState; public event EventHandler Closed; public void Show() { } public bool Activate() { return true; } }
-	public class Application { public static Application Current { get { return null; } } public System.Windows.Threading.Dispatcher Dispatcher { get { return null; } } }
+	public class RoutedEvent { }
+	public class UIElement : System.Windows.Threading.DispatcherObject { public event System.Windows.Input.KeyEventHandler PreviewKeyDown; public static readonly RoutedEvent PreviewKeyDownEvent = new RoutedEvent(); public void AddHandler(RoutedEvent e, Delegate h, bool handledEventsToo) { } public void RemoveHandler(RoutedEvent e, Delegate h) { } }
+	public class FrameworkElement : UIElement { public object Tag; public double Width, Height, MinWidth; public Thickness Margin; public VerticalAlignment VerticalAlignment; public HorizontalAlignment HorizontalAlignment; }
+	public class Window : System.Windows.Controls.ContentControl { public string Title; public WindowState WindowState; public event EventHandler Closed; public void Show() { } public void Close() { } public bool Activate() { return true; } }
+	public class WindowCollection : System.Collections.IEnumerable { public System.Collections.IEnumerator GetEnumerator() { return new List<Window>().GetEnumerator(); } }
+	public class Application { public static Application Current { get { return null; } } public System.Windows.Threading.Dispatcher Dispatcher { get { return null; } } public WindowCollection Windows { get { return null; } } }
 }
 namespace System.Windows.Input
 {
@@ -80,7 +82,7 @@ namespace System.Windows.Controls
 		public string Text; public double FontSize; public System.Windows.Media.Brush Foreground; public System.Windows.TextWrapping TextWrapping; public System.Windows.FontWeight FontWeight;
 	}
 	public class Viewbox : System.Windows.FrameworkElement { public System.Windows.Media.Stretch Stretch; public System.Windows.UIElement Child; }
-	public class ScrollViewer : ContentControl { public ScrollBarVisibility VerticalScrollBarVisibility; public double VerticalOffset { get { return 0; } } public void ScrollToVerticalOffset(double o) { } }
+	public class ScrollViewer : ContentControl { public ScrollBarVisibility VerticalScrollBarVisibility, HorizontalScrollBarVisibility; public double VerticalOffset { get { return 0; } } public void ScrollToVerticalOffset(double o) { } }
 	public class SelectionChangedEventArgs : EventArgs { }
 	public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
 	public class Selector : Control { public ItemCollection Items = new ItemCollection(); public int SelectedIndex; public object SelectedItem; public event SelectionChangedEventHandler SelectionChanged; }

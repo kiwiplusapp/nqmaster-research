@@ -22,7 +22,7 @@ namespace NinjaTrader.Cbi {
  public class MasterInstrument { public InstrumentType InstrumentType; public double PointValue; public double RoundToTickSize(double p){return p;} public double RoundDownToTickSize(double p){return p;} public string FormatPrice(double p){return "";} }
  public class Instrument { public MasterInstrument MasterInstrument; public string FullName; public DateTime Expiry; }
  public class Order { public string Name, FromEntrySignal; public OrderState OrderState; public OrderType OrderType; public OrderAction OrderAction; public int Quantity, Filled; public double AverageFillPrice, LimitPrice, StopPrice; }
- public class Execution { public Order Order; public string Name; public DateTime Time; }
+ public class Execution { public Order Order; public string Name; public DateTime Time; public double Commission; }
  public class Position { public MarketPosition MarketPosition; public int Quantity; public Instrument Instrument; public double GetUnrealizedProfitLoss(PerformanceUnit u, double p){return 0;} }
  public class PositionCollection : List<Position> {}
  public class Account { public string Name; public PositionCollection Positions; public double Get(AccountItem i, Currency c){return 0;} public void Flatten(ICollection<Instrument> i){} }

@@ -13,6 +13,7 @@
 - **Seguridad:** la estrategia solo publica una foto de sus datos; la ventana la lee una vez por segundo. La ventana no puede tocar órdenes, y si falla algo del dibujo la estrategia sigue operando y la ventana muestra el error.
 - **Estado:** pasó el chequeo de sintaxis en la nube contra un stub de NinjaTrader y de WPF (`tools/nt8_stub/WpfStub.cs`). El aspecto real se ajusta con capturas tuyas después del F5.
 - El panel de texto sobre el gráfico sigue igual; se apaga con *Mostrar el panel*.
+- **Ojo con la lista de trades de NinjaTrader y las líneas del gráfico:** NinjaTrader une entradas y salidas en orden de llegada (FIFO) para toda la estrategia. Con dos módulos abiertos del mismo lado, la salida de uno aparece pegada a la entrada del otro (ejemplo del 9-oct: la entrada de NF05 aparece con la salida por tiempo de ON07). El total es correcto; el reparto por módulo no. Por eso el panel y el reporte por módulo ahora calculan cada módulo con sus propias órdenes.
 
 ## ★★★★★★★★★★★★★★★★★★ 2026-10-21: panel nuevo, simulación del ciclo de cuenta y configuración limpia
 
