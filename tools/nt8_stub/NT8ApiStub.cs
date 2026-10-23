@@ -65,7 +65,7 @@ namespace NinjaTrader.NinjaScript {
   protected virtual void OnOrderUpdate(Order order, double limitPrice, double stopPrice, int quantity, int filled, double averageFillPrice, OrderState orderState, DateTime time, ErrorCode error, string nativeError){}
   protected virtual void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity, MarketPosition marketPosition, string orderId, DateTime time){}
   protected virtual void OnMarketData(MarketDataEventArgs e){}
-  public void RemoveDrawObject(string tag){} public void Print(object o){} public void AddDataSeries(BarsPeriodType t, int v){} public void SetState(State s){}
+  public NinjaTrader.Gui.Chart.ChartControl ChartControl; public void RemoveDrawObject(string tag){} public void Print(object o){} public void AddDataSeries(BarsPeriodType t, int v){} public void SetState(State s){}
   public void Alert(string id, Priority p, string msg, string sound, int rearm, System.Windows.Media.Brush b, System.Windows.Media.Brush f){}
   public Order EnterLong(int q, string s){return null;} public Order EnterShort(int q, string s){return null;}
   public Order EnterLong(int bip, int q, string s){return null;} public Order EnterShort(int bip, int q, string s){return null;}

@@ -1,5 +1,19 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★★★★★★★★★★ 2026-10-23: ventana del panel (NQMasterPanel.cs)
+
+- **Archivo nuevo, obligatorio:** copiá `NQMasterPanel.cs` junto a `NQMaster.cs` en `Documents\NinjaTrader 8\bin\Custom\Strategies` y apretá F5. Sin ese archivo NQMaster no compila.
+- **Cuándo se abre:** al pasar a vivo en un gráfico, se abre una ventana aparte "NQMaster". En el Strategy Analyzer no se abre. Si la cerrás, **Ctrl+Shift+P** con el gráfico seleccionado la vuelve a abrir. Se apaga con *Abrir la ventana del panel...* (grupo 07).
+- **Una sola ventana para todas las cuentas:** cada NQMaster activo (una cuenta, un instrumento) aparece en el selector de arriba.
+- **Pestañas:**
+  - **Resumen:** estado, tendencia y ATR; tarjetas de neto, por mes, % de ganadoras, caída máxima, días positivos y por trade; curva de ganancia diaria; en vivo, lo real contra lo esperado; barra del monitor de borde.
+  - **Cuenta:** la cuenta real (saldo, límite, colchón con barra de color, objetivo, retiro disponible) y la simulación del ciclo (resultado neto, retiros, evaluaciones, fondeadas, costos, curva de lo cobrado neto, la cuenta actual con barras de colchón y objetivo, y el historial con fechas en verde y rojo).
+  - **Módulos:** tabla por módulo con trades, ganadoras, PF y neto, de todo el período y de los últimos 365 días; PF menor a 1 en rojo.
+  - **Avisos:** los avisos activos y los datos de la corrida.
+- **Seguridad:** la estrategia solo publica una foto de sus datos; la ventana la lee una vez por segundo. La ventana no puede tocar órdenes, y si falla algo del dibujo la estrategia sigue operando y la ventana muestra el error.
+- **Estado:** pasó el chequeo de sintaxis en la nube contra un stub de NinjaTrader y de WPF (`tools/nt8_stub/WpfStub.cs`). El aspecto real se ajusta con capturas tuyas después del F5.
+- El panel de texto sobre el gráfico sigue igual; se apaga con *Mostrar el panel*.
+
 ## ★★★★★★★★★★★★★★★★★★ 2026-10-21: panel nuevo, simulación del ciclo de cuenta y configuración limpia
 
 ### Qué cambió
