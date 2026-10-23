@@ -1,5 +1,20 @@
 # NQ MASTER: todo el portafolio en una sola estrategia
 
+## ★★★★★★★★★★★★★★★★★★★★ 2026-10-23: primera eval Lucid Flex 50K (research/mine/flex50_choice.py)
+
+Simulación (sistema actual solo NQ, minuto a minuto, +1 tick; T1 = arranques 2020-22, T2 = 2023-26; fondeada 2 contratos, retiro a $4.000; eval $69).
+
+| Opción | 1 eval, fondeado en 22 días (T1/T2) | hasta 3 evals, 22 días | $/mes por cuenta (mediana) | con 35% menos edge: 3 evals / $/mes | edge cero: $/mes |
+|---|---|---|---|---|---|
+| 50%, DLL OFF, 2 contratos | 52 / 51% | 74 / 75% | 1.610 / 1.431 | 61 / 58% · 975 / 958 | -17 / 150 |
+| 40%, DLL OFF, 2 contratos | 49 / 52% | 69 / 71% | 1.613 / 1.575 | 55 / 54% · 970 / 958 | -22 / 156 |
+| 50%, DLL $1.200, 2 contratos | 50 / 50% | 73 / 73% | 1.471 / 1.264 | 57 / 58% · 970 / 629 | -141 / -155 |
+| 50%, DLL OFF, 1 contrato x8 | 45 / 48% (120 días: 82 / 68%) | 47 / 53% | 1.460 / 1.310 | 37 / 37% · 987 / 681 | 70 / -75 |
+
+- Consistencia 50% pasa 2-5 puntos más que 40%. DLL $1.200 casi no cambia la eval pero en la fondeada a 2 contratos corta ~10-35% del ingreso: DLL OFF.
+- Preset: **Lucid50K** (50%) o **Lucid50K40** (si compraste 40%: consistencia 40, profit stop $1.080). Contracts 2, EvalPrice 69.
+- Con 1 sola compra y sin recompra, 1 contrato x8 llega a fondeada más veces a largo plazo (82/68% en 120 días) pero más lento.
+
 ## ★★★★★★★★★★★★★★★★★★★ 2026-10-23: ventana del panel (NQMasterPanel.cs)
 
 - **Archivo nuevo, obligatorio:** copiá `NQMasterPanel.cs` junto a `NQMaster.cs` en `Documents\NinjaTrader 8\bin\Custom\Strategies` y apretá F5. Sin ese archivo NQMaster no compila.

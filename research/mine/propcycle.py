@@ -59,6 +59,7 @@ class PropCycle:
 PRESETS = {
     "Lucid25K": dict(firm="Lucid Flex 25K", model=0, T=1250, D=1000, cons=0.5, Q=100, cap1=1000, cap2=1000, payout_at=1500, fee=89),
     "Lucid50K": dict(firm="Lucid Flex 50K", model=0, T=3000, D=2000, cons=0.5, Q=150, cap1=2000, cap2=2000, payout_at=4000, fee=146),
+    "Lucid50K40": dict(firm="Lucid Flex 50K (40%)", model=0, T=3000, D=2000, cons=0.4, Q=150, cap1=2000, cap2=2000, payout_at=4000, fee=146),
     "Lucid150K": dict(firm="Lucid Flex 150K", model=0, T=9000, D=4500, cons=0.5, Q=250, cap1=3000, cap2=3000, payout_at=6000, fee=285),
     "LucidPro25K": dict(firm="Lucid Pro 25K", model=1, T=1250, D=1000, cons=0.0, cap1=1000, cap2=1500, payout_at=2100, fee=123),
     "LucidPro50K": dict(firm="Lucid Pro 50K", model=1, T=3000, D=2000, cons=0.0, cap1=2000, cap2=2500, payout_at=4100, fee=192),

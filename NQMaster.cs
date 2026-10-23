@@ -50,7 +50,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 {
 	public enum NQMasterProfile { Ultra, UltraQ, WR70Plus, Durable, Custom }
 	public enum NQMasterPropMode { Off, Eval, Funded }
-	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K, Mffu50KLadder, Lucid150K, LucidPro50K }
+	public enum NQMasterPropPreset { Manual, Lucid25K, Lucid50K, Mffu50K, LucidPro25K, FundedNext25K, Mffu50KLadder, Lucid150K, LucidPro50K, Lucid50K40 }
 	public enum NQMasterSafeSet { Classic, Estable }
 
 	public class NQMaster : Strategy
@@ -210,7 +210,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				switch (PropPreset)
 				{
-					case NQMasterPropPreset.Lucid25K: case NQMasterPropPreset.Lucid50K: case NQMasterPropPreset.Lucid150K:
+					case NQMasterPropPreset.Lucid25K: case NQMasterPropPreset.Lucid50K: case NQMasterPropPreset.Lucid50K40: case NQMasterPropPreset.Lucid150K:
 					case NQMasterPropPreset.LucidPro25K: case NQMasterPropPreset.LucidPro50K: HedgeGroup = "LUCID"; break;
 					case NQMasterPropPreset.Mffu50K: case NQMasterPropPreset.Mffu50KLadder: HedgeGroup = "MFFU"; break;
 					case NQMasterPropPreset.FundedNext25K: HedgeGroup = "FNEXT"; break;
@@ -225,8 +225,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 					payoutHint = string.Format("ganancia >= ${0:0} y 5 d\u00edas >= $100 en el ciclo -> pedir min($1.000, 50% de la ganancia)", FundedPayoutAt);
 					break;
 				case NQMasterPropPreset.Lucid50K:
-					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = 50;
-					if (ev) { EvalTarget = 3000; EvalProfitStop = 1350; EvalRiskCapCushion = 0; MaxOpenContracts = 40; EvalHighWrMultiplier = 8; }
+				case NQMasterPropPreset.Lucid50K40:
+					// Lucid50K40 (2026-10-23): the same Lucid Flex 50K bought with the cheaper 40% eval consistency option; profit stop 0.9 x 40% x 3,000.
+					// research/mine/flex50_choice.py: 40% passes 2-5 pts less often than 50% (2c, up to 3 evals within 22 days 69/71% vs 74/75%).
+					StartBalance = 50000; PropTrailingDD = 2000; ConsistencyPct = PropPreset == NQMasterPropPreset.Lucid50K40 ? 40 : 50;
+					if (ev) { EvalTarget = 3000; EvalProfitStop = PropPreset == NQMasterPropPreset.Lucid50K40 ? 1080 : 1350; EvalRiskCapCushion = 0; MaxOpenContracts = 40; EvalHighWrMultiplier = 8; }
 					else { EvalTarget = 0; RiskCapPerContract = 300; FundedRiskCapCushion = 1000; FundedPayoutAt = 4000; MaxOpenContracts = 20; FundedProfitStop = 0; }
 					payoutHint = string.Format("ganancia >= ${0:0} y 5 d\u00edas >= $150 en el ciclo -> pedir min($2.000, 50% de la ganancia)", FundedPayoutAt);
 					break;
@@ -2346,7 +2349,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			switch (PropPreset)
 			{
 				case NQMasterPropPreset.Lucid25K: p.Firm = "Lucid Flex 25K"; p.Model = 0; p.Q = 100; p.Cap1 = p.Cap2 = 1000; p.Fee = 89; break;
-				case NQMasterPropPreset.Lucid50K: p.Firm = "Lucid Flex 50K"; p.Model = 0; p.Q = 150; p.Cap1 = p.Cap2 = 2000; p.Fee = 146; break;
+				case NQMasterPropPreset.Lucid50K: case NQMasterPropPreset.Lucid50K40: p.Firm = PropPreset == NQMasterPropPreset.Lucid50K40 ? "Lucid Flex 50K (40%)" : "Lucid Flex 50K"; p.Model = 0; p.Q = 150; p.Cap1 = p.Cap2 = 2000; p.Fee = 146; break;
 				case NQMasterPropPreset.Lucid150K: p.Firm = "Lucid Flex 150K"; p.Model = 0; p.Q = 250; p.Cap1 = p.Cap2 = 3000; p.Fee = 285; break;
 				case NQMasterPropPreset.LucidPro25K: p.Firm = "Lucid Pro 25K"; p.Model = 1; p.Cap1 = 1000; p.Cap2 = 1500; p.Fee = 123; break;
 				case NQMasterPropPreset.LucidPro50K: p.Firm = "Lucid Pro 50K"; p.Model = 1; p.Cap1 = 2000; p.Cap2 = 2500; p.Fee = 192; break;
