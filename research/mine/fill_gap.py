@@ -31,23 +31,38 @@ def xkind(name):
     return "stop" if n.startswith("stop") else ("target" if n.startswith("profit") else "time/flat")
 
 
-def bar_open(ts):
-    """ET timestamp of a fill -> open time of the 1-minute bar it belongs to. NinjaTrader stamps a Standard fill with the bar CLOSE
-    (seconds = 0 -> minus one minute); a tick / second series stamps it with the tick time (seconds > 0 -> floor to the minute)."""
-    sec = ts.dt.second > 0
-    return pd.Series(np.where(sec, ts.dt.floor("min"), ts - pd.Timedelta(minutes=1)), index=ts.index)
+def bar_open(ts, tick_stamped=None):
+    """ET timestamp of a fill -> open time of the 1-minute bar it belongs to. A 1-minute-series fill is stamped with the bar CLOSE
+    (minus one minute). A fill on a tick / second series is stamped with the tick time: floor to the minute, ALSO when the seconds are
+    :00 (a market order sent at the bar close fills on the first tick of the next minute, stamped HH:MM:00 = that bar's open). Whether
+    an export is tick-stamped is decided per export (tick_stamped), by default when > 20% of its fills carry seconds."""
+    if tick_stamped is None: tick_stamped = (ts.dt.second > 0).mean() > 0.2
+    if tick_stamped: return ts.dt.floor("min")
+    return ts - pd.Timedelta(minutes=1)
 
 
-def frame(path, tz, tag):
+def frame(path, tz, tag, tick_stamped=None, slip_ticks=0, slip_scope="all"):
+    """slip_ticks: synthetic slippage added to this export's fills (+ = adverse) on market / stop-market entries and, with slip_scope
+    'all', on stop-loss and time / flat exits: NinjaTrader's Slippage setting is not applied to fills on a secondary (tick) series
+    (measured 2026-10-26: Tick1 entries exactly 1 tick better than Standard), so the Tick1 export gets the 1 tick Standard charges."""
     t = load_nt(path)
     if "Strategy" in t.columns and (t["Strategy"].str.strip() != "NQMaster").any():
         n0 = len(t); t = t[t["Strategy"].str.strip() == "NQMaster"]; print(f"{tag}: {n0 - len(t)} rows of other strategies dropped")
     et = lambda s: s.dt.tz_localize(tz, ambiguous="NaT", nonexistent="shift_forward").dt.tz_convert("America/New_York").dt.tz_localize(None)
     tin_et, tout_et = et(t.tin), et(t.tout)
-    op = bar_open(tin_et); xo = bar_open(tout_et)
+    ts_flag = tick_stamped if tick_stamped is not None else bool(((tin_et.dt.second > 0) | (tout_et.dt.second > 0)).mean() > 0.2)
+    op = bar_open(tin_et, ts_flag); xo = bar_open(tout_et, ts_flag)
+    print(f"{tag}: {len(t)} trades, fill stamps read as {'tick time' if ts_flag else 'bar close'}" + (f", synthetic slippage {slip_ticks} tick(s) on {slip_scope}" if slip_ticks else ""))
+    mods = t["mod"].str.strip(); d = t["d"].values.astype(float); epx = t.epx.values.astype(float); xpx = t.xpx.values.astype(float); u = (t.pnl / t.qty).values.astype(float)
+    if slip_ticks:
+        ent = mods.map(lambda m: otype(m) != "limit").values
+        epx = epx + np.where(ent, d * slip_ticks * TICK, 0.0); u = u - np.where(ent, slip_ticks * TICK * 2.0, 0.0)          # MNQ $2 per point
+        if slip_scope == "all":
+            ex = t.xname.map(lambda n: xkind(n) != "target").values
+            xpx = xpx - np.where(ex, d * slip_ticks * TICK, 0.0); u = u - np.where(ex, slip_ticks * TICK * 2.0, 0.0)
     f = pd.DataFrame(dict(date=((op + pd.Timedelta(hours=6)).dt.normalize().dt.strftime("%Y%m%d").astype(int)),
-                          mod=t["mod"].str.strip().values, d=t["d"].values, qty=t.qty.values, u=(t.pnl / t.qty).values, pnl=t.pnl.values,
-                          epx=t.epx.values, xpx=t.xpx.values, xname=t.xname.values, bars=t.bars.values,
+                          mod=mods.values, d=t["d"].values, qty=t.qty.values, u=u, pnl=t.pnl.values,
+                          epx=epx, xpx=xpx, xname=t.xname.values, bars=t.bars.values,
                           tin=((op.dt.hour * 60 + op.dt.minute - 1080) % 1440).astype(int), tout=((xo.dt.hour * 60 + xo.dt.minute - 1080) % 1440).astype(int),
                           mod_et=(op.dt.hour * 60 + op.dt.minute).astype(int), tin_ts=tin_et.values, tout_ts=tout_et.values))
     f["otype"] = f["mod"].map(otype); f["band"] = f["mod_et"].map(band); f["xkind"] = f["xname"].map(xkind)
@@ -169,13 +184,16 @@ if __name__ == "__main__":
     ap.add_argument("--research", default=None, help="research set for the H3 table (e.g. ultra_d4); off by default")
     ap.add_argument("--bars", default="mnq_fut.npz", help="1-minute bars in research/data for the impossible-fill check")
     ap.add_argument("--out", default=None); ap.add_argument("--label-a", default="A (Standard)"); ap.add_argument("--label-b", default="B (Tick1)")
+    ap.add_argument("--slip-b", type=int, default=0, help="synthetic slippage (ticks) added to B's market / stop fills; NinjaTrader does not apply Slippage on a tick series")
+    ap.add_argument("--slip-b-scope", default="all", choices=["all", "entries"], help="'entries' when B's stop / target exits are still on the 1-minute series (they already carry the slippage)")
+    ap.add_argument("--stamps-b", default="auto", choices=["auto", "tick", "close"], help="how B's fill timestamps are read (auto = tick time when > 20%% carry seconds)")
     a = ap.parse_args(); out = a.out or os.path.join(HERE, f"fill_gap_{datetime.date.today():%Y%m%d}")
-    A = frame(a.a, a.tz, "A"); B = frame(a.b, a.tz, "B")
+    A = frame(a.a, a.tz, "A"); B = frame(a.b, a.tz, "B", None if a.stamps_b == "auto" else a.stamps_b == "tick", a.slip_b, a.slip_b_scope)
     lo, hi = max(A.date.min(), B.date.min()), min(A.date.max(), B.date.max())
     A = A[(A.date >= lo) & (A.date <= hi)].reset_index(drop=True); B = B[(B.date >= lo) & (B.date <= hi)].reset_index(drop=True)
     A, B = match(A, B, a.tol); P = pairs(A, B)
     pd.set_option("display.width", 250)
-    L = [f"# Fill gap: {a.label_a} vs {a.label_b} ({lo}-{hi})", ""]
+    L = [f"# Fill gap: {a.label_a} vs {a.label_b} ({lo}-{hi})" + (f" | B + {a.slip_b} tick(s) synthetic slippage on {a.slip_b_scope}" if a.slip_b else ""), ""]
     tot = summary(P, []).iloc[0] if len(P) else None
     if tot is None: L.append("- No matched trades."); print("\n".join(L)); sys.exit(1)
     pct_a = 100 * (A.k >= 0).mean(); pct_b = 100 * (B.k >= 0).mean()

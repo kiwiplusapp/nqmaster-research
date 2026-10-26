@@ -121,7 +121,8 @@ Detalle con fuentes y fechas en `research/mine/propfirms_check_2026-10-16.md`.
 
 ## Divergencias abiertas (conocidas)
 
-- **ICT:** NinjaTrader llena el retest unos minutos después que la investigación (82% emparejado).
+- **Módulos de 6 años sin paridad (SO04, RV11, ORFAIL, CAM3; medido el 2026-10-26 con el export Standard 2024-01 → 2026-10, `parity_check.py --set ultra_d4`):** NinjaTrader toma 41 trades de ORFAIL contra 108 de la investigación (34% emparejado), RV11 29 vs 39 (54%), CAM3 26 vs 32 (56%), SO04 69 vs 67 (89%). Lo que NinjaTrader opera gana más por trade que la regla validada (los 4 juntos: NT $143/mes por contrato, 6,7% del neto; investigación $100/mes, 5,2%), pero no es la regla validada. Aporte de los 4 en la investigación: Sharpe 3,54 → 3,64 en 2024-26 y 3,21 → 3,32 en 2020-23, drawdown igual (±1%), peor mes 2024-26 −$2.279 → −$2.410. **Estado: paridad pendiente (experimento 01, S2); siguen encendidos; al planificar cuentas no contar su aporte.** También fallan G1 (91,0% < 92) y G3 (correlación diaria 0,918 < 0,95) por ellos.
+- **ICT:** NinjaTrader llena el retest unos minutos después que la investigación (80-82% emparejado).
 - **MSEQS:**
   - En NinjaTrader necesita que ORB60 se haya llenado en short; la investigación usa la señal de ORB60 antes de los filtros (56% emparejado, ~$24/mes a favor de la investigación).
   - Si ORB60 está apagado o bloqueado por el risk cap, MSEQS no opera ese día.
