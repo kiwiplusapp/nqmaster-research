@@ -106,7 +106,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private TimeZoneInfo etZone;
 		private SimpleFont dashFont;
 		private bool badTimeframe;
-		private int fillBip;				// BarsInProgress every order is submitted to: 0 (1-minute bars, as always) or 2 (FillSeries Tick1 / Second1)
+		private int fillCfg, fillBip;		// fillCfg = series configured for the orders (0 = 1-minute bars as always, 2 = FillSeries Tick1 / Second1);
+													// fillBip = the one in use on this bar: 2 once the fill series has bars (tick history can start years after the minutes), else 0
 		private DateTime runStart;			// wall clock at DataLoaded -> run-time line at Terminated (Off vs Tick1 ratio)
 		private HashSet<int> fomc, cpiDays; private bool cpiToday;
 		// US CPI release days (BLS schedule) for CPI09; add later years with the CpiDates parameter
@@ -414,12 +415,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 				// SampleIntrabarBacktest. Backtest realism only: the 1-minute logic is untouched, fills happen on ticks / seconds.
 				if (FillSeries == NQMasterFillSeries.Tick1) AddDataSeries(BarsPeriodType.Tick, 1);
 				else if (FillSeries == NQMasterFillSeries.Second1) AddDataSeries(BarsPeriodType.Second, 1);
-				fillBip = FillSeries == NQMasterFillSeries.Off ? 0 : 2;
+				fillCfg = FillSeries == NQMasterFillSeries.Off ? 0 : 2; fillBip = 0;
 				TraceOrders = TraceOrdersLog;
 			}
 			else if (State == State.DataLoaded)
 			{
-				runStart = DateTime.Now; Print(string.Format("NQMaster | fill series {0} (orders on BarsInProgress {1}), trace orders {2}, run started {3:HH:mm:ss}", FillSeries, fillBip, TraceOrders ? "on" : "off", runStart));
+				runStart = DateTime.Now; Print(string.Format("NQMaster | fill series {0} (orders on BarsInProgress {1}), trace orders {2}, run started {3:HH:mm:ss}", FillSeries, fillCfg, TraceOrders ? "on" : "off", runStart));
 				rthCloses = new List<double>(); atrHist = new List<double>();
 				dashFont = new SimpleFont("Consolas", 11);
 				try { etZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"); } catch { etZone = null; }
@@ -499,9 +500,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 					Print(ofTicks == 0 ? "NQMaster | ORDER FLOW BOOST was on but NO TICK DATA arrived, so nothing was boosted. Backtests need Tick Replay: Tools > Options > Market data > 'Show Tick Replay', then tick 'Tick Replay' in the Strategy Analyzer data series."
 						: string.Format("NQMaster | order flow: {0:N0} trades read, {1} of {2} entries filled with the boost ({3:0.0}%; research Apr-Oct 2026: ~16%).", ofTicks, ofBoosted, ofEntries, ofEntries > 0 ? 100.0 * ofBoosted / ofEntries : 0));
 				if (mods != null && !wentLive) PrintModuleReport("end of run");
-				if (mods != null && runStart.Year > 2000 && BarsArray != null && BarsArray.Length > fillBip && BarsArray[0] != null)
+				if (mods != null && runStart.Year > 2000 && BarsArray != null && BarsArray.Length > fillCfg && BarsArray[0] != null)
 					Print(string.Format("NQMaster | RUN TIME fill series {0}: {1:0.0} s wall clock, {2:N0} 1-minute bars{3}", FillSeries, (DateTime.Now - runStart).TotalSeconds, BarsArray[0].Count,
-						fillBip > 0 && BarsArray[fillBip] != null ? string.Format(", {0:N0} fill-series bars", BarsArray[fillBip].Count) : ""));
+						fillCfg > 0 && BarsArray[fillCfg] != null ? string.Format(", {0:N0} fill-series bars", BarsArray[fillCfg].Count) : ""));
 				if (mods != null && totalTrades == 0 && rthDaysSeen < WarmupDays + 2)
 					Print(string.Format("NQMaster | 0 trades: only {0} RTH days loaded; needs {1} days of warm-up (property 'Warm-up days'). Start the test earlier or lower it.", rthDaysSeen, WarmupDays));
 			}
@@ -617,7 +618,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 		protected override void OnBarUpdate()
 		{
 			if (BarsInProgress == 2) return;				// fill series (FillSeries Tick1 / Second1): orders only, no logic
-			if (badTimeframe || CurrentBars[0] < 3 || (fillBip > 0 && CurrentBars[fillBip] < 1)) return;
+			if (badTimeframe || CurrentBars[0] < 3) return;
+			if (fillCfg > 0)							// orders go to the fill series only once it has bars; before that (no tick history yet) they go to the 1-minute series as with Off
+			{
+				int fb = CurrentBars.Length > fillCfg && CurrentBars[fillCfg] >= 1 ? fillCfg : 0;
+				if (fb != fillBip) { fillBip = fb; Log(string.Format("FILL SERIES {0}: orders on BarsInProgress {1} from this bar", FillSeries, fillBip)); }
+			}
 			if (BarsInProgress == 1) { OnFiveMinute(); return; }
 
 			DateTime etClose = ToEt(Time[0]);

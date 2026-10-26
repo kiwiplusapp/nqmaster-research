@@ -26,7 +26,8 @@ rep("\tpublic enum NQMasterSafeSet { Classic, Estable }\n",
 # 2. fields
 rep("\t\tprivate bool badTimeframe;\n",
     "\t\tprivate bool badTimeframe;\n"
-    "\t\tprivate int fillBip;\t\t\t\t// BarsInProgress every order is submitted to: 0 (1-minute bars, as always) or 2 (FillSeries Tick1 / Second1)\n"
+    "\t\tprivate int fillCfg, fillBip;\t\t// fillCfg = series configured for the orders (0 = 1-minute bars as always, 2 = FillSeries Tick1 / Second1);\n"
+    "\t\t\t\t\t\t\t\t\t\t\t\t\t// fillBip = the one in use on this bar: 2 once the fill series has bars (tick history can start years after the minutes), else 0\n"
     "\t\tprivate DateTime runStart;\t\t\t// wall clock at DataLoaded -> run-time line at Terminated (Off vs Tick1 ratio)\n")
 # 3. defaults
 rep("\t\t\t\tUseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;\n",
@@ -39,24 +40,29 @@ rep("\t\t\telse if (State == State.Configure)\n\t\t\t{\n\t\t\t\tAddDataSeries(Ba
     "\t\t\t\t// SampleIntrabarBacktest. Backtest realism only: the 1-minute logic is untouched, fills happen on ticks / seconds.\n"
     "\t\t\t\tif (FillSeries == NQMasterFillSeries.Tick1) AddDataSeries(BarsPeriodType.Tick, 1);\n"
     "\t\t\t\telse if (FillSeries == NQMasterFillSeries.Second1) AddDataSeries(BarsPeriodType.Second, 1);\n"
-    "\t\t\t\tfillBip = FillSeries == NQMasterFillSeries.Off ? 0 : 2;\n"
+    "\t\t\t\tfillCfg = FillSeries == NQMasterFillSeries.Off ? 0 : 2; fillBip = 0;\n"
     "\t\t\t\tTraceOrders = TraceOrdersLog;\n\t\t\t}\n")
 # 5. DataLoaded: start clock
 rep("\t\t\telse if (State == State.DataLoaded)\n\t\t\t{\n\t\t\t\trthCloses = new List<double>(); atrHist = new List<double>();\n",
     "\t\t\telse if (State == State.DataLoaded)\n\t\t\t{\n"
-    "\t\t\t\trunStart = DateTime.Now; Print(string.Format(\"NQMaster | fill series {0} (orders on BarsInProgress {1}), trace orders {2}, run started {3:HH:mm:ss}\", FillSeries, fillBip, TraceOrders ? \"on\" : \"off\", runStart));\n"
+    "\t\t\t\trunStart = DateTime.Now; Print(string.Format(\"NQMaster | fill series {0} (orders on BarsInProgress {1}), trace orders {2}, run started {3:HH:mm:ss}\", FillSeries, fillCfg, TraceOrders ? \"on\" : \"off\", runStart));\n"
     "\t\t\t\trthCloses = new List<double>(); atrHist = new List<double>();\n")
 # 6. Terminated: run time
 rep("\t\t\t\tif (mods != null && !wentLive) PrintModuleReport(\"end of run\");\n",
     "\t\t\t\tif (mods != null && !wentLive) PrintModuleReport(\"end of run\");\n"
-    "\t\t\t\tif (mods != null && runStart.Year > 2000 && BarsArray != null && BarsArray.Length > fillBip && BarsArray[0] != null)\n"
+    "\t\t\t\tif (mods != null && runStart.Year > 2000 && BarsArray != null && BarsArray.Length > fillCfg && BarsArray[0] != null)\n"
     "\t\t\t\t\tPrint(string.Format(\"NQMaster | RUN TIME fill series {0}: {1:0.0} s wall clock, {2:N0} 1-minute bars{3}\", FillSeries, (DateTime.Now - runStart).TotalSeconds, BarsArray[0].Count,\n"
-    "\t\t\t\t\t\tfillBip > 0 && BarsArray[fillBip] != null ? string.Format(\", {0:N0} fill-series bars\", BarsArray[fillBip].Count) : \"\"));\n")
+    "\t\t\t\t\t\tfillCfg > 0 && BarsArray[fillCfg] != null ? string.Format(\", {0:N0} fill-series bars\", BarsArray[fillCfg].Count) : \"\"));\n")
 # 7. OnBarUpdate guard (first line) + fill series must have bars before an order can go to it
 rep("\t\tprotected override void OnBarUpdate()\n\t\t{\n\t\t\tif (badTimeframe || CurrentBars[0] < 3) return;\n",
     "\t\tprotected override void OnBarUpdate()\n\t\t{\n"
     "\t\t\tif (BarsInProgress == 2) return;\t\t\t\t// fill series (FillSeries Tick1 / Second1): orders only, no logic\n"
-    "\t\t\tif (badTimeframe || CurrentBars[0] < 3 || (fillBip > 0 && CurrentBars[fillBip] < 1)) return;\n")
+    "\t\t\tif (badTimeframe || CurrentBars[0] < 3) return;\n"
+    "\t\t\tif (fillCfg > 0)\t\t\t\t\t\t\t// orders go to the fill series only once it has bars; before that (no tick history yet) they go to the 1-minute series as with Off\n"
+    "\t\t\t{\n"
+    "\t\t\t\tint fb = CurrentBars.Length > fillCfg && CurrentBars[fillCfg] >= 1 ? fillCfg : 0;\n"
+    "\t\t\t\tif (fb != fillBip) { fillBip = fb; Log(string.Format(\"FILL SERIES {0}: orders on BarsInProgress {1} from this bar\", FillSeries, fillBip)); }\n"
+    "\t\t\t}\n")
 # 8. every order call: BarsInProgress 0 -> fillBip
 for a, b, c in [("EnterLong(0, ", "EnterLong(fillBip, ", 9), ("EnterShort(0, ", "EnterShort(fillBip, ", 9),
                 ("EnterLongStopMarket(0, true, ", "EnterLongStopMarket(fillBip, true, ", 4), ("EnterShortStopMarket(0, true, ", "EnterShortStopMarket(fillBip, true, ", 4),
