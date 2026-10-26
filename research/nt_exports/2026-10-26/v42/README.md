@@ -31,9 +31,17 @@ Off y Tick1 v4.2 sobre **2026-06-01 → 2026-10-23, mismo Days to load**, 388 pa
 
 Lecturas anteriores, para la historia: cruda v4.1 sin desplazar los brackets −3,5 % (sesgo de 1 tick por bracket), v4.1 corregida −1,1 % (incluía las 48 salidas MaxHold tardías), v4.2 +0,4 %.
 
+## Playback Tick1 con 6 contratos (26-oct, `output_playback_tick1_6c_2026-10-13_16.txt`): sin concluir, el replay no avanzó
+
+Lo que sí probó (parte histórica de la corrida, junio → 12-oct, cuenta Playback101, Contracts 6, TraceOrders): 302 entradas por la serie de ticks con brackets de 6, 8, 12, 14 y 20 lotes (MOM1030 pidió 24 y el tope de 20 contratos abiertos lo dejó en 14: `StopX`/`TargetX` salieron con 14, igual que el fill); **NinjaTrader cancela solo el bracket hermano al cerrarse la posición** ("Cancelled pending exit order, since associated position is closed", 220 veces) y nuestros `CancelBrackets` cubren las salidas a mercado (164 cancelaciones propias de `StopX`/`TargetX`); 22 `ChangeOrder` de `StopX` (break-even de VOLB) aceptados; 0 "Ignored", 0 errores, `RUN TIME` 0 huérfanas / 0 forzadas (los 19 minutos sin ticks son el 25-jun del histórico).
+
+Lo que no probó: la parte en tiempo real. A las 01:00 del 13-oct el Output dice `Playback connection: strategy clock = last 1-minute bar`, `FillSeries Tick1 kept on the Playback connection`, `LIVE on MNQ DEC26 | contracts 6` y el `MODULE HEALTH`; **después no hay ni una línea más** (ni `EDGE day 7`, ni entradas, ni `FLATTEN: end of day`) y el `RUN TIME` se imprimió a los 564 s de reloj. El backtest Off tiene **26 trades el 13-16 oct (6 el 13: CRT11, MOM1030, MOM13, MSEQ, REV06, VOLB)**, así que un replay que hubiera avanzado habría dejado entradas `x6` en el Output. La detección de Playback y el guard `LateBar` ya no son el problema (en el intento anterior cada barra salía como "processed late"; ahora ninguna).
+
+Para repetirlo: con la estrategia habilitada en el gráfico de Playback, dar *play* en el controlador de Playback (velocidad 100-500×) y dejarlo llegar al 16-oct 17:00; si el controlador no tiene datos de replay del 16-oct, descargarlos (Playback connection → *Download replay data*). Señales de que corrió: líneas `EDGE day 7/8/9` (una por día), `FLATTEN: end of day` cada 15:56 ET, entradas `… filled @` con `x6`, y la pestaña Orders del Playback101 vacía al final. Export de trades de Playback101 → `v42/trades_playback_tick1_6c.csv`, Output → acá.
+
 ## Qué sigue
 
 1. Opcional, 3 s: `Off 2026-06-01 → hoy` con **Slippage = 0** en el Analyzer y `fill_gap.py <ese> trades_tick1_2026-06-01_hoy.csv` **sin `--slip-b`**: la misma lectura sin ningún modelo de slippage (brackets desde el fill crudo en los dos lados). Debe dar ≈ +0,4 %.
-2. Playback Tick1, Contracts 6, 2026-10-13 → 10-15: Output con `Playback connection: strategy clock = last 1-minute bar`, `RUN TIME` con 0 huérfanas y 0 forzadas, pestaña Orders vacía tras el flatten de 15:56 (prueba de huérfanas con fills parciales).
+2. Playback Tick1, Contracts 6, 2026-10-13 → 10-16, **dejando correr el replay** (ver sección anterior): `RUN TIME` con 0 huérfanas y 0 forzadas, pestaña Orders vacía tras el flatten de 15:56 (prueba de huérfanas con fills parciales).
 3. Playback **Off** sobre los mismos 3 días, export de trades, contra el backtest Off de esos días: los `hold` de las salidas por MaxHold tienen que coincidir; si difieren en 1 barra, el vivo tiene el off-by-one de `EntryBar` y va en v4.3.
 4. S2: paridad por módulo (G4: ORFAIL, RV11, CAM3, MSEQS, ICT, SO04) y P3 (slippage real de las cuentas prop, `slip_model.py`).
