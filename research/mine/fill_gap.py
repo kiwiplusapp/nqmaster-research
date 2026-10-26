@@ -187,10 +187,15 @@ if __name__ == "__main__":
     ap.add_argument("--slip-b", type=int, default=0, help="synthetic slippage (ticks) added to B's market / stop fills; NinjaTrader does not apply Slippage on a tick series")
     ap.add_argument("--slip-b-scope", default="all", choices=["all", "entries"], help="'entries' when B's stop / target exits are still on the 1-minute series (they already carry the slippage)")
     ap.add_argument("--stamps-b", default="auto", choices=["auto", "tick", "close"], help="how B's fill timestamps are read (auto = tick time when > 20%% carry seconds)")
+    ap.add_argument("--exclude-dates", default="", help="comma list of trade dates (yyyymmdd) left out of both sides, e.g. days with TICK GAP minutes in the Tick1 run")
     a = ap.parse_args(); out = a.out or os.path.join(HERE, f"fill_gap_{datetime.date.today():%Y%m%d}")
     A = frame(a.a, a.tz, "A"); B = frame(a.b, a.tz, "B", None if a.stamps_b == "auto" else a.stamps_b == "tick", a.slip_b, a.slip_b_scope)
     lo, hi = max(A.date.min(), B.date.min()), min(A.date.max(), B.date.max())
     A = A[(A.date >= lo) & (A.date <= hi)].reset_index(drop=True); B = B[(B.date >= lo) & (B.date <= hi)].reset_index(drop=True)
+    excl = [int(x) for x in a.exclude_dates.split(",") if x.strip()]
+    if excl:
+        nA, nB = int(A.date.isin(excl).sum()), int(B.date.isin(excl).sum())
+        A = A[~A.date.isin(excl)].reset_index(drop=True); B = B[~B.date.isin(excl)].reset_index(drop=True); print(f"excluded dates {excl}: {nA} trades of A, {nB} of B")
     A, B = match(A, B, a.tol); P = pairs(A, B)
     pd.set_option("display.width", 250)
     L = [f"# Fill gap: {a.label_a} vs {a.label_b} ({lo}-{hi})" + (f" | B + {a.slip_b} tick(s) synthetic slippage on {a.slip_b_scope}" if a.slip_b else ""), ""]
@@ -198,7 +203,7 @@ if __name__ == "__main__":
     if tot is None: L.append("- No matched trades."); print("\n".join(L)); sys.exit(1)
     pct_a = 100 * (A.k >= 0).mean(); pct_b = 100 * (B.k >= 0).mean()
     rel = 100 * tot.d_usd_total / tot.usd_a if tot.usd_a else np.nan
-    L.append(f"- Trades: A {len(A)}, B {len(B)}, matched {len(P)} ({pct_a:.1f}% of A, {pct_b:.1f}% of B); tolerance {a.tol} min inside (date, module, direction).")
+    L.append(f"- Trades: A {len(A)}, B {len(B)}, matched {len(P)} ({pct_a:.1f}% of A, {pct_b:.1f}% of B); tolerance {a.tol} min inside (date, module, direction)." + (f" Dates excluded: {excl}." if excl else ""))
     L.append(f"- $ per contract on the matched trades: A {tot.usd_a:,.0f}, B {tot.usd_b:,.0f}, B - A {tot.d_usd_total:+,.0f} ({rel:+.1f}% of A); "
              f"per trade {tot.d_usd:+.2f} (95% CI {tot.ci_lo:+.2f} .. {tot.ci_hi:+.2f}); outcome flips {tot.flips_pct:.1f}%.")
     L.append(f"- Entry fill B - A: mean {tot.d_entry_ticks:+.2f} ticks (median {tot.d_entry_med:+.2f}); exit fill B - A: mean {tot.d_exit_ticks:+.2f} ticks; "

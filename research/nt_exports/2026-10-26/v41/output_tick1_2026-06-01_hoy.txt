@@ -1,0 +1,1710 @@
+NQMaster | fill series Tick1 (orders on BarsInProgress 2; 3 series loaded), trace orders off, run started 05:04:51
+NQMaster | profile Ultra | modules: ORB60 ORB90 MSEQ MSEQS CRT11 LON ICT MOM11 MOM13 MOM1030 ON07 REV06 VW13 LATE15 NF05 LF06 LF0430 CPI09 SO04 RV11 ORFAIL CAM3 VOLB 
+2026-05-31 19:04 | NQM | FILL SERIES Tick1: orders on BarsInProgress 2 from this bar
+2026-06-18 19:01 | NQM | short session (holiday / half day): the market closes 13:00 ET - no new entries this session
+2026-06-22 06:00 | NQM | NF05 SELL | ref 30653,50 | SL 568t
+2026-06-22 06:00 | NQM | NF05 filled @ 31030,50
+2026-06-22 10:01 | NQM | NF05 exit: time exit
+2026-06-22 10:01 | NQM | NF05 exit fill: NF05X x1 @ 31161,00
+2026-06-22 10:31 | NQM | VOLB skipped: stop 32,00 pts is inside the day's noise (< 0,10 x ATR 709,9)
+2026-06-22 12:00 | NQM | MOM11 SELL | ref 31122,25 | SL 710t
+2026-06-22 12:00 | NQM | MOM11 filled @ 30939,25
+2026-06-22 12:29 | NQM | MOM11 exit fill: TargetX x1 @ 30886,00
+2026-06-22 13:00 | NQM | CRT11 context x2
+2026-06-22 13:00 | NQM | CRT11 skipped: stop 17,75 pts is inside the day's noise (< 0,10 x ATR 709,9)
+2026-06-23 05:30 | NQM | LF0430 BUY | ref 30208,25 | SL 969t
+2026-06-23 05:30 | NQM | LF0430 filled @ 30098,50
+2026-06-23 06:00 | NQM | NF05 BUY | ref 30874,50 | SL 554t
+2026-06-23 06:00 | NQM | NF05 filled @ 30129,50
+2026-06-23 06:23 | NQM | LF0430 exit fill: TargetX x1 @ 30219,50
+2026-06-23 07:00 | NQM | REV06 BUY | ref 30203,25 | SL 554t
+2026-06-23 07:00 | NQM | REV06 filled @ 30186,50
+2026-06-23 08:00 | NQM | ON07 BUY | ref 30116,50 | SL 554t
+2026-06-23 08:00 | NQM | ON07 filled @ 30117,50
+2026-06-23 09:01 | NQM | ON07 exit: time exit
+2026-06-23 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30182,75
+2026-06-23 09:26 | NQM | REV06 exit fill: StopX x1 @ 30048,00
+2026-06-23 10:01 | NQM | NF05 exit: time exit
+2026-06-23 10:01 | NQM | NF05 exit fill: NF05X x1 @ 30025,25
+2026-06-23 10:40 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-06-23 10:40 | NQM | ICT BUY LIMIT @ 30044,75 | SL 29916,00
+2026-06-23 10:42 | NQM | ICT filled @ 30044,75
+2026-06-23 10:52 | NQM | ICT exit fill: TargetX x2 @ 30173,50
+2026-06-23 10:59 | NQM | VOLB filled @ 30227,00
+2026-06-23 11:30 | NQM | SIZE MOM1030 BUY: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-06-23 11:30 | NQM | MOM1030 BUY | ref 30017,75 | SL 554t
+2026-06-23 11:30 | NQM | MOM1030 filled @ 30282,75
+2026-06-23 11:47 | NQM | MOM1030 exit fill: StopX x4 @ 30144,25
+2026-06-23 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-06-23 12:25 | NQM | VOLB exit fill: StopX x1 @ 30017,75
+2026-06-23 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-06-24 08:00 | NQM | ON07 SELL | ref 30121,75 | SL 576t
+2026-06-24 08:00 | NQM | ON07 filled @ 30094,00
+2026-06-24 09:01 | NQM | ON07 exit: time exit
+2026-06-24 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30140,50
+2026-06-24 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-06-24 12:00 | NQM | MOM11 BUY | ref 30012,00 | SL 720t
+2026-06-24 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-06-24 12:00 | NQM | MOM11 filled @ 30191,25
+2026-06-24 12:25 | NQM | MOM11 exit fill: StopX x1 @ 30011,25
+2026-06-24 13:00 | NQM | confluence x2 (against MOM11, with overnight)
+2026-06-24 13:01 | NQM | confluence x2 (against MOM11, with overnight)
+2026-06-24 13:01 | NQM | SIZE CRT11 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-06-24 13:01 | NQM | CRT11 SELL | SL 30207,50
+2026-06-24 13:01 | NQM | CRT11 filled @ 30066,00
+2026-06-24 14:00 | NQM | confluence x2 (against MOM11, with overnight)
+2026-06-24 14:00 | NQM | SIZE MOM13 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-06-24 14:00 | NQM | MOM13 SELL | ref 30012,00 | SL 576t
+2026-06-24 14:00 | NQM | MOM13 filled @ 29907,50
+2026-06-24 14:01 | NQM | VW13 SELL | ref 30028,75 | SL 432t
+2026-06-24 14:01 | NQM | VW13 filled @ 29913,00
+2026-06-24 14:07 | NQM | VW13 exit fill: TargetX x1 @ 29859,00
+2026-06-24 14:16 | NQM | VOLB filled @ 29800,75
+2026-06-24 14:18 | NQM | CRT11 exit fill: TargetX x2 @ 29783,00
+2026-06-24 14:20 | NQM | MOM13 exit fill: TargetX x2 @ 29763,50
+2026-06-24 15:50 | NQM | VOLB stop -> entry + 0.1R @ 29779,75
+2026-06-24 16:53 | NQM | VOLB exit fill: StopX x1 @ 29779,75
+2026-06-25 08:00 | NQM | ON07 SELL | ref 30468,25 | SL 572t
+2026-06-25 08:00 | NQM | ON07 filled @ 30459,75
+2026-06-25 09:01 | NQM | ON07 exit: time exit
+2026-06-25 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30426,50
+2026-06-25 10:42 | NQM | VOLB filled @ 30162,50
+2026-06-25 10:47 | NQM | VOLB stop -> entry + 0.1R @ 30133,50
+2026-06-25 11:01 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:02 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:03 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:04 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:05 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:06 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:07 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:08 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:09 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:10 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:11 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:12 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:13 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:14 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:15 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:16 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:17 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:18 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:19 | NQM | TICK GAP: this 1-minute bar has volume but the last fill-series bar is 10:58:48
+2026-06-25 11:30 | NQM | ORB60 SELL @ 29596,00 | SL 1000t | TP 0,6R
+2026-06-25 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-06-25 11:30 | NQM | MOM1030 SELL | ref 30452,50 | SL 572t
+2026-06-25 11:30 | NQM | MOM1030 filled @ 29886,75
+2026-06-25 11:51 | NQM | MOM1030 exit fill: StopX x4 @ 30029,75
+2026-06-25 12:00 | NQM | ORB90 context x2
+2026-06-25 12:00 | NQM | SIZE ORB90 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-06-25 12:00 | NQM | ORB90 SELL @ 29596,00 | SL 1000t | TP 0,6R
+2026-06-25 12:00 | NQM | MOM11 SELL | ref 30452,50 | SL 714t
+2026-06-25 12:00 | NQM | MOM11 filled @ 29933,50
+2026-06-25 12:12 | NQM | MOM11 exit fill: TargetX x1 @ 29880,00
+2026-06-25 13:11 | NQM | VOLB exit fill: StopX x1 @ 30133,50
+2026-06-25 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-06-26 06:00 | NQM | NF05 BUY | ref 30005,75 | SL 582t
+2026-06-26 06:00 | NQM | NF05 filled @ 29699,50
+2026-06-26 07:00 | NQM | LF06 BUY | ref 29827,00 | SL 582t
+2026-06-26 07:00 | NQM | LF06 filled @ 29672,25
+2026-06-26 09:16 | NQM | LF06 exit fill: TargetX x1 @ 29745,00
+2026-06-26 10:01 | NQM | NF05 exit: time exit
+2026-06-26 10:01 | NQM | NF05 exit fill: NF05X x1 @ 29588,75
+2026-06-26 11:30 | NQM | ORB60 context x2
+2026-06-26 11:31 | NQM | ORB60 context x2
+2026-06-26 11:31 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-06-26 11:31 | NQM | ORB60 SELL @ 29481,50 | SL 1019t | TP 0,6R
+2026-06-26 12:00 | NQM | ORB90 SELL @ 29481,50 | SL 1019t | TP 0,6R
+2026-06-26 12:00 | NQM | ORB60 order parked (opposite trade)
+2026-06-26 12:00 | NQM | ORB90 order parked (opposite trade)
+2026-06-26 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-06-26 12:01 | NQM | MOM11 BUY | ref 29661,25 | SL 728t
+2026-06-26 12:01 | NQM | MOM11 filled @ 29819,75
+2026-06-26 12:25 | NQM | MOM11 exit fill: TargetX x1 @ 29874,25
+2026-06-26 14:00 | NQM | ORB60 parked order dropped
+2026-06-26 14:00 | NQM | ORB90 parked order dropped
+2026-06-29 11:00 | NQM | ICT skipped: stop 53,75 pts is inside the day's noise (< 0,10 x ATR 716,1)
+2026-06-29 11:12 | NQM | VOLB filled @ 29703,25
+2026-06-29 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-06-29 11:30 | NQM | MOM1030 SELL | ref 29944,00 | SL 573t
+2026-06-29 11:30 | NQM | MOM1030 filled @ 29845,00
+2026-06-29 11:33 | NQM | VOLB exit fill: StopX x1 @ 29944,00
+2026-06-29 11:48 | NQM | MOM1030 exit fill: TargetX x4 @ 29802,00
+2026-06-29 12:00 | NQM | MOM11 BUY | ref 29944,00 | SL 716t
+2026-06-29 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-06-29 12:00 | NQM | MOM11 filled @ 30014,00
+2026-06-29 12:29 | NQM | MOM11 exit fill: TargetX x1 @ 30067,75
+2026-06-30 04:47 | NQM | LON SELL LIMIT @ 30396,00 | SL 30517,00
+2026-06-30 04:47 | NQM | LON filled @ 30396,50
+2026-06-30 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-06-30 10:31 | NQM | LON exit: London exit 09:30
+2026-06-30 10:31 | NQM | LON exit fill: LONX x1 @ 30387,50
+2026-06-30 11:23 | NQM | VOLB filled @ 30704,25
+2026-06-30 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-06-30 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-06-30 12:00 | NQM | MOM11 BUY | ref 30346,50 | SL 722t
+2026-06-30 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-06-30 12:00 | NQM | MOM11 filled @ 30605,00
+2026-06-30 12:02 | NQM | MOM11 exit fill: TargetX x1 @ 30659,25
+2026-06-30 16:56 | NQM | FLATTEN: end of day
+2026-06-30 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 30875,50
+2026-07-01 08:00 | NQM | ON07 BUY | ref 30692,00 | SL 568t
+2026-07-01 08:00 | NQM | ON07 filled @ 30706,75
+2026-07-01 09:01 | NQM | ON07 exit: time exit
+2026-07-01 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30660,25
+2026-07-01 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-07-01 12:00 | NQM | MOM11 SELL | ref 30534,25 | SL 711t
+2026-07-01 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-01 12:00 | NQM | MOM11 filled @ 30492,50
+2026-07-01 15:16 | NQM | MOM11 exit fill: TargetX x1 @ 30439,25
+2026-07-02 07:00 | NQM | REV06 BUY | ref 30280,50 | SL 555t
+2026-07-02 07:00 | NQM | REV06 filled @ 30257,75
+2026-07-02 07:39 | NQM | REV06 exit fill: TargetX x1 @ 30299,25
+2026-07-02 08:00 | NQM | ON07 skipped: prior day moved against (context rule)
+2026-07-02 10:51 | NQM | VOLB filled @ 30514,75
+2026-07-02 11:22 | NQM | VOLB exit fill: StopX x1 @ 30378,00
+2026-07-02 11:30 | NQM | ORB60 BUY @ 30593,00 | SL 971t | TP 0,6R
+2026-07-02 12:00 | NQM | ORB90 BUY @ 30593,00 | SL 971t | TP 0,6R
+2026-07-02 12:00 | NQM | ORB60 order parked (opposite trade)
+2026-07-02 12:00 | NQM | ORB90 order parked (opposite trade)
+2026-07-02 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-02 12:01 | NQM | MOM11 SELL | ref 30378,00 | SL 693t
+2026-07-02 12:01 | NQM | MOM11 filled @ 30142,25
+2026-07-02 12:03 | NQM | MOM11 exit fill: TargetX x1 @ 30090,25
+2026-07-02 12:04 | NQM | ORB60 parked order re-placed @ 30593,00
+2026-07-02 12:04 | NQM | ORB90 parked order re-placed @ 30593,00
+2026-07-02 19:01 | NQM | short session (holiday / half day): the market closes 13:00 ET - no new entries this session
+2026-07-06 07:00 | NQM | REV06 SELL | ref 30163,00 | SL 553t
+2026-07-06 07:00 | NQM | REV06 filled @ 30177,50
+2026-07-06 10:18 | NQM | REV06 exit fill: TargetX x1 @ 30136,00
+2026-07-06 10:31 | NQM | VOLB skipped: stop 33,75 pts is inside the day's noise (< 0,10 x ATR 691,7)
+2026-07-06 11:00 | NQM | ORFAIL SELL | SL 30308,50 | TP 30075,75
+2026-07-06 11:00 | NQM | ORFAIL filled @ 30235,25
+2026-07-06 11:11 | NQM | ORFAIL exit fill: StopX x1 @ 30308,50
+2026-07-06 12:00 | NQM | MOM11 BUY | ref 30135,00 | SL 692t
+2026-07-06 12:00 | NQM | MOM11 filled @ 30325,25
+2026-07-06 12:43 | NQM | MOM11 exit fill: TargetX x1 @ 30377,25
+2026-07-07 05:01 | NQM | SO04 SELL | ref 30259,75 | SL 399t
+2026-07-07 05:01 | NQM | SO04 filled @ 29947,00
+2026-07-07 07:00 | NQM | REV06 SELL | ref 29950,25 | SL 532t
+2026-07-07 07:00 | NQM | REV06 filled @ 29962,25
+2026-07-07 08:00 | NQM | ON07 SELL | ref 29965,00 | SL 532t
+2026-07-07 08:00 | NQM | ON07 filled @ 29959,75
+2026-07-07 08:01 | NQM | REV06 exit fill: TargetX x1 @ 29922,25
+2026-07-07 09:01 | NQM | ON07 exit: time exit
+2026-07-07 09:01 | NQM | ON07 exit fill: ON07X x1 @ 29948,00
+2026-07-07 10:32 | NQM | SO04 exit: time exit
+2026-07-07 10:32 | NQM | SO04 exit fill: SO04X x1 @ 29941,25
+2026-07-07 10:54 | NQM | VOLB filled @ 29750,50
+2026-07-07 11:15 | NQM | VOLB stop -> entry + 0.1R @ 29736,25
+2026-07-07 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-07-07 11:30 | NQM | MOM1030 SELL | ref 29893,50 | SL 532t
+2026-07-07 11:30 | NQM | MOM1030 filled @ 29603,25
+2026-07-07 11:35 | NQM | MOM1030 exit fill: TargetX x4 @ 29563,25
+2026-07-07 12:00 | NQM | MOM11 SELL | ref 29893,50 | SL 665t
+2026-07-07 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-07 12:00 | NQM | MOM11 filled @ 29602,25
+2026-07-07 12:40 | NQM | MOM11 exit fill: TargetX x1 @ 29552,25
+2026-07-07 13:06 | NQM | VOLB exit fill: StopX x1 @ 29736,25
+2026-07-07 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-07-08 05:18 | NQM | LON SELL LIMIT @ 29628,75 | SL 29773,75
+2026-07-08 06:00 | NQM | LON order parked (opposite trade)
+2026-07-08 06:01 | NQM | NF05 BUY | ref 29600,75 | SL 536t
+2026-07-08 06:01 | NQM | NF05 filled @ 29313,50
+2026-07-08 07:00 | NQM | LF06 BUY | ref 29681,50 | SL 536t
+2026-07-08 07:00 | NQM | LF06 filled @ 29259,00
+2026-07-08 07:31 | NQM | LF06 exit fill: TargetX x1 @ 29326,00
+2026-07-08 09:01 | NQM | LON parked order dropped
+2026-07-08 10:02 | NQM | NF05 exit: time exit
+2026-07-08 10:02 | NQM | NF05 exit fill: NF05X x1 @ 29471,75
+2026-07-08 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-08 14:24 | NQM | VOLB filled @ 29716,00
+2026-07-08 16:56 | NQM | FLATTEN: end of day
+2026-07-08 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 29766,25
+2026-07-09 08:00 | NQM | ON07 SELL | ref 29938,50 | SL 525t
+2026-07-09 08:00 | NQM | ON07 filled @ 29900,50
+2026-07-09 09:01 | NQM | ON07 exit: time exit
+2026-07-09 09:01 | NQM | ON07 exit fill: ON07X x1 @ 29995,00
+2026-07-09 11:20 | NQM | SIZE ICT SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-09 11:20 | NQM | ICT SELL LIMIT @ 30143,75 | SL 30230,50
+2026-07-09 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-07-09 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-07-09 12:00 | NQM | ICT order parked (opposite trade)
+2026-07-09 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-09 12:01 | NQM | MOM11 BUY | ref 30045,50 | SL 656t
+2026-07-09 12:01 | NQM | MOM11 filled @ 30098,75
+2026-07-09 12:06 | NQM | MOM11 exit fill: TargetX x1 @ 30148,00
+2026-07-09 12:07 | NQM | ICT parked order dropped (level traded while blocked)
+2026-07-09 14:10 | NQM | VOLB filled @ 30255,25
+2026-07-09 16:56 | NQM | FLATTEN: end of day
+2026-07-09 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 30227,00
+2026-07-10 07:00 | NQM | REV06 SELL | ref 30107,25 | SL 518t
+2026-07-10 07:00 | NQM | REV06 filled @ 30114,50
+2026-07-10 09:05 | NQM | REV06 exit fill: TargetX x1 @ 30075,75
+2026-07-10 11:31 | NQM | ORB60 SELL @ 30096,00 | SL 690t | TP 0,6R
+2026-07-10 11:32 | NQM | ORB60 filled @ 30095,75
+2026-07-10 11:33 | NQM | ORB60 exit fill: TargetX x1 @ 29991,75
+2026-07-10 11:34 | NQM | ORB60 SELL @ 30096,00 | SL 690t | TP 0,6R
+2026-07-10 12:00 | NQM | ORB90 SELL @ 29977,00 | SL 906t | TP 0,6R
+2026-07-10 12:00 | NQM | MOM11 SELL | ref 30134,75 | SL 647t
+2026-07-10 12:00 | NQM | MOM11 filled @ 30117,50
+2026-07-10 12:00 | NQM | ORB60 filled @ 30096,00
+2026-07-10 12:25 | NQM | ORB60 exit fill: StopX x1 @ 30268,50
+2026-07-10 12:27 | NQM | MOM11 exit fill: StopX x1 @ 30279,25
+2026-07-10 13:00 | NQM | CRT11 context x2
+2026-07-10 13:00 | NQM | CRT11 skipped: stop 47,50 pts is inside the day's noise (< 0,10 x ATR 647,2)
+2026-07-10 14:30 | NQM | CAM3 SELL | SL 30363,75 | TP 30210,75
+2026-07-10 14:30 | NQM | CAM3 filled @ 30349,75
+2026-07-10 14:37 | NQM | CAM3 exit fill: StopX x1 @ 30363,75
+2026-07-13 05:13 | NQM | LON BUY LIMIT @ 29988,75 | SL 29846,25
+2026-07-13 05:13 | NQM | LON filled @ 29988,25
+2026-07-13 08:00 | NQM | ON07 BUY | ref 30043,50 | SL 504t
+2026-07-13 08:00 | NQM | ON07 filled @ 30055,75
+2026-07-13 09:01 | NQM | ON07 exit: time exit
+2026-07-13 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30027,50
+2026-07-13 10:31 | NQM | LON exit: London exit 09:30
+2026-07-13 10:31 | NQM | LON exit fill: LONX x1 @ 30014,00
+2026-07-13 10:51 | NQM | VOLB filled @ 29830,25
+2026-07-13 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-07-13 11:30 | NQM | VOLB exit fill: StopX x1 @ 30010,00
+2026-07-13 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-07-13 12:00 | NQM | MOM11 BUY | ref 30010,00 | SL 629t
+2026-07-13 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-13 12:00 | NQM | MOM11 filled @ 30017,75
+2026-07-13 13:23 | NQM | MOM11 exit fill: StopX x1 @ 29860,50
+2026-07-14 07:00 | NQM | REV06 SELL | ref 29882,00 | SL 504t
+2026-07-14 07:00 | NQM | REV06 filled @ 29902,25
+2026-07-14 08:02 | NQM | REV06 exit fill: TargetX x1 @ 29864,50
+2026-07-14 10:30 | NQM | SIZE CPI09 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-07-14 10:30 | NQM | CPI09 SELL | ref 29988,25 | SL 883t
+2026-07-14 10:30 | NQM | CPI09 filled @ 30111,25
+2026-07-14 10:34 | NQM | CPI09 exit fill: TargetX x4 @ 30000,75
+2026-07-14 11:09 | NQM | VOLB filled @ 29950,00
+2026-07-14 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-07-14 11:30 | NQM | MOM1030 SELL | ref 30110,75 | SL 504t
+2026-07-14 11:30 | NQM | MOM1030 filled @ 29983,75
+2026-07-14 11:34 | NQM | MOM1030 exit fill: StopX x4 @ 30109,75
+2026-07-14 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-14 12:04 | NQM | VOLB exit fill: StopX x1 @ 30110,75
+2026-07-14 13:00 | NQM | CRT11 context x2
+2026-07-14 13:00 | NQM | SIZE CRT11 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-14 13:00 | NQM | CRT11 SELL | SL 30196,00
+2026-07-14 13:00 | NQM | CRT11 filled @ 30086,25
+2026-07-14 16:56 | NQM | FLATTEN: end of day
+2026-07-14 16:56 | NQM | CRT11 exit fill: CRT11X x2 @ 30106,00
+2026-07-15 04:27 | NQM | LON SELL LIMIT @ 30270,25 | SL 30358,25
+2026-07-15 04:35 | NQM | LON filled @ 30270,25
+2026-07-15 10:31 | NQM | LON exit: London exit 09:30
+2026-07-15 10:31 | NQM | LON exit fill: LONX x1 @ 30254,00
+2026-07-15 10:46 | NQM | VOLB filled @ 30106,75
+2026-07-15 11:24 | NQM | VOLB stop -> entry + 0.1R @ 30092,00
+2026-07-15 11:30 | NQM | ORB60 SELL @ 29937,50 | SL 863t | TP 0,6R
+2026-07-15 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-07-15 11:30 | NQM | MOM1030 SELL | ref 30254,75 | SL 493t
+2026-07-15 11:30 | NQM | MOM1030 filled @ 30023,25
+2026-07-15 11:31 | NQM | MOM1030 exit fill: TargetX x4 @ 29986,25
+2026-07-15 11:36 | NQM | ORB60 filled @ 29937,50
+2026-07-15 12:00 | NQM | ORB90 context x2
+2026-07-15 12:00 | NQM | SIZE ORB90 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-15 12:00 | NQM | ORB90 SELL @ 29836,25 | SL 863t | TP 0,6R
+2026-07-15 12:00 | NQM | MOM11 SELL | ref 30254,75 | SL 616t
+2026-07-15 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-15 12:00 | NQM | MOM11 filled @ 29931,00
+2026-07-15 12:04 | NQM | MOM11 exit fill: TargetX x1 @ 29884,75
+2026-07-15 12:17 | NQM | ORB90 filled @ 29836,25
+2026-07-15 13:05 | NQM | VOLB exit fill: TargetX x1 @ 29810,75
+2026-07-15 13:05 | NQM | ORB60 exit fill: TargetX x1 @ 29808,00
+2026-07-15 13:40 | NQM | ORB90 exit fill: TargetX x2 @ 29706,75
+2026-07-15 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-07-15 14:01 | NQM | VW13 SELL | ref 29973,50 | SL 370t
+2026-07-15 14:01 | NQM | VW13 filled @ 29826,75
+2026-07-15 14:30 | NQM | VW13 exit fill: StopX x1 @ 29919,25
+2026-07-15 15:50 | NQM | MSEQS SELL | SL 30119,00
+2026-07-15 15:50 | NQM | MSEQS filled @ 29941,00
+2026-07-15 16:00 | NQM | LATE15 SELL | ref 30253,75 | SL 739t
+2026-07-15 16:00 | NQM | LATE15 filled @ 29912,25
+2026-07-15 16:56 | NQM | FLATTEN: end of day
+2026-07-15 16:56 | NQM | MSEQS exit fill: MSEQSX x1 @ 30002,25
+2026-07-15 16:56 | NQM | LATE15 exit fill: LATE15X x1 @ 30002,25
+2026-07-16 08:00 | NQM | ON07 SELL | ref 29842,75 | SL 491t
+2026-07-16 08:00 | NQM | ON07 filled @ 29828,75
+2026-07-16 08:49 | NQM | ON07 exit fill: TargetX x1 @ 29706,00
+2026-07-16 11:30 | NQM | ORB60 context x2
+2026-07-16 11:31 | NQM | ORB60 context x2
+2026-07-16 11:31 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-16 11:31 | NQM | ORB60 SELL @ 29557,25 | SL 859t | TP 0,6R
+2026-07-16 12:00 | NQM | ORB90 SELL @ 29557,25 | SL 859t | TP 0,6R
+2026-07-16 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-16 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-07-16 15:40 | NQM | VOLB filled @ 29504,25
+2026-07-16 16:56 | NQM | FLATTEN: end of day
+2026-07-16 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 29501,50
+2026-07-17 05:01 | NQM | SO04 SELL | ref 29486,50 | SL 369t
+2026-07-17 05:01 | NQM | SO04 filled @ 29000,25
+2026-07-17 05:17 | NQM | SO04 exit fill: TargetX x1 @ 28908,00
+2026-07-17 06:00 | NQM | NF05 BUY | ref 29396,00 | SL 491t
+2026-07-17 06:00 | NQM | NF05 filled @ 28929,00
+2026-07-17 10:01 | NQM | NF05 exit: time exit
+2026-07-17 10:01 | NQM | NF05 exit fill: NF05X x1 @ 28956,00
+2026-07-17 11:06 | NQM | VOLB filled @ 29109,50
+2026-07-17 12:00 | NQM | MOM11 BUY | ref 28905,75 | SL 614t
+2026-07-17 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-17 12:00 | NQM | MOM11 filled @ 29026,50
+2026-07-17 12:30 | NQM | MOM11 exit fill: TargetX x1 @ 29072,50
+2026-07-17 13:44 | NQM | VOLB stop -> entry + 0.1R @ 29130,00
+2026-07-17 15:20 | NQM | VOLB exit fill: StopX x1 @ 29130,00
+2026-07-20 07:00 | NQM | REV06 SELL | ref 29206,00 | SL 502t
+2026-07-20 07:00 | NQM | REV06 filled @ 29252,25
+2026-07-20 08:32 | NQM | REV06 exit fill: StopX x1 @ 29377,75
+2026-07-20 11:00 | NQM | SIZE ICT SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-20 11:00 | NQM | ICT SELL LIMIT @ 29425,50 | SL 29492,50
+2026-07-20 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-07-20 12:00 | NQM | MOM11 SELL | ref 29343,00 | SL 628t
+2026-07-20 12:00 | NQM | MOM11 filled @ 29191,00
+2026-07-20 12:54 | NQM | MOM11 exit fill: StopX x1 @ 29348,00
+2026-07-20 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-07-21 06:00 | NQM | NF05 SELL | ref 29078,00 | SL 491t
+2026-07-21 06:00 | NQM | NF05 filled @ 29467,25
+2026-07-21 08:00 | NQM | ON07 SELL | ref 29470,25 | SL 491t
+2026-07-21 08:00 | NQM | ON07 filled @ 29467,25
+2026-07-21 09:01 | NQM | ON07 exit: time exit
+2026-07-21 09:01 | NQM | ON07 exit fill: ON07X x1 @ 29461,00
+2026-07-21 10:01 | NQM | NF05 exit: time exit
+2026-07-21 10:01 | NQM | NF05 exit fill: NF05X x1 @ 29470,75
+2026-07-21 10:45 | NQM | SIZE ICT SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-21 10:45 | NQM | ICT SELL LIMIT @ 29461,00 | SL 29546,75
+2026-07-21 10:50 | NQM | ICT filled @ 29461,00
+2026-07-21 11:09 | NQM | ICT exit fill: TargetX x2 @ 29375,25
+2026-07-21 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-07-21 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-07-21 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-07-21 12:00 | NQM | MOM11 BUY | ref 29522,75 | SL 614t
+2026-07-21 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-21 12:00 | NQM | MOM11 filled @ 29537,00
+2026-07-21 12:10 | NQM | MOM11 exit fill: TargetX x1 @ 29583,00
+2026-07-22 05:01 | NQM | SO04 SELL | ref 29608,75 | SL 367t
+2026-07-22 05:01 | NQM | SO04 filled @ 29369,50
+2026-07-22 07:00 | NQM | REV06 SELL | ref 29417,00 | SL 489t
+2026-07-22 07:00 | NQM | REV06 filled @ 29427,75
+2026-07-22 07:20 | NQM | SO04 exit fill: StopX x1 @ 29461,25
+2026-07-22 08:00 | NQM | ON07 skipped: prior day moved against (context rule)
+2026-07-22 08:37 | NQM | REV06 exit fill: TargetX x1 @ 29391,00
+2026-07-22 10:53 | NQM | VOLB filled @ 29523,75
+2026-07-22 11:30 | NQM | ORB60 context x2
+2026-07-22 11:30 | NQM | ORB60 setup parked @ 29388,25 (opposite position open)
+2026-07-22 12:00 | NQM | ORB90 setup parked @ 29388,25 (opposite position open)
+2026-07-22 12:00 | NQM | MOM11 BUY | ref 29388,50 | SL 611t
+2026-07-22 12:00 | NQM | MOM11 filled @ 29540,25
+2026-07-22 12:05 | NQM | MOM11 exit fill: TargetX x1 @ 29586,00
+2026-07-22 12:22 | NQM | VOLB stop -> entry + 0.1R @ 29537,25
+2026-07-22 14:00 | NQM | ORB60 parked order dropped
+2026-07-22 14:00 | NQM | ORB90 parked order dropped
+2026-07-22 14:55 | NQM | VOLB exit fill: StopX x1 @ 29537,25
+2026-07-23 04:02 | NQM | LON SELL LIMIT @ 29357,75 | SL 29483,50
+2026-07-23 04:02 | NQM | LON filled @ 29357,75
+2026-07-23 05:30 | NQM | LF0430 SELL | ref 29286,75 | SL 820t
+2026-07-23 05:30 | NQM | LF0430 filled @ 29349,00
+2026-07-23 08:35 | NQM | LF0430 exit fill: TargetX x1 @ 29246,50
+2026-07-23 09:36 | NQM | LON exit fill: TargetX x1 @ 29106,25
+2026-07-23 10:41 | NQM | VOLB filled @ 29132,00
+2026-07-23 10:52 | NQM | VOLB exit fill: StopX x1 @ 29017,75
+2026-07-23 11:30 | NQM | ORB60 context x2
+2026-07-23 11:30 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-23 11:30 | NQM | ORB60 SELL @ 28955,50 | SL 820t | TP 0,6R
+2026-07-23 11:33 | NQM | ORB60 filled @ 28955,50
+2026-07-23 12:00 | NQM | ORB90 SELL @ 28877,00 | SL 820t | TP 0,6R
+2026-07-23 12:00 | NQM | MOM11 SELL | ref 29017,75 | SL 586t
+2026-07-23 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-23 12:00 | NQM | MOM11 filled @ 28896,75
+2026-07-23 12:01 | NQM | ORB90 filled @ 28877,00
+2026-07-23 12:06 | NQM | MOM11 exit fill: TargetX x1 @ 28852,75
+2026-07-23 12:07 | NQM | ORB60 exit fill: TargetX x2 @ 28832,50
+2026-07-23 12:28 | NQM | ORB90 exit fill: TargetX x1 @ 28754,00
+2026-07-23 12:59 | NQM | ORB90 SELL @ 28877,00 | SL 820t | TP 0,6R
+2026-07-23 13:01 | NQM | ORB90 filled @ 28877,00
+2026-07-23 13:23 | NQM | ORB60 context x2
+2026-07-23 13:23 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-23 13:23 | NQM | ORB60 SELL @ 28955,50 | SL 820t | TP 0,6R
+2026-07-23 13:45 | NQM | ORB60 filled @ 28955,50
+2026-07-23 14:00 | NQM | MOM13 SELL | ref 29017,75 | SL 469t
+2026-07-23 14:00 | NQM | MOM13 filled @ 28941,00
+2026-07-23 15:54 | NQM | ORB60 exit fill: TargetX x2 @ 28832,50
+2026-07-23 16:03 | NQM | MOM13 exit fill: TargetX x1 @ 28823,75
+2026-07-23 16:56 | NQM | FLATTEN: end of day
+2026-07-23 16:56 | NQM | ORB90 exit fill: ORB90X x1 @ 28877,25
+2026-07-24 07:00 | NQM | REV06 SELL | ref 28972,25 | SL 477t
+2026-07-24 07:00 | NQM | REV06 filled @ 28999,75
+2026-07-24 07:08 | NQM | REV06 exit fill: TargetX x1 @ 28964,00
+2026-07-24 08:00 | NQM | ON07 SELL | ref 28970,25 | SL 477t
+2026-07-24 08:00 | NQM | ON07 filled @ 28939,25
+2026-07-24 09:01 | NQM | ON07 exit: time exit
+2026-07-24 09:01 | NQM | ON07 exit fill: ON07X x1 @ 28966,25
+2026-07-24 10:54 | NQM | VOLB filled @ 28636,75
+2026-07-24 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-07-24 11:30 | NQM | MOM1030 SELL | ref 28839,75 | SL 477t
+2026-07-24 11:30 | NQM | MOM1030 filled @ 28691,25
+2026-07-24 11:30 | NQM | MOM1030 exit fill: TargetX x4 @ 28655,50
+2026-07-24 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-24 12:15 | NQM | VOLB exit fill: StopX x1 @ 28839,75
+2026-07-24 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-07-27 07:00 | NQM | REV06 SELL | ref 29019,00 | SL 467t
+2026-07-27 07:00 | NQM | REV06 filled @ 29044,00
+2026-07-27 08:13 | NQM | REV06 exit fill: TargetX x1 @ 29009,00
+2026-07-27 10:56 | NQM | VOLB filled @ 28702,50
+2026-07-27 11:12 | NQM | VOLB stop -> entry + 0.1R @ 28683,75
+2026-07-27 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-07-27 11:30 | NQM | MOM1030 SELL | ref 28891,00 | SL 467t
+2026-07-27 11:30 | NQM | MOM1030 filled @ 28385,50
+2026-07-27 11:34 | NQM | MOM1030 exit fill: TargetX x4 @ 28350,50
+2026-07-27 11:35 | NQM | VOLB exit fill: TargetX x1 @ 28325,50
+2026-07-27 12:00 | NQM | MOM11 SELL | ref 28891,00 | SL 583t
+2026-07-27 12:00 | NQM | MOM11 filled @ 28469,75
+2026-07-27 12:13 | NQM | MOM11 exit fill: TargetX x1 @ 28426,00
+2026-07-27 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-07-27 14:01 | NQM | VW13 SELL | ref 28503,00 | SL 350t
+2026-07-27 14:01 | NQM | VW13 filled @ 28347,25
+2026-07-27 14:02 | NQM | VW13 exit fill: TargetX x1 @ 28303,50
+2026-07-27 16:00 | NQM | LATE15 SELL | ref 28880,25 | SL 700t
+2026-07-27 16:00 | NQM | LATE15 filled @ 28487,75
+2026-07-27 16:56 | NQM | FLATTEN: end of day
+2026-07-27 16:56 | NQM | LATE15 exit fill: LATE15X x1 @ 28487,00
+2026-07-28 05:01 | NQM | SO04 SELL | ref 28510,25 | SL 354t
+2026-07-28 05:01 | NQM | SO04 filled @ 28212,50
+2026-07-28 05:24 | NQM | SO04 exit fill: StopX x1 @ 28301,00
+2026-07-28 05:30 | NQM | LF0430 SELL | ref 28233,50 | SL 826t
+2026-07-28 05:30 | NQM | LF0430 filled @ 28302,25
+2026-07-28 08:00 | NQM | ON07 SELL | ref 28277,25 | SL 472t
+2026-07-28 08:00 | NQM | ON07 filled @ 28244,25
+2026-07-28 08:03 | NQM | LF0430 exit fill: TargetX x1 @ 28199,00
+2026-07-28 09:01 | NQM | ON07 exit: time exit
+2026-07-28 09:01 | NQM | ON07 exit fill: ON07X x1 @ 28268,50
+2026-07-28 10:59 | NQM | VOLB filled @ 27945,75
+2026-07-28 11:30 | NQM | ORB60 context x2
+2026-07-28 11:30 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-28 11:30 | NQM | ORB60 SELL @ 27902,75 | SL 826t | TP 0,6R
+2026-07-28 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-07-28 11:30 | NQM | MOM1030 SELL | ref 28251,00 | SL 472t
+2026-07-28 11:30 | NQM | MOM1030 filled @ 28006,00
+2026-07-28 11:30 | NQM | MOM1030 exit fill: TargetX x4 @ 27970,50
+2026-07-28 12:00 | NQM | ORB90 context x2
+2026-07-28 12:00 | NQM | SIZE ORB90 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-28 12:00 | NQM | ORB90 SELL @ 27902,75 | SL 826t | TP 0,6R
+2026-07-28 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-28 12:20 | NQM | VOLB exit fill: StopX x1 @ 28251,00
+2026-07-30 04:22 | NQM | LON SELL LIMIT @ 27720,50 | SL 27847,00
+2026-07-30 04:24 | NQM | LON filled @ 27720,50
+2026-07-30 05:30 | NQM | LF0430 SELL | ref 27693,25 | SL 845t
+2026-07-30 05:30 | NQM | LF0430 filled @ 27807,75
+2026-07-30 06:14 | NQM | LON exit fill: StopX x1 @ 27847,00
+2026-07-30 07:00 | NQM | LF06 SELL | ref 27693,25 | SL 483t
+2026-07-30 07:00 | NQM | LF06 filled @ 27816,25
+2026-07-30 07:31 | NQM | LF06 exit fill: StopX x1 @ 27937,00
+2026-07-30 08:00 | NQM | ON07 SELL | ref 27919,75 | SL 483t
+2026-07-30 08:00 | NQM | ON07 filled @ 27918,25
+2026-07-30 08:28 | NQM | LF0430 exit fill: StopX x1 @ 28019,00
+2026-07-30 08:51 | NQM | ON07 exit fill: StopX x1 @ 28039,00
+2026-07-30 11:28 | NQM | VOLB filled @ 28528,25
+2026-07-30 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-07-30 16:56 | NQM | FLATTEN: end of day
+2026-07-30 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 28514,00
+2026-07-31 08:00 | NQM | ON07 skipped: prior day moved against (context rule)
+2026-07-31 10:48 | NQM | VOLB filled @ 28658,00
+2026-07-31 11:08 | NQM | VOLB stop -> entry + 0.1R @ 28636,25
+2026-07-31 11:30 | NQM | ORB60 SELL @ 28379,25 | SL 881t | TP 0,6R
+2026-07-31 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-07-31 11:30 | NQM | MOM1030 SELL | ref 28876,25 | SL 503t
+2026-07-31 11:30 | NQM | MOM1030 filled @ 28549,50
+2026-07-31 11:34 | NQM | MOM1030 exit fill: TargetX x4 @ 28511,75
+2026-07-31 11:49 | NQM | VOLB exit fill: StopX x1 @ 28636,25
+2026-07-31 12:00 | NQM | ORB90 context x2
+2026-07-31 12:00 | NQM | SIZE ORB90 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-07-31 12:00 | NQM | ORB90 SELL @ 28379,25 | SL 881t | TP 0,6R
+2026-07-31 12:00 | NQM | MOM11 SELL | ref 28876,25 | SL 629t
+2026-07-31 12:00 | NQM | MOM11 filled @ 28608,25
+2026-07-31 12:09 | NQM | MOM11 exit fill: TargetX x1 @ 28561,00
+2026-07-31 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-08-03 04:19 | NQM | LON SELL LIMIT @ 28890,75 | SL 28989,25
+2026-08-03 04:21 | NQM | LON filled @ 28890,75
+2026-08-03 09:01 | NQM | LON exit fill: TargetX x1 @ 28693,75
+2026-08-03 11:31 | NQM | ORB60 SELL @ 28612,50 | SL 883t | TP 0,6R
+2026-08-03 12:00 | NQM | ORB90 SELL @ 28612,50 | SL 883t | TP 0,6R
+2026-08-03 12:00 | NQM | ORB60 order parked (opposite trade)
+2026-08-03 12:00 | NQM | ORB90 order parked (opposite trade)
+2026-08-03 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-08-03 12:01 | NQM | MOM11 BUY | ref 28717,25 | SL 630t
+2026-08-03 12:01 | NQM | MOM11 filled @ 29092,25
+2026-08-03 13:00 | NQM | confluence x2 (against MOM11, with overnight)
+2026-08-03 13:00 | NQM | CRT11 skipped: stop 21,50 pts is inside the day's noise (< 0,10 x ATR 630,4)
+2026-08-03 13:18 | NQM | MOM11 exit fill: TargetX x1 @ 29139,50
+2026-08-03 13:19 | NQM | ORB60 parked order re-placed @ 28612,50
+2026-08-03 13:19 | NQM | ORB90 parked order re-placed @ 28612,50
+2026-08-04 07:00 | NQM | REV06 SELL | ref 29345,50 | SL 506t
+2026-08-04 07:00 | NQM | REV06 filled @ 29377,25
+2026-08-04 08:44 | NQM | REV06 exit fill: StopX x1 @ 29503,75
+2026-08-04 11:07 | NQM | VOLB filled @ 29827,50
+2026-08-04 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-04 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-04 12:00 | NQM | MOM11 BUY | ref 29534,00 | SL 632t
+2026-08-04 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-08-04 12:00 | NQM | MOM11 filled @ 29849,50
+2026-08-04 12:11 | NQM | MOM11 exit fill: TargetX x1 @ 29897,00
+2026-08-04 14:01 | NQM | VOLB stop -> entry + 0.1R @ 29856,75
+2026-08-04 16:56 | NQM | FLATTEN: end of day
+2026-08-04 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 30169,50
+2026-08-05 05:30 | NQM | LF0430 BUY | ref 30202,75 | SL 927t
+2026-08-05 05:30 | NQM | LF0430 filled @ 30134,00
+2026-08-05 07:00 | NQM | REV06 BUY | ref 30170,25 | SL 530t
+2026-08-05 07:00 | NQM | REV06 filled @ 30157,50
+2026-08-05 08:00 | NQM | ON07 BUY | ref 30150,25 | SL 530t
+2026-08-05 08:00 | NQM | ON07 filled @ 30163,50
+2026-08-05 08:02 | NQM | REV06 exit fill: TargetX x1 @ 30197,25
+2026-08-05 09:01 | NQM | ON07 exit: time exit
+2026-08-05 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30217,50
+2026-08-05 09:31 | NQM | LF0430 exit: time exit
+2026-08-05 09:31 | NQM | LF0430 exit fill: LF0430X x1 @ 30227,25
+2026-08-05 12:00 | NQM | MOM11 SELL | ref 30275,25 | SL 662t
+2026-08-05 12:00 | NQM | MOM11 filled @ 30148,50
+2026-08-05 12:18 | NQM | MOM11 exit fill: TargetX x1 @ 30098,75
+2026-08-06 10:40 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-06 10:40 | NQM | ICT BUY LIMIT @ 29656,75 | SL 29540,50
+2026-08-06 10:52 | NQM | VOLB filled @ 29850,50
+2026-08-06 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-06 11:30 | NQM | SIZE MOM1030 BUY: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-08-06 11:30 | NQM | MOM1030 BUY | ref 29634,50 | SL 519t
+2026-08-06 11:30 | NQM | MOM1030 filled @ 29887,00
+2026-08-06 11:34 | NQM | MOM1030 exit fill: TargetX x4 @ 29926,00
+2026-08-06 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-06 12:00 | NQM | MOM11 BUY | ref 29634,50 | SL 649t
+2026-08-06 12:00 | NQM | MOM11 filled @ 29956,25
+2026-08-06 13:01 | NQM | MOM11 exit fill: StopX x1 @ 29794,00
+2026-08-06 14:00 | NQM | MOM13 BUY | ref 29634,50 | SL 519t
+2026-08-06 14:00 | NQM | MOM13 filled @ 29856,50
+2026-08-06 16:56 | NQM | FLATTEN: end of day
+2026-08-06 16:56 | NQM | MOM13 exit fill: MOM13X x1 @ 29822,50
+2026-08-06 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 29822,50
+2026-08-07 04:16 | NQM | LON BUY LIMIT @ 29885,50 | SL 29754,75
+2026-08-07 04:16 | NQM | LON filled @ 29885,50
+2026-08-07 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-08-07 09:49 | NQM | LON exit fill: TargetX x1 @ 30147,00
+2026-08-07 11:20 | NQM | ORFAIL BUY | SL 29863,75 | TP 30112,75
+2026-08-07 11:20 | NQM | ORFAIL filled @ 30018,50
+2026-08-07 11:30 | NQM | ORB60 context x2
+2026-08-07 11:30 | NQM | SIZE ORB60 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-07 11:30 | NQM | ORB60 BUY @ 30121,75 | SL 889t | TP 0,6R
+2026-08-07 11:30 | NQM | SIZE MOM1030 BUY: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-08-07 11:30 | NQM | MOM1030 BUY | ref 30014,25 | SL 508t
+2026-08-07 11:30 | NQM | MOM1030 filled @ 30060,50
+2026-08-07 12:00 | NQM | ORB90 BUY @ 30121,75 | SL 889t | TP 0,6R
+2026-08-07 12:00 | NQM | MOM11 BUY | ref 30014,25 | SL 635t
+2026-08-07 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-08-07 12:00 | NQM | MOM11 filled @ 30021,00
+2026-08-07 12:09 | NQM | MOM11 exit fill: TargetX x1 @ 30068,50
+2026-08-07 12:24 | NQM | MOM1030 exit fill: TargetX x4 @ 30098,50
+2026-08-07 12:26 | NQM | ORFAIL exit fill: TargetX x1 @ 30112,75
+2026-08-07 12:26 | NQM | ORB60 filled @ 30121,75
+2026-08-07 12:26 | NQM | ORB90 filled @ 30121,75
+2026-08-07 14:00 | NQM | MOM13 BUY | ref 30014,25 | SL 508t
+2026-08-07 14:00 | NQM | MOM13 filled @ 30040,25
+2026-08-07 16:56 | NQM | FLATTEN: end of day
+2026-08-07 16:56 | NQM | ORB60 exit fill: ORB60X x2 @ 30122,00
+2026-08-07 16:56 | NQM | ORB90 exit fill: ORB90X x1 @ 30122,00
+2026-08-07 16:56 | NQM | MOM13 exit fill: MOM13X x1 @ 30122,00
+2026-08-10 04:41 | NQM | LON BUY LIMIT @ 30262,50 | SL 30163,50
+2026-08-10 04:41 | NQM | LON filled @ 30262,50
+2026-08-10 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-08-10 08:12 | NQM | LON exit fill: StopX x1 @ 30163,50
+2026-08-10 10:50 | NQM | ICT skipped: stop 22,25 pts is inside the day's noise (< 0,10 x ATR 615,3)
+2026-08-10 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-08-10 12:00 | NQM | MOM11 SELL | ref 30105,25 | SL 615t
+2026-08-10 12:00 | NQM | MOM11 filled @ 30079,50
+2026-08-10 13:00 | NQM | confluence x2 (against MOM11, with overnight)
+2026-08-10 13:43 | NQM | MOM11 exit fill: TargetX x1 @ 30033,50
+2026-08-11 08:00 | NQM | ON07 BUY | ref 30110,50 | SL 467t
+2026-08-11 08:00 | NQM | ON07 filled @ 30117,00
+2026-08-11 09:01 | NQM | ON07 exit: time exit
+2026-08-11 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30124,25
+2026-08-11 10:31 | NQM | VOLB filled @ 30057,50
+2026-08-11 10:37 | NQM | VOLB stop -> entry + 0.1R @ 30049,25
+2026-08-11 10:41 | NQM | VOLB exit fill: StopX x1 @ 30049,25
+2026-08-11 11:00 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-11 11:00 | NQM | ICT BUY LIMIT @ 30023,00 | SL 29935,50
+2026-08-11 11:00 | NQM | ICT filled @ 30023,00
+2026-08-11 11:30 | NQM | ORB60 BUY @ 30142,75 | SL 818t | TP 0,6R
+2026-08-11 12:00 | NQM | ORB90 BUY @ 30142,75 | SL 818t | TP 0,6R
+2026-08-11 13:25 | NQM | ICT exit fill: StopX x2 @ 29935,50
+2026-08-12 04:01 | NQM | LON BUY LIMIT @ 30034,75 | SL 29967,75
+2026-08-12 04:20 | NQM | LON filled @ 30034,75
+2026-08-12 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-08-12 09:28 | NQM | LON exit fill: TargetX x1 @ 30169,25
+2026-08-12 10:30 | NQM | SIZE CPI09 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-08-12 10:30 | NQM | CPI09 SELL | ref 30204,00 | SL 791t
+2026-08-12 10:30 | NQM | CPI09 filled @ 30291,50
+2026-08-12 10:33 | NQM | CPI09 exit fill: TargetX x4 @ 30192,50
+2026-08-12 11:05 | NQM | VOLB filled @ 30152,25
+2026-08-12 11:30 | NQM | ORB60 context x2
+2026-08-12 11:30 | NQM | ORB60 setup parked @ 30301,50 (opposite position open)
+2026-08-12 12:00 | NQM | ORB90 setup parked @ 30301,50 (opposite position open)
+2026-08-12 12:00 | NQM | MOM11 SELL | ref 30291,50 | SL 565t
+2026-08-12 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-08-12 12:00 | NQM | MOM11 filled @ 30167,25
+2026-08-12 12:33 | NQM | MOM11 exit fill: TargetX x1 @ 30124,75
+2026-08-12 14:00 | NQM | ORB60 parked order dropped
+2026-08-12 14:00 | NQM | ORB90 parked order dropped
+2026-08-12 16:56 | NQM | FLATTEN: end of day
+2026-08-12 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 30128,75
+2026-08-13 08:00 | NQM | ON07 BUY | ref 30178,00 | SL 440t
+2026-08-13 08:00 | NQM | ON07 filled @ 30180,75
+2026-08-13 09:01 | NQM | ON07 exit: time exit
+2026-08-13 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30156,50
+2026-08-13 10:36 | NQM | VOLB filled @ 30293,25
+2026-08-13 10:46 | NQM | VOLB stop -> entry + 0.1R @ 30301,50
+2026-08-13 10:58 | NQM | VOLB exit fill: TargetX x1 @ 30457,75
+2026-08-13 11:30 | NQM | ORB60 BUY @ 30537,75 | SL 771t | TP 0,6R
+2026-08-13 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-08-13 11:30 | NQM | ORB60 filled @ 30537,75
+2026-08-13 12:00 | NQM | ORB90 context x2
+2026-08-13 12:00 | NQM | SIZE ORB90 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-13 12:00 | NQM | ORB90 BUY @ 30567,00 | SL 771t | TP 0,6R
+2026-08-13 12:00 | NQM | MOM11 BUY | ref 30211,00 | SL 550t
+2026-08-13 12:00 | NQM | RV11 BUY | ref 30152,50 | SL 330t
+2026-08-13 12:00 | NQM | MOM11 filled @ 30499,00
+2026-08-13 12:00 | NQM | RV11 filled @ 30499,00
+2026-08-13 12:51 | NQM | RV11 exit fill: StopX x1 @ 30416,50
+2026-08-13 14:00 | NQM | MOM13 BUY | ref 30211,00 | SL 440t
+2026-08-13 14:00 | NQM | MOM13 filled @ 30494,00
+2026-08-13 14:19 | NQM | MOM11 exit fill: TargetX x1 @ 30540,25
+2026-08-13 15:50 | NQM | MSEQ BUY | SL 30436,50
+2026-08-13 15:50 | NQM | MSEQ filled @ 30540,00
+2026-08-13 16:00 | NQM | LATE15 BUY | ref 30192,00 | SL 661t
+2026-08-13 16:00 | NQM | LATE15 filled @ 30544,00
+2026-08-13 16:56 | NQM | FLATTEN: end of day
+2026-08-13 16:56 | NQM | ORB60 exit fill: ORB60X x1 @ 30480,00
+2026-08-13 16:56 | NQM | MSEQ exit fill: MSEQX x1 @ 30480,00
+2026-08-13 16:56 | NQM | MOM13 exit fill: MOM13X x1 @ 30480,00
+2026-08-13 16:56 | NQM | LATE15 exit fill: LATE15X x1 @ 30480,00
+2026-08-14 04:02 | NQM | LON skipped: stop 53,50 pts is inside the day's noise (< 0,10 x ATR 541,2)
+2026-08-14 08:00 | NQM | ON07 BUY | ref 30530,25 | SL 433t
+2026-08-14 08:00 | NQM | ON07 filled @ 30551,25
+2026-08-14 09:01 | NQM | ON07 exit: time exit
+2026-08-14 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30564,00
+2026-08-14 12:00 | NQM | MOM11 SELL | ref 30541,25 | SL 541t
+2026-08-14 12:00 | NQM | MOM11 filled @ 30422,75
+2026-08-14 12:21 | NQM | MOM11 exit fill: TargetX x1 @ 30382,25
+2026-08-14 12:24 | NQM | VOLB filled @ 30356,50
+2026-08-14 16:56 | NQM | FLATTEN: end of day
+2026-08-14 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 30417,75
+2026-08-17 08:00 | NQM | ON07 BUY | ref 30598,25 | SL 417t
+2026-08-17 08:00 | NQM | ON07 filled @ 30614,75
+2026-08-17 09:01 | NQM | ON07 exit: time exit
+2026-08-17 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30585,25
+2026-08-17 10:50 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-17 10:50 | NQM | ICT BUY LIMIT @ 30518,50 | SL 30464,75
+2026-08-17 10:50 | NQM | ICT filled @ 30518,50
+2026-08-17 11:08 | NQM | ICT exit fill: StopX x2 @ 30464,75
+2026-08-17 11:31 | NQM | ORB60 BUY @ 30565,75 | SL 439t | TP 0,6R
+2026-08-17 12:00 | NQM | ORB90 BUY @ 30565,75 | SL 439t | TP 0,6R
+2026-08-17 12:00 | NQM | MOM11 BUY | ref 30518,50 | SL 521t
+2026-08-17 12:00 | NQM | MOM11 filled @ 30543,50
+2026-08-17 12:04 | NQM | ORB60 filled @ 30565,75
+2026-08-17 12:04 | NQM | ORB90 filled @ 30565,75
+2026-08-17 12:06 | NQM | MOM11 exit fill: TargetX x1 @ 30582,50
+2026-08-17 14:08 | NQM | ORB60 exit fill: StopX x1 @ 30456,00
+2026-08-17 14:08 | NQM | ORB90 exit fill: StopX x1 @ 30456,00
+2026-08-17 14:23 | NQM | VOLB filled @ 30403,50
+2026-08-17 16:56 | NQM | FLATTEN: end of day
+2026-08-17 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 30373,25
+2026-08-18 05:30 | NQM | LF0430 BUY | ref 30110,75 | SL 699t
+2026-08-18 05:30 | NQM | LF0430 filled @ 30057,25
+2026-08-18 06:00 | NQM | NF05 BUY | ref 30394,00 | SL 399t
+2026-08-18 06:00 | NQM | NF05 filled @ 30065,50
+2026-08-18 08:00 | NQM | ON07 BUY | ref 30025,25 | SL 399t
+2026-08-18 08:00 | NQM | ON07 filled @ 30038,75
+2026-08-18 09:01 | NQM | ON07 exit: time exit
+2026-08-18 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30043,75
+2026-08-18 09:31 | NQM | LF0430 exit: time exit
+2026-08-18 09:31 | NQM | LF0430 exit fill: LF0430X x1 @ 30000,50
+2026-08-18 10:01 | NQM | NF05 exit: time exit
+2026-08-18 10:01 | NQM | NF05 exit fill: NF05X x1 @ 30018,75
+2026-08-18 10:40 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-18 10:40 | NQM | ICT BUY LIMIT @ 29990,50 | SL 29930,50
+2026-08-18 10:44 | NQM | ICT filled @ 29990,50
+2026-08-18 10:55 | NQM | ICT exit fill: StopX x2 @ 29930,50
+2026-08-18 11:10 | NQM | VOLB filled @ 29891,50
+2026-08-18 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-18 11:32 | NQM | VOLB exit fill: StopX x1 @ 29990,50
+2026-08-18 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-18 12:00 | NQM | MOM11 SELL | ref 29990,50 | SL 499t
+2026-08-18 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-08-18 12:00 | NQM | MOM11 filled @ 29847,50
+2026-08-18 13:00 | NQM | confluence x2 (against MOM11, with overnight)
+2026-08-18 16:56 | NQM | FLATTEN: end of day
+2026-08-18 16:56 | NQM | MOM11 exit fill: MOM11X x1 @ 29881,25
+2026-08-19 07:00 | NQM | REV06 BUY | ref 29887,25 | SL 404t
+2026-08-19 07:00 | NQM | REV06 filled @ 29852,75
+2026-08-19 09:30 | NQM | REV06 exit fill: TargetX x1 @ 29883,00
+2026-08-19 10:40 | NQM | VOLB filled @ 29880,75
+2026-08-19 10:50 | NQM | VOLB stop -> entry + 0.1R @ 29869,25
+2026-08-19 11:30 | NQM | ORB60 setup parked @ 30042,00 (opposite position open)
+2026-08-19 11:40 | NQM | VOLB exit fill: StopX x1 @ 29869,25
+2026-08-19 11:41 | NQM | ORB60 parked order re-placed @ 30042,00
+2026-08-19 12:00 | NQM | ORB90 BUY @ 30042,00 | SL 707t | TP 0,6R
+2026-08-20 05:30 | NQM | LF0430 BUY | ref 29893,75 | SL 693t
+2026-08-20 05:30 | NQM | LF0430 filled @ 29802,00
+2026-08-20 07:00 | NQM | REV06 BUY | ref 29827,75 | SL 396t
+2026-08-20 07:00 | NQM | REV06 filled @ 29827,25
+2026-08-20 07:12 | NQM | REV06 exit fill: TargetX x1 @ 29857,00
+2026-08-20 08:00 | NQM | ON07 BUY | ref 29836,00 | SL 396t
+2026-08-20 08:00 | NQM | ON07 filled @ 29865,75
+2026-08-20 08:13 | NQM | ON07 exit fill: StopX x1 @ 29766,75
+2026-08-20 09:03 | NQM | LF0430 exit fill: StopX x1 @ 29628,75
+2026-08-20 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-20 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-20 12:00 | NQM | MOM11 BUY | ref 29650,50 | SL 495t
+2026-08-20 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-08-20 12:00 | NQM | MOM11 filled @ 29692,25
+2026-08-20 12:01 | NQM | MOM11 exit fill: TargetX x1 @ 29729,25
+2026-08-20 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-08-21 04:05 | NQM | LON BUY LIMIT @ 29700,50 | SL 29621,00
+2026-08-21 05:21 | NQM | LON filled @ 29700,50
+2026-08-21 10:31 | NQM | LON exit: London exit 09:30
+2026-08-21 10:31 | NQM | LON exit fill: LONX x1 @ 29725,75
+2026-08-21 10:35 | NQM | VOLB filled @ 29650,25
+2026-08-21 10:55 | NQM | VOLB stop -> entry + 0.1R @ 29638,25
+2026-08-21 11:30 | NQM | ORB60 context x2
+2026-08-21 11:30 | NQM | ORB60 setup parked @ 29772,50 (opposite position open)
+2026-08-21 12:00 | NQM | ORB90 setup parked @ 29772,50 (opposite position open)
+2026-08-21 12:00 | NQM | VOLB exit fill: StopX x1 @ 29638,25
+2026-08-21 12:01 | NQM | SIZE ORB60 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-21 12:01 | NQM | ORB60 parked order re-placed @ 29772,50
+2026-08-21 12:01 | NQM | ORB90 parked order re-placed @ 29772,50
+2026-08-21 12:51 | NQM | ORB60 filled @ 29772,50
+2026-08-21 12:51 | NQM | ORB90 filled @ 29772,50
+2026-08-21 16:00 | NQM | MSEQ BUY | SL 29618,50
+2026-08-21 16:00 | NQM | MSEQ filled @ 29699,50
+2026-08-21 16:56 | NQM | FLATTEN: end of day
+2026-08-21 16:56 | NQM | ORB60 exit fill: ORB60X x2 @ 29695,50
+2026-08-21 16:56 | NQM | ORB90 exit fill: ORB90X x1 @ 29695,50
+2026-08-21 16:56 | NQM | MSEQ exit fill: MSEQX x1 @ 29695,50
+2026-08-24 06:00 | NQM | NF05 BUY | ref 29767,25 | SL 374t
+2026-08-24 06:00 | NQM | NF05 filled @ 29514,75
+2026-08-24 10:01 | NQM | NF05 exit: time exit
+2026-08-24 10:01 | NQM | NF05 exit fill: NF05X x1 @ 29517,00
+2026-08-24 10:31 | NQM | VOLB filled @ 29414,50
+2026-08-24 10:44 | NQM | VOLB stop -> entry + 0.1R @ 29402,50
+2026-08-24 11:00 | NQM | ICT skipped: stop 28,75 pts is inside the day's noise (< 0,10 x ATR 467,1)
+2026-08-24 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-24 11:41 | NQM | VOLB exit fill: StopX x1 @ 29402,50
+2026-08-24 11:45 | NQM | MSEQ context x2
+2026-08-24 11:45 | NQM | SIZE MSEQ BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-24 11:45 | NQM | MSEQ BUY | SL 29178,75
+2026-08-24 11:45 | NQM | MSEQ filled @ 29385,75
+2026-08-24 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-24 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-08-24 12:46 | NQM | MSEQ exit fill: TargetX x2 @ 29489,25
+2026-08-24 14:01 | NQM | VW13 BUY | ref 29378,25 | SL 280t
+2026-08-24 14:01 | NQM | VW13 filled @ 29465,75
+2026-08-24 14:11 | NQM | VW13 exit fill: TargetX x1 @ 29500,75
+2026-08-25 06:00 | NQM | NF05 SELL | ref 29395,50 | SL 373t
+2026-08-25 06:00 | NQM | NF05 filled @ 29601,75
+2026-08-25 06:52 | NQM | NF05 exit fill: StopX x1 @ 29695,00
+2026-08-25 07:00 | NQM | REV06 SELL | ref 29617,00 | SL 373t
+2026-08-25 07:00 | NQM | LF06 SELL | ref 29532,75 | SL 373t
+2026-08-25 07:00 | NQM | REV06 filled @ 29689,75
+2026-08-25 07:00 | NQM | LF06 filled @ 29689,75
+2026-08-25 07:33 | NQM | REV06 exit fill: TargetX x1 @ 29661,75
+2026-08-25 08:00 | NQM | ON07 SELL | ref 29676,25 | SL 373t
+2026-08-25 08:00 | NQM | ON07 filled @ 29658,00
+2026-08-25 08:00 | NQM | LF06 exit fill: TargetX x1 @ 29643,25
+2026-08-25 09:01 | NQM | ON07 exit: time exit
+2026-08-25 09:01 | NQM | ON07 exit fill: ON07X x1 @ 29667,25
+2026-08-25 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-08-25 11:30 | NQM | VOLB filled @ 29461,75
+2026-08-25 12:00 | NQM | MOM11 SELL | ref 29595,00 | SL 466t
+2026-08-25 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-08-25 12:00 | NQM | MOM11 filled @ 29532,75
+2026-08-25 12:04 | NQM | MOM11 exit fill: TargetX x1 @ 29497,75
+2026-08-25 12:33 | NQM | VOLB exit fill: StopX x1 @ 29595,00
+2026-08-25 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-08-26 04:28 | NQM | LON SELL LIMIT @ 29510,50 | SL 29581,50
+2026-08-26 04:48 | NQM | LON filled @ 29510,50
+2026-08-26 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-08-26 10:31 | NQM | LON exit: London exit 09:30
+2026-08-26 10:31 | NQM | LON exit fill: LONX x1 @ 29529,75
+2026-08-26 10:43 | NQM | VOLB filled @ 29595,75
+2026-08-26 11:15 | NQM | ICT setup parked @ 29568,25 (opposite position open)
+2026-08-26 11:27 | NQM | VOLB exit fill: StopX x1 @ 29474,00
+2026-08-26 11:28 | NQM | SIZE ICT SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-26 11:28 | NQM | ICT parked order re-placed @ 29568,25
+2026-08-26 11:30 | NQM | ORB60 SELL @ 29455,75 | SL 637t | TP 0,6R
+2026-08-26 12:00 | NQM | ORB90 SELL @ 29455,75 | SL 637t | TP 0,6R
+2026-08-26 12:00 | NQM | ORB60 order parked (opposite trade)
+2026-08-26 12:00 | NQM | ORB90 order parked (opposite trade)
+2026-08-26 12:00 | NQM | ICT order parked (opposite trade)
+2026-08-26 12:02 | NQM | ORB60 parked order re-placed @ 29455,75
+2026-08-26 12:02 | NQM | ORB90 parked order re-placed @ 29455,75
+2026-08-26 12:02 | NQM | SIZE ICT SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-26 12:02 | NQM | ICT parked order re-placed @ 29568,25
+2026-08-26 12:02 | NQM | ICT filled @ 29568,25
+2026-08-26 13:00 | NQM | ICT exit fill: TargetX x2 @ 29503,25
+2026-08-26 16:02 | NQM | CAM3 SELL | SL 29655,50 | TP 29551,00
+2026-08-26 16:02 | NQM | CAM3 filled @ 29637,00
+2026-08-26 16:02 | NQM | CAM3 exit fill: StopX x1 @ 29655,50
+2026-08-27 05:30 | NQM | LF0430 SELL | ref 29838,25 | SL 613t
+2026-08-27 05:30 | NQM | LF0430 filled @ 29956,50
+2026-08-27 06:15 | NQM | LF0430 exit fill: TargetX x1 @ 29880,00
+2026-08-27 10:57 | NQM | VOLB filled @ 29728,00
+2026-08-27 11:01 | NQM | VOLB exit fill: StopX x1 @ 29823,50
+2026-08-27 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-27 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-08-27 12:00 | NQM | MOM11 BUY | ref 29823,50 | SL 438t
+2026-08-27 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-08-27 12:00 | NQM | MOM11 filled @ 29901,00
+2026-08-27 12:15 | NQM | MOM11 exit fill: TargetX x1 @ 29933,75
+2026-08-27 12:30 | NQM | ORFAIL SELL | SL 29934,50 | TP 29742,50
+2026-08-27 12:30 | NQM | ORFAIL filled @ 29878,25
+2026-08-27 13:00 | NQM | CRT11 skipped: stop 37,75 pts is inside the day's noise (< 0,10 x ATR 437,8)
+2026-08-27 13:38 | NQM | ORFAIL exit fill: StopX x1 @ 29934,50
+2026-08-28 07:00 | NQM | REV06 BUY | ref 29912,75 | SL 348t
+2026-08-28 07:00 | NQM | REV06 filled @ 29905,75
+2026-08-28 08:00 | NQM | ON07 BUY | ref 29918,00 | SL 348t
+2026-08-28 08:00 | NQM | ON07 filled @ 29921,75
+2026-08-28 08:02 | NQM | REV06 exit fill: TargetX x1 @ 29931,75
+2026-08-28 09:01 | NQM | ON07 exit: time exit
+2026-08-28 09:01 | NQM | ON07 exit fill: ON07X x1 @ 29902,25
+2026-08-28 10:45 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-28 10:45 | NQM | ICT BUY LIMIT @ 29960,75 | SL 29862,00
+2026-08-28 10:45 | NQM | ICT filled @ 29960,75
+2026-08-28 11:08 | NQM | ICT exit fill: StopX x2 @ 29862,00
+2026-08-28 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-08-28 11:47 | NQM | VOLB filled @ 30053,75
+2026-08-28 12:00 | NQM | MOM11 BUY | ref 29927,75 | SL 435t
+2026-08-28 12:00 | NQM | MOM11 filled @ 30095,75
+2026-08-28 12:05 | NQM | MSEQ context x2
+2026-08-28 12:05 | NQM | SIZE MSEQ BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-08-28 12:05 | NQM | MSEQ BUY | SL 29877,00
+2026-08-28 12:05 | NQM | MSEQ filled @ 30096,00
+2026-08-28 12:40 | NQM | MOM11 exit fill: StopX x1 @ 29987,00
+2026-08-28 12:49 | NQM | VOLB exit fill: StopX x1 @ 29927,75
+2026-08-28 12:56 | NQM | MSEQ exit fill: StopX x2 @ 29877,00
+2026-08-31 06:00 | NQM | NF05 SELL | ref 29589,75 | SL 345t
+2026-08-31 06:00 | NQM | NF05 filled @ 29784,75
+2026-08-31 10:01 | NQM | NF05 exit: time exit
+2026-08-31 10:01 | NQM | NF05 exit fill: NF05X x1 @ 29682,50
+2026-08-31 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-08-31 12:00 | NQM | MOM11 SELL | ref 29738,00 | SL 431t
+2026-08-31 12:00 | NQM | MOM11 filled @ 29715,25
+2026-08-31 12:41 | NQM | MOM11 exit fill: TargetX x1 @ 29683,00
+2026-09-01 06:00 | NQM | NF05 BUY | ref 29801,00 | SL 331t
+2026-09-01 06:00 | NQM | NF05 filled @ 29536,00
+2026-09-01 07:00 | NQM | LF06 BUY | ref 29735,25 | SL 331t
+2026-09-01 07:00 | NQM | LF06 filled @ 29513,00
+2026-09-01 07:34 | NQM | LF06 exit fill: TargetX x1 @ 29554,50
+2026-09-01 09:10 | NQM | NF05 exit fill: StopX x1 @ 29453,25
+2026-09-01 11:30 | NQM | ORB60 context x2
+2026-09-01 11:31 | NQM | ORB60 context x2
+2026-09-01 11:31 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-01 11:31 | NQM | ORB60 SELL @ 29339,50 | SL 558t | TP 0,6R
+2026-09-01 12:00 | NQM | ORB90 SELL @ 29339,50 | SL 579t | TP 0,6R
+2026-09-01 12:00 | NQM | ORB60 order parked (opposite trade)
+2026-09-01 12:00 | NQM | ORB90 order parked (opposite trade)
+2026-09-01 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-01 12:01 | NQM | MOM11 BUY | ref 29411,50 | SL 413t
+2026-09-01 12:01 | NQM | MOM11 filled @ 29538,25
+2026-09-01 12:39 | NQM | MOM11 exit fill: TargetX x1 @ 29569,25
+2026-09-01 12:40 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-01 12:40 | NQM | ORB60 parked order re-placed @ 29339,50
+2026-09-01 12:40 | NQM | ORB90 parked order re-placed @ 29339,50
+2026-09-02 06:00 | NQM | NF05 BUY | ref 29434,50 | SL 336t
+2026-09-02 06:00 | NQM | NF05 filled @ 29277,75
+2026-09-02 07:00 | NQM | LF06 BUY | ref 29362,00 | SL 336t
+2026-09-02 07:00 | NQM | LF06 filled @ 29272,50
+2026-09-02 08:14 | NQM | LF06 exit fill: TargetX x1 @ 29314,50
+2026-09-02 09:21 | NQM | NF05 exit fill: TargetX x1 @ 29445,75
+2026-09-02 12:00 | NQM | MOM11 BUY | ref 29398,00 | SL 420t
+2026-09-02 12:00 | NQM | MOM11 filled @ 29420,25
+2026-09-02 12:06 | NQM | MOM11 exit fill: TargetX x1 @ 29451,75
+2026-09-03 07:00 | NQM | LF06 BUY | ref 29519,50 | SL 323t
+2026-09-03 07:00 | NQM | LF06 filled @ 29438,25
+2026-09-03 08:18 | NQM | LF06 exit fill: TargetX x1 @ 29478,75
+2026-09-03 10:40 | NQM | VOLB filled @ 29636,75
+2026-09-03 11:08 | NQM | VOLB exit fill: StopX x1 @ 29549,25
+2026-09-03 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-03 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-03 12:00 | NQM | MOM11 BUY | ref 29549,25 | SL 404t
+2026-09-03 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-03 12:00 | NQM | MOM11 filled @ 29663,25
+2026-09-03 12:01 | NQM | MOM11 exit fill: TargetX x1 @ 29693,50
+2026-09-04 06:00 | NQM | NF05 SELL | ref 29803,50 | SL 323t
+2026-09-04 06:00 | NQM | NF05 filled @ 29957,25
+2026-09-04 07:00 | NQM | REV06 SELL | ref 29927,00 | SL 323t
+2026-09-04 07:00 | NQM | REV06 filled @ 29956,50
+2026-09-04 09:07 | NQM | REV06 exit fill: TargetX x1 @ 29932,25
+2026-09-04 10:01 | NQM | NF05 exit: time exit
+2026-09-04 10:01 | NQM | NF05 exit fill: NF05X x1 @ 29828,50
+2026-09-04 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-04 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-04 12:00 | NQM | MOM11 SELL | ref 29888,00 | SL 403t
+2026-09-04 12:00 | NQM | MOM11 filled @ 29820,75
+2026-09-04 12:20 | NQM | MOM11 exit fill: TargetX x1 @ 29790,50
+2026-09-04 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-09-06 19:01 | NQM | short session (holiday / half day): the market closes 13:00 ET - no new entries this session
+2026-09-08 11:20 | NQM | ORFAIL BUY | SL 29724,00 | TP 29986,50
+2026-09-08 11:20 | NQM | ORFAIL filled @ 29779,50
+2026-09-08 11:25 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-08 11:25 | NQM | ICT BUY LIMIT @ 29803,00 | SL 29724,00
+2026-09-08 11:26 | NQM | ICT filled @ 29803,00
+2026-09-08 12:11 | NQM | ICT exit fill: TargetX x2 @ 29882,00
+2026-09-08 15:21 | NQM | ORFAIL exit: time exit
+2026-09-08 15:21 | NQM | ORFAIL exit fill: ORFAILX x1 @ 29909,25
+2026-09-09 05:45 | NQM | LON SELL LIMIT @ 29848,75 | SL 29933,75
+2026-09-09 05:45 | NQM | LON filled @ 29848,75
+2026-09-09 07:01 | NQM | LON exit fill: TargetX x1 @ 29678,75
+2026-09-09 08:00 | NQM | ON07 SELL | ref 29721,75 | SL 289t
+2026-09-09 08:00 | NQM | ON07 filled @ 29691,50
+2026-09-09 09:01 | NQM | ON07 exit: time exit
+2026-09-09 09:01 | NQM | ON07 exit fill: ON07X x1 @ 29689,50
+2026-09-09 11:04 | NQM | VOLB filled @ 29872,75
+2026-09-09 12:00 | NQM | MOM11 BUY | ref 29754,75 | SL 361t
+2026-09-09 12:00 | NQM | MOM11 filled @ 29828,50
+2026-09-09 12:00 | NQM | MOM11 exit fill: TargetX x1 @ 29855,50
+2026-09-09 12:09 | NQM | VOLB exit fill: StopX x1 @ 29754,75
+2026-09-10 04:41 | NQM | LON SELL LIMIT @ 29724,50 | SL 29808,00
+2026-09-10 04:41 | NQM | LON filled @ 29724,50
+2026-09-10 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-09-10 08:00 | NQM | ON07 SELL | ref 29684,00 | SL 282t
+2026-09-10 08:00 | NQM | ON07 filled @ 29675,25
+2026-09-10 08:50 | NQM | ON07 exit fill: TargetX x1 @ 29604,75
+2026-09-10 09:01 | NQM | LON exit fill: TargetX x1 @ 29557,50
+2026-09-10 10:40 | NQM | VOLB filled @ 29495,25
+2026-09-10 10:56 | NQM | VOLB exit fill: StopX x1 @ 29389,25
+2026-09-10 11:30 | NQM | ORB60 context x2
+2026-09-10 11:30 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-10 11:30 | NQM | ORB60 SELL @ 29357,25 | SL 493t | TP 0,6R
+2026-09-10 12:00 | NQM | ORB90 SELL @ 29357,25 | SL 493t | TP 0,6R
+2026-09-10 12:00 | NQM | ORB60 order parked (opposite trade)
+2026-09-10 12:00 | NQM | ORB90 order parked (opposite trade)
+2026-09-10 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-10 12:01 | NQM | MOM11 BUY | ref 29389,25 | SL 352t
+2026-09-10 12:01 | NQM | MOM11 filled @ 29550,00
+2026-09-10 13:27 | NQM | MOM11 exit fill: StopX x1 @ 29462,00
+2026-09-10 13:28 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-10 13:28 | NQM | ORB60 parked order re-placed @ 29357,25
+2026-09-10 13:28 | NQM | ORB90 parked order re-placed @ 29357,25
+2026-09-11 06:00 | NQM | NF05 SELL | ref 29364,75 | SL 284t
+2026-09-11 06:00 | NQM | NF05 filled @ 29623,75
+2026-09-11 07:00 | NQM | REV06 SELL | ref 29607,75 | SL 284t
+2026-09-11 07:00 | NQM | LF06 SELL | ref 29542,25 | SL 284t
+2026-09-11 07:00 | NQM | REV06 filled @ 29619,50
+2026-09-11 07:00 | NQM | LF06 filled @ 29619,50
+2026-09-11 07:02 | NQM | REV06 exit fill: TargetX x1 @ 29598,25
+2026-09-11 08:00 | NQM | ON07 SELL | ref 29616,00 | SL 284t
+2026-09-11 08:00 | NQM | ON07 filled @ 29610,75
+2026-09-11 09:01 | NQM | ON07 exit: time exit
+2026-09-11 09:01 | NQM | ON07 exit fill: ON07X x1 @ 29623,00
+2026-09-11 09:29 | NQM | LF06 exit fill: StopX x1 @ 29690,50
+2026-09-11 09:29 | NQM | NF05 exit fill: StopX x1 @ 29694,75
+2026-09-11 10:30 | NQM | SIZE CPI09 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-09-11 10:30 | NQM | CPI09 SELL | ref 29686,75 | SL 497t
+2026-09-11 10:30 | NQM | CPI09 filled @ 29717,75
+2026-09-11 10:31 | NQM | CPI09 exit fill: TargetX x4 @ 29655,75
+2026-09-11 12:00 | NQM | MOM11 SELL | ref 29717,50 | SL 355t
+2026-09-11 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-11 12:00 | NQM | MOM11 filled @ 29670,75
+2026-09-11 12:24 | NQM | MOM11 exit fill: StopX x1 @ 29759,50
+2026-09-11 13:00 | NQM | CRT11 context x2
+2026-09-11 13:01 | NQM | CRT11 context x2
+2026-09-11 13:01 | NQM | SIZE CRT11 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-11 13:01 | NQM | CRT11 SELL | SL 29799,50
+2026-09-11 13:01 | NQM | CRT11 filled @ 29754,75
+2026-09-11 16:56 | NQM | FLATTEN: end of day
+2026-09-11 16:56 | NQM | CRT11 exit fill: CRT11X x2 @ 29704,75
+2026-09-14 04:02 | NQM | LON SELL LIMIT @ 29251,75 | SL 29331,00
+2026-09-14 04:02 | NQM | LON filled @ 29251,75
+2026-09-14 05:01 | NQM | SO04 SELL | ref 29489,50 | SL 213t
+2026-09-14 05:01 | NQM | SO04 filled @ 29207,50
+2026-09-14 05:49 | NQM | SO04 exit fill: TargetX x1 @ 29153,75
+2026-09-14 10:31 | NQM | LON exit: London exit 09:30
+2026-09-14 10:31 | NQM | LON exit fill: LONX x1 @ 29174,25
+2026-09-14 10:46 | NQM | VOLB filled @ 29269,00
+2026-09-14 10:50 | NQM | VOLB stop -> entry + 0.1R @ 29276,50
+2026-09-14 11:26 | NQM | VOLB exit fill: StopX x1 @ 29276,50
+2026-09-14 11:30 | NQM | ORB60 context x2
+2026-09-14 11:30 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-14 11:30 | NQM | ORB60 SELL @ 29167,25 | SL 498t | TP 0,6R
+2026-09-14 12:00 | NQM | ORB90 SELL @ 29167,25 | SL 498t | TP 0,6R
+2026-09-14 12:00 | NQM | ORB60 order parked (opposite trade)
+2026-09-14 12:00 | NQM | ORB90 order parked (opposite trade)
+2026-09-14 12:00 | NQM | RV11 SELL | ref 29686,75 | SL 213t
+2026-09-14 12:00 | NQM | RV11 filled @ 29305,00
+2026-09-14 12:02 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-14 12:02 | NQM | ORB60 parked order re-placed @ 29167,25
+2026-09-14 12:02 | NQM | ORB90 parked order re-placed @ 29167,25
+2026-09-14 12:06 | NQM | RV11 exit fill: StopX x1 @ 29358,25
+2026-09-15 05:01 | NQM | SO04 SELL | ref 29495,75 | SL 220t
+2026-09-15 05:01 | NQM | SO04 filled @ 29289,25
+2026-09-15 05:10 | NQM | SO04 exit fill: TargetX x1 @ 29234,25
+2026-09-15 06:00 | NQM | NF05 BUY | ref 29457,00 | SL 294t
+2026-09-15 06:00 | NQM | NF05 filled @ 29272,00
+2026-09-15 08:10 | NQM | NF05 exit fill: TargetX x1 @ 29419,00
+2026-09-15 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-09-15 11:53 | NQM | VOLB filled @ 29224,50
+2026-09-15 12:00 | NQM | MOM11 SELL | ref 29421,00 | SL 367t
+2026-09-15 12:00 | NQM | RV11 SELL | ref 29447,75 | SL 220t
+2026-09-15 12:00 | NQM | MOM11 filled @ 29240,25
+2026-09-15 12:00 | NQM | RV11 filled @ 29240,25
+2026-09-15 12:18 | NQM | RV11 exit fill: StopX x1 @ 29295,25
+2026-09-15 14:00 | NQM | MOM13 SELL | ref 29421,00 | SL 294t
+2026-09-15 14:00 | NQM | MOM13 filled @ 29280,00
+2026-09-15 16:39 | NQM | MOM11 exit fill: TargetX x1 @ 29212,75
+2026-09-15 16:56 | NQM | FLATTEN: end of day
+2026-09-15 16:56 | NQM | MOM13 exit fill: MOM13X x1 @ 29230,75
+2026-09-15 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 29230,75
+2026-09-17 07:00 | NQM | REV06 SELL | ref 29553,75 | SL 295t
+2026-09-17 07:00 | NQM | REV06 filled @ 29558,25
+2026-09-17 09:05 | NQM | REV06 exit fill: StopX x1 @ 29632,00
+2026-09-17 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-17 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-09-17 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-17 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-18 05:01 | NQM | SO04 BUY | ref 29723,50 | SL 228t
+2026-09-18 05:01 | NQM | SO04 filled @ 29930,75
+2026-09-18 06:27 | NQM | SO04 exit fill: StopX x1 @ 29873,75
+2026-09-18 07:00 | NQM | REV06 BUY | ref 29867,25 | SL 305t
+2026-09-18 07:00 | NQM | LF06 BUY | ref 29928,75 | SL 305t
+2026-09-18 07:00 | NQM | REV06 filled @ 29838,50
+2026-09-18 07:00 | NQM | LF06 filled @ 29838,50
+2026-09-18 07:15 | NQM | REV06 exit fill: TargetX x1 @ 29861,50
+2026-09-18 07:28 | NQM | LF06 exit fill: TargetX x1 @ 29876,50
+2026-09-18 11:03 | NQM | VOLB filled @ 29730,50
+2026-09-18 12:00 | NQM | MOM11 SELL | ref 29814,75 | SL 381t
+2026-09-18 12:00 | NQM | MOM11 filled @ 29758,50
+2026-09-18 12:11 | NQM | MOM11 exit fill: TargetX x1 @ 29730,00
+2026-09-18 13:26 | NQM | VOLB stop -> entry + 0.1R @ 29722,00
+2026-09-18 13:44 | NQM | VOLB exit fill: StopX x1 @ 29722,00
+2026-09-21 04:05 | NQM | LON BUY LIMIT @ 30153,50 | SL 30070,25
+2026-09-21 04:05 | NQM | LON filled @ 30153,50
+2026-09-21 05:01 | NQM | SO04 BUY | ref 29938,25 | SL 224t
+2026-09-21 05:01 | NQM | SO04 filled @ 30191,75
+2026-09-21 06:08 | NQM | SO04 exit fill: TargetX x1 @ 30247,75
+2026-09-21 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-09-21 10:31 | NQM | LON exit: London exit 09:30
+2026-09-21 10:31 | NQM | LON exit fill: LONX x1 @ 30253,75
+2026-09-21 10:45 | NQM | VOLB filled @ 30347,50
+2026-09-21 11:14 | NQM | VOLB stop -> entry + 0.1R @ 30360,00
+2026-09-21 11:30 | NQM | SIZE MOM1030 BUY: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-09-21 11:30 | NQM | MOM1030 BUY | ref 30222,00 | SL 299t
+2026-09-21 11:30 | NQM | MOM1030 filled @ 30518,50
+2026-09-21 11:35 | NQM | MSEQ context x2
+2026-09-21 11:35 | NQM | SIZE MSEQ BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-21 11:35 | NQM | MSEQ BUY | SL 30301,25
+2026-09-21 11:35 | NQM | MSEQ filled @ 30524,25
+2026-09-21 11:36 | NQM | MOM1030 exit fill: TargetX x4 @ 30541,00
+2026-09-21 12:00 | NQM | MOM11 BUY | ref 30222,00 | SL 374t
+2026-09-21 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-21 12:00 | NQM | MOM11 filled @ 30550,75
+2026-09-21 12:09 | NQM | MOM11 exit fill: TargetX x1 @ 30578,75
+2026-09-21 12:38 | NQM | VOLB exit fill: TargetX x1 @ 30598,50
+2026-09-21 12:50 | NQM | MSEQ exit fill: TargetX x2 @ 30635,75
+2026-09-21 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-09-21 14:01 | NQM | SIZE VW13 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-21 14:01 | NQM | VW13 BUY | ref 30503,00 | SL 224t
+2026-09-21 14:01 | NQM | VW13 filled @ 30683,00
+2026-09-21 14:44 | NQM | VW13 exit fill: TargetX x2 @ 30711,00
+2026-09-21 16:00 | NQM | LATE15 BUY | ref 30253,25 | SL 448t
+2026-09-21 16:00 | NQM | LATE15 filled @ 30787,00
+2026-09-21 16:37 | NQM | LATE15 exit fill: TargetX x1 @ 30843,00
+2026-09-22 05:30 | NQM | LF0430 BUY | ref 30770,50 | SL 580t
+2026-09-22 05:30 | NQM | LF0430 filled @ 30687,00
+2026-09-22 05:42 | NQM | LF0430 exit fill: TargetX x1 @ 30759,50
+2026-09-22 08:00 | NQM | ON07 BUY | ref 30813,00 | SL 332t
+2026-09-22 08:00 | NQM | ON07 filled @ 30814,50
+2026-09-22 09:01 | NQM | ON07 exit: time exit
+2026-09-22 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30774,50
+2026-09-22 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-09-22 12:00 | NQM | MOM11 BUY | ref 30764,50 | SL 414t
+2026-09-22 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-22 12:00 | NQM | MOM11 filled @ 30925,50
+2026-09-22 13:00 | NQM | CRT11 context x2
+2026-09-22 13:00 | NQM | CRT11 skipped: stop 28,00 pts is inside the day's noise (< 0,10 x ATR 414,4)
+2026-09-22 14:00 | NQM | MOM13 BUY | ref 30764,50 | SL 332t
+2026-09-22 14:00 | NQM | MOM13 filled @ 30941,25
+2026-09-22 14:29 | NQM | MOM11 exit fill: TargetX x1 @ 30956,50
+2026-09-22 16:26 | NQM | MOM13 exit fill: TargetX x1 @ 31024,25
+2026-09-23 07:00 | NQM | REV06 BUY | ref 31031,50 | SL 325t
+2026-09-23 07:00 | NQM | REV06 filled @ 31012,25
+2026-09-23 07:19 | NQM | REV06 exit fill: TargetX x1 @ 31036,75
+2026-09-23 10:47 | NQM | VOLB filled @ 30870,00
+2026-09-23 11:10 | NQM | VOLB stop -> entry + 0.1R @ 30856,50
+2026-09-23 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-23 16:56 | NQM | FLATTEN: end of day
+2026-09-23 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 30746,25
+2026-09-24 05:30 | NQM | LF0430 BUY | ref 30559,00 | SL 567t
+2026-09-24 05:30 | NQM | LF0430 filled @ 30455,50
+2026-09-24 06:00 | NQM | NF05 BUY | ref 30753,50 | SL 324t
+2026-09-24 06:00 | NQM | NF05 filled @ 30432,50
+2026-09-24 07:00 | NQM | LF06 BUY | ref 30559,00 | SL 324t
+2026-09-24 07:00 | NQM | LF06 filled @ 30436,00
+2026-09-24 07:39 | NQM | LF06 exit fill: TargetX x1 @ 30476,50
+2026-09-24 08:00 | NQM | ON07 skipped: prior day moved against (context rule)
+2026-09-24 09:31 | NQM | LF0430 exit: time exit
+2026-09-24 09:31 | NQM | LF0430 exit fill: LF0430X x1 @ 30475,75
+2026-09-24 10:01 | NQM | NF05 exit: time exit
+2026-09-24 10:01 | NQM | NF05 exit fill: NF05X x1 @ 30495,50
+2026-09-24 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-24 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-09-24 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-24 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-24 13:00 | NQM | CRT11 context x2
+2026-09-24 13:00 | NQM | SIZE CRT11 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-24 13:00 | NQM | CRT11 BUY | SL 30501,50
+2026-09-24 13:00 | NQM | CRT11 filled @ 30554,00
+2026-09-24 13:16 | NQM | CRT11 exit fill: TargetX x2 @ 30659,50
+2026-09-24 13:16 | NQM | VOLB filled @ 30687,50
+2026-09-24 13:43 | NQM | VOLB stop -> entry + 0.1R @ 30704,25
+2026-09-24 14:00 | NQM | MOM13 BUY | ref 30519,75 | SL 324t
+2026-09-24 14:00 | NQM | MOM13 filled @ 30792,00
+2026-09-24 14:01 | NQM | SIZE VW13 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-24 14:01 | NQM | VW13 BUY | ref 30606,50 | SL 243t
+2026-09-24 14:01 | NQM | VW13 filled @ 30772,25
+2026-09-24 14:03 | NQM | VW13 exit fill: TargetX x2 @ 30802,75
+2026-09-24 14:26 | NQM | MOM13 exit fill: StopX x1 @ 30711,00
+2026-09-24 14:26 | NQM | VOLB exit fill: StopX x1 @ 30704,25
+2026-09-24 15:30 | NQM | MSEQ context x2
+2026-09-24 15:30 | NQM | SIZE MSEQ BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-24 15:30 | NQM | MSEQ BUY | SL 30533,75
+2026-09-24 15:30 | NQM | MSEQ filled @ 30740,00
+2026-09-24 16:00 | NQM | LATE15 BUY | ref 30515,75 | SL 486t
+2026-09-24 16:00 | NQM | LATE15 filled @ 30779,75
+2026-09-24 16:56 | NQM | FLATTEN: end of day
+2026-09-24 16:56 | NQM | MSEQ exit fill: MSEQX x2 @ 30776,75
+2026-09-24 16:56 | NQM | LATE15 exit fill: LATE15X x1 @ 30776,75
+2026-09-25 05:01 | NQM | SO04 BUY | ref 30731,00 | SL 240t
+2026-09-25 05:01 | NQM | SO04 filled @ 30873,75
+2026-09-25 05:34 | NQM | SO04 exit fill: TargetX x1 @ 30933,75
+2026-09-25 06:00 | NQM | NF05 SELL | ref 30687,75 | SL 320t
+2026-09-25 06:00 | NQM | NF05 filled @ 30946,25
+2026-09-25 10:01 | NQM | NF05 exit: time exit
+2026-09-25 10:01 | NQM | NF05 exit fill: NF05X x1 @ 30860,00
+2026-09-25 11:30 | NQM | ORB60 context x2
+2026-09-25 11:31 | NQM | ORB60 context x2
+2026-09-25 11:31 | NQM | SIZE ORB60 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-25 11:31 | NQM | ORB60 BUY @ 30926,50 | SL 561t | TP 0,6R
+2026-09-25 11:35 | NQM | ORFAIL BUY | SL 30683,75 | TP 30890,25
+2026-09-25 11:35 | NQM | ORFAIL filled @ 30770,00
+2026-09-25 12:00 | NQM | ORB90 BUY @ 30926,50 | SL 561t | TP 0,6R
+2026-09-25 12:00 | NQM | MOM11 BUY | ref 30819,50 | SL 400t
+2026-09-25 12:00 | NQM | MOM11 filled @ 30823,50
+2026-09-25 12:03 | NQM | MOM11 exit fill: TargetX x1 @ 30853,50
+2026-09-25 13:01 | NQM | ORFAIL exit fill: TargetX x1 @ 30890,25
+2026-09-25 13:05 | NQM | ORB60 filled @ 30926,50
+2026-09-25 13:05 | NQM | ORB90 filled @ 30926,50
+2026-09-25 14:00 | NQM | MOM13 BUY | ref 30819,50 | SL 320t
+2026-09-25 14:00 | NQM | MOM13 filled @ 30878,25
+2026-09-25 16:56 | NQM | FLATTEN: end of day
+2026-09-25 16:56 | NQM | ORB60 exit fill: ORB60X x2 @ 30900,75
+2026-09-25 16:56 | NQM | ORB90 exit fill: ORB90X x1 @ 30900,75
+2026-09-25 16:56 | NQM | MOM13 exit fill: MOM13X x1 @ 30900,75
+2026-09-28 06:00 | NQM | NF05 BUY | ref 30848,50 | SL 313t
+2026-09-28 06:00 | NQM | NF05 filled @ 30578,50
+2026-09-28 08:00 | NQM | ON07 BUY | ref 30562,50 | SL 313t
+2026-09-28 08:00 | NQM | ON07 filled @ 30585,75
+2026-09-28 09:01 | NQM | ON07 exit: time exit
+2026-09-28 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30624,25
+2026-09-28 09:20 | NQM | NF05 exit fill: TargetX x1 @ 30735,00
+2026-09-28 10:45 | NQM | VOLB filled @ 30597,75
+2026-09-28 11:15 | NQM | VOLB stop -> entry + 0.1R @ 30585,75
+2026-09-28 11:22 | NQM | VOLB exit fill: StopX x1 @ 30585,75
+2026-09-28 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-28 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-09-28 12:00 | NQM | MOM11 SELL | ref 30718,50 | SL 391t
+2026-09-28 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-28 12:00 | NQM | MOM11 filled @ 30409,75
+2026-09-28 12:36 | NQM | MOM11 exit fill: StopX x1 @ 30507,50
+2026-09-29 08:00 | NQM | ON07 skipped: prior day moved against (context rule)
+2026-09-29 11:30 | NQM | ORB60 context x2
+2026-09-29 11:31 | NQM | ORB60 context x2
+2026-09-29 11:31 | NQM | SIZE ORB60 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-09-29 11:31 | NQM | ORB60 BUY @ 30725,50 | SL 562t | TP 0,6R
+2026-09-29 12:00 | NQM | ORB90 BUY @ 30725,50 | SL 562t | TP 0,6R
+2026-09-29 13:50 | NQM | ORFAIL BUY | SL 30503,75 | TP 30725,25
+2026-09-29 13:50 | NQM | ORFAIL filled @ 30548,75
+2026-09-29 16:56 | NQM | FLATTEN: end of day
+2026-09-29 16:56 | NQM | ORFAIL exit fill: ORFAILX x1 @ 30613,25
+2026-09-30 07:00 | NQM | REV06 BUY | ref 30618,25 | SL 311t
+2026-09-30 07:00 | NQM | REV06 filled @ 30614,25
+2026-09-30 08:00 | NQM | ON07 BUY | ref 30586,50 | SL 311t
+2026-09-30 08:00 | NQM | ON07 filled @ 30590,25
+2026-09-30 08:10 | NQM | REV06 exit fill: StopX x1 @ 30536,50
+2026-09-30 08:20 | NQM | ON07 exit fill: StopX x1 @ 30512,50
+2026-09-30 10:31 | NQM | VOLB filled @ 30798,75
+2026-09-30 11:02 | NQM | VOLB stop -> entry + 0.1R @ 30808,75
+2026-09-30 11:14 | NQM | VOLB exit fill: StopX x1 @ 30808,75
+2026-09-30 11:30 | NQM | ORB60 BUY @ 30893,25 | SL 544t | TP 0,6R
+2026-09-30 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-09-30 12:00 | NQM | ORB90 BUY @ 30893,25 | SL 544t | TP 0,6R
+2026-09-30 12:00 | NQM | MOM11 BUY | ref 30699,25 | SL 388t
+2026-09-30 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-09-30 12:00 | NQM | MOM11 filled @ 30843,75
+2026-09-30 12:32 | NQM | MOM11 exit fill: TargetX x1 @ 30872,75
+2026-09-30 12:49 | NQM | ORB60 filled @ 30893,25
+2026-09-30 12:49 | NQM | ORB90 filled @ 30893,25
+2026-09-30 14:00 | NQM | MOM13 BUY | ref 30699,25 | SL 311t
+2026-09-30 14:00 | NQM | MOM13 filled @ 30860,75
+2026-09-30 14:26 | NQM | MOM13 exit fill: StopX x1 @ 30783,00
+2026-09-30 16:54 | NQM | ORB60 exit fill: StopX x1 @ 30757,25
+2026-09-30 16:54 | NQM | ORB90 exit fill: StopX x1 @ 30757,25
+2026-10-01 05:01 | NQM | SO04 BUY | ref 30707,00 | SL 229t
+2026-10-01 05:01 | NQM | SO04 filled @ 30865,50
+2026-10-01 05:20 | NQM | SO04 exit fill: StopX x1 @ 30808,25
+2026-10-01 05:30 | NQM | LF0430 BUY | ref 30852,75 | SL 534t
+2026-10-01 05:30 | NQM | LF0430 filled @ 30785,25
+2026-10-01 06:00 | NQM | LF0430 exit fill: TargetX x1 @ 30852,00
+2026-10-01 07:00 | NQM | REV06 BUY | ref 30890,75 | SL 305t
+2026-10-01 07:00 | NQM | REV06 filled @ 30853,00
+2026-10-01 07:21 | NQM | REV06 exit fill: TargetX x1 @ 30876,00
+2026-10-01 08:00 | NQM | ON07 BUY | ref 30885,00 | SL 305t
+2026-10-01 08:00 | NQM | ON07 filled @ 30938,25
+2026-10-01 08:14 | NQM | ON07 exit fill: StopX x1 @ 30862,00
+2026-10-01 11:00 | NQM | VOLB filled @ 30695,25
+2026-10-01 11:03 | NQM | VOLB stop -> entry + 0.1R @ 30685,00
+2026-10-01 11:08 | NQM | VOLB exit fill: StopX x1 @ 30685,00
+2026-10-01 11:09 | NQM | CAM3 BUY | SL 30581,50 | TP 30738,00
+2026-10-01 11:09 | NQM | CAM3 filled @ 30675,75
+2026-10-01 11:22 | NQM | CAM3 exit fill: StopX x1 @ 30581,50
+2026-10-01 11:30 | NQM | ORB60 BUY @ 30856,50 | SL 534t | TP 0,6R
+2026-10-01 12:00 | NQM | ORB90 BUY @ 30856,50 | SL 534t | TP 0,6R
+2026-10-01 12:00 | NQM | ORB60 order parked (opposite trade)
+2026-10-01 12:00 | NQM | ORB90 order parked (opposite trade)
+2026-10-01 12:01 | NQM | MOM11 SELL | ref 30797,00 | SL 381t
+2026-10-01 12:01 | NQM | MOM11 filled @ 30618,50
+2026-10-01 12:01 | NQM | MOM11 exit fill: TargetX x1 @ 30590,00
+2026-10-01 12:02 | NQM | ORB60 parked order re-placed @ 30856,50
+2026-10-01 12:02 | NQM | ORB90 parked order re-placed @ 30856,50
+2026-10-01 13:00 | NQM | confluence x2 (against MOM11, with overnight)
+2026-10-01 13:00 | NQM | SIZE CRT11 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-01 13:00 | NQM | CRT11 BUY | SL 30531,25
+2026-10-01 13:00 | NQM | CRT11 filled @ 30611,50
+2026-10-01 14:24 | NQM | CRT11 exit fill: TargetX x2 @ 30772,00
+2026-10-01 15:35 | NQM | confluence x2 (against MOM11, with overnight)
+2026-10-01 15:35 | NQM | SIZE MSEQ BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-01 15:35 | NQM | MSEQ BUY | SL 30606,00
+2026-10-01 15:35 | NQM | MSEQ filled @ 30836,75
+2026-10-01 16:56 | NQM | FLATTEN: end of day
+2026-10-01 16:56 | NQM | MSEQ exit fill: MSEQX x2 @ 30784,00
+2026-10-02 04:51 | NQM | LON BUY LIMIT @ 30934,00 | SL 30840,50
+2026-10-02 05:01 | NQM | SO04 BUY | ref 30770,75 | SL 228t
+2026-10-02 05:01 | NQM | SO04 filled @ 30960,75
+2026-10-02 05:11 | NQM | SO04 exit fill: TargetX x1 @ 31017,75
+2026-10-02 06:00 | NQM | LON order parked (opposite trade)
+2026-10-02 06:01 | NQM | NF05 SELL | ref 30838,50 | SL 303t
+2026-10-02 06:01 | NQM | NF05 filled @ 30997,50
+2026-10-02 08:48 | NQM | LON parked order dropped (level traded while blocked)
+2026-10-02 09:30 | NQM | NF05 exit fill: StopX x1 @ 31073,25
+2026-10-02 11:30 | NQM | ORB60 context x2
+2026-10-02 11:30 | NQM | SIZE ORB60 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-02 11:30 | NQM | ORB60 BUY @ 31283,00 | SL 531t | TP 0,6R
+2026-10-02 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-10-02 12:00 | NQM | ORB90 BUY @ 31283,00 | SL 531t | TP 0,6R
+2026-10-02 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-05 05:17 | NQM | LON BUY LIMIT @ 31090,75 | SL 31003,75
+2026-10-05 05:17 | NQM | LON filled @ 31090,75
+2026-10-05 05:44 | NQM | LON exit fill: StopX x1 @ 31003,75
+2026-10-05 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-10-05 08:00 | NQM | ON07 BUY | ref 30973,75 | SL 311t
+2026-10-05 08:00 | NQM | ON07 filled @ 31028,25
+2026-10-05 09:01 | NQM | ON07 exit: time exit
+2026-10-05 09:01 | NQM | ON07 exit fill: ON07X x1 @ 31017,75
+2026-10-05 10:41 | NQM | VOLB filled @ 31187,75
+2026-10-05 11:30 | NQM | SIZE MOM1030 BUY: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-10-05 11:30 | NQM | MOM1030 BUY | ref 31055,00 | SL 311t
+2026-10-05 11:30 | NQM | MOM1030 filled @ 31233,00
+2026-10-05 12:00 | NQM | MOM11 BUY | ref 31055,00 | SL 389t
+2026-10-05 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-05 12:00 | NQM | MOM11 filled @ 31248,00
+2026-10-05 12:31 | NQM | MOM1030 exit: time exit
+2026-10-05 12:31 | NQM | MOM1030 exit fill: MOM1030X x4 @ 31230,50
+2026-10-05 14:00 | NQM | MOM13 BUY | ref 31055,00 | SL 311t
+2026-10-05 14:00 | NQM | MOM13 filled @ 31248,75
+2026-10-05 14:16 | NQM | MOM11 exit fill: TargetX x1 @ 31277,25
+2026-10-05 14:44 | NQM | VOLB stop -> entry + 0.1R @ 31201,00
+2026-10-05 16:00 | NQM | LATE15 BUY | ref 31056,00 | SL 466t
+2026-10-05 16:00 | NQM | LATE15 filled @ 31320,75
+2026-10-05 16:00 | NQM | MOM13 exit fill: TargetX x1 @ 31326,50
+2026-10-05 16:20 | NQM | MSEQ context x2
+2026-10-05 16:20 | NQM | SIZE MSEQ BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-05 16:20 | NQM | MSEQ BUY | SL 31260,50
+2026-10-05 16:20 | NQM | MSEQ filled @ 31366,00
+2026-10-05 16:56 | NQM | FLATTEN: end of day
+2026-10-05 16:56 | NQM | MSEQ exit fill: MSEQX x2 @ 31297,25
+2026-10-05 16:56 | NQM | LATE15 exit fill: LATE15X x1 @ 31297,25
+2026-10-05 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 31297,25
+2026-10-05 | NQM | EDGE day 1: z -0,163 | CUSUM 0,25 / 26,93 (1%)
+2026-10-06 05:08 | NQM | LON BUY LIMIT @ 31399,00 | SL 31331,50
+2026-10-06 05:08 | NQM | LON filled @ 31398,50
+2026-10-06 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-10-06 08:00 | NQM | ON07 BUY | ref 31437,25 | SL 307t
+2026-10-06 08:00 | NQM | ON07 filled @ 31444,50
+2026-10-06 08:23 | NQM | ON07 exit fill: TargetX x1 @ 31521,25
+2026-10-06 08:24 | NQM | LON exit fill: TargetX x1 @ 31532,50
+2026-10-06 12:00 | NQM | MOM11 BUY | ref 31513,50 | SL 384t
+2026-10-06 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-06 12:00 | NQM | MOM11 filled @ 31583,75
+2026-10-06 12:09 | NQM | MOM11 exit fill: TargetX x1 @ 31612,50
+2026-10-06 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-10-06 | NQM | EDGE day 2: z 0,616 | CUSUM 0,00 / 26,93 (0%)
+2026-10-07 07:00 | NQM | REV06 BUY | ref 31372,00 | SL 301t
+2026-10-07 07:00 | NQM | REV06 filled @ 31359,00
+2026-10-07 07:50 | NQM | REV06 exit fill: StopX x1 @ 31283,75
+2026-10-07 10:39 | NQM | VOLB filled @ 31162,50
+2026-10-07 10:55 | NQM | ICT setup parked @ 31193,00 (opposite position open)
+2026-10-07 10:58 | NQM | VOLB exit fill: StopX x1 @ 31234,00
+2026-10-07 10:59 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-07 10:59 | NQM | ICT parked order re-placed @ 31193,00
+2026-10-07 11:08 | NQM | ICT filled @ 31193,00
+2026-10-07 11:19 | NQM | ICT exit fill: TargetX x2 @ 31242,00
+2026-10-07 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-07 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-10-07 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-07 12:00 | NQM | MOM11 BUY | ref 31234,00 | SL 377t
+2026-10-07 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-07 12:00 | NQM | MOM11 filled @ 31253,50
+2026-10-07 12:13 | NQM | MOM11 exit fill: TargetX x1 @ 31281,75
+2026-10-07 12:50 | NQM | MSEQ context x2
+2026-10-07 12:50 | NQM | SIZE MSEQ BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-07 12:50 | NQM | MSEQ BUY | SL 31198,50
+2026-10-07 12:50 | NQM | MSEQ filled @ 31354,25
+2026-10-07 14:00 | NQM | MOM13 BUY | ref 31234,00 | SL 301t
+2026-10-07 14:00 | NQM | MOM13 filled @ 31329,75
+2026-10-07 14:01 | NQM | VW13 BUY | ref 31259,25 | SL 226t
+2026-10-07 14:01 | NQM | VW13 filled @ 31337,25
+2026-10-07 14:02 | NQM | VW13 exit fill: TargetX x1 @ 31365,50
+2026-10-07 16:55 | NQM | MOM13 exit fill: TargetX x1 @ 31405,00
+2026-10-07 16:56 | NQM | FLATTEN: end of day
+2026-10-07 16:56 | NQM | MSEQ exit fill: MSEQX x2 @ 31403,25
+2026-10-07 | NQM | EDGE day 3: z 0,458 | CUSUM 0,00 / 26,93 (0%)
+2026-10-08 06:00 | NQM | NF05 BUY | ref 31430,25 | SL 299t
+2026-10-08 06:00 | NQM | NF05 filled @ 31215,75
+2026-10-08 07:00 | NQM | REV06 BUY | ref 31244,25 | SL 299t
+2026-10-08 07:00 | NQM | REV06 filled @ 31227,50
+2026-10-08 07:29 | NQM | REV06 exit fill: StopX x1 @ 31152,75
+2026-10-08 07:30 | NQM | NF05 exit fill: StopX x1 @ 31141,00
+2026-10-08 08:00 | NQM | ON07 BUY | ref 31146,75 | SL 299t
+2026-10-08 08:00 | NQM | ON07 filled @ 31154,25
+2026-10-08 09:01 | NQM | ON07 exit: time exit
+2026-10-08 09:01 | NQM | ON07 exit fill: ON07X x1 @ 31184,50
+2026-10-08 11:28 | NQM | VOLB filled @ 31356,25
+2026-10-08 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-08 11:30 | NQM | SIZE MOM1030 BUY: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-10-08 11:30 | NQM | MOM1030 BUY | ref 31234,25 | SL 299t
+2026-10-08 11:30 | NQM | MOM1030 filled @ 31358,75
+2026-10-08 11:47 | NQM | MOM1030 exit fill: StopX x4 @ 31284,00
+2026-10-08 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-08 12:00 | NQM | MOM11 BUY | ref 31234,25 | SL 374t
+2026-10-08 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-08 12:00 | NQM | MOM11 filled @ 31269,75
+2026-10-08 12:03 | NQM | VOLB exit fill: StopX x1 @ 31234,25
+2026-10-08 12:55 | NQM | MOM11 exit fill: StopX x1 @ 31176,25
+2026-10-08 13:00 | NQM | CRT11 context x2
+2026-10-08 13:00 | NQM | CRT11 skipped: stop 22,00 pts is inside the day's noise (< 0,10 x ATR 373,9)
+2026-10-08 15:30 | NQM | MSEQ context x2
+2026-10-08 15:30 | NQM | SIZE MSEQ BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-08 15:30 | NQM | MSEQ BUY | SL 30753,75
+2026-10-08 15:30 | NQM | MSEQ filled @ 30999,50
+2026-10-08 16:56 | NQM | FLATTEN: end of day
+2026-10-08 16:56 | NQM | MSEQ exit fill: MSEQX x2 @ 30948,75
+2026-10-08 | NQM | EDGE day 4: z -1,994 | CUSUM 2,08 / 26,93 (8%)
+2026-10-09 05:01 | NQM | SO04 BUY | ref 31022,75 | SL 234t
+2026-10-09 05:01 | NQM | SO04 filled @ 31219,75
+2026-10-09 07:00 | NQM | REV06 BUY | ref 31235,25 | SL 312t
+2026-10-09 07:00 | NQM | REV06 filled @ 31221,75
+2026-10-09 09:00 | NQM | REV06 exit fill: TargetX x1 @ 31245,25
+2026-10-09 09:44 | NQM | SO04 exit fill: StopX x1 @ 31161,25
+2026-10-09 11:25 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-09 11:25 | NQM | ICT BUY LIMIT @ 31043,00 | SL 30982,50
+2026-10-09 11:25 | NQM | ICT filled @ 31043,00
+2026-10-09 11:30 | NQM | ORB60 context x2
+2026-10-09 11:30 | NQM | SIZE ORB60 BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-09 11:30 | NQM | ORB60 BUY @ 31180,50 | SL 546t | TP 0,6R
+2026-10-09 12:00 | NQM | ORB90 BUY @ 31180,50 | SL 546t | TP 0,6R
+2026-10-09 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-09 13:17 | NQM | ICT exit fill: TargetX x2 @ 31103,50
+2026-10-09 | NQM | EDGE day 5: z 0,211 | CUSUM 1,96 / 26,93 (7%)
+2026-10-12 05:30 | NQM | LF0430 BUY | ref 31188,00 | SL 528t
+2026-10-12 05:30 | NQM | LF0430 filled @ 31148,50
+2026-10-12 06:00 | NQM | NF05 BUY | ref 31260,25 | SL 302t
+2026-10-12 06:00 | NQM | NF05 filled @ 31069,00
+2026-10-12 07:00 | NQM | REV06 BUY | ref 31096,50 | SL 302t
+2026-10-12 07:00 | NQM | LF06 BUY | ref 31188,00 | SL 302t
+2026-10-12 07:00 | NQM | REV06 filled @ 31090,25
+2026-10-12 07:00 | NQM | LF06 filled @ 31090,25
+2026-10-12 08:00 | NQM | ON07 BUY | ref 31055,50 | SL 302t
+2026-10-12 08:00 | NQM | ON07 filled @ 31076,50
+2026-10-12 09:01 | NQM | ON07 exit: time exit
+2026-10-12 09:01 | NQM | ON07 exit fill: ON07X x1 @ 31054,25
+2026-10-12 09:31 | NQM | LF0430 exit: time exit
+2026-10-12 09:31 | NQM | LF0430 exit fill: LF0430X x1 @ 31038,75
+2026-10-12 10:01 | NQM | NF05 exit: time exit
+2026-10-12 10:01 | NQM | NF05 exit fill: NF05X x1 @ 31072,50
+2026-10-12 10:30 | NQM | REV06 exit fill: StopX x1 @ 31014,75
+2026-10-12 10:30 | NQM | LF06 exit fill: StopX x1 @ 31014,75
+2026-10-12 10:32 | NQM | VOLB filled @ 30956,50
+2026-10-12 11:10 | NQM | VOLB stop -> entry + 0.1R @ 30947,75
+2026-10-12 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-12 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-12 12:00 | NQM | MOM11 SELL | ref 31045,25 | SL 377t
+2026-10-12 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-12 12:00 | NQM | MOM11 filled @ 30919,00
+2026-10-12 12:22 | NQM | MOM11 exit fill: TargetX x1 @ 30890,75
+2026-10-12 12:45 | NQM | VOLB exit fill: StopX x1 @ 30947,75
+2026-10-12 | NQM | EDGE day 6: z -0,661 | CUSUM 2,71 / 26,93 (10%)
+2026-10-13 07:00 | NQM | REV06 BUY | ref 30768,00 | SL 296t
+2026-10-13 07:00 | NQM | REV06 filled @ 30762,00
+2026-10-13 08:09 | NQM | REV06 exit fill: StopX x1 @ 30688,00
+2026-10-13 10:38 | NQM | VOLB filled @ 30712,75
+2026-10-13 10:40 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-13 10:40 | NQM | ICT BUY LIMIT @ 30645,50 | SL 30591,00
+2026-10-13 10:42 | NQM | VOLB stop -> entry + 0.1R @ 30722,00
+2026-10-13 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-13 11:30 | NQM | SIZE MOM1030 BUY: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-10-13 11:30 | NQM | MOM1030 BUY | ref 30619,75 | SL 296t
+2026-10-13 11:30 | NQM | MOM1030 filled @ 30752,25
+2026-10-13 11:40 | NQM | MOM1030 exit fill: TargetX x4 @ 30774,50
+2026-10-13 11:52 | NQM | VOLB exit fill: StopX x1 @ 30722,00
+2026-10-13 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-13 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-13 13:00 | NQM | CRT11 BUY | SL 30635,00
+2026-10-13 13:00 | NQM | CRT11 filled @ 30703,75
+2026-10-13 13:05 | NQM | MSEQ context x2
+2026-10-13 13:05 | NQM | SIZE MSEQ BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-13 13:05 | NQM | MSEQ BUY | SL 30562,75
+2026-10-13 13:05 | NQM | MSEQ filled @ 30732,00
+2026-10-13 14:00 | NQM | MOM13 BUY | ref 30619,75 | SL 296t
+2026-10-13 14:00 | NQM | MOM13 filled @ 30739,75
+2026-10-13 16:56 | NQM | FLATTEN: end of day
+2026-10-13 16:56 | NQM | MSEQ exit fill: MSEQX x2 @ 30775,00
+2026-10-13 16:56 | NQM | CRT11 exit fill: CRT11X x1 @ 30775,00
+2026-10-13 16:56 | NQM | MOM13 exit fill: MOM13X x1 @ 30775,00
+2026-10-13 | NQM | EDGE day 7: z 0,561 | CUSUM 2,24 / 26,93 (8%)
+2026-10-14 10:30 | NQM | SIZE CPI09 BUY: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-10-14 10:30 | NQM | CPI09 BUY | ref 30842,25 | SL 511t
+2026-10-14 10:30 | NQM | CPI09 filled @ 30552,00
+2026-10-14 10:40 | NQM | CPI09 exit fill: TargetX x4 @ 30616,00
+2026-10-14 10:45 | NQM | SIZE ICT BUY: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-14 10:45 | NQM | ICT BUY LIMIT @ 30551,75 | SL 30497,75
+2026-10-14 10:48 | NQM | VOLB filled @ 30652,50
+2026-10-14 10:52 | NQM | VOLB exit fill: StopX x1 @ 30551,75
+2026-10-14 10:52 | NQM | ICT filled @ 30551,75
+2026-10-14 10:57 | NQM | ICT exit fill: StopX x2 @ 30497,75
+2026-10-14 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-14 11:35 | NQM | ORFAIL BUY | SL 30450,75 | TP 30626,00
+2026-10-14 11:35 | NQM | ORFAIL filled @ 30510,25
+2026-10-14 11:50 | NQM | ORFAIL exit fill: StopX x1 @ 30450,75
+2026-10-14 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-14 12:00 | NQM | MOM11 SELL | ref 30551,75 | SL 365t
+2026-10-14 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-14 12:00 | NQM | MOM11 filled @ 30488,75
+2026-10-14 12:01 | NQM | MOM11 exit fill: TargetX x1 @ 30461,25
+2026-10-14 | NQM | EDGE day 8: z 0,018 | CUSUM 2,31 / 26,93 (9%)
+2026-10-15 05:01 | NQM | SO04 SELL | ref 30151,00 | SL 234t
+2026-10-15 05:01 | NQM | SO04 filled @ 29831,75
+2026-10-15 05:11 | NQM | SO04 exit fill: TargetX x1 @ 29773,25
+2026-10-15 07:00 | NQM | REV06 SELL | ref 29835,25 | SL 312t
+2026-10-15 07:00 | NQM | REV06 filled @ 29852,00
+2026-10-15 07:04 | NQM | REV06 exit fill: TargetX x1 @ 29828,50
+2026-10-15 08:00 | NQM | ON07 SELL | ref 29835,25 | SL 312t
+2026-10-15 08:00 | NQM | ON07 filled @ 29801,50
+2026-10-15 08:37 | NQM | ON07 exit fill: StopX x1 @ 29879,50
+2026-10-15 12:00 | NQM | MOM11 BUY | ref 29745,50 | SL 390t
+2026-10-15 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-15 12:00 | NQM | MOM11 filled @ 29970,75
+2026-10-15 12:04 | NQM | MOM11 exit fill: TargetX x1 @ 30000,00
+2026-10-15 12:06 | NQM | VOLB filled @ 30007,50
+2026-10-15 16:56 | NQM | FLATTEN: end of day
+2026-10-15 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 30142,25
+2026-10-15 | NQM | EDGE day 9: z 0,419 | CUSUM 1,99 / 26,93 (7%)
+2026-10-16 06:00 | NQM | NF05 SELL | ref 29988,00 | SL 322t
+2026-10-16 06:00 | NQM | NF05 filled @ 30145,50
+2026-10-16 06:55 | NQM | LON SELL LIMIT @ 30126,00 | SL 30224,50
+2026-10-16 06:55 | NQM | LON filled @ 30126,00
+2026-10-16 08:00 | NQM | ON07 SELL | ref 30117,75 | SL 322t
+2026-10-16 08:00 | NQM | ON07 filled @ 30089,50
+2026-10-16 09:01 | NQM | ON07 exit: time exit
+2026-10-16 09:01 | NQM | ON07 exit fill: ON07X x1 @ 30109,25
+2026-10-16 10:01 | NQM | NF05 exit: time exit
+2026-10-16 10:01 | NQM | NF05 exit fill: NF05X x1 @ 30059,75
+2026-10-16 10:31 | NQM | LON exit: London exit 09:30
+2026-10-16 10:31 | NQM | LON exit fill: LONX x1 @ 30015,00
+2026-10-16 11:30 | NQM | ORB60 context x2
+2026-10-16 11:30 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-16 11:30 | NQM | ORB60 SELL @ 29787,00 | SL 564t | TP 0,6R
+2026-10-16 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-10-16 12:00 | NQM | ORB90 context x2
+2026-10-16 12:00 | NQM | SIZE ORB90 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-16 12:00 | NQM | ORB90 SELL @ 29787,00 | SL 564t | TP 0,6R
+2026-10-16 12:00 | NQM | MOM11 SELL | ref 30024,25 | SL 403t
+2026-10-16 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-16 12:00 | NQM | MOM11 filled @ 29862,00
+2026-10-16 12:00 | NQM | MOM11 exit fill: TargetX x1 @ 29831,75
+2026-10-16 12:05 | NQM | ORB60 filled @ 29787,00
+2026-10-16 12:05 | NQM | ORB90 filled @ 29787,00
+2026-10-16 12:05 | NQM | VOLB filled @ 29765,50
+2026-10-16 12:09 | NQM | ORB60 exit fill: TargetX x2 @ 29702,50
+2026-10-16 12:09 | NQM | ORB90 exit fill: TargetX x2 @ 29702,50
+2026-10-16 14:00 | NQM | MOM13 SELL | ref 30024,25 | SL 322t
+2026-10-16 14:00 | NQM | MOM13 filled @ 29614,50
+2026-10-16 14:01 | NQM | SIZE VW13 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-16 14:01 | NQM | VW13 SELL | ref 29794,25 | SL 242t
+2026-10-16 14:01 | NQM | VW13 filled @ 29600,00
+2026-10-16 14:02 | NQM | VW13 exit fill: TargetX x2 @ 29569,75
+2026-10-16 14:03 | NQM | VOLB stop -> entry + 0.1R @ 29739,75
+2026-10-16 14:04 | NQM | MOM13 exit fill: TargetX x1 @ 29534,00
+2026-10-16 16:00 | NQM | LATE15 SELL | ref 30014,25 | SL 483t
+2026-10-16 16:00 | NQM | LATE15 filled @ 29359,25
+2026-10-16 16:06 | NQM | LATE15 exit fill: TargetX x1 @ 29298,75
+2026-10-16 16:56 | NQM | FLATTEN: end of day
+2026-10-16 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 29378,25
+2026-10-16 | NQM | EDGE day 10: z 2,784 | CUSUM 0,00 / 26,93 (0%)
+2026-10-19 04:11 | NQM | LON SELL LIMIT @ 29760,75 | SL 29814,25
+2026-10-19 04:22 | NQM | LON filled @ 29761,25
+2026-10-19 07:00 | NQM | REV06 skipped: LON already in the same direction
+2026-10-19 10:31 | NQM | LON exit: London exit 09:30
+2026-10-19 10:31 | NQM | LON exit fill: LONX x1 @ 29776,75
+2026-10-19 12:00 | NQM | MOM11 BUY | ref 29778,25 | SL 436t
+2026-10-19 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-19 12:00 | NQM | MOM11 filled @ 29842,25
+2026-10-19 12:05 | NQM | MOM11 exit fill: TargetX x1 @ 29875,00
+2026-10-19 | NQM | EDGE day 11: z 0,035 | CUSUM 0,05 / 26,93 (0%)
+2026-10-20 07:00 | NQM | REV06 SELL | ref 29610,25 | SL 359t
+2026-10-20 07:00 | NQM | REV06 filled @ 29622,75
+2026-10-20 07:03 | NQM | REV06 exit fill: TargetX x1 @ 29595,75
+2026-10-20 08:00 | NQM | ON07 skipped: prior day moved against (context rule)
+2026-10-20 10:41 | NQM | VOLB filled @ 29445,50
+2026-10-20 10:58 | NQM | VOLB exit fill: StopX x1 @ 29594,00
+2026-10-20 11:30 | NQM | ORB60 context x2
+2026-10-20 11:30 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-20 11:30 | NQM | ORB60 SELL @ 29391,00 | SL 628t | TP 0,6R
+2026-10-20 12:00 | NQM | ORB90 SELL @ 29391,00 | SL 628t | TP 0,6R
+2026-10-20 12:00 | NQM | ORB60 order parked (opposite trade)
+2026-10-20 12:00 | NQM | ORB90 order parked (opposite trade)
+2026-10-20 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-20 12:01 | NQM | MOM11 BUY | ref 29594,00 | SL 448t
+2026-10-20 12:01 | NQM | MOM11 filled @ 29864,50
+2026-10-20 12:12 | NQM | MOM11 exit fill: StopX x1 @ 29752,50
+2026-10-20 12:13 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-20 12:13 | NQM | ORB60 parked order re-placed @ 29391,00
+2026-10-20 12:13 | NQM | ORB90 parked order re-placed @ 29391,00
+2026-10-20 | NQM | EDGE day 12: z -0,527 | CUSUM 0,67 / 26,93 (2%)
+2026-10-21 06:00 | NQM | NF05 BUY | ref 29904,00 | SL 362t
+2026-10-21 06:00 | NQM | NF05 filled @ 29744,75
+2026-10-21 07:00 | NQM | LF06 BUY | ref 29905,75 | SL 362t
+2026-10-21 07:00 | NQM | LF06 filled @ 29795,00
+2026-10-21 08:00 | NQM | LF06 exit fill: TargetX x1 @ 29840,25
+2026-10-21 10:01 | NQM | NF05 exit: time exit
+2026-10-21 10:01 | NQM | NF05 exit fill: NF05X x1 @ 29874,75
+2026-10-21 11:10 | NQM | SIZE ICT SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-21 11:10 | NQM | ICT SELL LIMIT @ 29842,00 | SL 29935,25
+2026-10-21 11:10 | NQM | ICT filled @ 29842,00
+2026-10-21 11:30 | NQM | ORB60 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-21 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-10-21 11:30 | NQM | MOM1030 SELL | ref 29874,25 | SL 362t
+2026-10-21 11:30 | NQM | MOM1030 filled @ 29858,25
+2026-10-21 11:38 | NQM | MOM1030 exit fill: TargetX x4 @ 29831,00
+2026-10-21 11:50 | NQM | ICT exit fill: StopX x2 @ 29935,25
+2026-10-21 12:00 | NQM | ORB90 skipped today: breakout level not beyond the prior close by 0,10 ATR
+2026-10-21 12:00 | NQM | MOM11 BUY | ref 29874,25 | SL 453t
+2026-10-21 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-21 12:00 | NQM | MOM11 filled @ 29924,25
+2026-10-21 12:10 | NQM | MOM11 exit fill: TargetX x1 @ 29958,25
+2026-10-21 13:40 | NQM | VOLB filled @ 30104,50
+2026-10-21 16:56 | NQM | FLATTEN: end of day
+2026-10-21 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 30025,75
+2026-10-21 | NQM | EDGE day 13: z 0,096 | CUSUM 0,67 / 26,93 (2%)
+2026-10-22 05:01 | NQM | SO04 SELL | ref 29983,75 | SL 271t
+2026-10-22 05:01 | NQM | SO04 filled @ 29469,75
+2026-10-22 07:00 | NQM | REV06 SELL | ref 29441,50 | SL 361t
+2026-10-22 07:00 | NQM | REV06 filled @ 29469,00
+2026-10-22 07:32 | NQM | SO04 exit fill: StopX x1 @ 29537,50
+2026-10-22 08:00 | NQM | ON07 skipped: prior day moved against (context rule)
+2026-10-22 10:34 | NQM | REV06 exit fill: StopX x1 @ 29559,25
+2026-10-22 11:15 | NQM | SIZE ICT SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-22 11:15 | NQM | ICT SELL LIMIT @ 29500,50 | SL 29590,00
+2026-10-22 11:28 | NQM | VOLB filled @ 29361,00
+2026-10-22 11:30 | NQM | ORB60 context x2
+2026-10-22 11:30 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-22 11:30 | NQM | ORB60 SELL @ 29346,25 | SL 632t | TP 0,6R
+2026-10-22 11:30 | NQM | SIZE MOM1030 SELL: base 1 -> requested 4 (multipliers / boosts) -> sent 4
+2026-10-22 11:30 | NQM | MOM1030 SELL | ref 29515,25 | SL 361t
+2026-10-22 11:30 | NQM | MOM1030 filled @ 29359,00
+2026-10-22 11:30 | NQM | ORB60 filled @ 29346,25
+2026-10-22 11:30 | NQM | MOM1030 exit fill: TargetX x4 @ 29332,00
+2026-10-22 11:48 | NQM | ORB60 exit fill: TargetX x2 @ 29251,50
+2026-10-22 12:00 | NQM | ORB90 context x2
+2026-10-22 12:00 | NQM | SIZE ORB90 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-22 12:00 | NQM | ORB90 SELL @ 29247,75 | SL 632t | TP 0,6R
+2026-10-22 12:00 | NQM | MOM11 SELL | ref 29515,25 | SL 451t
+2026-10-22 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-22 12:00 | NQM | MOM11 filled @ 29307,50
+2026-10-22 12:03 | NQM | MOM11 exit fill: TargetX x1 @ 29273,75
+2026-10-22 12:08 | NQM | ORB90 filled @ 29247,75
+2026-10-22 12:11 | NQM | VOLB stop -> entry + 0.1R @ 29345,50
+2026-10-22 12:23 | NQM | VOLB exit fill: StopX x1 @ 29345,50
+2026-10-22 12:25 | NQM | ORB60 context x2
+2026-10-22 12:25 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-22 12:25 | NQM | ORB60 SELL @ 29346,25 | SL 632t | TP 0,6R
+2026-10-22 12:25 | NQM | ORB60 filled @ 29346,25
+2026-10-22 12:40 | NQM | ORB60 exit fill: TargetX x2 @ 29249,00
+2026-10-22 13:50 | NQM | ORB90 exit fill: TargetX x2 @ 29153,00
+2026-10-22 14:00 | NQM | MOM13 skipped: no other module open the same way
+2026-10-22 14:01 | NQM | VW13 SELL | ref 29367,75 | SL 271t
+2026-10-22 14:01 | NQM | VW13 filled @ 29238,75
+2026-10-22 14:02 | NQM | VW13 exit fill: TargetX x1 @ 29204,75
+2026-10-22 16:00 | NQM | LATE15 SELL | ref 29503,00 | SL 541t
+2026-10-22 16:00 | NQM | LATE15 filled @ 29079,75
+2026-10-22 16:56 | NQM | FLATTEN: end of day
+2026-10-22 16:56 | NQM | LATE15 exit fill: LATE15X x1 @ 29151,50
+2026-10-22 | NQM | EDGE day 14: z 1,152 | CUSUM 0,00 / 26,93 (0%)
+2026-10-23 05:30 | NQM | LF0430 SELL | ref 29168,75 | SL 683t
+2026-10-23 05:30 | NQM | LF0430 filled @ 29256,25
+2026-10-23 06:23 | NQM | LF0430 exit fill: TargetX x1 @ 29170,75
+2026-10-23 08:00 | NQM | ON07 SELL | ref 29132,00 | SL 390t
+2026-10-23 08:00 | NQM | ON07 filled @ 29097,00
+2026-10-23 09:01 | NQM | ON07 exit: time exit
+2026-10-23 09:01 | NQM | ON07 exit fill: ON07X x1 @ 29111,50
+2026-10-23 11:50 | NQM | VOLB filled @ 29280,25
+2026-10-23 12:00 | NQM | MOM11 BUY | ref 29029,75 | SL 488t
+2026-10-23 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-23 12:00 | NQM | MOM11 filled @ 29292,00
+2026-10-23 14:10 | NQM | MOM11 exit fill: StopX x1 @ 29170,00
+2026-10-23 16:56 | NQM | FLATTEN: end of day
+2026-10-23 16:56 | NQM | VOLB exit fill: VOLBX x1 @ 29111,25
+NQMaster | MODULE HEALTH (end of run; 392 trades, last exit 2026-10-23; 'last 365 d' ends there)
+  CAM3     all:     3 tr  WR   0,0%  PF  0,00  net     -$259  | last 365 d:    3 tr  WR  0,0%  PF  0,00  net     -$259
+  CPI09    all:     4 tr  WR 100,0%  PF   inf  net    $2.654  | last 365 d:    4 tr  WR 100,0%  PF   inf  net    $2.654
+  CRT11    all:     6 tr  WR  83,3%  PF 30,45  net    $2.439  | last 365 d:    6 tr  WR 83,3%  PF 30,45  net    $2.439
+  ICT      all:    12 tr  WR  50,0%  PF  1,02  net       $37  | last 365 d:   12 tr  WR 50,0%  PF  1,02  net       $37
+  LATE15   all:     8 tr  WR  25,0%  PF  0,45  net     -$285  | last 365 d:    8 tr  WR 25,0%  PF  0,45  net     -$285
+  LF0430   all:    13 tr  WR  69,2%  PF  1,32  net      $356  | last 365 d:   13 tr  WR 69,2%  PF  1,32  net      $356
+  LF06     all:    12 tr  WR  75,0%  PF  1,58  net      $311  | last 365 d:   12 tr  WR 75,0%  PF  1,58  net      $311
+  LON      all:    19 tr  WR  73,7%  PF  4,74  net    $2.630  | last 365 d:   19 tr  WR 73,7%  PF  4,74  net    $2.630
+  MOM1030  all:    18 tr  WR  72,2%  PF  0,87  net     -$495  | last 365 d:   18 tr  WR 72,2%  PF  0,87  net     -$495
+  MOM11    all:    65 tr  WR  80,0%  PF  1,26  net      $826  | last 365 d:   65 tr  WR 80,0%  PF  1,26  net      $826  <- >= 80% win rate last year
+  MOM13    all:    14 tr  WR  71,4%  PF  4,27  net    $1.379  | last 365 d:   14 tr  WR 71,4%  PF  4,27  net    $1.379
+  MSEQ     all:    11 tr  WR  45,5%  PF  0,79  net     -$356  | last 365 d:   11 tr  WR 45,5%  PF  0,79  net     -$356
+  MSEQS    all:     1 tr  WR   0,0%  PF  0,00  net     -$124  | last 365 d:    1 tr  WR  0,0%  PF  0,00  net     -$124
+  NF05     all:    23 tr  WR  56,5%  PF  1,55  net      $887  | last 365 d:   23 tr  WR 56,5%  PF  1,55  net      $887
+  ON07     all:    35 tr  WR  40,0%  PF  0,56  net     -$835  | last 365 d:   35 tr  WR 40,0%  PF  0,56  net     -$835  <- losing last year (review)
+  ORB60    all:    14 tr  WR  50,0%  PF  1,84  net    $1.153  | last 365 d:   14 tr  WR 50,0%  PF  1,84  net    $1.153
+  ORB90    all:    10 tr  WR  40,0%  PF  2,07  net      $759  | last 365 d:   10 tr  WR 40,0%  PF  2,07  net      $759
+  ORFAIL   all:     7 tr  WR  57,1%  PF  2,11  net      $426  | last 365 d:    7 tr  WR 57,1%  PF  2,11  net      $426
+  REV06    all:    31 tr  WR  67,7%  PF  0,67  net     -$621  | last 365 d:   31 tr  WR 67,7%  PF  0,67  net     -$621  <- losing last year (review)
+  RV11     all:     3 tr  WR   0,0%  PF  0,00  net     -$387  | last 365 d:    3 tr  WR  0,0%  PF  0,00  net     -$387
+  SO04     all:    14 tr  WR  57,1%  PF  1,01  net        $8  | last 365 d:   14 tr  WR 57,1%  PF  1,01  net        $8
+  VOLB     all:    60 tr  WR  55,0%  PF  0,82  net   -$1.193  | last 365 d:   60 tr  WR 55,0%  PF  0,82  net   -$1.193  <- losing last year (review)
+  VW13     all:     9 tr  WR  88,9%  PF  3,87  net      $537  | last 365 d:    9 tr  WR 88,9%  PF  3,87  net      $537
+NQMaster | research: a >= 80% win-rate year does NOT predict the next trades better than the module's long-run rate (research/mine/sniper_eval.py, wr80_lab.py); use this list for the yearly review, not for sizing.
+NQMaster | RUN TIME fill series Tick1: 64,0 s wall clock, 144.135 1-minute bars, 235.979.550 fill-series bars, 19 tick-gap minutes (must be 0 for H1), 0 orphan protective orders cancelled, 0 market exits forced without a confirmed cancel (both must be 0)
+FUNDEDSYNCSTACK TERMINATED build=2026-09-24.1-FUNDEDSYNCSTACK closeRequested=False hardBlocked=False reconciliationPending=False reconnectPending=False status=Not checked. This record reports state, not the cause of a platform/add-on shutdown.
+Portfolio risk ledger: closed net 0,00, peak 0,00, max closed-trade drawdown 0,00, current-day closed 0,00, daily lockout False
+MNQPROPBUNDLEA TERMINATED build=2026-09-14.1-BUNDLE-A closeRequested=False hardBlocked=False reconciliationPending=False reconnectPending=False status=Not checked. This record reports state, not the cause of a platform/add-on shutdown.
+Portfolio risk ledger: closed net 0,00, peak 0,00, max closed-trade drawdown 0,00, current-day closed 0,00, daily lockout False
+MNQPROPBUNDLEB TERMINATED build=2026-09-14.1-BUNDLE-B closeRequested=False hardBlocked=False reconciliationPending=False reconnectPending=False status=Not checked. This record reports state, not the cause of a platform/add-on shutdown.
+Portfolio risk ledger: closed net 0,00, peak 0,00, max closed-trade drawdown 0,00, current-day closed 0,00, daily lockout False
