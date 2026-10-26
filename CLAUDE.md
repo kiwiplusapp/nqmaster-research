@@ -1,38 +1,48 @@
 # NQMaster: trading algorítmico NQ / MNQ (NinjaTrader 8)
 
-## Usuario
-- El usuario es **Federico**. Empezá cada respuesta con su nombre ("Federico — ...").
-- Respondé en español, directo, sin opiniones que no pidió. Ejecutá la tarea; si falta un dato, resolvelo vos.
-- Sus instrucciones globales completas están en `claude/global-CLAUDE.md`.
+Federico es el usuario. Empezá cada respuesta con "Federico — ...", en español y directo. Si falta un dato, resolvelo vos.
+Antes de trabajar leé `docs/ESTADO.md` (estado y 5 problemas abiertos). Reglas de git: commit local siempre, `git push` solo si él lo pide.
 
-## Primer paso en una sesión en la nube
-Los datos grandes (historial de precios NQ / MNQ / oro / ES / euro / plata / petróleo y algunos sets de trades) están comprimidos como `.xz`. Si `research/data/nq_1m.npz` no existe, corré una vez:
+## Comandos
 
 ```bash
-bash tools/cloud_setup.sh
+bash tools/cloud_setup.sh                       # una vez: pip install + reconstruye los datos .xz (si falta research/data/nq_1m.npz)
+python3 tools/restore_data.py --check           # solo verifica SHA-256
+cd research/mine && python3 parity_check.py <csv de Strategy Analyzer> --set ultra_d4   # paridad NT vs investigación
+bash tools/nt8_stub/check.sh NQMaster.cs        # chequeo de sintaxis C# 5 contra un stub
+python3 tools/propcycle_test/run_test.py        # tras tocar PropCycle: tiene que dar 0 diferencias
+python tools/compress_data.py                   # antes de commitear cualquier archivo > 40 MB
 ```
 
-Instala los paquetes de `requirements.txt` y reconstruye los 26 archivos desde sus `.xz` (verifica SHA-256). `python3 tools/restore_data.py --check` solo verifica.
+- Los scripts de `research/mine/` se corren desde su carpeta, los de `research/` desde `research/`. `core.Data("nq_1m.npz")` carga desde `research/data/`.
+- Los `patch_*.py` traen rutas de Windows (`D:\NinjaTrader Strategy\...`): pasalas a rutas relativas. Los backups que leen están ahora en `archive/backups/`.
+- Un script de `research/mine/` que se importa y trabaja a nivel de módulo se re-ejecuta y puede borrar datos densos: usá `if __name__ == "__main__"`.
 
-Si agregás o modificás un archivo de más de 40 MB, corré `python tools/compress_data.py` antes del commit: crea el `.xz`, actualiza `tools/data_manifest.json` e ignora el original en `.gitignore`.
+## Compilar
 
-## Estructura
-- `NQMaster.cs`: la estrategia final de NinjaTrader 8 (perfiles Ultra, WR70Plus, Core, MaxSharpe, etc.). Guía: `NQMASTER_GUIA.md`. Backups: `NQMaster_backup_pre_*.cs`.
-- Otras estrategias `.cs` y sus guías `*_GUIA.md`: versiones anteriores y módulos sueltos.
-- `Conocimiento/`: base de conocimiento en Obsidian (empezar por `00 - MAPA.md`). `Mapa.canvas` y `.obsidian/` son la vista de Obsidian.
-- `research/`: motor de backtest en Python (numpy + numba). `research/data/`: precios en 1 minuto (`*.npz` listos para usar, `*_utc.pkl` fuente). `research/mine/`: minería de estrategias, auditoría de robustez, simulaciones de prop firms (Apex, Lucid).
-- `claude/memory/`: la memoria de Claude de este proyecto (veredictos de investigación, decisiones, resultados por fecha).
-- `tools/`: compresión y restauración de datos, setup de la nube.
+`NQMaster.cs` solo se compila en la PC de Windows con NinjaTrader 8 (F5 en el NinjaScript Editor). En la nube el stub chequea sintaxis, no sustituye F5.
+NinjaTrader rechaza palabras contextuales como nombre de parámetro (`when`, `value`, `var`, `from`, `with`, `and`, `or`, `not`, `on`) aunque mcs las acepte.
 
-## Cómo correr la investigación
-- Los scripts de `research/mine/` se corren desde su carpeta: `cd research/mine && python3 robust_lab.py`. Los de `research/` desde `research/`.
-- `core.Data("nq_1m.npz")` carga los precios desde `research/data/`.
-- Períodos estándar: IS = CFD 2020-23 (donde se elige todo), C24 = CFD 2024-26, REAL = futuros MNQ 2024-26, más 2015-19 (`nqhd_long.npz`) como prueba de régimen. Costos: $1,90 de comisión + 1 tick por lado.
-- Regla de validación: una idea se acepta solo si funciona en IS, C24 y REAL sin re-optimizar.
-- Los `patch_*.py` de `research/mine/` tienen rutas de Windows (`D:\NinjaTrader Strategy\...`): en la nube, cambialas por rutas relativas antes de correrlos.
+## Períodos y costos
 
-## Compilar NQMaster.cs
-Solo en la PC de Windows con NinjaTrader 8 (necesita sus DLL). En la nube se puede editar el `.cs`, pero la compilación se verifica en la PC: `csc.exe` con referencias a `NinjaTrader.Core.dll`, `NinjaTrader.Gui.dll` y `NinjaTrader.Custom.dll` (ver la memoria), o F5 en el NinjaScript Editor.
+- IS = CFD 2020-23 (acá se elige todo). C24 = CFD 2024-26. REAL = futuros MNQ 2024-26. Régimen = 2015-19 (`nqhd_long.npz`) y `nqdb.npz` (NQ real 2010-26).
+- Costos: $1,90 de comisión por contrato + 1 tick por lado. Estrés: +4 ticks.
+- Detalle del protocolo: `.claude/skills/validacion/SKILL.md`.
 
-## Memoria del proyecto
-@claude/memory/ifvg-sniper-nt8-project.md
+## Reglas
+
+- **Validación:** una idea entra solo si funciona en IS, C24 y REAL sin re-optimizar.
+- **Techo:** nunca afirmes que algo no se puede mejorar sin mostrar el experimento que lo prueba. El techo del edge por trade está documentado en `docs/historia`; el del sistema no.
+- **Antes de proponer:** buscá la idea en `docs/historia/ifvg-sniper-nt8-project.md` y `Conocimiento/Descartado/`. Muchas ya se probaron.
+- **Cifras de cuentas:** dá tres casos (edge completo, −35% y edge cero). No prometas ingresos.
+- **Simulaciones:** máquina de estados barra por barra. Un fill con lookahead dio un edge falso más de una vez.
+
+## Dónde está cada cosa
+
+- `NQMaster.cs`: la estrategia (perfiles Ultra, WR70Plus, Durable, Custom). También `NQAccountGuard.cs`, `OrderFlowRecorder.cs`, `BarExporterUTC.cs`.
+- `docs/ESTADO.md`: estado actual. `docs/guia/INDICE.md`: guía por tema. `docs/historia/`: veredictos por fecha. `RUNBOOK_OPERACION.md`: operación diaria.
+- `.claude/skills/prop-rules/`: reglas de Lucid Flex 150K y MFFU Rapid 50K. `.claude/skills/validacion/`: protocolo de validación.
+- `Conocimiento/`: vault de Obsidian (`00 - MAPA.md`; `Descartado/` lista lo rechazado). `Mapa.canvas` y `.obsidian/` son su vista.
+- `research/`: motor de backtest (numpy + numba). `research/data/`: precios en 1 minuto. `research/mine/`: minería, auditorías, simulación de cuentas.
+- `archive/legacy/`: estrategias viejas y sus guías. `archive/backups/`: copias `*_backup_pre_*.cs`. No se editan.
+- `claude/global-CLAUDE.md`: instrucciones globales de Federico.
