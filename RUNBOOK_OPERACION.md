@@ -1,6 +1,6 @@
 # Runbook de operación NQMaster (versión 2026-10-21, ronda 5, para 2026-2027)
 
-Una página. Si algo de acá contradice una sección vieja de `NQMASTER_GUIA.md`, manda esta.
+Una página. Si algo de acá contradice una sección vieja de `docs/guia/INDICE.md`, manda esta.
 
 ## Antes de operar (una vez, y después de cada cambio de código)
 
