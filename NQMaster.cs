@@ -643,7 +643,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (BarsInProgress == 0) foreach (Mod m in mods)
 				{
 					// a market exit whose bracket cancel was not confirmed within one bar goes out anyway (counted: must stay 0)
-					if (m.XExitPending && CurrentBars[0] > m.XExitBar) { m.XExitPending = false; xExitForced++; Log(m.Sig + " market exit forced: bracket cancel not confirmed within one bar"); SubmitModuleExit(m, m.XExitQty, m.XExitSig); }
+					if (m.XExitPending && CurrentBars[0] > m.XExitBar) { m.XExitPending = false; xExitForced++; Log(m.Sig + " market exit forced: bracket cancel not confirmed within one bar"); if (m.OpenQty > 0) SubmitModuleExit(m, Math.Min(m.XExitQty, m.OpenQty), m.XExitSig); }
+					// partial fills (live / Playback): a bracket re-size refused while the order was still Submitted is retried here
+					if (m.InTrade && !m.XExitPending && m.OpenQty > 0)
+					{
+						if (Working(m.XStop) && m.XStop.Quantity != m.OpenQty) try { ChangeOrder(m.XStop, m.OpenQty, 0, m.XStop.StopPrice); } catch { }
+						if (Working(m.XTgt) && m.XTgt.Quantity != m.OpenQty) try { ChangeOrder(m.XTgt, m.OpenQty, m.XTgt.LimitPrice, 0); } catch { }
+					}
 					// orphan guard: a protective order still working with the module flat is cancelled and counted (Playback test: must stay 0)
 					if (!m.InTrade && (Working(m.XStop) || Working(m.XTgt))) { orphanCount++; Print(string.Format("{0} | NQMaster | ORPHAN protective order of {1} cancelled (module flat)", Times[0][0].ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), m.Sig)); CancelBrackets(m); }
 				}
@@ -1670,7 +1676,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!desyncHalt)
 			{
 				int q = Math.Max(1, m.OpenQty);
-				ModuleMarketExit(m, q, m.Sig + "X");
+				if (fillBip > 0) ModuleMarketExit(m, q, m.Sig + "X");
+				else if (m.Dir == 1) ExitLong(fillBip, q, m.Sig + "X", m.Sig); else ExitShort(fillBip, q, m.Sig + "X", m.Sig);
 			}
 		}
 
@@ -2196,7 +2203,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (exitMod == volb && exitMod.OpenQty == 0 && VolbReArm && !volbTrendOnly && volb.R >= 1.5 && !volbBeSet && volbTrades < 2 && !Working(volb.Entry) && (execution.Order.Name == "Stop loss" || execution.Order.Name == "StopX"))
 				{ volbDone = false; Log("VOLB stopped out: re-armed for a second attempt (VolbReArm)"); }
 			}
-			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; }
+			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; if (fillBip > 0) CancelBrackets(x); }
 		}
 
 		private void ProcessClosedTrades()
@@ -2211,7 +2218,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (netPnl > eqPeak) eqPeak = netPnl;
 			}
 			tradesProcessed = count;
-			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; }
+			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; if (fillBip > 0) CancelBrackets(x); }
 		}
 
 		private bool PauseActive()
@@ -2292,11 +2299,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// OnOrderUpdate of a bracket order: keep the reference current; once both brackets are no longer working, send the market exit that waited for them
 		private void BracketUpdate(Mod m, Order o)
 		{
-			if (o.Name == "StopX") m.XStop = o; else m.XTgt = o;
+			if (o.Name == "StopX") { if (m.XStop == null || m.XStop == o || !Working(m.XStop)) m.XStop = o; else return; }
+			else { if (m.XTgt == null || m.XTgt == o || !Working(m.XTgt)) m.XTgt = o; else return; }	// a late callback of an older bracket never replaces a working one
 			if (m.XExitPending && !Working(m.XStop) && !Working(m.XTgt))
 			{
 				m.XExitPending = false;
-				if (m.OpenQty > 0 && Position.MarketPosition != MarketPosition.Flat) SubmitModuleExit(m, m.XExitQty, m.XExitSig);
+				// OnOrderUpdate(Filled) of a bracket arrives before its OnExecutionUpdate: the lots it just closed are not in the market exit
+				int rem = m.OpenQty - ((o.OrderState == OrderState.Filled || o.OrderState == OrderState.PartFilled) ? o.Filled : 0);
+				if (rem > 0 && Position.MarketPosition != MarketPosition.Flat) SubmitModuleExit(m, Math.Min(m.XExitQty, rem), m.XExitSig);
 			}
 		}
 		private string Fmt(double p) { return Instrument.MasterInstrument.FormatPrice(p); }

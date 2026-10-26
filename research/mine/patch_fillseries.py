@@ -1,4 +1,4 @@
-"""2026-10-26 experiment 01 (docs/PLAN_2026-10-26.md, 5A): FillSeries for NQMaster.cs (v4).
+"""2026-10-26 experiment 01 (docs/PLAN_2026-10-26.md, 5A): FillSeries for NQMaster.cs (v4.1).
 Adds an optional intrabar fill series (1 tick / 1 second) and routes every managed order to it, following NinjaTrader's
 SampleIntrabarBacktest pattern, so the Strategy Analyzer fills stop-market / limit entries and the stop / target exits
 on ticks instead of the 1-minute OHLC (OrderFillResolution.High is not offered for multi-series strategies).
@@ -11,6 +11,8 @@ v4 (P2c 2026-10-26): NinjaTrader keeps the SetStopLoss / SetProfitTarget orders 
 carried tick times), so with a fill series the brackets become explicit ExitLongStopMarket / ExitLongLimit orders on that series,
 placed on the entry fill with the levels the Set* calls would have used; market exits cancel the brackets first; orphan guard and
 counters (RUN TIME line); Playback keeps the fill series (bracket test), any other live connection switches back to the 1-minute series.
+v4.1 (review of v4): hedge guard literal in Off, bracket re-size for partial fills, stale bracket callbacks ignored, the waiting market
+exit capped at the lots that remain, flat resets cancel leftover brackets.
 Run from anywhere: python3 research/mine/patch_fillseries.py   (idempotent: refuses to patch twice).
 Backup: archive/backups/NQMaster_backup_pre_fillseries.cs"""
 import os, sys
@@ -87,7 +89,13 @@ rep("\t\tprotected override void OnBarUpdate()\n\t\t{\n\t\t\tif (badTimeframe ||
     "\t\t\t\tif (BarsInProgress == 0) foreach (Mod m in mods)\n"
     "\t\t\t\t{\n"
     "\t\t\t\t\t// a market exit whose bracket cancel was not confirmed within one bar goes out anyway (counted: must stay 0)\n"
-    "\t\t\t\t\tif (m.XExitPending && CurrentBars[0] > m.XExitBar) { m.XExitPending = false; xExitForced++; Log(m.Sig + \" market exit forced: bracket cancel not confirmed within one bar\"); SubmitModuleExit(m, m.XExitQty, m.XExitSig); }\n"
+    "\t\t\t\t\tif (m.XExitPending && CurrentBars[0] > m.XExitBar) { m.XExitPending = false; xExitForced++; Log(m.Sig + \" market exit forced: bracket cancel not confirmed within one bar\"); if (m.OpenQty > 0) SubmitModuleExit(m, Math.Min(m.XExitQty, m.OpenQty), m.XExitSig); }\n"
+    "\t\t\t\t\t// partial fills (live / Playback): a bracket re-size refused while the order was still Submitted is retried here\n"
+    "\t\t\t\t\tif (m.InTrade && !m.XExitPending && m.OpenQty > 0)\n"
+    "\t\t\t\t\t{\n"
+    "\t\t\t\t\t\tif (Working(m.XStop) && m.XStop.Quantity != m.OpenQty) try { ChangeOrder(m.XStop, m.OpenQty, 0, m.XStop.StopPrice); } catch { }\n"
+    "\t\t\t\t\t\tif (Working(m.XTgt) && m.XTgt.Quantity != m.OpenQty) try { ChangeOrder(m.XTgt, m.OpenQty, m.XTgt.LimitPrice, 0); } catch { }\n"
+    "\t\t\t\t\t}\n"
     "\t\t\t\t\t// orphan guard: a protective order still working with the module flat is cancelled and counted (Playback test: must stay 0)\n"
     "\t\t\t\t\tif (!m.InTrade && (Working(m.XStop) || Working(m.XTgt))) { orphanCount++; Print(string.Format(\"{0} | NQMaster | ORPHAN protective order of {1} cancelled (module flat)\", Times[0][0].ToString(\"yyyy-MM-dd HH:mm\", CultureInfo.InvariantCulture), m.Sig)); CancelBrackets(m); }\n"
     "\t\t\t\t}\n"
@@ -104,7 +112,8 @@ rep("\t\t\tif (desyncHalt) return;\n\t\t\tif (Position.MarketPosition == MarketP
     "\t\t\tif (Position.MarketPosition == MarketPosition.Long) ExitLong(fillBip, Math.Max(1, Position.Quantity), m.Sig + \"X\", m.Sig);\n")
 # hedge guard exit (realtime only) through the same path
 rep("\t\t\t\tif (m.Dir == 1) ExitLong(fillBip, q, m.Sig + \"X\", m.Sig); else ExitShort(fillBip, q, m.Sig + \"X\", m.Sig);\n",
-    "\t\t\t\tModuleMarketExit(m, q, m.Sig + \"X\");\n")
+    "\t\t\t\tif (fillBip > 0) ModuleMarketExit(m, q, m.Sig + \"X\");\n"
+    "\t\t\t\telse if (m.Dir == 1) ExitLong(fillBip, q, m.Sig + \"X\", m.Sig); else ExitShort(fillBip, q, m.Sig + \"X\", m.Sig);\n")
 # FlattenAll: Off keeps the parameterless exit; with a fill series every module in trade exits through its own cancel-then-exit path
 rep("\t\t\tif (Position.MarketPosition == MarketPosition.Long) ExitLong(); else ExitShort();\n\t\t\tLog(\"FLATTEN: \" + why);\n",
     "\t\t\t// FillSeries Off: the parameterless exit, as always. Tick1 / Second1: each module in trade cancels its brackets and exits on the fill series;\n"
@@ -184,11 +193,14 @@ rep("\t\tprivate static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100
     "\t\t// OnOrderUpdate of a bracket order: keep the reference current; once both brackets are no longer working, send the market exit that waited for them\n"
     "\t\tprivate void BracketUpdate(Mod m, Order o)\n"
     "\t\t{\n"
-    "\t\t\tif (o.Name == \"StopX\") m.XStop = o; else m.XTgt = o;\n"
+    "\t\t\tif (o.Name == \"StopX\") { if (m.XStop == null || m.XStop == o || !Working(m.XStop)) m.XStop = o; else return; }\n"
+    "\t\t\telse { if (m.XTgt == null || m.XTgt == o || !Working(m.XTgt)) m.XTgt = o; else return; }\t// a late callback of an older bracket never replaces a working one\n"
     "\t\t\tif (m.XExitPending && !Working(m.XStop) && !Working(m.XTgt))\n"
     "\t\t\t{\n"
     "\t\t\t\tm.XExitPending = false;\n"
-    "\t\t\t\tif (m.OpenQty > 0 && Position.MarketPosition != MarketPosition.Flat) SubmitModuleExit(m, m.XExitQty, m.XExitSig);\n"
+    "\t\t\t\t// OnOrderUpdate(Filled) of a bracket arrives before its OnExecutionUpdate: the lots it just closed are not in the market exit\n"
+    "\t\t\t\tint rem = m.OpenQty - ((o.OrderState == OrderState.Filled || o.OrderState == OrderState.PartFilled) ? o.Filled : 0);\n"
+    "\t\t\t\tif (rem > 0 && Position.MarketPosition != MarketPosition.Flat) SubmitModuleExit(m, Math.Min(m.XExitQty, rem), m.XExitSig);\n"
     "\t\t\t}\n"
     "\t\t}\n")
 # OnExecutionUpdate: FillBar / FillBarTime, place the brackets on every entry execution, cancel the sibling when the module is flat, bracket names
@@ -234,6 +246,8 @@ rep("// Managed orders: one signal per module. An entry is skipped if the strate
     "//   series is added and every order is submitted to it (SampleIntrabarBacktest), with explicit bracket orders 'StopX' / 'TargetX' on that\n"
     "//   series instead of SetStopLoss / SetProfitTarget (those stay on the primary series). Backtest only: at State.Realtime the orders go back\n"
     "//   to the 1-minute series, except on the Playback connection (bracket test).\n")
+rep("\t\t\tif (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; }\n",
+    "\t\t\tif (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; if (fillBip > 0) CancelBrackets(x); }\n", 2)
 for k in ("EnterLong(0,", "EnterShort(0,", "ExitLong(0,", "ExitShort(0,"):
     assert k not in s, k
 open(P, "w", encoding="utf-8-sig").write(s)
