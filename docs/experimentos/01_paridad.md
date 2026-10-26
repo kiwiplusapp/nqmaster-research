@@ -32,7 +32,7 @@
 - **H3, paridad NinjaTrader vs investigación (S2):** baseline del 26-oct FALLA (`research/nt_exports/2026-10-26/standard/parity_ultra_d4.md`): G1 91,0 %, G3 0,918, G4 falla en ORFAIL 34 %, RV11 54 %, CAM3 56 %, MSEQS 56 %, ICT 80 %, SO04 89 %. Los cuatro módulos de 6 años siguen "paridad pendiente" en el runbook (aporte medido: +$100/mes/contrato, 5 % del neto).
 - **H5, slippage real por módulo × franja (P3):** exports de las cuentas prop (principal) y Sim101 (respaldo), `research/mine/slip_model.py`; reemplaza la hipótesis de 1 tick por celda con n ≥ 15.
 - **Neto por contrato por mes por módulo en IS/C24/REAL** con el slippage de H5: se entrega cuando P3 esté.
-- Playback: huérfanas con 6 contratos (Tick1) y off-by-one en vivo (Off).
+- Playback Tick1 con 6 contratos (13-15 oct, modo Historical): **pasó** — 16/16 trades iguales al backtest Tick1 (misma barra de entrada y salida, brackets a 1-4 s), fills parciales por volumen de tick con re-dimensión de brackets, NinjaTrader reduce y cancela el hermano, 59 órdenes todas Filled/Cancelled, 90 lotes dentro = 90 fuera, 0 huérfanas. Queda el off-by-one de `EntryBar` en vivo: Playback Off del 16-oct (tres salidas por MaxHold) contra el backtest Off.
 
 ## Reproducibilidad
 
