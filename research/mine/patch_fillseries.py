@@ -15,8 +15,8 @@ v4.1 (review of v4): hedge guard literal in Off, bracket re-size for partial fil
 exit capped at the lots that remain, flat resets cancel leftover brackets.
 v4.2 (H1 run 2026-10-26, Off vs Tick1 on 2026-06-01 -> today): a MARKET fill on the fill series belongs to the bar that sent it (NinjaTrader
 fills it at the next open while that bar is still the current one in Standard mode: 48 MaxHold exits came one bar late with v4.1), so
-FillAhead() adds the bar only for stop / limit fills; LateBar() is off on the Playback connection (Core.Globals.Now is the PC clock there:
-every replayed bar read as 'processed late' and the Market Replay test never traded).
+FillAhead() adds the bar only for stop / limit fills; LateBar() and RollDue() read NowClock() = the replay clock on the Playback connection
+(Core.Globals.Now is the PC clock there: every replayed bar read as 'processed late' and the Market Replay test never traded).
 Run from anywhere: python3 research/mine/patch_fillseries.py   (idempotent: refuses to patch twice).
 Backup: archive/backups/NQMaster_backup_pre_fillseries.cs"""
 import os, sys
@@ -46,7 +46,7 @@ rep("\t\tprivate bool badTimeframe;\n",
     "\t\t\t\t\t\t\t\t\t\t\t\t\t// fillBip = the one in use on this bar: 2 once the fill series has bars (tick history can start years after the minutes), else 0\n"
     "\t\tprivate int tickGapBars;\t\t\t// 1-minute bars with volume whose minute has no fill-series bar (provider tick gap): a run with gaps is not valid for H1\n"
     "\t\tprivate int orphanCount, xExitForced;\t// explicit brackets: protective orders still working with the module flat (cancelled here), market exits sent without a confirmed cancel\n"
-    "\t\tprivate bool playbackMode;\t// Market Replay (Playback connection): Core.Globals.Now is the PC clock there, not the replay clock\n"
+    "\t\tprivate bool playbackMode;\t// Market Replay (Playback connection) at the switch to Realtime: the fill series stays on, the strategy clock is NowClock()\n"
     "\t\tprivate DateTime runStart;\t\t\t// wall clock at DataLoaded -> run-time line at Terminated (Off vs Tick1 ratio)\n")
 rep("\t\t\t\tUseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;\n",
     "\t\t\t\tUseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;\n"
@@ -67,8 +67,8 @@ rep("\t\t\telse if (State == State.DataLoaded)\n\t\t\t{\n\t\t\t\trthCloses = new
 # Realtime: backtest-only feature. Playback (Market Replay) keeps the fill series so the explicit brackets can be tested; any other connection switches back.
 rep("\t\t\telse if (State == State.Realtime)\n\t\t\t{\n\t\t\t\t// an entry still Initialized at the switch was never processed on history (NinjaTrader would send it live now): drop it\n",
     "\t\t\telse if (State == State.Realtime)\n\t\t\t{\n"
-    "\t\t\t\ttry { playbackMode = Connection.PlaybackConnection != null; } catch { playbackMode = false; }\n"
-    "\t\t\t\tif (playbackMode) Log(\"Playback connection: late-bar guard off (the replay clock is not Core.Globals.Now)\");\n"
+    "\t\t\t\tplaybackMode = InPlayback();\n"
+    "\t\t\t\tif (playbackMode) Log(\"Playback connection: strategy clock = last 1-minute bar (late-bar guard and roll check), not Core.Globals.Now\");\n"
     "\t\t\t\tif (fillCfg > 0)\n"
     "\t\t\t\t{\n"
     "\t\t\t\t\tbool playback = playbackMode;\n"
@@ -132,9 +132,14 @@ rep("\t\t\tif (Position.MarketPosition == MarketPosition.Long) ExitLong(); else 
     "\t\t\t\telse if (sum < Position.Quantity) Log(string.Format(\"FLATTEN: {0} lot(s) not tracked by any module stay for the session-close exit\", Position.Quantity - sum));\n"
     "\t\t\t}\n"
     "\t\t\tLog(\"FLATTEN: \" + why);\n")
-# LateBar: the late-processing guard compares the bar time with the PC clock; on the Playback connection that clock is not the replay clock
+# Strategy clock: Core.Globals.Now is the PC clock also on the Playback connection, so the late-processing guard read every replayed bar as late
+# and the roll check would read the PC date. NowClock() is the last 1-minute bar time under Playback (checked live: the flag sampled at Realtime
+# is false when the strategy is enabled before Playback connects), Core.Globals.Now otherwise (live: unchanged).
+rep("\t\t\t\treturn ToEt(Core.Globals.Now).Date >= roll.Date;\n", "\t\t\t\treturn ToEt(NowClock()).Date >= roll.Date;\n")
 rep("\t\tprivate bool LateBar(DateTime barTime) { try { return State == State.Realtime && (Core.Globals.Now - barTime).TotalSeconds > 120; } catch { return false; } }\n",
-    "\t\tprivate bool LateBar(DateTime barTime) { try { return State == State.Realtime && !playbackMode && (Core.Globals.Now - barTime).TotalSeconds > 120; } catch { return false; } }\n")
+    "\t\tprivate bool InPlayback() { try { return Connection.PlaybackConnection != null; } catch { return false; } }\n"
+    "\t\tprivate DateTime NowClock() { return InPlayback() && CurrentBars[0] >= 0 ? Times[0][0] : Core.Globals.Now; }\t// Market Replay: the replay clock, not the PC clock\n"
+    "\t\tprivate bool LateBar(DateTime barTime) { try { return State == State.Realtime && (NowClock() - barTime).TotalSeconds > 120; } catch { return false; } }\n")
 # fill callbacks: bar index / bar time of the fill (+1 bar / +1 min while the 1-minute bar of the fill is still forming); Off: exactly as before
 rep("\t\tprivate static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100; }\n",
     "\t\tprivate static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100; }\n"
@@ -257,7 +262,7 @@ rep("// Managed orders: one signal per module. An entry is skipped if the strate
     "// FillSeries (2026-10-26, experiment 01): Off = orders on the 1-minute bars (default, unchanged); Tick1 / Second1 = a 1-tick / 1-second\n"
     "//   series is added and every order is submitted to it (SampleIntrabarBacktest), with explicit bracket orders 'StopX' / 'TargetX' on that\n"
     "//   series instead of SetStopLoss / SetProfitTarget (those stay on the primary series). Backtest only: at State.Realtime the orders go back\n"
-    "//   to the 1-minute series, except on the Playback connection (bracket test), where the late-bar guard is off (PC clock != replay clock).\n")
+    "//   to the 1-minute series, except on the Playback connection (bracket test), where the strategy clock is the replayed bar time (NowClock()).\n")
 rep("\t\t\tif (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; }\n",
     "\t\t\tif (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; if (fillBip > 0) CancelBrackets(x); }\n", 2)
 for k in ("EnterLong(0,", "EnterShort(0,", "ExitLong(0,", "ExitShort(0,"):

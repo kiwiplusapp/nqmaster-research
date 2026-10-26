@@ -31,7 +31,7 @@
 // FillSeries (2026-10-26, experiment 01): Off = orders on the 1-minute bars (default, unchanged); Tick1 / Second1 = a 1-tick / 1-second
 //   series is added and every order is submitted to it (SampleIntrabarBacktest), with explicit bracket orders 'StopX' / 'TargetX' on that
 //   series instead of SetStopLoss / SetProfitTarget (those stay on the primary series). Backtest only: at State.Realtime the orders go back
-//   to the 1-minute series, except on the Playback connection (bracket test), where the late-bar guard is off (PC clock != replay clock).
+//   to the 1-minute series, except on the Playback connection (bracket test), where the strategy clock is the replayed bar time (NowClock()).
 // ------------------------------------------------------------------------------------------------
 #region Using declarations
 using System;
@@ -114,7 +114,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 													// fillBip = the one in use on this bar: 2 once the fill series has bars (tick history can start years after the minutes), else 0
 		private int tickGapBars;			// 1-minute bars with volume whose minute has no fill-series bar (provider tick gap): a run with gaps is not valid for H1
 		private int orphanCount, xExitForced;	// explicit brackets: protective orders still working with the module flat (cancelled here), market exits sent without a confirmed cancel
-		private bool playbackMode;	// Market Replay (Playback connection): Core.Globals.Now is the PC clock there, not the replay clock
+		private bool playbackMode;	// Market Replay (Playback connection) at the switch to Realtime: the fill series stays on, the strategy clock is NowClock()
 		private DateTime runStart;			// wall clock at DataLoaded -> run-time line at Terminated (Off vs Tick1 ratio)
 		private HashSet<int> fomc, cpiDays; private bool cpiToday;
 		// US CPI release days (BLS schedule) for CPI09; add later years with the CpiDates parameter
@@ -303,12 +303,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 				DateTime ex = Instrument.Expiry; if (ex.Year < 2000) return false;
 				DateTime first = new DateTime(ex.Year, ex.Month, 1);
 				DateTime roll = first.AddDays(((int)DayOfWeek.Friday - (int)first.DayOfWeek + 7) % 7 + 14 - 8);
-				return ToEt(Core.Globals.Now).Date >= roll.Date;
+				return ToEt(NowClock()).Date >= roll.Date;
 			}
 			catch { return false; }
 		}
 		private int FlatMin { get { int f = FlattenTime > 0 ? Hm(FlattenTime) : 24 * 60; return shortSession ? Math.Min(f, sessEndMin - 5) : f; } }
-		private bool LateBar(DateTime barTime) { try { return State == State.Realtime && !playbackMode && (Core.Globals.Now - barTime).TotalSeconds > 120; } catch { return false; } }
+		private bool InPlayback() { try { return Connection.PlaybackConnection != null; } catch { return false; } }
+		private DateTime NowClock() { return InPlayback() && CurrentBars[0] >= 0 ? Times[0][0] : Core.Globals.Now; }	// Market Replay: the replay clock, not the PC clock
+		private bool LateBar(DateTime barTime) { try { return State == State.Realtime && (NowClock() - barTime).TotalSeconds > 120; } catch { return false; } }
 		// H3: open + working contracts (realtime: every instrument of the account, so MNQ and MGC together) never above MaxOpenContracts
 		private int OpenAndWorking(object self)
 		{
@@ -466,8 +468,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			else if (State == State.Realtime)
 			{
-				try { playbackMode = Connection.PlaybackConnection != null; } catch { playbackMode = false; }
-				if (playbackMode) Log("Playback connection: late-bar guard off (the replay clock is not Core.Globals.Now)");
+				playbackMode = InPlayback();
+				if (playbackMode) Log("Playback connection: strategy clock = last 1-minute bar (late-bar guard and roll check), not Core.Globals.Now");
 				if (fillCfg > 0)
 				{
 					bool playback = playbackMode;
