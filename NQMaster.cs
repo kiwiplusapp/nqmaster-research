@@ -31,7 +31,7 @@
 // FillSeries (2026-10-26, experiment 01): Off = orders on the 1-minute bars (default, unchanged); Tick1 / Second1 = a 1-tick / 1-second
 //   series is added and every order is submitted to it (SampleIntrabarBacktest), with explicit bracket orders 'StopX' / 'TargetX' on that
 //   series instead of SetStopLoss / SetProfitTarget (those stay on the primary series). Backtest only: at State.Realtime the orders go back
-//   to the 1-minute series, except on the Playback connection (bracket test).
+//   to the 1-minute series, except on the Playback connection (bracket test), where the late-bar guard is off (PC clock != replay clock).
 // ------------------------------------------------------------------------------------------------
 #region Using declarations
 using System;
@@ -114,6 +114,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 													// fillBip = the one in use on this bar: 2 once the fill series has bars (tick history can start years after the minutes), else 0
 		private int tickGapBars;			// 1-minute bars with volume whose minute has no fill-series bar (provider tick gap): a run with gaps is not valid for H1
 		private int orphanCount, xExitForced;	// explicit brackets: protective orders still working with the module flat (cancelled here), market exits sent without a confirmed cancel
+		private bool playbackMode;	// Market Replay (Playback connection): Core.Globals.Now is the PC clock there, not the replay clock
 		private DateTime runStart;			// wall clock at DataLoaded -> run-time line at Terminated (Off vs Tick1 ratio)
 		private HashSet<int> fomc, cpiDays; private bool cpiToday;
 		// US CPI release days (BLS schedule) for CPI09; add later years with the CpiDates parameter
@@ -307,7 +308,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			catch { return false; }
 		}
 		private int FlatMin { get { int f = FlattenTime > 0 ? Hm(FlattenTime) : 24 * 60; return shortSession ? Math.Min(f, sessEndMin - 5) : f; } }
-		private bool LateBar(DateTime barTime) { try { return State == State.Realtime && (Core.Globals.Now - barTime).TotalSeconds > 120; } catch { return false; } }
+		private bool LateBar(DateTime barTime) { try { return State == State.Realtime && !playbackMode && (Core.Globals.Now - barTime).TotalSeconds > 120; } catch { return false; } }
 		// H3: open + working contracts (realtime: every instrument of the account, so MNQ and MGC together) never above MaxOpenContracts
 		private int OpenAndWorking(object self)
 		{
@@ -465,9 +466,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			else if (State == State.Realtime)
 			{
+				try { playbackMode = Connection.PlaybackConnection != null; } catch { playbackMode = false; }
+				if (playbackMode) Log("Playback connection: late-bar guard off (the replay clock is not Core.Globals.Now)");
 				if (fillCfg > 0)
 				{
-					bool playback = false; try { playback = Connection.PlaybackConnection != null; } catch { }
+					bool playback = playbackMode;
 					if (playback) Warn("nqm_fill", "NQMaster | FillSeries " + FillSeries + " kept on the Playback connection (bracket test): orders stay on BarsInProgress " + fillCfg + ". Never use it on a live account.");
 					else { fillCfg = 0; fillBip = 0; Warn("nqm_fill", "NQMaster | FillSeries " + FillSeries + " is for the Strategy Analyzer only: live orders go back to the 1-minute series. Set it to Off in the live template."); }
 					foreach (Mod m in mods) { try { if (m.XStop != null) m.XStop = GetRealtimeOrder(m.XStop); if (m.XTgt != null) m.XTgt = GetRealtimeOrder(m.XTgt); } catch { } }
@@ -2168,15 +2171,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 				if (UseOrderFlowBoost) { ofEntries++; if (m.OfQ0 > 0 && execution.Order.Quantity > m.OfQ0) ofBoosted++; }
 				InactivityFill(m); CrossAccountPublish(); CrossAccountOnFill(m);
-				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(FillBarTime(time)).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
+				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(FillBarTime(time, execution.Order)).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
 				if (m == orb2) orb2.Trades++;
-				if (m == volb) { volbDone = true; volb.EntryBar = FillBar(time); volbBeSet = false; volbTrades++; }
-				if (m == eng10) eng10.EntryBar = FillBar(time);
+				if (m == volb) { volbDone = true; volb.EntryBar = FillBar(time, execution.Order); volbBeSet = false; volbTrades++; }
+				if (m == eng10) eng10.EntryBar = FillBar(time, execution.Order);
 				if (m.Sig == "MOM11" && m11Dir == 0) m11Dir = m.Dir;
 				if (m == lon || m.Sig == "ON07" || m.Sig == "REV06") onSum += m.Dir;
 				if (m == lon && lonDir == 0) lonDir = lon.Dir;
 				if (m == ict) ictTrades++;
-				if (m.Kind == 1 || m == rsi || m.Six) m.EntryBar = FillBar(time);
+				if (m.Kind == 1 || m == rsi || m.Six) m.EntryBar = FillBar(time, execution.Order);
 				// cancel opposite working entries
 				foreach (Mod o in mods) if (o != m && Working(o.Entry) && o.Dir == -m.Dir) ParkOrder(o);
 				}
@@ -2234,10 +2237,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 			catch { return t; }
 		}
 		private static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100; }
-		// fill callbacks: index / close time of the 1-minute bar the fill belongs to (fill series: that bar is still forming, so +1 bar / +1 min)
-		private bool FillAhead(DateTime t) { return fillCfg > 0 && fillBip > 0 && (BarsInProgress == fillBip || t > Times[0][0]); }
-		private int FillBar(DateTime t) { return CurrentBars[0] + (FillAhead(t) ? 1 : 0); }
-		private DateTime FillBarTime(DateTime t) { return FillAhead(t) ? Times[0][0].AddMinutes(1) : Times[0][0]; }
+		// fill callbacks: index / close time of the 1-minute bar Standard mode charges the fill to. A stop / limit fill on the fill series arrives while
+		// its 1-minute bar is still forming (+1 bar / +1 min); a market fill is the next open and Standard charges it to the bar that sent the order
+		// (measured 2026-10-26: with +1 on market fills the MaxHold exits came one bar late, 48 of 108 time exits)
+		private bool FillAhead(DateTime t, Order o) { return fillCfg > 0 && fillBip > 0 && (o == null || o.OrderType != OrderType.Market) && (BarsInProgress == fillBip || t > Times[0][0]); }
+		private int FillBar(DateTime t, Order o) { return CurrentBars[0] + (FillAhead(t, o) ? 1 : 0); }
+		private DateTime FillBarTime(DateTime t, Order o) { return FillAhead(t, o) ? Times[0][0].AddMinutes(1) : Times[0][0]; }
 		// ---- explicit brackets (FillSeries Tick1 / Second1, v4). NinjaTrader keeps the orders of SetStopLoss / SetProfitTarget on the primary series
 		// (measured 2026-10-26: 0 of 283 protective fills carried tick times), so with a fill series the bracket is a pair of explicit exit orders on
 		// that series, placed on every entry execution with the levels the Set* call would have used (ticks from the average fill price, or a price),

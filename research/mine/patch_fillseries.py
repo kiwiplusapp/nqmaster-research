@@ -1,4 +1,4 @@
-"""2026-10-26 experiment 01 (docs/PLAN_2026-10-26.md, 5A): FillSeries for NQMaster.cs (v4.1).
+"""2026-10-26 experiment 01 (docs/PLAN_2026-10-26.md, 5A): FillSeries for NQMaster.cs (v4.2).
 Adds an optional intrabar fill series (1 tick / 1 second) and routes every managed order to it, following NinjaTrader's
 SampleIntrabarBacktest pattern, so the Strategy Analyzer fills stop-market / limit entries and the stop / target exits
 on ticks instead of the 1-minute OHLC (OrderFillResolution.High is not offered for multi-series strategies).
@@ -13,6 +13,10 @@ placed on the entry fill with the levels the Set* calls would have used; market 
 counters (RUN TIME line); Playback keeps the fill series (bracket test), any other live connection switches back to the 1-minute series.
 v4.1 (review of v4): hedge guard literal in Off, bracket re-size for partial fills, stale bracket callbacks ignored, the waiting market
 exit capped at the lots that remain, flat resets cancel leftover brackets.
+v4.2 (H1 run 2026-10-26, Off vs Tick1 on 2026-06-01 -> today): a MARKET fill on the fill series belongs to the bar that sent it (NinjaTrader
+fills it at the next open while that bar is still the current one in Standard mode: 48 MaxHold exits came one bar late with v4.1), so
+FillAhead() adds the bar only for stop / limit fills; LateBar() is off on the Playback connection (Core.Globals.Now is the PC clock there:
+every replayed bar read as 'processed late' and the Market Replay test never traded).
 Run from anywhere: python3 research/mine/patch_fillseries.py   (idempotent: refuses to patch twice).
 Backup: archive/backups/NQMaster_backup_pre_fillseries.cs"""
 import os, sys
@@ -42,6 +46,7 @@ rep("\t\tprivate bool badTimeframe;\n",
     "\t\t\t\t\t\t\t\t\t\t\t\t\t// fillBip = the one in use on this bar: 2 once the fill series has bars (tick history can start years after the minutes), else 0\n"
     "\t\tprivate int tickGapBars;\t\t\t// 1-minute bars with volume whose minute has no fill-series bar (provider tick gap): a run with gaps is not valid for H1\n"
     "\t\tprivate int orphanCount, xExitForced;\t// explicit brackets: protective orders still working with the module flat (cancelled here), market exits sent without a confirmed cancel\n"
+    "\t\tprivate bool playbackMode;\t// Market Replay (Playback connection): Core.Globals.Now is the PC clock there, not the replay clock\n"
     "\t\tprivate DateTime runStart;\t\t\t// wall clock at DataLoaded -> run-time line at Terminated (Off vs Tick1 ratio)\n")
 rep("\t\t\t\tUseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;\n",
     "\t\t\t\tUseOrderFlowBoost = false; OrderFlowCvdMin = 0.015; OrderFlowBoost = 2; OrderFlowStack = false;\n"
@@ -62,9 +67,11 @@ rep("\t\t\telse if (State == State.DataLoaded)\n\t\t\t{\n\t\t\t\trthCloses = new
 # Realtime: backtest-only feature. Playback (Market Replay) keeps the fill series so the explicit brackets can be tested; any other connection switches back.
 rep("\t\t\telse if (State == State.Realtime)\n\t\t\t{\n\t\t\t\t// an entry still Initialized at the switch was never processed on history (NinjaTrader would send it live now): drop it\n",
     "\t\t\telse if (State == State.Realtime)\n\t\t\t{\n"
+    "\t\t\t\ttry { playbackMode = Connection.PlaybackConnection != null; } catch { playbackMode = false; }\n"
+    "\t\t\t\tif (playbackMode) Log(\"Playback connection: late-bar guard off (the replay clock is not Core.Globals.Now)\");\n"
     "\t\t\t\tif (fillCfg > 0)\n"
     "\t\t\t\t{\n"
-    "\t\t\t\t\tbool playback = false; try { playback = Connection.PlaybackConnection != null; } catch { }\n"
+    "\t\t\t\t\tbool playback = playbackMode;\n"
     "\t\t\t\t\tif (playback) Warn(\"nqm_fill\", \"NQMaster | FillSeries \" + FillSeries + \" kept on the Playback connection (bracket test): orders stay on BarsInProgress \" + fillCfg + \". Never use it on a live account.\");\n"
     "\t\t\t\t\telse { fillCfg = 0; fillBip = 0; Warn(\"nqm_fill\", \"NQMaster | FillSeries \" + FillSeries + \" is for the Strategy Analyzer only: live orders go back to the 1-minute series. Set it to Off in the live template.\"); }\n"
     "\t\t\t\t\tforeach (Mod m in mods) { try { if (m.XStop != null) m.XStop = GetRealtimeOrder(m.XStop); if (m.XTgt != null) m.XTgt = GetRealtimeOrder(m.XTgt); } catch { } }\n"
@@ -125,13 +132,18 @@ rep("\t\t\tif (Position.MarketPosition == MarketPosition.Long) ExitLong(); else 
     "\t\t\t\telse if (sum < Position.Quantity) Log(string.Format(\"FLATTEN: {0} lot(s) not tracked by any module stay for the session-close exit\", Position.Quantity - sum));\n"
     "\t\t\t}\n"
     "\t\t\tLog(\"FLATTEN: \" + why);\n")
+# LateBar: the late-processing guard compares the bar time with the PC clock; on the Playback connection that clock is not the replay clock
+rep("\t\tprivate bool LateBar(DateTime barTime) { try { return State == State.Realtime && (Core.Globals.Now - barTime).TotalSeconds > 120; } catch { return false; } }\n",
+    "\t\tprivate bool LateBar(DateTime barTime) { try { return State == State.Realtime && !playbackMode && (Core.Globals.Now - barTime).TotalSeconds > 120; } catch { return false; } }\n")
 # fill callbacks: bar index / bar time of the fill (+1 bar / +1 min while the 1-minute bar of the fill is still forming); Off: exactly as before
 rep("\t\tprivate static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100; }\n",
     "\t\tprivate static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100; }\n"
-    "\t\t// fill callbacks: index / close time of the 1-minute bar the fill belongs to (fill series: that bar is still forming, so +1 bar / +1 min)\n"
-    "\t\tprivate bool FillAhead(DateTime t) { return fillCfg > 0 && fillBip > 0 && (BarsInProgress == fillBip || t > Times[0][0]); }\n"
-    "\t\tprivate int FillBar(DateTime t) { return CurrentBars[0] + (FillAhead(t) ? 1 : 0); }\n"
-    "\t\tprivate DateTime FillBarTime(DateTime t) { return FillAhead(t) ? Times[0][0].AddMinutes(1) : Times[0][0]; }\n"
+    "\t\t// fill callbacks: index / close time of the 1-minute bar Standard mode charges the fill to. A stop / limit fill on the fill series arrives while\n"
+    "\t\t// its 1-minute bar is still forming (+1 bar / +1 min); a market fill is the next open and Standard charges it to the bar that sent the order\n"
+    "\t\t// (measured 2026-10-26: with +1 on market fills the MaxHold exits came one bar late, 48 of 108 time exits)\n"
+    "\t\tprivate bool FillAhead(DateTime t, Order o) { return fillCfg > 0 && fillBip > 0 && (o == null || o.OrderType != OrderType.Market) && (BarsInProgress == fillBip || t > Times[0][0]); }\n"
+    "\t\tprivate int FillBar(DateTime t, Order o) { return CurrentBars[0] + (FillAhead(t, o) ? 1 : 0); }\n"
+    "\t\tprivate DateTime FillBarTime(DateTime t, Order o) { return FillAhead(t, o) ? Times[0][0].AddMinutes(1) : Times[0][0]; }\n"
     "\t\t// ---- explicit brackets (FillSeries Tick1 / Second1, v4). NinjaTrader keeps the orders of SetStopLoss / SetProfitTarget on the primary series\n"
     "\t\t// (measured 2026-10-26: 0 of 283 protective fills carried tick times), so with a fill series the bracket is a pair of explicit exit orders on\n"
     "\t\t// that series, placed on every entry execution with the levels the Set* call would have used (ticks from the average fill price, or a price),\n"
@@ -205,11 +217,11 @@ rep("\t\tprivate static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100
     "\t\t}\n")
 # OnExecutionUpdate: FillBar / FillBarTime, place the brackets on every entry execution, cancel the sibling when the module is flat, bracket names
 rep("\t\t\t\tif (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(Times[0][0]).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }\n",
-    "\t\t\t\tif (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(FillBarTime(time)).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }\n")
+    "\t\t\t\tif (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(FillBarTime(time, execution.Order)).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }\n")
 rep("\t\t\t\tif (m == volb) { volbDone = true; volb.EntryBar = CurrentBars[0]; volbBeSet = false; volbTrades++; }\n\t\t\t\tif (m == eng10) eng10.EntryBar = CurrentBars[0];\n",
-    "\t\t\t\tif (m == volb) { volbDone = true; volb.EntryBar = FillBar(time); volbBeSet = false; volbTrades++; }\n\t\t\t\tif (m == eng10) eng10.EntryBar = FillBar(time);\n")
+    "\t\t\t\tif (m == volb) { volbDone = true; volb.EntryBar = FillBar(time, execution.Order); volbBeSet = false; volbTrades++; }\n\t\t\t\tif (m == eng10) eng10.EntryBar = FillBar(time, execution.Order);\n")
 rep("\t\t\t\tif (m.Kind == 1 || m == rsi || m.Six) m.EntryBar = CurrentBars[0];\n",
-    "\t\t\t\tif (m.Kind == 1 || m == rsi || m.Six) m.EntryBar = FillBar(time);\n")
+    "\t\t\t\tif (m.Kind == 1 || m == rsi || m.Six) m.EntryBar = FillBar(time, execution.Order);\n")
 rep("\t\t\t\t\tSetProfitTarget(m.Sig, CalculationMode.Price, tgt);\n\t\t\t\t}\n\t\t\t\tLog(string.Format(\"{0} filled @ {1}\", m.Sig, Fmt(m.EntryPx)));\n",
     "\t\t\t\t\tBracketTarget(m, CalculationMode.Price, tgt);\n\t\t\t\t}\n\t\t\t\tPlaceBrackets(m);\n\t\t\t\tLog(string.Format(\"{0} filled @ {1}\", m.Sig, Fmt(m.EntryPx)));\n")
 rep("\t\t\t\texitMod.OpenQty = Math.Max(0, exitMod.OpenQty - quantity); if (exitMod.OpenQty == 0) exitMod.InTrade = false;\n",
@@ -245,7 +257,7 @@ rep("// Managed orders: one signal per module. An entry is skipped if the strate
     "// FillSeries (2026-10-26, experiment 01): Off = orders on the 1-minute bars (default, unchanged); Tick1 / Second1 = a 1-tick / 1-second\n"
     "//   series is added and every order is submitted to it (SampleIntrabarBacktest), with explicit bracket orders 'StopX' / 'TargetX' on that\n"
     "//   series instead of SetStopLoss / SetProfitTarget (those stay on the primary series). Backtest only: at State.Realtime the orders go back\n"
-    "//   to the 1-minute series, except on the Playback connection (bracket test).\n")
+    "//   to the 1-minute series, except on the Playback connection (bracket test), where the late-bar guard is off (PC clock != replay clock).\n")
 rep("\t\t\tif (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; }\n",
     "\t\t\tif (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; if (fillBip > 0) CancelBrackets(x); }\n", 2)
 for k in ("EnterLong(0,", "EnterShort(0,", "ExitLong(0,", "ExitShort(0,"):

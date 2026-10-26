@@ -18,6 +18,12 @@ from nt_trades import load_nt
 TICK = 0.25
 STOP_MODS = {"ORB60", "ORB90", "VOLB", "ENG10"}          # stop-market entries (ORB enters at market when the close is already through)
 LIMIT_MODS = {"LON", "ICT"}                               # limit entries
+# Brackets whose level is computed from the entry fill (NQMaster.cs 2026-10-26): Ticks-mode modules place stop AND target as ticks from
+# m.EntryPx (BracketPx, lines ~892 / 1144 / 1294); PriceTarget modules (ArmPriceBracket) have an absolute stop (m.StopPx) and a target at
+# fill + R * risk (OnExecutionUpdate), i.e. (1 + R) ticks further per tick of entry slippage; VOLB moves its stop to entry + 0.1R (relative)
+# once in profit (line ~768). A synthetic entry slippage must move those levels with the fill, as the strategy itself would have
+# (NinjaTrader did exactly that in the Standard run: its brackets came from the slipped fill), or every bracket exit of B reads 1 tick worse.
+PRICE_TGT_R = {"MSEQ": 0.5, "MSEQS": 0.75, "CRT11": 2.0, "LON": 2.0, "ICT": 1.0, "ENG26": 0.5, "ORFAIL": 1.0, "CAM3": 1.0, "ENG10": 0.5, "VOLB": 2.0}
 BANDS = [(0, 570, "noche <09:30"), (570, 630, "09:30-10:30"), (630, 720, "10:30-12:00"), (720, 840, "12:00-14:00"), (840, 1080, "14:00-18:00"), (1080, 1441, "noche >=18:00")]
 
 
@@ -29,6 +35,19 @@ def band(minute_of_day):
 def xkind(name):
     n = str(name).lower()
     return "stop" if n.startswith("stop") else ("target" if n.startswith(("profit", "target")) else "time/flat")   # 'Stop loss' / 'StopX', 'Profit target' / 'TargetX'
+
+
+def bracket_shift(mods, kinds, d, epx, xpx):
+    """Ticks of bracket level per tick of entry slippage (see PRICE_TGT_R): 1 for a Ticks-mode stop / target, 0 for the absolute stop of a
+    PriceTarget module (VOLB's break-even stop, on the profit side of the entry, is relative: 1), 1 + R for a PriceTarget target, 0 for
+    time / flat exits."""
+    k = np.zeros(len(mods))
+    for i, (m, kind) in enumerate(zip(mods, kinds)):
+        if kind == "time/flat": continue
+        if m not in PRICE_TGT_R: k[i] = 1.0
+        elif kind == "target": k[i] = 1.0 + PRICE_TGT_R[m]
+        elif m == "VOLB" and (xpx[i] - epx[i]) * d[i] > 0: k[i] = 1.0
+    return k
 
 
 def bar_open(ts, tick_stamped=None):
@@ -60,6 +79,8 @@ def frame(path, tz, tag, tick_stamped=None, slip_ticks=0, slip_scope="all"):
         if slip_scope == "all":
             ex = t.xname.map(lambda n: xkind(n) != "target").values
             xpx = xpx - np.where(ex, d * slip_ticks * TICK, 0.0); u = u - np.where(ex, slip_ticks * TICK * 2.0, 0.0)
+        k = bracket_shift(mods.values, t.xname.map(xkind).values, d, t.epx.values.astype(float), t.xpx.values.astype(float)) * ent   # fill-relative levels follow the slipped fill
+        xpx = xpx + d * slip_ticks * TICK * k; u = u + slip_ticks * TICK * 2.0 * k
     f = pd.DataFrame(dict(date=((op + pd.Timedelta(hours=6)).dt.normalize().dt.strftime("%Y%m%d").astype(int)),
                           mod=mods.values, d=t["d"].values, qty=t.qty.values, u=u, pnl=t.pnl.values,
                           epx=epx, xpx=xpx, xname=t.xname.values, bars=t.bars.values,
@@ -95,6 +116,7 @@ def pairs(A, B):
     P["flip"] = np.sign(P.u_a) != np.sign(P.u_b)
     P["d_tin"] = ((P.tin_b - P.tin_a + 720) % 1440) - 720
     P["d_hold"] = P.hold_b - P.hold_a
+    P["mech"] = (P.xkind_a == "time/flat") & (P.xkind_b == "time/flat") & (P.d_hold != 0)      # the time exit was decided on another bar: strategy mechanics, not price path
     return P
 
 
@@ -206,12 +228,22 @@ if __name__ == "__main__":
     L.append(f"- Trades: A {len(A)}, B {len(B)}, matched {len(P)} ({pct_a:.1f}% of A, {pct_b:.1f}% of B); tolerance {a.tol} min inside (date, module, direction)." + (f" Dates excluded: {excl}." if excl else ""))
     L.append(f"- $ per contract on the matched trades: A {tot.usd_a:,.0f}, B {tot.usd_b:,.0f}, B - A {tot.d_usd_total:+,.0f} ({rel:+.1f}% of A); "
              f"per trade {tot.d_usd:+.2f} (95% CI {tot.ci_lo:+.2f} .. {tot.ci_hi:+.2f}); outcome flips {tot.flips_pct:.1f}%.")
+    ua = tot.usd_a / len(P) if len(P) else np.nan
+    if ua and ua > 0:
+        L.append(f"- Delta net / net Standard per trade: {100 * tot.d_usd / ua:+.1f}% (95% CI {100 * tot.ci_lo / ua:+.1f}% .. {100 * tot.ci_hi / ua:+.1f}%); rule 5A.4 (-15%): "
+                 + ("CI entirely below -15%: the campaign is recomputed with the corrected net" if 100 * tot.ci_hi / ua < -15 else ("CI entirely above -15%: the 1-minute fill model stands" if 100 * tot.ci_lo / ua > -15 else "CI crosses -15%: window too short")) + ".")
+    nm = int(P.mech.sum())
+    if nm:
+        Q = summary(P[~P.mech], []).iloc[0]; uq = Q.usd_a / int((~P.mech).sum())
+        L.append(f"- {nm} time exits were decided on another bar in B (hold B - A {P[P.mech].d_hold.mean():+.2f} min; strategy mechanics, not price path; their B - A {P[P.mech].d_usd.sum():+,.0f} $). "
+                 f"Without them: {int((~P.mech).sum())} pairs, B - A {Q.d_usd_total:+,.0f} $ ({100 * Q.d_usd_total / Q.usd_a:+.1f}% of A), per trade {Q.d_usd:+.2f} (95% CI {Q.ci_lo:+.2f} .. {Q.ci_hi:+.2f})"
+                 + (f" = {100 * Q.d_usd / uq:+.1f}% (CI {100 * Q.ci_lo / uq:+.1f}% .. {100 * Q.ci_hi / uq:+.1f}%)" if uq > 0 else "") + f"; flips {Q.flips_pct:.1f}%.")
     L.append(f"- Entry fill B - A: mean {tot.d_entry_ticks:+.2f} ticks (median {tot.d_entry_med:+.2f}); exit fill B - A: mean {tot.d_exit_ticks:+.2f} ticks; "
              f"entry minute B - A {tot.d_tin_mean:+.2f}, hold B - A {tot.d_hold_mean:+.2f} min. (+ = worse for the trade in B).")
     L.append(f"- Unmatched $: only A {A[A.k < 0].u.sum():,.0f} ({int((A.k < 0).sum())} trades), only B {B[B.k < 0].u.sum():,.0f} ({int((B.k < 0).sum())} trades).")
     L += ["", "## Slippage: how it is counted (once)",
           "- A (Standard, 1-minute fills): NinjaTrader's Slippage = 1 tick is inside the export: market and stop-market entries +1 tick, stop-loss and market exits -1 tick, limit fills 0.",
-          f"- B (fills on the tick series): NinjaTrader applies no slippage on a secondary series (measured 2026-10-26), so this report adds {a.slip_b} tick(s) to B's market / stop-market fills" + (" (entries only: B's stop / target exits are still 1-minute fills that already carry it)" if a.slip_b_scope == "entries" else " on entries, stop-loss exits and market exits") + ", 0 on limit fills. B - A is therefore the price path alone (H1 / H2), with the same 1-tick assumption on both sides." if a.slip_b else
+          f"- B (fills on the tick series): NinjaTrader applies no slippage on a secondary series (measured 2026-10-26), so this report adds {a.slip_b} tick(s) to B's market / stop-market fills" + (" (entries only: B's stop / target exits are still 1-minute fills that already carry it)" if a.slip_b_scope == "entries" else " on entries, stop-loss exits and market exits") + ", 0 on limit fills; B's fill-relative bracket levels move with the slipped entry (1 tick for Ticks-mode stops / targets and VOLB's break-even stop, 1 + R ticks for a PriceTarget target, 0 for an absolute stop), as the strategy would have placed them. B - A is therefore the price path alone (H1 / H2), with the same 1-tick assumption on both sides." if a.slip_b else
           "- B: NO synthetic slippage added (--slip-b 0): if B is a tick-series run, its market / stop fills are 1 tick better than Standard by construction and B - A overstates B.",
           "- Real slippage (H5, slip_model.py) is measured against the order level in live / sim exports and replaces the 1-tick assumption only per cell with n >= 15; it is never added on top of this table."]
     L += ["", "## By order type", "```", summary(P, ["otype"]).to_string(index=False), "```", "", "## By module", "```", summary(P, ["mod"]).to_string(index=False), "```",
