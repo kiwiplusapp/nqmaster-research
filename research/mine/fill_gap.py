@@ -126,6 +126,23 @@ def impossible_fills(F, bars_name, tag):
     return pd.DataFrame(out), None
 
 
+def series_check(F, tag):
+    """Which series filled the orders (review 2026-10-26): a fill on the tick / second series is stamped with the tick time (seconds != 0),
+    a fill on the 1-minute series with the bar close (seconds == 0). In a Tick1 run every kind should be ~100% 'seconds != 0'; stops /
+    targets at 0% mean the Set* orders stayed on the 1-minute series (plan B of the patch). Also counts exits NinjaTrader made on its own
+    (session close) and exits at/after 15:58 ET, which would mean the whole-position exit on the fill series was ignored."""
+    rows = []
+    for what, ts, grp in (("entry", F.tin_ts, F.otype), ("exit", F.tout_ts, F.xkind)):
+        sec = pd.Series(pd.DatetimeIndex(ts).second != 0, index=F.index)
+        for g, m in grp.groupby(grp):
+            rows.append(dict(side=tag, what=what, kind=g, n=int(len(m)), seconds_nonzero_pct=round(100 * float(sec[m.index].mean()), 1)))
+    T = pd.DataFrame(rows)
+    xt = pd.DatetimeIndex(F.tout_ts); mins = xt.hour * 60 + xt.minute                  # the 15:56 flatten fills on the next bar, stamped 15:57:00
+    late = int(((mins >= 15 * 60 + 58) & (mins < 18 * 60)).sum())
+    own = int(F.xname.str.lower().str.contains("session|exit on", regex=True).sum())
+    return T, f"{tag}: exits at/after 15:58 ET {late} (flatten fills are stamped 15:57:00), exits named by NinjaTrader itself (session close) {own}"
+
+
 def research_gap(F, set_name, tol, tag):
     """$ per trade NT vs research on matched trades, per module (H3): + = NT better than research."""
     from nt_compare import research_set, match as rmatch
@@ -178,6 +195,10 @@ if __name__ == "__main__":
         if t is None: chk.append(msg)
         else: chk.append(t.to_string(index=False))
     L += ["", f"## Fills outside the 1-minute bar (+/- 1 tick), bars = research/data/{a.bars}", "```"] + chk + ["```"]
+    sc = []
+    for F, tag in ((A, "A"), (B, "B")):
+        T, line = series_check(F, tag); sc += [T.to_string(index=False), line]
+    L += ["", "## Which series filled the orders (seconds != 0 = tick / second series; a Tick1 run needs ~100% in every kind, stops and targets included)", "```"] + sc + ["```"]
     if a.research:
         parts = []
         for F, tag in ((A, a.label_a), (B, a.label_b)):

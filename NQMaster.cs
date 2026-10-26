@@ -29,7 +29,8 @@
 // Account layer: FOMC days skipped, shared pause file, eval-target stop and drawdown guard (realtime).
 // Managed orders: one signal per module. An entry is skipped if the strategy holds (or is working) the opposite direction.
 // FillSeries (2026-10-26, experiment 01): Off = orders on the 1-minute bars (default, unchanged); Tick1 / Second1 = a 1-tick / 1-second
-//   series is added and every order is submitted to it (SampleIntrabarBacktest), so Strategy Analyzer fills are intrabar. Backtest only.
+//   series is added and every order is submitted to it (SampleIntrabarBacktest), so Strategy Analyzer fills are intrabar. Backtest only:
+//   at State.Realtime the orders go back to the 1-minute series.
 // ------------------------------------------------------------------------------------------------
 #region Using declarations
 using System;
@@ -108,6 +109,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private bool badTimeframe;
 		private int fillCfg, fillBip;		// fillCfg = series configured for the orders (0 = 1-minute bars as always, 2 = FillSeries Tick1 / Second1);
 													// fillBip = the one in use on this bar: 2 once the fill series has bars (tick history can start years after the minutes), else 0
+		private int tickGapBars;			// 1-minute bars with volume whose minute has no fill-series bar (provider tick gap): a run with gaps is not valid for H1
 		private DateTime runStart;			// wall clock at DataLoaded -> run-time line at Terminated (Off vs Tick1 ratio)
 		private HashSet<int> fomc, cpiDays; private bool cpiToday;
 		// US CPI release days (BLS schedule) for CPI09; add later years with the CpiDates parameter
@@ -412,7 +414,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				AddDataSeries(BarsPeriodType.Minute, 5);
 				// experiment 01 (docs/PLAN_2026-10-26.md): optional intrabar series (index 2) that receives every order, as in NinjaTrader's
-				// SampleIntrabarBacktest. Backtest realism only: the 1-minute logic is untouched, fills happen on ticks / seconds.
+				// SampleIntrabarBacktest. Backtest realism only: the 1-minute logic is untouched, fills happen on ticks / seconds. Never put
+				// FillSeries in an optimizer range (the number of series would change between iterations); live charts switch back at Realtime.
 				if (FillSeries == NQMasterFillSeries.Tick1) AddDataSeries(BarsPeriodType.Tick, 1);
 				else if (FillSeries == NQMasterFillSeries.Second1) AddDataSeries(BarsPeriodType.Second, 1);
 				fillCfg = FillSeries == NQMasterFillSeries.Off ? 0 : 2; fillBip = 0;
@@ -420,7 +423,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			else if (State == State.DataLoaded)
 			{
-				runStart = DateTime.Now; Print(string.Format("NQMaster | fill series {0} (orders on BarsInProgress {1}), trace orders {2}, run started {3:HH:mm:ss}", FillSeries, fillCfg, TraceOrders ? "on" : "off", runStart));
+				runStart = DateTime.Now; Print(string.Format("NQMaster | fill series {0} (orders on BarsInProgress {1}; {2} series loaded), trace orders {3}, run started {4:HH:mm:ss}", FillSeries, fillCfg, BarsArray != null ? BarsArray.Length : 0, TraceOrders ? "on" : "off", runStart));
 				rthCloses = new List<double>(); atrHist = new List<double>();
 				dashFont = new SimpleFont("Consolas", 11);
 				try { etZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"); } catch { etZone = null; }
@@ -458,6 +461,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			else if (State == State.Realtime)
 			{
+				if (fillCfg > 0) { fillCfg = 0; fillBip = 0; Warn("nqm_fill", "NQMaster | FillSeries " + FillSeries + " is for the Strategy Analyzer only: live orders go back to the 1-minute series. Set it to Off in the live template."); }
 				// an entry still Initialized at the switch was never processed on history (NinjaTrader would send it live now): drop it
 				foreach (Mod m in mods)
 				{
@@ -501,8 +505,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 						: string.Format("NQMaster | order flow: {0:N0} trades read, {1} of {2} entries filled with the boost ({3:0.0}%; research Apr-Oct 2026: ~16%).", ofTicks, ofBoosted, ofEntries, ofEntries > 0 ? 100.0 * ofBoosted / ofEntries : 0));
 				if (mods != null && !wentLive) PrintModuleReport("end of run");
 				if (mods != null && runStart.Year > 2000 && BarsArray != null && BarsArray.Length > fillCfg && BarsArray[0] != null)
-					Print(string.Format("NQMaster | RUN TIME fill series {0}: {1:0.0} s wall clock, {2:N0} 1-minute bars{3}", FillSeries, (DateTime.Now - runStart).TotalSeconds, BarsArray[0].Count,
-						fillCfg > 0 && BarsArray[fillCfg] != null ? string.Format(", {0:N0} fill-series bars", BarsArray[fillCfg].Count) : ""));
+					Print(string.Format("NQMaster | RUN TIME fill series {0}: {1:0.0} s wall clock, {2:N0} 1-minute bars{3}{4}", FillSeries, (DateTime.Now - runStart).TotalSeconds, BarsArray[0].Count,
+						fillCfg > 0 && BarsArray[fillCfg] != null ? string.Format(", {0:N0} fill-series bars", BarsArray[fillCfg].Count) : "",
+						fillCfg > 0 ? string.Format(", {0} tick-gap minutes (must be 0 for H1)", tickGapBars) : ""));
 				if (mods != null && totalTrades == 0 && rthDaysSeen < WarmupDays + 2)
 					Print(string.Format("NQMaster | 0 trades: only {0} RTH days loaded; needs {1} days of warm-up (property 'Warm-up days'). Start the test earlier or lower it.", rthDaysSeen, WarmupDays));
 			}
@@ -621,8 +626,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (badTimeframe || CurrentBars[0] < 3) return;
 			if (fillCfg > 0)							// orders go to the fill series only once it has bars; before that (no tick history yet) they go to the 1-minute series as with Off
 			{
-				int fb = CurrentBars.Length > fillCfg && CurrentBars[fillCfg] >= 1 ? fillCfg : 0;
+				int fb = CurrentBars.Length > fillCfg && CurrentBars[fillCfg] >= BarsRequiredToTrade ? fillCfg : 0;
 				if (fb != fillBip) { fillBip = fb; Log(string.Format("FILL SERIES {0}: orders on BarsInProgress {1} from this bar", FillSeries, fillBip)); }
+				if (fillBip > 0 && BarsInProgress == 0 && Volume[0] > 0 && (Time[0] - Times[fillBip][0]).TotalMinutes > 1.5)
+				{ tickGapBars++; if (tickGapBars <= 20) Log(string.Format("TICK GAP: this 1-minute bar has volume but the last fill-series bar is {0:HH:mm:ss}", Times[fillBip][0])); }
 			}
 			if (BarsInProgress == 1) { OnFiveMinute(); return; }
 
@@ -2131,15 +2138,15 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 				if (UseOrderFlowBoost) { ofEntries++; if (m.OfQ0 > 0 && execution.Order.Quantity > m.OfQ0) ofBoosted++; }
 				InactivityFill(m); CrossAccountPublish(); CrossAccountOnFill(m);
-				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(FillBarTime()).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
+				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(FillBarTime(time)).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
 				if (m == orb2) orb2.Trades++;
-				if (m == volb) { volbDone = true; volb.EntryBar = FillBar(); volbBeSet = false; volbTrades++; }
-				if (m == eng10) eng10.EntryBar = FillBar();
+				if (m == volb) { volbDone = true; volb.EntryBar = FillBar(time); volbBeSet = false; volbTrades++; }
+				if (m == eng10) eng10.EntryBar = FillBar(time);
 				if (m.Sig == "MOM11" && m11Dir == 0) m11Dir = m.Dir;
 				if (m == lon || m.Sig == "ON07" || m.Sig == "REV06") onSum += m.Dir;
 				if (m == lon && lonDir == 0) lonDir = lon.Dir;
 				if (m == ict) ictTrades++;
-				if (m.Kind == 1 || m == rsi || m.Six) m.EntryBar = FillBar();
+				if (m.Kind == 1 || m == rsi || m.Six) m.EntryBar = FillBar(time);
 				// cancel opposite working entries
 				foreach (Mod o in mods) if (o != m && Working(o.Entry) && o.Dir == -m.Dir) ParkOrder(o);
 				}
@@ -2197,8 +2204,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 		}
 		private static int Hm(int hhmm) { return (hhmm / 100) * 60 + hhmm % 100; }
 		// fill callbacks: index / close time of the 1-minute bar the fill belongs to (fill series: that bar is still forming, so +1 bar / +1 min)
-		private int FillBar() { return CurrentBars[0] + (fillBip > 0 && BarsInProgress == fillBip ? 1 : 0); }
-		private DateTime FillBarTime() { return fillBip > 0 && BarsInProgress == fillBip ? Times[0][0].AddMinutes(1) : Times[0][0]; }
+		private bool FillAhead(DateTime t) { return fillCfg > 0 && fillBip > 0 && (BarsInProgress == fillBip || t > Times[0][0]); }
+		private int FillBar(DateTime t) { return CurrentBars[0] + (FillAhead(t) ? 1 : 0); }
+		private DateTime FillBarTime(DateTime t) { return FillAhead(t) ? Times[0][0].AddMinutes(1) : Times[0][0]; }
 		private string Fmt(double p) { return Instrument.MasterInstrument.FormatPrice(p); }
 		private void Log(string m)
 		{
@@ -2834,7 +2842,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		[Browsable(false)] public double OrderFlowCvdMin { get; set; }
 		[Browsable(false)] public int OrderFlowBoost { get; set; }
 		[Browsable(false)] public bool OrderFlowStack { get; set; }
-		[NinjaScriptProperty][Display(Name = "Serie de llenado (solo backtest: Off = barras de 1 min como siempre; Tick1 / Second1 = agrega una serie intrabar y manda todas las órdenes ahí)", Order = 1, GroupName = "09. Backtest: realismo de ejecución")] public NQMasterFillSeries FillSeries { get; set; }
+		[NinjaScriptProperty][Display(Name = "Serie de llenado (solo backtest: Off = barras de 1 min como siempre; Tick1 / Second1 = agrega una serie intrabar y manda todas las órdenes ahí; en vivo vuelve a Off)", Order = 1, GroupName = "09. Backtest: realismo de ejecución")] public NQMasterFillSeries FillSeries { get; set; }
 		[NinjaScriptProperty][Display(Name = "TraceOrders en Output (muestra la serie y el precio de cada orden)", Order = 2, GroupName = "09. Backtest: realismo de ejecución")] public bool TraceOrdersLog { get; set; }
 		#endregion
 	}
