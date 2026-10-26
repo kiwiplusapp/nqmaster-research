@@ -1,4 +1,4 @@
-# Estado de NQMaster (2026-10-26)
+# Estado de NQMaster (2026-10-26, noche)
 
 Leer esto primero. Detalle por tema en `docs/guia/INDICE.md`, historia de decisiones en `docs/historia/`.
 
@@ -54,9 +54,20 @@ Son las del nivel de planificación (perturbaciones de ±20% en todos los parám
 4. **Meses malos de la campaña.** Agosto-2026 dio −$3.700 por contrato y el verano 2026 quemó el 59-88% de las fondeadas nuevas en 60 días. Un drawdown de $3.700 no cabe en un trailing de $2.000. No hay filtro de régimen que lo evite: la autocorrelación es ~0.
 5. **Panel sin datos de riesgo de cuenta.** Según tu lista, el panel no muestra el riesgo de la cuenta. Qué mostrar está sin definir. El runbook ya cita el colchón y el monitor de borde como lo que se mira a diario. Revisar el panel contra eso antes de diseñar nada.
 
+## Experimento 01 en curso (2026-10-26): realismo de ejecución y paridad
+
+Plan aprobado: `docs/PLAN_2026-10-26.md`. Programa completo (5A-5F) en la consigna de esa sesión; cada frente termina en `docs/experimentos/<nn>_<nombre>.md`.
+
+- **Código (S1, sin F5):** `NQMaster.cs` tiene la propiedad `FillSeries` (Off / Tick1 / Second1, grupo "09. Backtest: realismo de ejecución"). Con Tick1 o Second1 agrega una serie intrabar (índice 2) y manda todas las órdenes ahí (patrón SampleIntrabarBacktest); con Off (default) el comportamiento es el de antes: `fillBip = 0` en cada llamada, guard `BarsInProgress == 2` inerte, `FillBar()`/`FillBarTime()` devuelven lo mismo que antes. Imprime `RUN TIME` en Output para medir el ratio Off / Tick1. Parche reproducible: `research/mine/patch_fillseries.py`; backup `archive/backups/NQMaster_backup_pre_fillseries.cs`; `check.sh` verde. **Falta F5 y el diff de trades Off vs export anterior (P2a del plan).**
+- **Herramientas:** `research/mine/fill_gap.py` (Standard vs Tick1 vs investigación: Δticks de entrada y salida, Δ$/trade con IC 95 %, cambios de desenlace, fills fuera de la barra) y `research/mine/slip_model.py` (slippage real por cuenta prop / sim, módulo y franja, contra el export Standard). Autotest con el export del 14-oct contra sí mismo: 100 % emparejado, Δ = 0; slippage = exactamente el tick que el backtest ya cobra. `research/nt_trades.py` ahora conserva precios de fill, nombre de salida, dirección y barras.
+- **Dato nuevo de los exports (14-oct):** con el umbral del programa (95 % por módulo) fallan 8 de 18 módulos, no 2: VOLB 91,5, LON 92,4, MSEQ 92,7, NF05 93,3, ON07 93,5, CRT11 93,8, ICT 82,4, MSEQS 55,6. Los módulos de 6 años (SO04, RV11, ORFAIL, CAM3) y CPI09 no están en ningún export: hace falta el baseline Standard con el código actual (P1).
+- **Dato de datos:** el feed de NinjaTrader (MNQ DEC26) y `mnq_fut.npz` difieren de nivel de precio en 2 fechas (2025-07-15 y 2025-08-19, 135-350 puntos en el mismo minuto). No afecta el $ de cada lado, sí cualquier comparación de niveles entre feeds; `fill_gap.py` los cuenta aparte (`feed_offset`). Revisar esos dos días antes de usar la paridad de precios.
+- **Pendiente de la PC (Federico):** P0 (proveedor, RAM, fecha máxima de 1 tick de MNQ, si el Analyzer ofrece High), P1 (F5 + export Standard 2024-01 → hoy), P2 (Off / Tick1 / TraceOrders, ver el plan), P3 (exports de cada cuenta prop; Sim101 aparte).
+- **Nube:** `tools/propcycle_test/run_test.py` no corre acá: necesita `research/tmp/dense/meta.pkl`, que está en `.gitignore` y fuera de `tools/data_manifest.json`. `mcs` hay que instalarlo (`apt-get install mono-mcs`, ~4 min).
+
 ## Siguiente paso
 
-Cerrar el punto 2: F5, parity en Strategy Analyzer y una eval de prueba. Hasta entonces, las cifras de cuentas son de investigación.
+Cerrar el punto 2 dentro del experimento 01: F5, export Standard, `parity_check.py --set ultra_d4`, y las corridas Tick1 del plan. Hasta entonces, las cifras de cuentas son de investigación.
 
 ## Dónde mirar
 

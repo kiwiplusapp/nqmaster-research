@@ -1,0 +1,191 @@
+"""fill_gap.py (2026-10-26, experiment 01 / frente 5A, docs/PLAN_2026-10-26.md H1-H3).
+Compares two NinjaTrader Strategy Analyzer trade exports of the SAME strategy, settings and period that differ only in the fill
+model (A = FillSeries Off, Standard 1-minute OHLC fills; B = FillSeries Tick1 / Second1, intrabar fills) trade by trade, and
+optionally both against the research trade list (nt_compare.research_set). Per module x order type x ET time band:
+  n matched, only in A, only in B, entry fill difference in ticks (B - A, signed, + = worse for the trade), exit fill difference,
+  $ per trade difference (B - A) with a 95% CI, share of trades whose outcome flips (winner <-> loser), $ totals on the matched
+  trades, a crosstab of exit kinds (stop / target / time), and fills outside the 1-minute bar that contains them (impossible fills,
+  checked against research/data/<bars>.npz when it is there).
+Usage (from research/mine):
+  python3 fill_gap.py <A_standard.csv> <B_tick.csv> [--tz America/Argentina/Buenos_Aires] [--tol 3] [--research ultra_d4]
+                      [--bars mnq_fut.npz] [--out fill_gap_<tag>]
+Self-test: A = B must give 100% matched and every difference 0 (python3 fill_gap.py x.csv x.csv --out /tmp/selftest).
+Writes <out>.md, <out>_pairs.csv (matched pairs with the deltas) and <out>_unmatched.csv."""
+import os, sys, argparse, datetime, numpy as np, pandas as pd
+HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE); sys.path.insert(0, os.path.dirname(HERE))
+from nt_trades import load_nt
+
+TICK = 0.25
+STOP_MODS = {"ORB60", "ORB90", "VOLB", "ENG10"}          # stop-market entries (ORB enters at market when the close is already through)
+LIMIT_MODS = {"LON", "ICT"}                               # limit entries
+BANDS = [(0, 570, "noche <09:30"), (570, 630, "09:30-10:30"), (630, 720, "10:30-12:00"), (720, 840, "12:00-14:00"), (840, 1080, "14:00-18:00"), (1080, 1441, "noche >=18:00")]
+
+
+def otype(mod): return "stop" if mod in STOP_MODS else ("limit" if mod in LIMIT_MODS else "market")
+def band(minute_of_day):
+    for lo, hi, name in BANDS:
+        if lo <= minute_of_day < hi: return name
+    return "?"
+def xkind(name):
+    n = str(name).lower()
+    return "stop" if n.startswith("stop") else ("target" if n.startswith("profit") else "time/flat")
+
+
+def bar_open(ts):
+    """ET timestamp of a fill -> open time of the 1-minute bar it belongs to. NinjaTrader stamps a Standard fill with the bar CLOSE
+    (seconds = 0 -> minus one minute); a tick / second series stamps it with the tick time (seconds > 0 -> floor to the minute)."""
+    sec = ts.dt.second > 0
+    return pd.Series(np.where(sec, ts.dt.floor("min"), ts - pd.Timedelta(minutes=1)), index=ts.index)
+
+
+def frame(path, tz, tag):
+    t = load_nt(path)
+    if "Strategy" in t.columns and (t["Strategy"].str.strip() != "NQMaster").any():
+        n0 = len(t); t = t[t["Strategy"].str.strip() == "NQMaster"]; print(f"{tag}: {n0 - len(t)} rows of other strategies dropped")
+    et = lambda s: s.dt.tz_localize(tz, ambiguous="NaT", nonexistent="shift_forward").dt.tz_convert("America/New_York").dt.tz_localize(None)
+    tin_et, tout_et = et(t.tin), et(t.tout)
+    op = bar_open(tin_et); xo = bar_open(tout_et)
+    f = pd.DataFrame(dict(date=((op + pd.Timedelta(hours=6)).dt.normalize().dt.strftime("%Y%m%d").astype(int)),
+                          mod=t["mod"].str.strip().values, d=t["d"].values, qty=t.qty.values, u=(t.pnl / t.qty).values, pnl=t.pnl.values,
+                          epx=t.epx.values, xpx=t.xpx.values, xname=t.xname.values, bars=t.bars.values,
+                          tin=((op.dt.hour * 60 + op.dt.minute - 1080) % 1440).astype(int), tout=((xo.dt.hour * 60 + xo.dt.minute - 1080) % 1440).astype(int),
+                          mod_et=(op.dt.hour * 60 + op.dt.minute).astype(int), tin_ts=tin_et.values, tout_ts=tout_et.values))
+    f["otype"] = f["mod"].map(otype); f["band"] = f["mod_et"].map(band); f["xkind"] = f["xname"].map(xkind)
+    f["hold"] = (f.tout - f.tin) % 1440
+    return f.sort_values(["date", "tin"]).reset_index(drop=True)
+
+
+def match(A, B, tol):
+    """Greedy nearest-entry-minute pairing inside (date, module, direction). Returns A, B with column k (partner index, -1 = none)."""
+    A = A.copy(); B = B.copy(); A["k"] = -1; B["k"] = -1
+    for (dt, md, d), g in A.groupby(["date", "mod", "d"]):
+        cand = B[(B.date == dt) & (B["mod"] == md) & (B.d == d)]
+        if not len(cand): continue
+        tl = 300 if md == "LON" else tol
+        for i, r in g.iterrows():
+            c = cand[(B.loc[cand.index, "k"] < 0) & ((cand.tin - r.tin).abs() <= tl)]
+            if len(c):
+                j = (c.tin - r.tin).abs().idxmin(); A.at[i, "k"] = j; B.at[j, "k"] = i
+    return A, B
+
+
+def pairs(A, B):
+    m = A[A.k >= 0]; b = B.loc[m.k.values]
+    P = pd.DataFrame(dict(date=m.date.values, mod=m["mod"].values, d=m.d.values, otype=m.otype.values, band=m.band.values,
+                          tin_a=m.tin.values, tin_b=b.tin.values, epx_a=m.epx.values, epx_b=b.epx.values, xpx_a=m.xpx.values, xpx_b=b.xpx.values,
+                          xkind_a=m.xkind.values, xkind_b=b.xkind.values, hold_a=m.hold.values, hold_b=b.hold.values, u_a=m.u.values, u_b=b.u.values, qty_a=m.qty.values, qty_b=b.qty.values))
+    P["d_entry_ticks"] = ((P.epx_b - P.epx_a) * P.d / TICK).round(2)        # + = B entered worse
+    P["d_exit_ticks"] = ((P.xpx_a - P.xpx_b) * P.d / TICK).round(2)         # + = B exited worse
+    P["d_usd"] = (P.u_b - P.u_a).round(2)
+    P["flip"] = np.sign(P.u_a) != np.sign(P.u_b)
+    P["d_tin"] = ((P.tin_b - P.tin_a + 720) % 1440) - 720
+    P["d_hold"] = P.hold_b - P.hold_a
+    return P
+
+
+def ci95(x):
+    x = np.asarray(x, float); n = len(x)
+    if n < 2: return (np.nan, np.nan)
+    se = x.std(ddof=1) / np.sqrt(n); return (x.mean() - 1.96 * se, x.mean() + 1.96 * se)
+
+
+def summary(P, keys):
+    rows = []
+    for key, g in (P.groupby(keys) if keys else [((), P)]):
+        key = key if isinstance(key, tuple) else (key,)
+        lo, hi = ci95(g.d_usd)
+        rows.append(dict(**{k: v for k, v in zip(keys, key)}, n=len(g), d_entry_ticks=round(g.d_entry_ticks.mean(), 2), d_entry_med=round(g.d_entry_ticks.median(), 2),
+                         d_exit_ticks=round(g.d_exit_ticks.mean(), 2), d_usd=round(g.d_usd.mean(), 2), ci_lo=round(lo, 2), ci_hi=round(hi, 2),
+                         flips_pct=round(100 * g.flip.mean(), 1), usd_a=round(g.u_a.sum()), usd_b=round(g.u_b.sum()), d_usd_total=round(g.d_usd.sum()),
+                         d_tin_mean=round(g.d_tin.mean(), 2), d_hold_mean=round(g.d_hold.mean(), 2)))
+    return pd.DataFrame(rows)
+
+
+def impossible_fills(F, bars_name, tag):
+    """Fills outside [low - 1 tick, high + 1 tick] of the 1-minute bar they belong to (bar = trade date + session minute). A fill more
+    than 10 points (40 ticks) outside that range is a price-level mismatch between the NT feed and the research data (seen on
+    2025-07-15 and 2025-08-19 with mnq_fut.npz, 135-350 points), counted apart as feed_offset, not as an impossible fill."""
+    p = os.path.join(os.path.dirname(HERE), "data", bars_name)
+    if not os.path.exists(p): return None, f"{bars_name} not found: impossible-fill check skipped"
+    z = np.load(p); date = z["date"].astype(np.int64); sm = (z["om"].astype(np.int64) - 1080) % 1440
+    key = date * 1440 + sm; order = np.argsort(key, kind="stable"); ks = key[order]
+    h = z["h"][order]; l = z["l"][order]
+    def look(dates, mins):
+        q = dates.astype(np.int64) * 1440 + mins.astype(np.int64); i = np.searchsorted(ks, q)
+        ok = (i < len(ks)) & (ks[np.minimum(i, len(ks) - 1)] == q); return i, ok
+    out = []
+    for col, mcol, what in (("epx", "tin", "entry"), ("xpx", "tout", "exit")):
+        i, ok = look(F.date.values, F[mcol].values)
+        px = F[col].values
+        j = np.minimum(i, len(ks) - 1)
+        dist = np.maximum(np.maximum(l[j] - px, px - h[j]), 0.0)               # points outside the bar's range (0 = inside)
+        off = ok & (dist > 10.0)                                                # >= 40 ticks outside: the two feeds are not on the same price level
+        bad = ok & ~off & (dist > TICK + 1e-9)                                  # 1 tick of slippage beyond the range is allowed
+        out.append(dict(side=tag, what=what, checked=int(ok.sum()), no_bar=int((~ok).sum()), feed_offset=int(off.sum()), outside=int(bad.sum())))
+        F.loc[bad, f"bad_{what}"] = True
+    return pd.DataFrame(out), None
+
+
+def research_gap(F, set_name, tol, tag):
+    """$ per trade NT vs research on matched trades, per module (H3): + = NT better than research."""
+    from nt_compare import research_set, match as rmatch
+    from parity_check import TOL_MOD
+    R, _ = research_set(set_name)
+    lo, hi = max(R.date.min(), F.date.min()), min(R.date.max(), F.date.max())
+    R = R[(R.date >= lo) & (R.date <= hi)].drop_duplicates(["date", "mod", "tin", "d"]).reset_index(drop=True); N = F[(F.date >= lo) & (F.date <= hi)].reset_index(drop=True)
+    rows = []
+    for md in sorted(set(R["mod"]) | set(N["mod"])):
+        r = R[R["mod"] == md].reset_index(drop=True); n = N[N["mod"] == md].reset_index(drop=True)
+        if not len(r) or not len(n): rows.append(dict(side=tag, module=md, research=len(r), nt=len(n), matched=0)); continue
+        r, n = rmatch(r, n, TOL_MOD.get(md, tol)); m = r[r.k >= 0]
+        g = n.loc[m.k.values, "u"].to_numpy() - m.u.to_numpy() if len(m) else np.array([])
+        se = g.std(ddof=1) / np.sqrt(len(g)) if len(g) > 1 else np.nan
+        rows.append(dict(side=tag, module=md, research=len(r), nt=len(n), matched=len(m), pct=round(100 * len(m) / len(r), 1),
+                         nt_minus_research_usd=round(float(g.mean()), 2) if len(g) else np.nan, t=round(float(g.mean() / se), 2) if len(g) > 1 and se > 0 else np.nan,
+                         research_usd=round(float(m.u.sum())), nt_usd=round(float(n.loc[m.k.values, "u"].sum())) if len(m) else 0))
+    return pd.DataFrame(rows), lo, hi
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(); ap.add_argument("a"); ap.add_argument("b")
+    ap.add_argument("--tz", default="America/Argentina/Buenos_Aires"); ap.add_argument("--tol", type=int, default=3)
+    ap.add_argument("--research", default=None, help="research set for the H3 table (e.g. ultra_d4); off by default")
+    ap.add_argument("--bars", default="mnq_fut.npz", help="1-minute bars in research/data for the impossible-fill check")
+    ap.add_argument("--out", default=None); ap.add_argument("--label-a", default="A (Standard)"); ap.add_argument("--label-b", default="B (Tick1)")
+    a = ap.parse_args(); out = a.out or os.path.join(HERE, f"fill_gap_{datetime.date.today():%Y%m%d}")
+    A = frame(a.a, a.tz, "A"); B = frame(a.b, a.tz, "B")
+    lo, hi = max(A.date.min(), B.date.min()), min(A.date.max(), B.date.max())
+    A = A[(A.date >= lo) & (A.date <= hi)].reset_index(drop=True); B = B[(B.date >= lo) & (B.date <= hi)].reset_index(drop=True)
+    A, B = match(A, B, a.tol); P = pairs(A, B)
+    pd.set_option("display.width", 250)
+    L = [f"# Fill gap: {a.label_a} vs {a.label_b} ({lo}-{hi})", ""]
+    tot = summary(P, []).iloc[0] if len(P) else None
+    if tot is None: L.append("- No matched trades."); print("\n".join(L)); sys.exit(1)
+    pct_a = 100 * (A.k >= 0).mean(); pct_b = 100 * (B.k >= 0).mean()
+    rel = 100 * tot.d_usd_total / tot.usd_a if tot.usd_a else np.nan
+    L.append(f"- Trades: A {len(A)}, B {len(B)}, matched {len(P)} ({pct_a:.1f}% of A, {pct_b:.1f}% of B); tolerance {a.tol} min inside (date, module, direction).")
+    L.append(f"- $ per contract on the matched trades: A {tot.usd_a:,.0f}, B {tot.usd_b:,.0f}, B - A {tot.d_usd_total:+,.0f} ({rel:+.1f}% of A); "
+             f"per trade {tot.d_usd:+.2f} (95% CI {tot.ci_lo:+.2f} .. {tot.ci_hi:+.2f}); outcome flips {tot.flips_pct:.1f}%.")
+    L.append(f"- Entry fill B - A: mean {tot.d_entry_ticks:+.2f} ticks (median {tot.d_entry_med:+.2f}); exit fill B - A: mean {tot.d_exit_ticks:+.2f} ticks; "
+             f"entry minute B - A {tot.d_tin_mean:+.2f}, hold B - A {tot.d_hold_mean:+.2f} min. (+ = worse for the trade in B).")
+    L.append(f"- Unmatched $: only A {A[A.k < 0].u.sum():,.0f} ({int((A.k < 0).sum())} trades), only B {B[B.k < 0].u.sum():,.0f} ({int((B.k < 0).sum())} trades).")
+    L += ["", "## By order type", "```", summary(P, ["otype"]).to_string(index=False), "```", "", "## By module", "```", summary(P, ["mod"]).to_string(index=False), "```",
+          "", "## By order type and ET band (entry bar)", "```", summary(P, ["otype", "band"]).to_string(index=False), "```",
+          "", "## Exit kind A (rows) vs B (columns)", "```", pd.crosstab(P.xkind_a, P.xkind_b).to_string(), "```"]
+    chk = []
+    for F, tag in ((A, "A"), (B, "B")):
+        t, msg = impossible_fills(F, a.bars, tag)
+        if t is None: chk.append(msg)
+        else: chk.append(t.to_string(index=False))
+    L += ["", f"## Fills outside the 1-minute bar (+/- 1 tick), bars = research/data/{a.bars}", "```"] + chk + ["```"]
+    if a.research:
+        parts = []
+        for F, tag in ((A, a.label_a), (B, a.label_b)):
+            G, rlo, rhi = research_gap(F, a.research, a.tol, tag); parts.append(G)
+        G = pd.concat(parts, ignore_index=True)
+        L += ["", f"## NT vs research ({a.research}, {rlo}-{rhi}): $ per trade NT - research on matched trades (H3; + = NT better)", "```", G.to_string(index=False), "```"]
+    txt = "\n".join(L) + "\n"
+    open(out + ".md", "w", encoding="utf-8").write(txt); P.to_csv(out + "_pairs.csv", index=False)
+    um = pd.concat([A[A.k < 0].assign(side="only A"), B[B.k < 0].assign(side="only B")])[["side", "date", "mod", "d", "tin", "epx", "xpx", "xname", "u"]]
+    um["hora_ET"] = ((um.tin + 1080) % 1440).map(lambda x: f"{x // 60:02d}:{x % 60:02d}"); um.sort_values(["date", "tin"]).to_csv(out + "_unmatched.csv", index=False)
+    print(txt); print("->", out + ".md")

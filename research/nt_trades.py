@@ -12,6 +12,17 @@ def load_nt(path):
         return pd.to_datetime(s, format="%d/%m/%Y %I:%M:%S %p") if s.str.contains("M$", regex=True).all() else pd.to_datetime(s, format="%d/%m/%Y %H:%M:%S")
     t["tin"] = tm(t["Entry time"]); t["tout"] = tm(t["Exit time"])
     t["mod"] = t["Entry name"]; t["y"] = t.tin.dt.year
+    # 2026-10-26 (experiment 01, fill_gap.py / slip_model.py): fill prices, exit name, direction, bars held and MAE / MFE when present
+    px = lambda s: s.str.strip().str.replace(",", ".", regex=False).astype(float) if not dot else s.str.strip().str.replace(",", "", regex=False).astype(float)
+    for c, k in (("Entry price", "epx"), ("Exit price", "xpx")):
+        if c in t.columns: t[k] = px(t[c])
+    if "Exit name" in t.columns: t["xname"] = t["Exit name"].str.strip()
+    if "Market pos." in t.columns: t["d"] = np.where(t["Market pos."].str.lower().str.startswith(("long", "larg")), 1, -1)
+    if "Bars" in t.columns: t["bars"] = pd.to_numeric(t["Bars"], errors="coerce")
+    for c, k in (("MAE", "mae"), ("MFE", "mfe")):
+        if c in t.columns:
+            try: t[k] = num(t[c])
+            except Exception: pass
     return t
 if __name__ == "__main__":
     t = load_nt(r"C:\Users\XINTETICO\Downloads\backtesting\trades of maxplus 2020-2026 1 contract confluence rule on.csv")

@@ -28,10 +28,10 @@ namespace NinjaTrader.Cbi {
  public class Account { public string Name; public PositionCollection Positions; public double Get(AccountItem i, Currency c){return 0;} public void Flatten(ICollection<Instrument> i){} }
 }
 namespace NinjaTrader.Data {
- public enum BarsPeriodType { Minute, Tick }
+ public enum BarsPeriodType { Minute, Tick, Second, Day }
  public enum MarketDataType { Last, Bid, Ask }
  public class BarsPeriod { public BarsPeriodType BarsPeriodType; public int Value; }
- public class Bars { public bool IsFirstBarOfSession; }
+ public class Bars { public bool IsFirstBarOfSession, IsTickReplay; public int Count; }
  public class SessionIterator { public SessionIterator(Bars b){} public bool GetNextSession(DateTime t, bool inc){return true;} public DateTime ActualSessionEnd; }
  public class MarketDataEventArgs : EventArgs { public MarketDataType MarketDataType; public double Price, Ask, Bid; public long Volume; public DateTime Time; }
 }
@@ -54,10 +54,10 @@ namespace NinjaTrader.NinjaScript {
  public class SystemPerformanceC { public TradeCollection AllTrades; }
  public class StrategyBase {
   public State State; public string Description, Name; public Calculate Calculate; public int EntriesPerDirection; public EntryHandling EntryHandling;
-  public bool IsExitOnSessionCloseStrategy, IsFillLimitOnTouch, IsInstantiatedOnEachOptimizationIteration; public int ExitOnSessionCloseSeconds, Slippage, BarsRequiredToTrade;
+  public bool IsExitOnSessionCloseStrategy, IsFillLimitOnTouch, IsInstantiatedOnEachOptimizationIteration, TraceOrders; public int ExitOnSessionCloseSeconds, Slippage, BarsRequiredToTrade;
   public MaximumBarsLookBack MaximumBarsLookBack; public OrderFillResolution OrderFillResolution; public StartBehavior StartBehavior; public TimeInForce TimeInForce;
   public RealtimeErrorHandling RealtimeErrorHandling; public StopTargetHandling StopTargetHandling;
-  public Instrument Instrument; public Account Account; public Position Position, PositionAccount; public Bars Bars; public BarsPeriod BarsPeriod; public SystemPerformanceC SystemPerformance;
+  public Instrument Instrument; public Account Account; public Position Position, PositionAccount; public Bars Bars; public Bars[] BarsArray; public BarsPeriod BarsPeriod; public SystemPerformanceC SystemPerformance;
   public int CurrentBar, BarsInProgress, Count; public int[] CurrentBars; public double TickSize;
   public ISeries<double> Open, High, Low, Close, Volume; public ISeries<DateTime> Time;
   public ISeries<double>[] Opens, Highs, Lows, Closes, Volumes; public ISeries<DateTime>[] Times;
