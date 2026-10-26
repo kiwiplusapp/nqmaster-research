@@ -1,0 +1,10 @@
+NQMaster | fill series Off (orders on BarsInProgress 0; 2 series loaded), trace orders on, run started 04:51:42
+NQMaster | profile Ultra | modules: ORB60 ORB90 MSEQ MSEQS CRT11 LON ICT MOM11 MOM13 MOM1030 ON07 REV06 VW13 LATE15 NF05 LF06 LF0430 CPI09 SO04 RV11 ORFAIL CAM3 VOLB 
+NQMaster | INACTIVITY 2025-04-17: ORFAIL has not entered for 61 tradable days (normal maximum 40). Check the Output for 'STALE ORDER' / rejections, the module switches and the data feed.
+NQMaster | INACTIVITY 2025-04-17: ORFAIL has not entered for 61 tradable days (normal maximum 40). Check the Output for 'STALE ORDER' / rejections, the module switches and the data feed.
+2025-08-13 10:45 | NQMaster | STALE ORDER dropped (cancel never confirmed): VOLB Buy StopMarket x1 @ 25492,00, state Working - the module and the opposite direction trade again
+NQMaster | 1 stale entry order(s) were dropped during this run (Output lines 'STALE ORDER'). Before this fix each one blocked a module and the opposite direction for good.
+NQMaster | MODULE HEALTH (end of run; 3295 trades, last exit 2026-10-23; 'last 365 d' ends there)
+NQMaster | research: a >= 80% win-rate year does NOT predict the next trades better than the module's long-run rate (research/mine/sniper_eval.py, wr80_lab.py); use this list for the yearly review, not for sizing.
+NQMaster | RUN TIME fill series Off: 21,1 s wall clock, 991.109 1-minute bars
+5 líneas 'Ignored SubmitOrderManaged' en el Output completo (todas del VOLB zombi del 2025-08-13). El Output completo de 9,6 MB con TraceOrders no se versiona.

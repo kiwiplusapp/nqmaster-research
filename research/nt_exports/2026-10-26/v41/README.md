@@ -1,6 +1,6 @@
 # Corridas con el parche v4.1 (26-oct, noche): Off 2024 → hoy y Tick1 2026-06-01 → hoy
 
-Archivos: `trades_off_2024-01-01_hoy.csv` + `output_off_2024-01-01_hoy.txt` (Off, TraceOrders on, 9,6 MB de Output); `trades_tick1_2026-06-01_hoy.csv` + `orders_tick1_2026-06-01_hoy.csv` + `output_tick1_2026-06-01_hoy.txt` (Tick1, TraceOrders off). Comparaciones: `fill_gap_tick1_vs_off.md` (crudo, todo el período), `fill_gap_tick1_vs_off2024.md` (sin el 25-jun), `fill_gap_v41_vs_v3.md` (efecto de los brackets explícitos sobre la corrida v3).
+Archivos: `trades_off_2024-01-01_hoy.csv` + `output_off_2024-01-01_hoy.extract.txt` (Off, TraceOrders on; el Output completo de 9,6 MB no se versiona, el extracto tiene las líneas de NQMaster); `trades_tick1_2026-06-01_hoy.csv` + `orders_tick1_2026-06-01_hoy.csv` + `output_tick1_2026-06-01_hoy.txt` (Tick1, TraceOrders off). Comparaciones: `fill_gap_tick1_vs_off.md` (crudo, todo el período), `fill_gap_tick1_vs_off2024.md` (sin el 25-jun), `fill_gap_v41_vs_v3.md` (efecto de los brackets explícitos sobre la corrida v3).
 
 ## Compuerta A: Off v4.1 = baseline
 
