@@ -26,6 +26,7 @@ namespace NinjaTrader.Cbi {
  public class Position { public MarketPosition MarketPosition; public int Quantity; public Instrument Instrument; public double GetUnrealizedProfitLoss(PerformanceUnit u, double p){return 0;} }
  public class PositionCollection : List<Position> {}
  public class Account { public string Name; public PositionCollection Positions; public double Get(AccountItem i, Currency c){return 0;} public void Flatten(ICollection<Instrument> i){} }
+ public class Connection { public static Connection PlaybackConnection; }
 }
 namespace NinjaTrader.Data {
  public enum BarsPeriodType { Minute, Tick, Second, Day }
@@ -73,6 +74,8 @@ namespace NinjaTrader.NinjaScript {
   public Order EnterLongStopMarket(int bip, bool live, int q, double px, string s){return null;} public Order EnterShortStopMarket(int bip, bool live, int q, double px, string s){return null;}
   public Order ExitLong(){return null;} public Order ExitShort(){return null;}
   public Order ExitLong(int bip, int q, string s, string from){return null;} public Order ExitShort(int bip, int q, string s, string from){return null;}
+  public Order ExitLongStopMarket(int bip, bool live, int q, double px, string s, string from){return null;} public Order ExitShortStopMarket(int bip, bool live, int q, double px, string s, string from){return null;}
+  public Order ExitLongLimit(int bip, bool live, int q, double px, string s, string from){return null;} public Order ExitShortLimit(int bip, bool live, int q, double px, string s, string from){return null;}
   public void SetStopLoss(string s, CalculationMode m, double v, bool sim){} public void SetProfitTarget(string s, CalculationMode m, double v){}
   public void CancelOrder(Order o){} public void ChangeOrder(Order o, int q, double l, double s){} public Order GetRealtimeOrder(Order o){return o;}
   public double GetCurrentAsk(){return 0;} public double GetCurrentBid(){return 0;}

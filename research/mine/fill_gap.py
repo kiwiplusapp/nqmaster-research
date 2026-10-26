@@ -28,7 +28,7 @@ def band(minute_of_day):
     return "?"
 def xkind(name):
     n = str(name).lower()
-    return "stop" if n.startswith("stop") else ("target" if n.startswith("profit") else "time/flat")
+    return "stop" if n.startswith("stop") else ("target" if n.startswith(("profit", "target")) else "time/flat")   # 'Stop loss' / 'StopX', 'Profit target' / 'TargetX'
 
 
 def bar_open(ts, tick_stamped=None):
@@ -204,6 +204,11 @@ if __name__ == "__main__":
     L.append(f"- Entry fill B - A: mean {tot.d_entry_ticks:+.2f} ticks (median {tot.d_entry_med:+.2f}); exit fill B - A: mean {tot.d_exit_ticks:+.2f} ticks; "
              f"entry minute B - A {tot.d_tin_mean:+.2f}, hold B - A {tot.d_hold_mean:+.2f} min. (+ = worse for the trade in B).")
     L.append(f"- Unmatched $: only A {A[A.k < 0].u.sum():,.0f} ({int((A.k < 0).sum())} trades), only B {B[B.k < 0].u.sum():,.0f} ({int((B.k < 0).sum())} trades).")
+    L += ["", "## Slippage: how it is counted (once)",
+          "- A (Standard, 1-minute fills): NinjaTrader's Slippage = 1 tick is inside the export: market and stop-market entries +1 tick, stop-loss and market exits -1 tick, limit fills 0.",
+          f"- B (fills on the tick series): NinjaTrader applies no slippage on a secondary series (measured 2026-10-26), so this report adds {a.slip_b} tick(s) to B's market / stop-market fills" + (" (entries only: B's stop / target exits are still 1-minute fills that already carry it)" if a.slip_b_scope == "entries" else " on entries, stop-loss exits and market exits") + ", 0 on limit fills. B - A is therefore the price path alone (H1 / H2), with the same 1-tick assumption on both sides." if a.slip_b else
+          "- B: NO synthetic slippage added (--slip-b 0): if B is a tick-series run, its market / stop fills are 1 tick better than Standard by construction and B - A overstates B.",
+          "- Real slippage (H5, slip_model.py) is measured against the order level in live / sim exports and replaces the 1-tick assumption only per cell with n >= 15; it is never added on top of this table."]
     L += ["", "## By order type", "```", summary(P, ["otype"]).to_string(index=False), "```", "", "## By module", "```", summary(P, ["mod"]).to_string(index=False), "```",
           "", "## By order type and ET band (entry bar)", "```", summary(P, ["otype", "band"]).to_string(index=False), "```",
           "", "## Exit kind A (rows) vs B (columns)", "```", pd.crosstab(P.xkind_a, P.xkind_b).to_string(), "```"]
