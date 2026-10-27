@@ -52,7 +52,7 @@ MNQ real 2024-26: 3.9 trades por día, WR 66.8%, PF 1.369, $37,539. MaxSharpe en
 Mejora trades, PF y $/mes en los tres tramos de datos. El drawdown es algo mayor ($3.4k contra $2.5k en MNQ real).
 
 ### MaxPlus: control de riesgo
-ICT opera con 2 contratos (IctMultiplier = 2) para que su riesgo sea igual al de los otros módulos. En MNQ real 2024-26: PF 1.376, Sharpe 3.20, $1,259/mes (MaxSharpe: 1.351 / 3.19 / $1,023).
+ICT opera con **1 contrato desde el 27-oct-2026** (IctMultiplier = 1; antes 2 para igualar su riesgo al de los otros módulos): tras los fixes de datos de S2 su PF standalone 2024-26 quedó en 1,09 (+4 ticks 1,04), bajo el protocolo, y en portafolio x1 baja el DD sin mover el Sharpe (`docs/experimentos/01_paridad.md`). Cifras históricas con 2 contratos: En MNQ real 2024-26: PF 1.376, Sharpe 3.20, $1,259/mes (MaxSharpe: 1.351 / 3.19 / $1,023).
 Para evaluaciones Apex usá AdaptiveSize = true, SizeHigh 2, SizeLow 1 y SizeDownDrawdown 600. En MNQ real: 37% de pases con 10% de quemadas a 30 días, y 84% / 15% sin límite de tiempo.
 
 ## Reglas de confluencia (UseConfluence = true, activas en MaxPlus y Custom)

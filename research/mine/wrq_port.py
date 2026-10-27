@@ -16,7 +16,7 @@ ULTRA = {"ORB60": {}, "ORB90": {}, "MSEQ": {}, "MSEQS": {}, "CRT11": {}, "ICT": 
 WR70 = {"ORB60": {"kt": 1.25}, "ORB90": {}, "MSEQ": {}, "MSEQS": {}, "CRT11": {}, "ICT": {}, "MOM11": {}, "REV06": {}, "VW13b": {}, "VW13": {},
         "VOLB_tf1": {}, "LATE15": {}, "NF05": {}, "LF06": {}, "LF0430": {}}
 PROFILES = {"Ultra": ULTRA, "WR70Plus": WR70}
-BASE_W = {"ICT": 2.0}
+BASE_W = {"ICT": 1.0}        # 2026-10-27: ICT at 1 contract (Federico; was 2.0 so that its risk matched the other modules)
 LATE = ["CRT11", "MOM13", "MSEQ", "MSEQS"]
 _EN = None
 def entries():

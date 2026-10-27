@@ -41,7 +41,7 @@ Una idea entra solo si funciona en IS, C24 y REAL sin re-optimizar. Además, par
 1. Strategy Analyzer: MNQ 1 min, Profile Ultra, Contracts 1, PropMode Off, desde 2024-01-01, comisión $1,90 + 1 tick. Exportar trades a CSV.
 2. `cd research/mine && python3 parity_check.py <csv> --set ultra_d4_mnq` (set de paridad construido sobre MNQ, el instrumento del Analyzer; `ultra_d4` sobre NQ es el set de campaña y da ~4 puntos menos de G1 por diferencias de instrumento).
 3. Compuertas: G1 ≥ 92% de trades emparejados, G2 $ dentro de ±3%, G3 correlación diaria ≥ 0,95, G4 cada módulo ≥ 90% si n ≥ 20.
-4. Fallos conocidos hasta el F5 de `patch_parity_s2.py` (27-oct): ORFAIL ~35 % y CAM3 ~56 % (sin reintento al diferir), ICT ~88 % (diferido vuelve a exigir el gatillo), MSEQS ~68 % (gate por fill de ORB60). Después de ese parche, cualquier fallo es un bug nuevo. El set excluye medias ruedas y días FOMC / ATR < 150, como NT.
+4. Referencia vigente (27-oct, v4.3 contra `ultra_d4_mnq`): G1 98,5 %, G3 0,981, todos los módulos ≥ 90 % (CAM3 91,7 %, VOLB 94,5 %, el resto ≥ 95 %). Cualquier fallo de G1-G4 en un export nuevo es un bug nuevo. Contra `ultra_d4` (NQ) se esperan ICT ~90 %, MSEQS ~82 %, RV11 ~68 % por instrumento. El set excluye medias ruedas y días FOMC / ATR < 150, como NT.
 5. `research/mine/impl_gap.py` mide la brecha módulo por módulo en vivo.
 
 ## Chequeos de código

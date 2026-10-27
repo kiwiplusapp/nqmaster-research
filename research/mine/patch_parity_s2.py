@@ -10,6 +10,7 @@ against the research rules (docs/experimentos/01_paridad.md, S2). Applies on top
 v2 (adversarial review 2026-10-27): the ORFAIL / CAM3 retry is dropped when the deferral bar already crossed the stop (as pend5 does;
 the research would have lost 1R, NinjaTrader cannot reproduce that fill) and logs a skipped bar; the pending ICT lots are re-scaled at
 go-live like pend5 / parked setups; an ICT setup blocked by an opposite POSITION (not an order) is parked like the direct path.
+4. ICT at 1 contract (IctMultiplier default 2 -> 1 in both default blocks; research BASE_W ICT 2.0 -> 1.0), Federico's decision 2026-10-27.
 Run from anywhere: python3 research/mine/patch_parity_s2.py"""
 import os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -95,5 +96,8 @@ rep("\t\t\t// ---- MSEQS: mirrored momentum sequence (bullish main candle + 5 fa
     "\t\t\t// where ORB60 has already entered SHORT (pullback down-trend day), 5m bar opening at/after that entry, 10:30-15:45\n",
     "\t\t\t// ---- MSEQS: mirrored momentum sequence (bullish main candle + 5 falling bearish candles below its high), only on days\n"
     "\t\t\t// where the RAW ORB60 short signal already happened (pullback down-trend day), from the 5m bar that contains it, 10:30-15:45\n")
+# ---- 4. ICT at 1 contract (Federico, 2026-10-27, after the S2 validation numbers: ICT standalone 2024-26 PF 1.09 / +4 ticks 1.04 < 1.2 / 1.1;
+#      portfolio x2 -> x1: Sharpe T1 3.55 -> 3.53, T2 3.99 -> 4.00, REAL 4.57 -> 4.56, max DD -$167 / -$124 / -$267, $/month -$27 / -$9 / -$27)
+rep("IctMultiplier = 2;", "IctMultiplier = 1;", 2)
 open(P, "w", encoding="utf-8-sig").write(s)
 print("patched", P, n0, "->", len(s.splitlines()), "lines")

@@ -26,7 +26,7 @@ NAME = "nqdb.npz"; BIG = 10 ** 7; MIN_ATR = 150.0; MINSTOP = 0.10; ORBT = 0.1
 STRUCT = ["ORB60", "ORB90", "VOLB", "MSEQ", "MSEQS", "CRT11", "ICT", "LON"]
 LATE = ["CRT11", "MOM13", "MSEQ", "MSEQS"]
 EXIT_P = {"VOLB": dict(be=0.75, beo=0.1)}
-BASE_W = {"ICT": 2.0}
+BASE_W = {"ICT": 1.0}        # 2026-10-27: ICT at 1 contract (Federico; was 2.0 so that its risk matched the other modules)
 X4 = ("MOM1030", "CPI09")
 PERIODS = {"A": (20100601, 20150101, "norm"), "B": (20150101, 20200101, "norm"), "T1": (20200101, 20240101, "real"), "T2": (20240101, 20991231, "real")}
 G = {}
