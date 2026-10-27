@@ -1,0 +1,26 @@
+{
+ "hc0.0 | T1": [
+  "L150 6c/3c: pares fusionados 87 % (dia mediano de fusion 70), plazas efectivas (caja + saldo mensual) 1.0 de 5",
+  "MFFU 1x8: pares fusionados 19 % (dia mediano de fusion 33), plazas efectivas (caja + saldo mensual) 1.0 de 3"
+ ],
+ "hc0.0 | T2": [
+  "L150 6c/3c: pares fusionados 95 % (dia mediano de fusion 38), plazas efectivas (caja + saldo mensual) 1.0 de 5",
+  "MFFU 1x8: pares fusionados 53 % (dia mediano de fusion 40), plazas efectivas (caja + saldo mensual) 1.0 de 3"
+ ],
+ "hc0.35 | T1": [
+  "L150 6c/3c: pares fusionados 96 % (dia mediano de fusion 36), plazas efectivas (caja + saldo mensual) 1.0 de 5",
+  "MFFU 1x8: pares fusionados 59 % (dia mediano de fusion 39), plazas efectivas (caja + saldo mensual) 1.0 de 3"
+ ],
+ "hc0.35 | T2": [
+  "L150 6c/3c: pares fusionados 100 % (dia mediano de fusion 30), plazas efectivas (caja + saldo mensual) 1.0 de 5",
+  "MFFU 1x8: pares fusionados 72 % (dia mediano de fusion 45), plazas efectivas (caja + saldo mensual) 1.0 de 3"
+ ],
+ "hc1.0 | T1": [
+  "L150 6c/3c: pares fusionados 100 % (dia mediano de fusion 24), plazas efectivas (caja + saldo mensual) 1.0 de 5",
+  "MFFU 1x8: pares fusionados 99 % (dia mediano de fusion 37), plazas efectivas (caja + saldo mensual) 1.0 de 3"
+ ],
+ "hc1.0 | T2": [
+  "L150 6c/3c: pares fusionados 100 % (dia mediano de fusion 22), plazas efectivas (caja + saldo mensual) 1.0 de 5",
+  "MFFU 1x8: pares fusionados 98 % (dia mediano de fusion 30), plazas efectivas (caja + saldo mensual) 1.0 de 3"
+ ]
+}
