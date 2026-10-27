@@ -82,7 +82,8 @@ def true_range(tab, first_plain=False, pc_ffill=False):
 def trend_series(c):
     """trend per row of a daily close series c (prior close vs reference), as float with NaN -> 0 later."""
     spec = CFG["trend"]; kind = spec[0]; pc = c.shift(1)
-    if kind == "sma": ref = c.rolling(spec[1], min_periods=spec[1]).mean().shift(1); t = np.sign(pc - ref)
+    if kind == "sma":           # 2026-10-27: over the closes that exist, >= 15 of them (NQMaster TrendMin); a missing RTH session keeps the previous trend
+        cc = c.dropna(); t = np.sign(cc - cc.rolling(spec[1], min_periods=min(15, spec[1])).mean()).reindex(c.index).shift(1).ffill()
     elif kind == "ema": ref = c.ewm(span=spec[1], adjust=False, ignore_na=True).mean().shift(1); t = np.sign(pc - ref)
     elif kind == "mom": ref = c.shift(1 + spec[1]); t = np.sign(pc - ref)
     elif kind == "both":

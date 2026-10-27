@@ -15,6 +15,8 @@ if __name__ == "__main__":
     X = pickle.load(open(os.path.join(HERE, "cand16_trades.pkl"), "rb"))["Ultra"][0]; L = X[(X["mod"] == "LATEFH") & (X.date >= S.START)][["date", "mod", "tin", "tout", "d", "u", "w"]]
     import robust2_build as RB
     ok = set(RB.days_real())                                  # NQMaster skips FOMC days and days with ATR < 150 (MinAtrPoints)
+    rth = (D.om >= 570) & (D.om < 960); last = pd.Series(D.om[rth]).groupby(D.day[rth]).max().reindex(range(D.nd)).fillna(0).to_numpy()
+    ok -= set(D.daydate[np.where(last < 959)[0]].tolist())     # 2026-10-27: SkipShortSessions = true in NQMaster: no trades on 13:00 ET closes (days_real already drops sessions without RTH)
     L = L[L.date.isin(ok)]; parts = [U, L]
     for nm, key in NEW.items():
         t = TR[key]["real"]; t = t[(t.date >= S.START) & t.date.isin(ok)]

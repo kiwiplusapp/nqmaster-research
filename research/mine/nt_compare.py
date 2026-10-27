@@ -48,6 +48,12 @@ def research_set(name):
         X = conflict_filter(X.sort_values(["date", "tin"]).reset_index(drop=True))
         X["mod"] = X["mod"].replace({"VW13b": "VW13", "VOLB_tf1": "VOLB", "VOLB_tf0": "VOLB"})
         return X.sort_values(["date", "tin"]).reset_index(drop=True), "nq"
+    if name == "ultra_d4_mnq":                                   # ultra_d4 rebuilt on MNQ (build_parity_mnq.py, 2026-10-27): the parity reference against the Analyzer
+        X = pickle.load(open("six_ultra6_trades_mnq.pkl", "rb"))["Ultra6"][["date", "mod", "tin", "tout", "d", "u", "w"]].copy()
+        from wrq_port import conflict_filter
+        X = conflict_filter(X.sort_values(["date", "tin"]).reset_index(drop=True))
+        X["mod"] = X["mod"].replace({"VW13b": "VW13", "VOLB_tf1": "VOLB", "VOLB_tf0": "VOLB"})
+        return X.sort_values(["date", "tin"]).reset_index(drop=True), "nq"
     if name == "ultra6":                                         # Ultra + six-year modules (2026-10-16, six_build.py), real Databento NQ 2020-10..
         X = pickle.load(open("six_ultra6_trades.pkl", "rb"))["Ultra6"][["date", "mod", "tin", "tout", "d", "u", "w"]].copy()
         X["mod"] = X["mod"].replace({"VW13b": "VW13", "VOLB_tf1": "VOLB", "VOLB_tf0": "VOLB"})
@@ -107,7 +113,7 @@ def stats(u):
     return dict(n=len(u), wr=round(100 * (u > 0).mean(), 1), pf=round(u[u > 0].sum() / gl, 2) if gl > 0 else np.nan, net=round(u.sum()))
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("csv"); ap.add_argument("--set", default="ultra", choices=["ultra_d4", "ultra6", "ultra_r", "wr70_r", "ultra_q", "ultra_final", "ultralean_final", "wr70plus_final", "ultra", "wr70plus", "wr70plus_night", "gold_robust", "gold_winrate"])
+    ap = argparse.ArgumentParser(); ap.add_argument("csv"); ap.add_argument("--set", default="ultra", choices=["ultra_d4", "ultra_d4_mnq", "ultra6", "ultra_r", "wr70_r", "ultra_q", "ultra_final", "ultralean_final", "wr70plus_final", "ultra", "wr70plus", "wr70plus_night", "gold_robust", "gold_winrate"])
     ap.add_argument("--tz", default="America/Argentina/Buenos_Aires"); ap.add_argument("--out", default=None); ap.add_argument("--tol", type=int, default=3)
     a = ap.parse_args(); out = a.out or "nt_compare_" + a.set
     R, inst = research_set(a.set); N = nt_frame(a.csv, a.tz)

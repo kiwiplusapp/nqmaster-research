@@ -94,7 +94,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double e10aO, e10aH, e10aL, e10aC, e10bO, e10bH, e10bL, e10bC, close10 = double.NaN; private bool e10aHas, e10bHas, eng10Done;
 		private double volbUp = double.NaN, volbDn = double.NaN; private bool volbDone, volbTrendOnly, volbTrendBase; private double volbRBase = 2.0; private int volbTrades;
 		private List<Order> zombies = new List<Order>(); private int zombieCount;	// entry orders NinjaTrader never processed (PurgeStaleEntries)
-		private int orbFirstDir, orbFirstMin = 9999;
+		private int orbFirstDir, orbFirstMin = 9999;	// first ORB60 fill of the day (log only since S2 2026-10-27)
+		private int orbSigDir, orbSigMin = 9999;	// RAW ORB60 short signal of the day: low through OR low - 1 tick on a down-trend pullback day (MSEQS gate, research wrq_build b_mseq)
 		private int m11Dir, onSum, lonDir;	// confluence state (MOM11 direction, overnight modules ON07/REV06/LON)
 		private List<Mod> timeMods;
 		// six-year modules (2026-10-16): ENG26 (22-02 vs 02-06 4H engulf at 09:30), ORFAIL (failed 15-min ORB), CAM3 (Camarilla L3/H3 fade)
@@ -102,8 +103,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double e26aO, e26aH, e26aL, e26aC; private bool e26aHas;
 		private double sVwPv, sVwV;	// session VWAP since 18:00 (CA04V)
 		private double rvAcc; private bool rvDone; private List<double> rvHist = new List<double>();	// RTH volume 09:30-10:59 (RV11)
-		private double orfH, orfL, orfExt, orfSl, orfTp; private int orfBrk, orfBi, orfSig; private bool orfHas, orfReady, orfDone;
-		private double camLev, camExt, camSl, camTp; private int camSide, camBr = -1, camSig; private bool camDone = true;
+		private double orfH, orfL, orfExt, orfSl, orfTp; private int orfBrk, orfBi, orfSig, orfPend, orfPendBar = -1; private bool orfHas, orfReady, orfDone;	// orfPend: signal deferred by an opposite working order, retried once on the next bar (S2 2026-10-27)
+		private double camLev, camExt, camSl, camTp; private int camSide, camBr = -1, camSig, camPend, camPendBar = -1; private bool camDone = true;
 		#endregion
 
 		#region Fields
@@ -146,6 +147,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		private double rH, rL; private bool rHas; private int lonStage;
 		private double[] lvl = new double[6]; private bool[] taken = new bool[6]; private bool levelsReady;
 		private bool[] ictAct = new bool[2]; private double[] ictExt = new double[2]; private int[] ictExtBar = new int[2];
+		private int ictPendDir, ictPendBar = -1, ictPendExp, ictPendQty; private double ictPendLim, ictPendStop, ictPendExtP;	// ICT setup deferred by an opposite working order: limit placed on the next 1-minute bar (S2 2026-10-27)
 		private int ictTrades, ictExpiry; private double ictExtPend;
 		private int flattenBar = -1;
 		private double rsiUp = double.NaN, rsiDn = double.NaN, rsiVal = 50; private int rsiTrades;
@@ -792,12 +794,29 @@ namespace NinjaTrader.NinjaScript.Strategies
 					if (po != null) pend5.Entry = po; Log(pend5.Sig + " entered after the deferral"); pend5 = null;
 				}
 			}
+			if (ictPendDir != 0)
+			{
+				int pdi = ictPendDir;
+				if (ict.InTrade || Working(ict.Entry) || ict.Parked || CurrentBars[0] > ictPendBar + 5 || CurrentBars[1] >= ictPendExp || (pdi == -1 ? High[0] > ictPendExtP : Low[0] < ictPendExtP)) { ictPendDir = 0; Log("ICT deferred setup dropped"); }
+				else if (CurrentBars[0] > ictPendBar && DirectionAllowed(pdi))
+				{
+					ictPendDir = 0; ict.Dir = pdi; ictExtPend = ictPendExtP; ictExpiry = ictPendExp; ArmPriceBracket(ict, pdi, ictPendStop);
+					int iqo = OfApply(ict, ictPendQty, pdi);
+					Order ir = iqo <= 0 ? null : (pdi == 1 ? EnterLongLimit(fillBip, true, iqo, ictPendLim, ict.Sig) : EnterShortLimit(fillBip, true, iqo, ictPendLim, ict.Sig));
+					if (ir != null) ict.Entry = ir;
+					Log(string.Format("ICT {0} LIMIT @ {1} | SL {2} (after the deferral)", pdi == 1 ? "BUY" : "SELL", Fmt(ictPendLim), Fmt(ictPendStop)));
+				}
+			}
 			ManageParked(openMin, closeMin);
 			if (UseOrderFlowBoost) OfRefresh();
 
 			// ---- modules on the 1-minute series
 			foreach (Mod o in new Mod[] { orb, orb2 })
 				if (o.On && inRth && etDate == rthDay && o.OrReady && closeMin >= Math.Max(630, RthOpen + o.Range)) ManageOrb(o, closeMin);
+			// S2 2026-10-27: MSEQS is gated on the RAW ORB60 short signal (research b_mseq: the first ORB60 short of nt_v3_replica with only the
+			// pullback filter), i.e. the first bar whose low trades through OR low - 1 tick on a down-trend pullback day inside the ORB window,
+			// whether or not ManageOrb then skipped the day (ORBt prior-close filter, stop size) or the order filled
+			if (orbSigDir == 0 && orb.On && inRth && etDate == rthDay && orb.OrReady && pullbackDay && trendDir == -1 && closeMin >= Math.Max(630, RthOpen + orb.Range) && closeMin < 780 && Low[0] <= orb.OrL - TickSize) { orbSigDir = -1; orbSigMin = openMin; Log("ORB60 raw short signal (MSEQS gate) @ " + Fmt(orb.OrL - TickSize)); }
 			foreach (Mod m in timeMods)
 			{
 				if (m.Retry) { m.Retry = false; TimeEntry(m); if (lastDeferred) m.Retry = false; continue; }
@@ -809,8 +828,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (volb.On && inRth && etDate == rthDay) ManageVolb(openMin);
 			if (eng10.On) ManageEng10(openMin);
 			if (eng26.On && openMin == 929) Eng26Entry();
-			if (orfSig != 0) { int os = orfSig; orfSig = 0; SixEnter(orf, os, orfSl, orfTp); }
-			if (camSig != 0) { int cs = camSig; camSig = 0; SixEnter(cam3, cs, camSl, camTp); }
+			// S2 2026-10-27: a six-year signal deferred by DirectionAllowed (opposite stop order working, parked there) is retried once on the next
+			// 1-minute bar with the same stop / target, as TimeEntry and MSEQ do; the research has no working orders and takes the trade at once
+			if (orfSig != 0) { int os = orfSig; orfSig = 0; SixEnter(orf, os, orfSl, orfTp); if (lastDeferred) { orfPend = os; orfPendBar = CurrentBars[0]; } }
+			else if (orfPend != 0) { int os = orfPend; orfPend = 0; if (CurrentBars[0] == orfPendBar + 1) { SixEnter(orf, os, orfSl, orfTp); if (!lastDeferred && Working(orf.Entry)) Log("ORFAIL entered after the deferral"); } }
+			if (camSig != 0) { int cs = camSig; camSig = 0; SixEnter(cam3, cs, camSl, camTp); if (lastDeferred) { camPend = cs; camPendBar = CurrentBars[0]; } }
+			else if (camPend != 0) { int cs = camPend; camPend = 0; if (CurrentBars[0] == camPendBar + 1) { SixEnter(cam3, cs, camSl, camTp); if (!lastDeferred && Working(cam3.Entry)) Log("CAM3 entered after the deferral"); } }
 			UpdateDashboard();
 		}
 
@@ -819,18 +842,18 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			sessOpen = Open[0]; rthOpenPx = double.NaN; vwPv = 0; vwV = 0;
 			onHas = lonHas = postHas = false; c1Has = c2Has = false; rHas = false; lonStage = 0; levelsReady = false;
-			ictAct[0] = ictAct[1] = false; ictTrades = 0;
+			ictAct[0] = ictAct[1] = false; ictTrades = 0; ictPendDir = 0;
 			orb.OrH = 0; orb.OrL = 0; orb.OrReady = false; orb.Armed = false; orb.Trades = 0;
 			orb2.OrH = 0; orb2.OrL = 0; orb2.OrReady = false; orb2.Armed = false; orb2.Trades = 0;
-			orbFirstDir = 0; orbFirstMin = 9999;
+			orbFirstDir = 0; orbFirstMin = 9999; orbSigDir = 0; orbSigMin = 9999;
 			foreach (Mod m in timeMods) { m.Done = false; m.Retry = false; m.AnchorPx = double.NaN; }
 			crt.Done = false; crt.Retry = false;
 			rsiTrades = 0;
 			volbDone = false; volbUp = double.NaN; volbDn = double.NaN; volbTrades = 0;
 			e26aHas = false; sVwPv = 0; sVwV = 0; foreach (Mod m in timeMods) m.WinHas = false;
-			orfHas = orfReady = orfDone = false; orfBrk = 0; orfSig = 0;
+			orfHas = orfReady = orfDone = false; orfBrk = 0; orfSig = 0; orfPend = 0;
 			// CAM3 levels: prior complete RTH close +- 1.1/4 of the prior RTH range, the side of the daily trend (research PIVOT_FADE CAM3)
-			camSig = 0; camBr = -1; camSide = trendDir; camDone = !(cam3 != null && cam3.On) || camSide == 0 || double.IsNaN(full1) || double.IsNaN(prevRthHigh) || double.IsNaN(todayAtr);
+			camSig = 0; camPend = 0; camBr = -1; camSide = trendDir; camDone = !(cam3 != null && cam3.On) || camSide == 0 || double.IsNaN(full1) || double.IsNaN(prevRthHigh) || double.IsNaN(todayAtr);
 			camLev = camDone ? double.NaN : full1 - camSide * (prevRthHigh - prevRthLow) * 1.1 / 4.0;
 			e10aHas = false; e10bHas = false; eng10Done = false; eng10Retry = false; close10 = double.NaN; rthFirstClose = double.NaN;
 			m11Dir = 0; onSum = 0; lonDir = 0;
@@ -1263,8 +1286,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 
 			// ---- MSEQS: mirrored momentum sequence (bullish main candle + 5 falling bearish candles below its high), only on days
-			// where ORB60 has already entered SHORT (pullback down-trend day), 5m bar opening at/after that entry, 10:30-15:45
-			if (mseqs.On && !mseqs.InTrade && !Working(mseqs.Entry) && orbFirstDir == -1 && openMin >= orbFirstMin && openMin >= 630 && openMin < 945)
+			// where the RAW ORB60 short signal already happened (pullback down-trend day), from the 5m bar that contains it, 10:30-15:45
+			if (mseqs.On && !mseqs.InTrade && !Working(mseqs.Entry) && orbSigDir == -1 && closeMin > orbSigMin && openMin >= 630 && openMin < 945)	// S2: raw signal; the 5-minute bar that contains it is allowed (last 1-minute bar >= signal bar)
 			{
 				int n = 5; bool ok = Closes[1][n] > Opens[1][n];
 				double mainHigh = Highs[1][n];
@@ -1341,7 +1364,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (!trig) continue;
 				ictAct[s] = false;
 				int d = s == 0 ? -1 : 1;
-				if (ict.InTrade || Working(ict.Entry) || ict.Parked || ictTrades >= 3 || d != trendDir || atrCount < AtrMin) continue;
+				if (ict.InTrade || Working(ict.Entry) || ict.Parked || ictPendDir != 0 || ictTrades >= 3 || d != trendDir || atrCount < AtrMin) continue;
 				double stop = d == -1 ? ictExt[s] + TickSize : ictExt[s] - TickSize;
 				double lim = Instrument.MasterInstrument.RoundToTickSize(cisd);
 				if ((d == -1 && lim <= Closes[1][0]) || (d == 1 && lim >= Closes[1][0])) continue;
@@ -1351,7 +1374,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (TooTight(ict.Sig, risk, todayAtr) || TooBig(ict.Sig, risk, iq)) continue;
 				if (!DirectionAllowed(d))
 				{
-					if (lastDeferred) ictAct[s] = true;
+					// S2 2026-10-27: deferred by an opposite working order -> keep the setup and place the limit on the next 1-minute bar (the research
+					// places it at this close); re-arming the 5-minute search required the trigger again and filled 9-26 min late or not at all
+					if (lastDeferred) { ictPendDir = d; ictPendLim = lim; ictPendStop = stop; ictPendExtP = ictExt[s]; ictPendExp = CurrentBars[1] + 20; ictPendQty = iq; ictPendBar = CurrentBars[0]; Log(string.Format("ICT {0} LIMIT @ {1} deferred to the next 1-minute bar", d == 1 ? "BUY" : "SELL", Fmt(lim))); }
 					else { ict.Dir = d; ictExtPend = ictExt[s]; ictExpiry = CurrentBars[1] + 20; ArmPriceBracket(ict, d, stop); ParkSetup(ict, true, lim, iq); }
 					continue;
 				}

@@ -49,8 +49,12 @@ def day_levels(d):
     pc = rth.c.shift(1)
     tr = np.maximum(rth.h - rth.l, np.maximum((rth.h - pc).abs(), (rth.l - pc).abs()))
     atr = tr.ewm(alpha=1 / 14, adjust=False, ignore_na=True).mean().shift(1).fillna(0).to_numpy()
-    sma = rth.c.rolling(20, min_periods=20).mean().shift(1)
-    trend = np.sign((pc - sma).fillna(0)).to_numpy().astype(np.int64)
+    # 2026-10-27 (experiment 01, S2): the trend is the SMA of the last <= 20 RTH closes that EXIST, at least 15 (NQMaster.cs FinalizeRthDay /
+    # TrendMin): a Globex session without RTH bars (2025-01-09, Good Friday) used to leave a NaN inside rolling(min_periods=20) and switched the
+    # trend off for 20 sessions (100 NinjaTrader-only trades in 2024-26); that session now keeps the previous trend, as NinjaTrader does.
+    cr = rth.c.dropna()
+    tn = np.sign(cr - cr.rolling(20, min_periods=15).mean())
+    trend = tn.reindex(range(nd)).shift(1).ffill().fillna(0).to_numpy().astype(np.int64)
     return L, atr, trend
 
 
@@ -101,6 +105,8 @@ def sim(o, h, l, c, om, day, L, lvl_mask, atr, trend, win_s, win_e, K, emode, R,
         # ---- levels taken outside the window are consumed
         for q in range(6):
             if not taken[q]:
+                if (q == 2 or q == 5) and (m < 300 or m >= 1080):
+                    continue        # 2026-10-27: the London range (02:00-05:00) does not exist before 05:00; only 05:00-09:29 bars consume LonH / LonL (NQMaster.cs SetupIctLevels)
                 if q < 3 and h[i] > L[d, q] and not inwin:
                     taken[q] = True
                 elif q >= 3 and l[i] < L[d, q] and not inwin:
