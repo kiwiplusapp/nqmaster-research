@@ -1,0 +1,70 @@
+{
+ "L150 | hc0.0 | T1 | 300 caminos": {
+  "como objective (castiga 5o retiro y fin)": {
+   "neg60": 8.780656303972366,
+   "neg60_mtm": 18.815198618307427,
+   "suma_mtm_menos_caja_media": 1.4021376652332644e-13
+  },
+  "sin castigo al 5o retiro": {
+   "neg60": 8.780656303972366,
+   "neg60_mtm": 7.732297063903282,
+   "suma_mtm_menos_caja_media": 24256.676057547076
+  },
+  "sin castigo al 5o retiro ni al fin": {
+   "neg60": 8.780656303972366,
+   "neg60_mtm": 7.70293609671848,
+   "suma_mtm_menos_caja_media": 28737.82890606512
+  }
+ },
+ "L150 | hc0.0 | T2 | 300 caminos": {
+  "como objective (castiga 5o retiro y fin)": {
+   "neg60": 9.632124352331605,
+   "neg60_mtm": 20.5993091537133,
+   "suma_mtm_menos_caja_media": -2.41016095969826e-13
+  },
+  "sin castigo al 5o retiro": {
+   "neg60": 9.632124352331605,
+   "neg60_mtm": 10.352331606217618,
+   "suma_mtm_menos_caja_media": 19530.953859634767
+  },
+  "sin castigo al 5o retiro ni al fin": {
+   "neg60": 9.632124352331605,
+   "neg60_mtm": 10.319516407599309,
+   "suma_mtm_menos_caja_media": 23572.45271706165
+  }
+ },
+ "L150 | hc0.35 | T1 | 300 caminos": {
+  "como objective (castiga 5o retiro y fin)": {
+   "neg60": 27.816925734024178,
+   "neg60_mtm": 35.67012089810017,
+   "suma_mtm_menos_caja_media": -2.1903664067698023e-13
+  },
+  "sin castigo al 5o retiro": {
+   "neg60": 27.816925734024178,
+   "neg60_mtm": 26.088082901554404,
+   "suma_mtm_menos_caja_media": 13527.73417211975
+  },
+  "sin castigo al 5o retiro ni al fin": {
+   "neg60": 27.816925734024178,
+   "neg60_mtm": 26.044905008635578,
+   "suma_mtm_menos_caja_media": 17247.84751405423
+  }
+ },
+ "L150 | hc0.35 | T2 | 300 caminos": {
+  "como objective (castiga 5o retiro y fin)": {
+   "neg60": 26.060449050086355,
+   "neg60_mtm": 34.53540587219344,
+   "suma_mtm_menos_caja_media": -1.5537201155287524e-13
+  },
+  "sin castigo al 5o retiro": {
+   "neg60": 26.060449050086355,
+   "neg60_mtm": 26.994818652849737,
+   "suma_mtm_menos_caja_media": 12309.997668464885
+  },
+  "sin castigo al 5o retiro ni al fin": {
+   "neg60": 26.060449050086355,
+   "neg60_mtm": 26.963730569948186,
+   "suma_mtm_menos_caja_media": 15544.354314917216
+  }
+ }
+}

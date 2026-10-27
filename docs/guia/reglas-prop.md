@@ -10,11 +10,13 @@ Pedido de Federico: más pase en evals de 50K, más probabilidad de cobrar por c
 
 ### Plazas (cifras de investigación, paridad NT pendiente; 2020-23 / 2024-26)
 
+Cifras del recálculo del 27-oct con la lista corregida (`integ_paired.json`; Lucid Pro recalculada en el mismo arnés).
+
 | Plaza | Cantidad | Preset | Fondeada ≤22 días (hasta 3 evals) | $/mes por plaza: edge completo | con 35% menos | sin edge | P(año negativo) con 35% menos |
 |---|---|---|---|---|---|---|---|
-| Lucid Flex 150K | 5 | `Lucid150K` (eval 6c, fondeada 3c) | 69 / 72% (35% menos 53 / 53%) | 2.467 / 2.260 | 1.423 / 1.406 | −38 / −52 | 3,4 / 4,6% |
-| MFFU Rapid EOD 50K | 3 | `Mffu50K` (eval 1c ×8, fondeada 1c, retiro dejando $4.100) | 41 / 49% (30 / 32%) | 1.414 / 1.163 | 717 / 503 | −131 / −131 | 13,7 / 18,4% |
-| Lucid Pro 50K (alternativa a la 150K si se prioriza el pase de 50K) | 0 | `LucidPro50K` | 88 / 84% (73 / 74%) | 1.209 / 1.131 | 804 / 682 | −42 / −114 | 2,2 / 6,0% |
+| Lucid Flex 150K | 5 | `Lucid150K` (eval 6c, fondeada 3c) | 69 / 71% (35% menos 54 / 51%) | 2.417 / 2.242 | 1.378 / 1.342 | −70 / −95 | 3,9 / 4,4% |
+| MFFU Rapid EOD 50K | 3 | `Mffu50K` (eval 1c ×8, fondeada 1c, retiro dejando $4.100) | 40 / 48% (31 / 31%) | 1.388 / 1.184 | 703 / 510 | −131 / −131 | 14,6 / 19,3% |
+| Lucid Pro 50K (alternativa a la 150K si se prioriza el pase de 50K) | 0 | `LucidPro50K` | 88 / 84% (73 / 74%) | 1.209 / 1.083 | 794 / 656 | −52 / −110 | 2,7 / 6,3% |
 | MFFU Builder 50K (condicional) | 0 | Manual | — | 958 / 835 (optimista) | 539 / 452 | −35 / −111 | — |
 | Bulenox Opt1 50K (condicional) | 0 | Manual | — | 855 / 810 (optimista) | 480 / 444 | −49 | — |
 | FundedNext Rapid Pro 50K (desborde) | 0 | `LucidPro50K` en eval + Manual | — | 612 / 645 | 344 / 331 | −120 / −146 | — |

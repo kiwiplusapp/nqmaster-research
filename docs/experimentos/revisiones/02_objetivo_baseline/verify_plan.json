@@ -1,0 +1,30 @@
+{
+ "plan hc0.0 T1": {
+  "med": 16173.098660808415,
+  "p10": 9242.53111333369,
+  "neg60_20_252": 4.461271676300578,
+  "neg60_mtm_20_252": 13.47630057803468,
+  "buckets21_en_20_252": 11,
+  "neg60_0_272": 5.450234741784037,
+  "neg60_0_252": 5.650777202072539,
+  "dias_con_8_asientos": 232,
+  "primer_dia_8": 20,
+  "ultimo_dia_8": 251,
+  "P_mes21_neg_20_252": 14.881818181818183,
+  "med_mes21": 14742.740932512319
+ },
+ "plan hc1.0 T1 evals L150 por camino": {
+  "mean": 146.982,
+  "p99": 221.01,
+  "max": 252,
+  "n_truncados": 0,
+  "max_por_asiento": 53
+ },
+ "plan hc1.0 T2 evals L150 por camino": {
+  "mean": 170.626,
+  "p99": 260.03,
+  "max": 288,
+  "n_truncados": 0,
+  "max_por_asiento": 59
+ }
+}

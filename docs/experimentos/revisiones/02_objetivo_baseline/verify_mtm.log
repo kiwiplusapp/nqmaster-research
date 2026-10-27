@@ -1,0 +1,17 @@
+    2s L150 | hc0.0 | T1 | 300 caminos
+    como objective (castiga 5o retiro y fin) {'neg60': 8.78, 'neg60_mtm': 18.82, 'suma_mtm_menos_caja_media': 0.0}
+    sin castigo al 5o retiro {'neg60': 8.78, 'neg60_mtm': 7.73, 'suma_mtm_menos_caja_media': 24256.68}
+    sin castigo al 5o retiro ni al fin {'neg60': 8.78, 'neg60_mtm': 7.7, 'suma_mtm_menos_caja_media': 28737.83}
+    3s L150 | hc0.0 | T2 | 300 caminos
+    como objective (castiga 5o retiro y fin) {'neg60': 9.63, 'neg60_mtm': 20.6, 'suma_mtm_menos_caja_media': -0.0}
+    sin castigo al 5o retiro {'neg60': 9.63, 'neg60_mtm': 10.35, 'suma_mtm_menos_caja_media': 19530.95}
+    sin castigo al 5o retiro ni al fin {'neg60': 9.63, 'neg60_mtm': 10.32, 'suma_mtm_menos_caja_media': 23572.45}
+    3s L150 | hc0.35 | T1 | 300 caminos
+    como objective (castiga 5o retiro y fin) {'neg60': 27.82, 'neg60_mtm': 35.67, 'suma_mtm_menos_caja_media': -0.0}
+    sin castigo al 5o retiro {'neg60': 27.82, 'neg60_mtm': 26.09, 'suma_mtm_menos_caja_media': 13527.73}
+    sin castigo al 5o retiro ni al fin {'neg60': 27.82, 'neg60_mtm': 26.04, 'suma_mtm_menos_caja_media': 17247.85}
+    3s L150 | hc0.35 | T2 | 300 caminos
+    como objective (castiga 5o retiro y fin) {'neg60': 26.06, 'neg60_mtm': 34.54, 'suma_mtm_menos_caja_media': -0.0}
+    sin castigo al 5o retiro {'neg60': 26.06, 'neg60_mtm': 26.99, 'suma_mtm_menos_caja_media': 12310.0}
+    sin castigo al 5o retiro ni al fin {'neg60': 26.06, 'neg60_mtm': 26.96, 'suma_mtm_menos_caja_media': 15544.35}
+EXIT 0

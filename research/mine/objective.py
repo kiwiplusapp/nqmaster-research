@@ -12,13 +12,17 @@ integ_paired.json e integ_port.json):
   M1 med_mes / p10_mes   mediana y p10 entre caminos del neto de 12 meses / 12 (la definicion de integ_summ; cupon).
      med_mes21 / p10_mes21: distribucion de los 12 cortes de 21 dias de cada camino (caja por 'mes'; muestra lo grumoso del flujo).
   M2 neg60               fraccion de ventanas moviles de 60 dias habiles (paso 1 dia, 193 por camino) con flujo de caja negativo;
-     neg60_mtm: lo mismo sobre caja + saldo de la fondeada (el saldo se pierde al quebrar; la equity de una eval no es nuestra).
+     neg60_mtm: lo mismo sobre caja + saldo de la fondeada; el saldo se pierde al quebrar, al 5.o retiro (fin de ciclo: prop_wf.fund
+     no lo cobra; ~60 % de la metrica segun la revision del 27-oct) y al fin del horizonte; la equity de una eval no es nuestra.
+     neg60_cero: fraccion de ventanas con flujo exactamente 0 (negativa = < 0 estricto; una eval abierta todo el periodo da 0).
+  Contiguo (contiguous()): las mismas metricas sobre caminos HISTORICOS de 252 dias contiguos con inicio real cada 5 dias (T1 89, T2 137,
+     muy solapados): el nivel absoluto sin bootstrap, para leer al lado de la base.
   M3 evals_perdidas_mes  evals quebradas por camino / 12.  cuentas_perdidas_mes: fondeadas quebradas / 12.
   M4 aprobacion          aprobadas / (aprobadas + quebradas) sobre las evals terminadas de todos los caminos (las abiertas al final
      del camino no cuentan).  p22_3: P(fondeado en <= 22 dias habiles con hasta 3 evals seriadas) sobre los inicios reales del
      periodo (metrica primaria pre-registrada de prop_wf, sin bootstrap).
   M5 dias_aprobar        mediana (y p75) de los dias habiles desde la compra hasta la aprobacion, sobre las evals aprobadas.
-Umbrales de la consigna del programa (interpretados sobre el asiento Lucid Flex 150K 6c/3c, la unidad cuyas magnitudes coinciden):
+Umbrales de la consigna del programa. Unidad = PLAN COMPLETO (5 L150 + 3 MFFU, 8 cuentas; decision de Federico 27-oct); el asiento L150 se informa aparte:
   med_mes > 2.759 sin p10_mes < 1.600 | neg60 < 10 % | evals_perdidas_mes < 0,12 | aprobacion >= 65 % | dias_aprobar <= 10.
 Run (desde research/mine): python3 objective.py [NB]   -> objective_baseline.json + objective_baseline.md ; python3 objective.py selftest
 """
@@ -100,11 +104,12 @@ def seat_flow(LO, CL, Hh, ep, fee, FL, FC, fp, idx, s0, end, flow, mtm, ev, act)
     while i < end:
         flow[i] -= fee; mtm[i] -= fee
         r, j = race(LO, CL, Hh, idx, i, end, ep)
+        jj = j if j < end else end - 1                      # race devuelve j >= end si mind > 1 y aprueba al borde del horizonte (revision 27-oct)
         if k < ev.shape[0]:
-            ev[k, 0] = i; ev[k, 1] = r; ev[k, 2] = j if r != 0 else end - 1; ev[k, 3] = -1; ev[k, 4] = 0
+            ev[k, 0] = i; ev[k, 1] = r; ev[k, 2] = jj if r != 0 else end - 1; ev[k, 3] = -1; ev[k, 4] = 0
         if r != 1:
             k += 1; i = j + 1; continue
-        if act > 0.0: flow[j] -= act; mtm[j] -= act
+        if act > 0.0: flow[jj] -= act; mtm[jj] -= act
         fund_flow(FL, FC, fp, idx, j + 1, end, rec, flow, mtm)
         if k < ev.shape[0]:
             ev[k, 3] = j + 1 + rec[2] if rec[2] >= 0 else -1; ev[k, 4] = rec[3]
@@ -130,18 +135,19 @@ def run_seat(M, A, bi, s0, L, flow, mtm, ev, fee=None):
 
 def neg_windows(flow, lo, hi, W=W60):
     c = np.concatenate([[0.0], np.cumsum(flow[lo:hi])]); w = c[W:] - c[:-W]
-    return float((w < 0).mean()), len(w)
+    return float((w < 0).mean()), float((np.abs(w) < 1e-9).mean()), len(w)
 
 
 def metrics(flows, mtms, evs, nev, lo=0, hi=H):
     """flows / mtms: (NB, L); evs: list of (k, ev) por camino."""
     net = flows[:, lo:hi].sum(1) / 12.0
     buckets = flows[:, lo:hi].reshape(len(flows), -1, 21).sum(2).ravel() if (hi - lo) % 21 == 0 else flows[:, lo:lo + 21 * ((hi - lo) // 21)].reshape(len(flows), -1, 21).sum(2).ravel()
-    n60 = np.array([neg_windows(f, lo, hi)[0] for f in flows]); n60m = np.array([neg_windows(f, lo, hi)[0] for f in mtms])
+    nw = np.array([neg_windows(f, lo, hi)[:2] for f in flows]); n60 = nw[:, 0]; n60z = nw[:, 1]; n60m = np.array([neg_windows(f, lo, hi)[0] for f in mtms])
     E = np.concatenate([e[:k] for k, e in zip(nev, evs)]) if evs is not None else None
     r = dict(med_mes=float(np.median(net)), p10_mes=float(np.percentile(net, 10)), p90_mes=float(np.percentile(net, 90)), P_anio_neg=100 * float((net < 0).mean()),
              med_mes21=float(np.median(buckets)), p10_mes21=float(np.percentile(buckets, 10)), P_mes21_neg=100 * float((buckets < 0).mean()),
-             neg60=100 * float(n60.mean()), neg60_mtm=100 * float(n60m.mean()), neg60_p90_camino=100 * float(np.percentile(n60, 90)))
+             neg60=100 * float(n60.mean()), neg60_mtm=100 * float(n60m.mean()), neg60_cero=100 * float(n60z.mean()), neg60_p90_camino=100 * float(np.percentile(n60, 90)),
+             n_cortes21=int((hi - lo) // 21), n_caminos=int(len(flows)))
     if E is not None:
         done = E[E[:, 1] != 0]; passed = E[E[:, 1] == 1]; days_ok = passed[:, 2] - passed[:, 0] + 1
         r.update(evals_anio=float(np.mean(nev)), evals_perdidas_mes=float((E[:, 1] == -1).sum() / len(flows) / 12.0),
@@ -156,6 +162,34 @@ def p22_3(days, M, FU, hc, name, per_idx, Hm):
     A = seat_args(FU, hc, name, Hm); LO, CL, _ = M[A["mix"]]; n = len(days); idx = np.arange(n, dtype=np.int64)
     res = np.zeros(n, np.int64); end = np.zeros(n, np.int64); P.race_all(LO, CL, A["Hh"], idx, A["ep"], res, end)
     o = P.eval_metrics(res, end, per_idx, A["fee"], n); return dict(p22_3=o["p22_3"], p10_3=o["p10_3"], p22_1=o["p22_1"], med_days22_3=o["med_days22_3"])
+
+
+def contiguous():
+    """Las metricas sobre caminos historicos de 252 dias contiguos (inicio real cada 5 dias habiles), asientos y plan; sin bootstrap."""
+    days, M, FU, PER = setup(); n = len(days); idx = np.arange(n, dtype=np.int64); OUT = {"asientos": {}, "plan": {}}; L = H + 25; lo, hi = 20, H
+    for hc in P.HC:
+        Hm = {m: P.haircut(days, M[m][2], hc) for m in ((0, 4), (0, 8))}
+        for per, ii in PER.items():
+            starts = np.arange(ii[0], ii[-1] + 2 - H, 5)
+            for name in SEATS:
+                A = seat_args(FU, hc, name, Hm); flows = np.zeros((len(starts), H)); mtms = np.zeros((len(starts), H)); evs = []; nev = []
+                for b, s0 in enumerate(starts):
+                    f = np.zeros(n); mm = np.zeros(n); ev = np.zeros((MAXEV, 5)); k = run_seat(M, A, idx, int(s0), H, f, mm, ev)
+                    flows[b] = f[s0:s0 + H]; mtms[b] = mm[s0:s0 + H]; evs.append(ev); nev.append(k)
+                r = metrics(flows, mtms, evs, nev); r["cumple"] = verdict(r); OUT["asientos"][f"{name} | hc{hc} | {per} | coupon"] = r
+            starts = np.arange(ii[0], ii[-1] + 2 - L, 5); flows = np.zeros((len(starts), L)); mtms = np.zeros((len(starts), L)); tot = np.zeros(len(starts)); evs = []; nev = []
+            for b, s0 in enumerate(starts):
+                ev_all = np.zeros((sum(c for _, c in PLAN) * MAXEV, 5)); kk = 0
+                for name, cnt in PLAN:
+                    A = seat_args(FU, hc, name, Hm)
+                    for s in range(cnt):
+                        f = np.zeros(n); mm = np.zeros(n); ev = np.zeros((MAXEV, 5)); k = run_seat(M, A, idx, int(s0) + 5 * s, H, f, mm, ev)
+                        flows[b] += f[s0:s0 + L]; mtms[b] += mm[s0:s0 + L]; tot[b] += f.sum() / 12.0; ev_all[kk:kk + k] = ev[:k]; kk += k
+                evs.append(ev_all); nev.append(kk)
+            r = dict(med_mes=float(np.median(tot)), p10_mes=float(np.percentile(tot, 10)), p90_mes=float(np.percentile(tot, 90)), P_anio_neg=100 * float((tot < 0).mean()))
+            rw = metrics(flows, mtms, evs, nev, lo, hi); r.update({k: v for k, v in rw.items() if k not in ("med_mes", "p10_mes", "p90_mes", "P_anio_neg")}); r["ventana_neg60"] = [lo, hi]; r["cumple"] = verdict(r)
+            OUT["plan"][f"5 L150 + 3 MFFU | hc{hc} | {per} | coupon"] = r
+    return OUT
 
 
 def verdict(r):
@@ -186,42 +220,59 @@ def baseline(NB=1000):
                           + (f" p22_3 {r['p22_3']:5.1f}" if fee_s == "coupon" else ""), flush=True)
     rng = np.random.default_rng(4242)                           # integ_port.py: mismos caminos del plan (252 + 25 dias)
     L = H + 25; lo, hi = 20, H                                  # ventana con los 8 asientos activos (arranques 0..20, fines 252..272)
+    NSEAT = sum(c for _, c in PLAN)
     for hc in P.HC:
         Hm = {m: P.haircut(days, M[m][2], hc) for m in ((0, 4), (0, 8))}
         for per, ii in PER.items():
             paths = [P.boot_idx(ii[0], ii[-1] + 1, L, rng) for _ in range(NB)]
-            flows = np.zeros((NB, L)); mtms = np.zeros((NB, L)); tot = np.zeros(NB); nev = []; evs = []
+            flows = np.zeros((NB, L)); mtms = np.zeros((NB, L)); tot = np.zeros(NB); nev = []; evs = []; evf = {nm: [] for nm, _ in PLAN}
             for b, bi in enumerate(paths):
-                ev_all = np.zeros((MAXEV, 5)); kk = 0
+                ev_all = np.zeros((NSEAT * MAXEV, 5)); kk = 0
                 for name, cnt in PLAN:
                     A = seat_args(FU, hc, name, Hm)
                     for s in range(cnt):
                         f = np.zeros(L); mm = np.zeros(L); ev = np.zeros((MAXEV, 5)); k = run_seat(M, A, bi, 5 * s, H, f, mm, ev)
                         flows[b] += f; mtms[b] += mm; tot[b] += f.sum() / 12.0
-                        if name == "L150 6c/3c":
-                            take = min(k, MAXEV - kk); ev_all[kk:kk + take] = ev[:take]; kk += take
+                        ev_all[kk:kk + k] = ev[:k]; kk += k; evf[name].append(ev[:k].copy())
                 evs.append(ev_all); nev.append(kk)
             r = dict(med_mes=float(np.median(tot)), p10_mes=float(np.percentile(tot, 10)), p90_mes=float(np.percentile(tot, 90)), P_anio_neg=100 * float((tot < 0).mean()))
-            rw = metrics(flows, mtms, None, None, lo, hi)
-            r.update(neg60=rw["neg60"], neg60_mtm=rw["neg60_mtm"], neg60_p90_camino=rw["neg60_p90_camino"], med_mes21=rw["med_mes21"], p10_mes21=rw["p10_mes21"], P_mes21_neg=rw["P_mes21_neg"], ventana_neg60=[lo, hi])
-            E = np.concatenate([e[:k] for k, e in zip(nev, evs)]); r["evals_perdidas_mes_L150x5"] = float((E[:, 1] == -1).sum() / NB / 12.0); r["cuentas_perdidas_mes_L150x5"] = float((E[:, 3] >= 0).sum() / NB / 12.0)
+            rw = metrics(flows, mtms, evs, nev, lo, hi)             # M2 sobre la ventana con los 8 asientos; M3-M5 sobre las evals de las 8 cuentas (unidad = plan, decision de Federico 27-oct)
+            r.update({k: rw[k] for k in ("neg60", "neg60_mtm", "neg60_p90_camino", "med_mes21", "p10_mes21", "P_mes21_neg", "evals_anio", "evals_perdidas_mes", "cuentas_perdidas_mes", "retiros_anio", "aprobacion", "dias_aprobar", "dias_aprobar_p75", "evals_abiertas_fin")})
+            r["ventana_neg60"] = [lo, hi]
+            for nm, _ in PLAN:                                       # desglose por firma de las mismas evals
+                E = np.concatenate(evf[nm]); done = E[E[:, 1] != 0]; ok = E[E[:, 1] == 1]
+                r[f"evals_perdidas_mes [{nm}]"] = float((E[:, 1] == -1).sum() / NB / 12.0); r[f"cuentas_perdidas_mes [{nm}]"] = float((E[:, 3] >= 0).sum() / NB / 12.0)
+                r[f"aprobacion [{nm}]"] = 100 * float((done[:, 1] == 1).mean()); r[f"dias_aprobar [{nm}]"] = float(np.median(ok[:, 2] - ok[:, 0] + 1))
+            r["cumple"] = verdict(r)
             OUT["plan"][f"5 L150 + 3 MFFU | hc{hc} | {per} | coupon"] = r
-            print(f"{time.time()-t0:6.0f}s PLAN hc{hc:<4} {per} med {r['med_mes']:7.0f} p10 {r['p10_mes']:7.0f} neg60 {r['neg60']:5.1f} mtm {r['neg60_mtm']:5.1f} mes21 med {r['med_mes21']:7.0f} p10 {r['p10_mes21']:7.0f} Pneg {r['P_mes21_neg']:4.1f}", flush=True)
+            print(f"{time.time()-t0:6.0f}s PLAN hc{hc:<4} {per} med {r['med_mes']:7.0f} p10 {r['p10_mes']:7.0f} neg60 {r['neg60']:5.1f} mtm {r['neg60_mtm']:5.1f} mes21 med {r['med_mes21']:7.0f} p10 {r['p10_mes21']:7.0f} Pneg {r['P_mes21_neg']:4.1f} "
+                  f"evperd/mes {r['evals_perdidas_mes']:.2f} ctas/mes {r['cuentas_perdidas_mes']:.2f} aprob {r['aprobacion']:5.1f} dias {r['dias_aprobar']:4.0f} (p75 {r['dias_aprobar_p75']:4.0f}) evals/anio {r['evals_anio']:.1f}", flush=True)
+    C = contiguous(); OUT["asientos_contiguo"] = C["asientos"]; OUT["plan_contiguo"] = C["plan"]
+    for k, r in C["asientos"].items(): print(f"CONTIGUO {k:34s} n {r['n_caminos']:3d} med {r['med_mes']:6.0f} p10 {r['p10_mes']:6.0f} Pneg {r['P_anio_neg']:4.1f} neg60 {r['neg60']:4.1f} (mtm {r['neg60_mtm']:4.1f}, cero {r['neg60_cero']:4.1f}) evperd {r['evals_perdidas_mes']:.3f} aprob {r['aprobacion']:4.1f} dias {r['dias_aprobar']:3.0f}", flush=True)
+    for k, r in C["plan"].items(): print(f"CONTIGUO {k:34s} n {r['n_caminos']:3d} med {r['med_mes']:6.0f} p10 {r['p10_mes']:6.0f} Pneg {r['P_anio_neg']:4.1f} neg60 {r['neg60']:4.1f} (mtm {r['neg60_mtm']:4.1f}, cero {r['neg60_cero']:4.1f}) evperd {r['evals_perdidas_mes']:.2f} aprob {r['aprobacion']:4.1f} dias {r['dias_aprobar']:3.0f}", flush=True)
     json.dump(OUT, open(os.path.join(HERE, "objective_baseline.json"), "w"), indent=1)
     write_md(OUT); return OUT
 
 
 def write_md(OUT):
     L = ["# Linea de base de la funcion objetivo (objective.py, %d caminos)\n" % OUT["NB"], "Umbrales: " + ", ".join(f"{k} {v}" for k, v in OUT["umbrales"].items()) + "\n",
-         "| asiento | edge | periodo | fee | med $/mes | p10 | P(anio<0) % | mes21 med / p10 / P<0 | neg60 % (mtm) | evals/anio | evals perd./mes | ctas perd./mes | aprob. % | p22_3 % | dias aprobar (p75) | cumple |", "|" + "---|" * 17]
+         "| asiento | edge | periodo | fee | med $/mes | p10 | P(anio<0) % | mes21 med / p10 / P<0 | neg60 % (mtm) [=0] | evals/anio | evals perd./mes | ctas perd./mes | aprob. % | p22_3 % | dias aprobar (p75) | cumple |", "|" + "---|" * 16]
     for k, r in OUT["asientos"].items():
         nm, hc, per, fee = [x.strip() for x in k.split("|")]
         c = r.get("cumple"); cs = "" if c is None else " ".join(("+" if v else "-") + n for n, v in c.items())
-        L.append(f"| {nm} | {hc} | {per} | {fee} | {r['med_mes']:.0f} | {r['p10_mes']:.0f} | {r['P_anio_neg']:.1f} | {r['med_mes21']:.0f} / {r['p10_mes21']:.0f} / {r['P_mes21_neg']:.0f} | {r['neg60']:.1f} ({r['neg60_mtm']:.1f}) | {r['evals_anio']:.1f} | {r['evals_perdidas_mes']:.3f} | {r['cuentas_perdidas_mes']:.3f} | {r['aprobacion']:.1f} | {r.get('p22_3', float('nan')):.1f} | {r['dias_aprobar']:.0f} ({r['dias_aprobar_p75']:.0f}) | {cs} |")
-    L += ["", "| plan | edge | periodo | med $/mes | p10 | p90 | P(anio<0) % | mes21 med / p10 / P<0 | neg60 % (mtm) [dias] | evals perd./mes 5 L150 | ctas perd./mes 5 L150 |", "|" + "---|" * 11]
+        L.append(f"| {nm} | {hc} | {per} | {fee} | {r['med_mes']:.0f} | {r['p10_mes']:.0f} | {r['P_anio_neg']:.1f} | {r['med_mes21']:.0f} / {r['p10_mes21']:.0f} / {r['P_mes21_neg']:.0f} | {r['neg60']:.1f} ({r['neg60_mtm']:.1f}) [{r['neg60_cero']:.1f}] | {r['evals_anio']:.1f} | {r['evals_perdidas_mes']:.3f} | {r['cuentas_perdidas_mes']:.3f} | {r['aprobacion']:.1f} | {('%.1f' % r['p22_3']) if 'p22_3' in r else '—'} | {r['dias_aprobar']:.0f} ({r['dias_aprobar_p75']:.0f}) | {cs} |")
+    L += ["", "| plan (8 cuentas) | edge | periodo | med $/mes | p10 | p90 | P(anio<0) % | mes21 med / p10 / P<0 | neg60 % (mtm) [dias] | evals/anio | evals perd./mes (L150 / MFFU) | ctas perd./mes | aprob. % (L150 / MFFU) | dias aprobar (p75) (L150 / MFFU) | cumple |", "|" + "---|" * 15]
     for k, r in OUT["plan"].items():
         nm, hc, per, fee = [x.strip() for x in k.split("|")]
-        L.append(f"| {nm} | {hc} | {per} | {r['med_mes']:.0f} | {r['p10_mes']:.0f} | {r['p90_mes']:.0f} | {r['P_anio_neg']:.1f} | {r['med_mes21']:.0f} / {r['p10_mes21']:.0f} / {r['P_mes21_neg']:.0f} | {r['neg60']:.1f} ({r['neg60_mtm']:.1f}) {r['ventana_neg60']} | {r['evals_perdidas_mes_L150x5']:.3f} | {r['cuentas_perdidas_mes_L150x5']:.3f} |")
+        cs = " ".join(("+" if v else "-") + n for n, v in r["cumple"].items())
+        L.append(f"| {nm} | {hc} | {per} | {r['med_mes']:.0f} | {r['p10_mes']:.0f} | {r['p90_mes']:.0f} | {r['P_anio_neg']:.1f} | {r['med_mes21']:.0f} / {r['p10_mes21']:.0f} / {r['P_mes21_neg']:.0f} | {r['neg60']:.1f} ({r['neg60_mtm']:.1f}) {r['ventana_neg60']} | {r['evals_anio']:.1f} | "
+                 f"{r['evals_perdidas_mes']:.2f} ({r['evals_perdidas_mes [L150 6c/3c]']:.2f} / {r['evals_perdidas_mes [MFFU 1x8]']:.2f}) | {r['cuentas_perdidas_mes']:.2f} | {r['aprobacion']:.1f} ({r['aprobacion [L150 6c/3c]']:.1f} / {r['aprobacion [MFFU 1x8]']:.1f}) | "
+                 f"{r['dias_aprobar']:.0f} ({r['dias_aprobar_p75']:.0f}) ({r['dias_aprobar [L150 6c/3c]']:.0f} / {r['dias_aprobar [MFFU 1x8]']:.0f}) | {cs} |")
+    L += ["", "Historia contigua (inicio real cada 5 dias, 252 dias; sin bootstrap):", "", "| unidad | edge | periodo | n caminos | med $/mes | p10 | P(anio<0) % | neg60 % (mtm) [=0] | evals perd./mes | aprob. % | dias aprobar | cumple |", "|" + "---|" * 12]
+    for sec in ("asientos_contiguo", "plan_contiguo"):
+        for k, r in OUT.get(sec, {}).items():
+            nm, hc, per, fee = [x.strip() for x in k.split("|")]; cs = " ".join(("+" if v else "-") + n for n, v in r["cumple"].items())
+            L.append(f"| {nm} | {hc} | {per} | {r['n_caminos']} | {r['med_mes']:.0f} | {r['p10_mes']:.0f} | {r['P_anio_neg']:.1f} | {r['neg60']:.1f} ({r['neg60_mtm']:.1f}) [{r['neg60_cero']:.1f}] | {r['evals_perdidas_mes']:.2f} | {r['aprobacion']:.1f} | {r['dias_aprobar']:.0f} | {cs} |")
     open(os.path.join(HERE, "objective_baseline.md"), "w").write("\n".join(L) + "\n")
 
 
@@ -241,9 +292,10 @@ def selftest(NB=200):
                     if len(pays): first = float(pays[0])
                     got = (round(f.sum(), 6), k, int((E[:, 1] == 1).sum()), int((E[:, 3] >= 0).sum()), int(E[:, 4].sum()), first, round(f.sum() - mm.sum(), 6))
                     exp = (round(o[0], 6), int(o[1]), int(o[2]), int(o[3]), int(o[4]), o[5], 0.0)
+                    neg = np.nonzero(f < 0)[0]; fee_ok = A["act"] > 0 or (set(neg.tolist()) == set(E[:, 0].astype(int).tolist()) and np.allclose(f[neg], -A["fee"]))
                     tot += 1
-                    if got[:6] != exp[:6] or abs(mm.sum() - f.sum()) > 1e-6: bad += 1; print("DIFF", name, hc, per, got, exp) if bad <= 5 else None
-    print(f"selftest: {tot} asientos, {bad} diferencias contra prop_wf.seat (neto, evals, aprobadas, quiebres, retiros, primer retiro; caja = mtm al final)")
+                    if got[:6] != exp[:6] or abs(mm.sum() - f.sum()) > 1e-6 or not fee_ok: bad += 1; print("DIFF", name, hc, per, got, exp, fee_ok) if bad <= 5 else None
+    print(f"selftest: {tot} asientos, {bad} diferencias contra prop_wf.seat (neto, evals, aprobadas, quiebres, retiros, primer retiro; caja = mtm al final; dias con flujo negativo = inicios de eval a -fee)")
     return bad
 
 
