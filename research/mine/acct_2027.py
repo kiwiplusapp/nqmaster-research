@@ -32,11 +32,14 @@ def build():
     from six_life import new_trades
     from seats_plan import gold_paths
     E = RB.setup(); D = getD(RB.NAME)
-    days = pickle.load(open(os.path.join(SP, "smallacct_paths.pkl"), "rb"))[0]
+    sp_days = os.path.join(SP, "smallacct_paths.pkl")
+    days = pickle.load(open(sp_days, "rb"))[0] if os.path.exists(sp_days) else np.asarray(RB.days_real())     # 2026-10-27: smallacct_paths came from robust2_paths = days_real()
     T = sbuild(E, D); T = T[T.date.isin(days)]
     NW = new_trades(D, DURABLE); NW = NW[NW.date.isin(days)]
     NW = NW.assign(tin=D.sm[NW.fi.to_numpy().astype(int)], tout=D.sm[NW.xi.to_numpy().astype(int)] + 1)
     X = conflict_filter(pd.concat([T, NW], ignore_index=True).sort_values(["date", "tin"]).reset_index(drop=True))
+    rth = (D.om >= 570) & (D.om < 960); last = pd.Series(D.om[rth]).groupby(D.day[rth]).max().reindex(range(D.nd)).fillna(0).to_numpy()
+    X = X[~X.date.isin(set(D.daydate[np.where(last < 959)[0]].tolist()))]          # 2026-10-27: NQMaster skips short sessions (SkipShortSessions); the day stays in the path with 0 P&L
     g = gold_paths(days, "Robust"); S = X["mod"].isin(["MOM1030", "CPI09"]); P = {}
     for cap in (0, 150, 300):
         R0 = X[~S]; S1 = X[S].assign(w=1.0)

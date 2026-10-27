@@ -33,8 +33,10 @@ Run: python3 prop_wf.py eval <firm...> | funded | boot | report   (results in sc
 import os, sys, json, time, pickle, itertools, numpy as np, pandas as pd
 from numba import njit
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
-OWN = "/tmp/claude-0/-home-user-nqmaster-research/176a42ca-c215-52e2-84dc-57e214e477d4/scratchpad"
-SRC = "/tmp/claude-0/-home-user-nqmaster-research/c6cc5ef6-fbab-51d6-8437-b8f6d9d1ef6e/scratchpad/acct2027_paths.pkl"
+from robust2_build import SP as _SP                      # 2026-10-27: caches follow robust2_build.SP (research/tmp/scratch unless NQ_SCRATCH); the old scratchpads are gone
+_OLD_OWN = "/tmp/claude-0/-home-user-nqmaster-research/176a42ca-c215-52e2-84dc-57e214e477d4/scratchpad"
+OWN = _OLD_OWN if os.path.isdir(_OLD_OWN) else _SP
+SRC = os.path.join(_SP, "acct2027_paths.pkl")
 MIXF = os.path.join(OWN, "prop_wf_mix.pkl")
 T1_END, T2_END = 20230101, 20261001
 HC = (0.0, 0.35, 1.0)

@@ -6,7 +6,11 @@ Variants: Ultra, UltraLean, WR70Plus, Estable (eval safe set, no boosts) and Ult
 (skip the trade when stop distance x $2 x size > cap). -> scratchpad robust2_paths.pkl, robust2_trades.pkl (repo)"""
 import os, sys, pickle, numpy as np, pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE); sys.path.insert(0, os.path.dirname(HERE))
-SP = "/tmp/claude-0/-home-user-nqmaster-research/c6cc5ef6-fbab-51d6-8437-b8f6d9d1ef6e/scratchpad"
+# 2026-10-27 (experiment 01, S3): the path caches lived in a session scratchpad that no longer exists (not reproducible). They now go to
+# research/tmp/scratch (git-ignored, rebuilt by acct_2027.build()) unless NQ_SCRATCH points elsewhere; the old location is used only if it still exists.
+_OLD_SP = "/tmp/claude-0/-home-user-nqmaster-research/c6cc5ef6-fbab-51d6-8437-b8f6d9d1ef6e/scratchpad"
+SP = os.environ.get("NQ_SCRATCH") or (_OLD_SP if os.path.isdir(_OLD_SP) else os.path.join(os.path.dirname(HERE), "tmp", "scratch"))
+os.makedirs(SP, exist_ok=True)
 import db_long
 from db_long import NAME, entries_db
 from wrq_lib import getD, S
