@@ -46,11 +46,31 @@ Dos intentos. **Intento 1** (`output_playback_tick1_6c_2026-10-13_16.txt`): la e
 
 Detalle a tener en cuenta: el monitor de edge restauró su estado del archivo `nqmaster_edge_Playback101.txt` de una corrida anterior (`EDGE day 15` en vez de `day 6`): los archivos de estado por cuenta persisten entre replays; no afectó nada (CUSUM 1,3-1,7 de 26,9), pero un replay "limpio" debe borrar `nqmaster_edge_Playback101.txt` / `nqmaster_prop_Playback101.txt` antes.
 
-**Lo que esta prueba no cubre:** el off-by-one de `EntryBar` en tiempo real (MaxHold). En el 13-15 oct no hubo salidas por MaxHold (todas fueron stop, target o flatten). El 16-oct el backtest tiene tres (`LONX`, `NF05X`, `ON07X`): el Playback **Off** sobre el 16-oct (o 13-16) con export de trades de Playback101 contra el backtest Off cierra ese punto.
+## Playback Off, 1 contrato, 2026-10-16 (modo Historical): sin off-by-one de `EntryBar` en vivo
+
+Archivos: `orders_playback_off_1c_2026-10-16.csv`, `output_playback_off_1c_2026-10-16.extract.txt`. Backtest Off de referencia: `trades_off_2024-01-01_hoy.csv` (el export sella los fills de 1 min con el cierre de la barra: 06:01:00 = fill en la apertura de la barra 06:00-06:01; los stop/límite intrabar, en la barra que los contiene).
+
+| Módulo | Entrada backtest → Playback (barra, hora local) | Salida backtest → Playback | Tipo de salida | Hold |
+|---|---|---|---|---|
+| NF05 | 06:00 → 06:00 | 10:00 → 10:00 | MaxHold 240 | igual |
+| ON07 | 08:00 → 08:00 | 09:00 → 09:00 | MaxHold 60 | igual |
+| LON | 06:55 (límite intrabar) → 06:55 | 10:31 → 10:31 | hora fija 09:30 ET | igual |
+| MOM11 | 12:00 → 12:00 | 12:00 → 12:00 | target | igual |
+| ORB60 / ORB90 | 12:05 (stop intrabar) → 12:05 | 12:09 → 12:09 | target | igual |
+| VOLB | 12:05 (stop intrabar) → 12:05 | 16:56 → 16:56 | flatten | igual |
+| MOM13 | 14:00 → 14:00 | 14:04 → 14:04 | target | igual |
+| VW13 | 14:01 → 14:01 | 14:02 → 14:02 | target | igual |
+| LATE15 | 16:00 → 16:00 | 16:06 → 16:06 | target | igual |
+
+**10 de 10 trades en la misma barra de entrada y de salida.** Las tres salidas por tiempo coinciden: en tiempo real `CurrentBars[0]` dentro de `OnExecutionUpdate` es la última barra cerrada, igual que en el motor Standard del Analyzer, así que el `EntryBar` de las entradas a mercado (todos los módulos con MaxHold del perfil Ultra: NF05, ON07, LF0430, SO04, MOM1030, ORFAIL, CAM3, ENG26) es el mismo en vivo y en backtest. **El off-by-one de MaxHold en vivo queda refutado para entradas a mercado.** Export de órdenes: 40 órdenes, todas Filled o Cancelled, pestaña Orders vacía; los `Stop loss` / `Profit target` de `Set*` salen con un mismo id OCO por entrada (OCO confirmado en vivo); el flatten de VOLB (`Buy to cover` 16:56:01) cerró el último lote.
+
+Residuo teórico, acotado: para una entrada **stop o límite** que llena dentro de la barra en formación, en vivo `EntryBar` queda en la última barra cerrada (una antes que en el backtest, que la carga a la barra que contiene el fill). Consumidores: MaxHold de VOLB y ENG10 (400 barras, que el flatten corta antes en la práctica) y `orbFirstMin` (gate de MSEQS, ±1 minuto sobre barras de 5). No afecta a los stops/targets (`Set*` relativos al fill). Candidato v4.3, una línea: `FillAhead` también en `State.Realtime` para órdenes no a mercado (`t > Times[0][0]`); se aplica cuando haya otro cambio que exija F5, y se verifica con un Playback Off en un día con salida por MaxHold de VOLB o ENG10 (no hubo ninguna en el 16-oct).
+
+Precios: los fills a mercado del motor de simulación en Playback no son comparables con el Analyzer (sin `Slippage`, al bid/ask del replay): NF05 30.142,00 vs 30.145,50 del backtest Tick1, MOM11 29.854,00 vs 29.862,00, LATE15 29.351,00 vs 29.359,25, MOM13 29.615,75 vs 29.614,50; los stops de ORB/VOLB y el límite de LON llenan en el nivel igual que en el Analyzer y los targets a la misma distancia del fill. Playback sirve para barras y mecánica, no para medir precio de fill (eso es H5 con las cuentas prop).
 
 ## Qué sigue
 
 1. Opcional, 3 s: `Off 2026-06-01 → hoy` con **Slippage = 0** en el Analyzer y `fill_gap.py <ese> trades_tick1_2026-06-01_hoy.csv` **sin `--slip-b`**: la misma lectura sin ningún modelo de slippage (brackets desde el fill crudo en los dos lados). Debe dar ≈ +0,4 %.
 2. Hecho: Playback Tick1 13-15 oct (arriba).
-3. Playback **Off** (FillSeries Off, Contracts 1 basta) sobre **2026-10-16** (o 13 → 16), modo Historical, export de trades de Playback101: los `hold` de `LONX`, `NF05X` y `ON07X` tienen que coincidir con el backtest Off (`trades_off_2024-01-01_hoy.csv`: NF05 240 barras, ON07 60, LON hora fija 09:31); si salen una barra antes o después, el vivo tiene el off-by-one de `EntryBar` y va en v4.3.
+3. Hecho: Playback Off del 16-oct (arriba): sin off-by-one.
 4. S2: paridad por módulo (G4: ORFAIL, RV11, CAM3, MSEQS, ICT, SO04) y P3 (slippage real de las cuentas prop, `slip_model.py`).

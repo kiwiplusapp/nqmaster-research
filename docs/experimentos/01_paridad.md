@@ -24,7 +24,7 @@
 ## Hallazgos de mecánica destapados por la comparación (corregidos en v4.2, `docs/experimentos/01_revision_parche_fillseries.md`)
 
 - `EntryBar` de los fills a mercado: NinjaTrader en Standard carga el fill a la barra que envió la orden aunque llene en la apertura siguiente; v4.1 lo ponía una barra después en Tick1 y 48 de 108 salidas por MaxHold salían tarde. Corregido por tipo de orden; verificado: v4.2 vs v4.1 difieren exactamente en esas 49 salidas y en nada más.
-- `Core.Globals.Now` es el reloj de la PC bajo la conexión Playback: `LateBar()` rechazaba todas las barras reproducidas (el Market Replay no entró nunca) y `RollDue()` leía la fecha real. Ahora `NowClock()` usa la última barra de 1 min en Playback. Pendiente en vivo: si `CurrentBar` en tiempo real es la última barra cerrada, un fill stop/límite en la barra en formación da `EntryBar` una barra antes que el backtest; se prueba con Playback Off contra backtest Off de los mismos días.
+- `Core.Globals.Now` es el reloj de la PC bajo la conexión Playback: `LateBar()` rechazaba todas las barras reproducidas (el Market Replay no entró nunca) y `RollDue()` leía la fecha real. Ahora `NowClock()` usa la última barra de 1 min en Playback. Verificado en Playback Off (16-oct): en tiempo real `CurrentBars[0]` es la última barra cerrada, igual que el motor Standard, así que las entradas a mercado tienen el mismo `EntryBar` en vivo y en backtest; para entradas stop/límite queda un residuo de una barra sin consumidor práctico en Ultra (documentado, candidato v4.3).
 - `atrDaily` (Wilder, k = 14) depende del primer día cargado: Days to load = 120 fijo en el runbook.
 
 ## Pendiente del experimento
@@ -32,7 +32,7 @@
 - **H3, paridad NinjaTrader vs investigación (S2):** baseline del 26-oct FALLA (`research/nt_exports/2026-10-26/standard/parity_ultra_d4.md`): G1 91,0 %, G3 0,918, G4 falla en ORFAIL 34 %, RV11 54 %, CAM3 56 %, MSEQS 56 %, ICT 80 %, SO04 89 %. Los cuatro módulos de 6 años siguen "paridad pendiente" en el runbook (aporte medido: +$100/mes/contrato, 5 % del neto).
 - **H5, slippage real por módulo × franja (P3):** exports de las cuentas prop (principal) y Sim101 (respaldo), `research/mine/slip_model.py`; reemplaza la hipótesis de 1 tick por celda con n ≥ 15.
 - **Neto por contrato por mes por módulo en IS/C24/REAL** con el slippage de H5: se entrega cuando P3 esté.
-- Playback Tick1 con 6 contratos (13-15 oct, modo Historical): **pasó** — 16/16 trades iguales al backtest Tick1 (misma barra de entrada y salida, brackets a 1-4 s), fills parciales por volumen de tick con re-dimensión de brackets, NinjaTrader reduce y cancela el hermano, 59 órdenes todas Filled/Cancelled, 90 lotes dentro = 90 fuera, 0 huérfanas. Queda el off-by-one de `EntryBar` en vivo: Playback Off del 16-oct (tres salidas por MaxHold) contra el backtest Off.
+- Playback Tick1 con 6 contratos (13-15 oct, modo Historical): **pasó** — 16/16 trades iguales al backtest Tick1 (misma barra de entrada y salida, brackets a 1-4 s), fills parciales por volumen de tick con re-dimensión de brackets, NinjaTrader reduce y cancela el hermano, 59 órdenes todas Filled/Cancelled, 90 lotes dentro = 90 fuera, 0 huérfanas. Playback Off del 16-oct (1 contrato): **10/10 trades en la misma barra que el backtest Off, las tres salidas por MaxHold/hora fija incluidas → sin off-by-one de `EntryBar` en vivo para entradas a mercado**; residuo acotado para entradas stop/límite (VOLB/ENG10 MaxHold 400, `orbFirstMin` ±1 min), candidato v4.3 de una línea documentado en `v42/README.md`.
 
 ## Reproducibilidad
 

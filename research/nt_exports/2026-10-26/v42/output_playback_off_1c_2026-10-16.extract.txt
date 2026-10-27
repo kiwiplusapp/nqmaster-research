@@ -1,0 +1,47 @@
+NQMaster | edge monitor state restored (20261015): CUSUM 1,31, 17 days
+2026-10-16 06:00 | NQM | NF05 filled @ 30142,00
+2026-10-16 06:00 | NQM | NF05 SELL | ref 29988,00 | SL 322t
+2026-10-16 06:55 | NQM | LON SELL LIMIT @ 30126,00 | SL 30224,50
+2026-10-16 06:55 | NQM | LON filled @ 30126,00
+2026-10-16 08:00 | NQM | ON07 filled @ 30089,50
+2026-10-16 08:00 | NQM | ON07 SELL | ref 30117,75 | SL 322t
+2026-10-16 09:00 | NQM | ON07 exit fill: ON07X x1 @ 30091,00 | account cash 50000
+2026-10-16 09:00 | NQM | ON07 exit: time exit
+2026-10-16 10:00 | NQM | NF05 exit fill: NF05X x1 @ 30062,50 | account cash 50000
+2026-10-16 10:00 | NQM | NF05 exit: time exit
+2026-10-16 10:31 | NQM | LON exit fill: LONX x1 @ 30011,00 | account cash 50000
+2026-10-16 10:31 | NQM | LON exit: London exit 09:30
+2026-10-16 11:30 | NQM | ORB60 context x2
+2026-10-16 11:30 | NQM | SIZE ORB60 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-16 11:30 | NQM | ORB60 SELL @ 29787,00 | SL 564t | TP 0,6R
+2026-10-16 11:30 | NQM | MOM1030 skipped: no other module open the same way
+2026-10-16 12:00 | NQM | ORB90 context x2
+2026-10-16 12:00 | NQM | SIZE ORB90 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-16 12:00 | NQM | ORB90 SELL @ 29787,00 | SL 564t | TP 0,6R
+2026-10-16 12:00 | NQM | MOM11 filled @ 29854,00
+2026-10-16 12:00 | NQM | MOM11 SELL | ref 30024,25 | SL 403t
+2026-10-16 12:00 | NQM | RV11 skipped: relative volume above 0,80
+2026-10-16 12:00 | NQM | MOM11 exit fill: Profit target x1 @ 29823,75 | account cash 50000
+2026-10-16 12:05 | NQM | ORB60 filled @ 29787,00
+2026-10-16 12:05 | NQM | ORB60 filled @ 29787,00
+2026-10-16 12:05 | NQM | ORB90 filled @ 29787,00
+2026-10-16 12:05 | NQM | ORB90 filled @ 29787,00
+2026-10-16 12:05 | NQM | VOLB filled @ 29765,50
+2026-10-16 12:09 | NQM | ORB60 exit fill: Profit target x1 @ 29702,50 | account cash 50000
+2026-10-16 12:09 | NQM | ORB90 exit fill: Profit target x1 @ 29702,50 | account cash 50000
+2026-10-16 12:09 | NQM | ORB60 exit fill: Profit target x1 @ 29702,25 | account cash 50000
+2026-10-16 12:09 | NQM | ORB90 exit fill: Profit target x1 @ 29702,25 | account cash 50000
+2026-10-16 14:00 | NQM | MOM13 filled @ 29615,75
+2026-10-16 14:00 | NQM | MOM13 SELL | ref 30024,25 | SL 322t
+2026-10-16 14:01 | NQM | SIZE VW13 SELL: base 1 -> requested 2 (multipliers / boosts) -> sent 2
+2026-10-16 14:01 | NQM | VW13 filled @ 29599,25
+2026-10-16 14:01 | NQM | VW13 filled @ 29599,25
+2026-10-16 14:01 | NQM | VW13 SELL | ref 29794,25 | SL 242t
+2026-10-16 14:02 | NQM | VW13 exit fill: Profit target x1 @ 29569,00 | account cash 50000
+2026-10-16 14:02 | NQM | VW13 exit fill: Profit target x1 @ 29568,75 | account cash 50000
+2026-10-16 14:03 | NQM | VOLB stop -> entry + 0.1R @ 29739,75
+2026-10-16 14:04 | NQM | MOM13 exit fill: Profit target x1 @ 29535,25 | account cash 50000
+2026-10-16 16:00 | NQM | LATE15 filled @ 29351,00
+2026-10-16 16:00 | NQM | LATE15 SELL | ref 30014,25 | SL 483t
+2026-10-16 16:06 | NQM | LATE15 exit fill: Profit target x1 @ 29290,50 | account cash 50000
+2026-10-16 16:56 | NQM | FLATTEN: end of day
