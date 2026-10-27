@@ -63,11 +63,44 @@ Verificado por el revisor: resets por sesión, `lastDeferred` leído en la misma
 
 **Reproducibilidad:** `cd research/mine && rm wrq_entries_db.pkl && python3 -c "import db_long; db_long.entries_db()" && python3 cand16.py && python3 six_base.py && python3 regen_six_keys.py && python3 six_build.py` (3 min) regenera `ultra_d4`; `python3 wrq_build.py && python3 wrq_feats.py && python3 build_parity_mnq.py` (1,5 min) regenera `ultra_d4_mnq`; `python3 parity_check.py <csv> --set ultra_d4_mnq`. Código NT: `cp archive/backups/NQMaster_backup_pre_fillseries.cs NQMaster.cs && python3 research/mine/patch_fillseries.py && python3 research/mine/patch_parity_s2.py && bash tools/nt8_stub/check.sh NQMaster.cs`.
 
+## S3 (2026-10-27): lista corregida, neto por módulo y recálculo de campaña
+
+**Lista corregida.** H1 no exige corrección de fills (+0,4 %, IC −0,0 .. +0,7 %) y H5 espera cuentas prop, así que la "lista con `u` ajustado por celda" es la propia lista regenerada: `six_ultra6_trades.pkl` (`research_set('ultra_d4')`, NQ, campaña) y `six_ultra6_trades_mnq.pkl` (`ultra_d4_mnq`, paridad), con la tendencia corregida, las medias ruedas fuera, el lookahead de ICT corregido e ICT a 1 contrato. No se crea un `_exec.pkl` aparte: los ajustes por celda son cero hasta H5.
+
+**Neto por módulo, 1 contrato base (MOM1030/CPI09 ×4, ICT ×1), $/mes, antes → después de la corrección** (sets construidos con el mismo constructor sobre el código del commit 90d8755 y sobre el actual; IS = CFD 2020-02..2023, C24 = CFD 2024-26, REAL = MNQ 2024-26; filtro de conflictos aplicado):
+
+| Módulo | IS | C24 | REAL | Módulo | IS | C24 | REAL |
+|---|---|---|---|---|---|---|---|
+| VOLB | 276 → 276 | 595 → 595 | 545 → 542 | LF0430 | 40 → 37 | 66 → 50 | 54 → 53 |
+| ORB60 | 234 → 234 | 286 → 286 | 334 → 334 | ON07 | 29 → 32 | 46 → 52 | 42 → 52 |
+| CRT11 | 129 → 129 | 229 → 229 | 252 → 252 | VW13 | 54 → 58 | 58 → 58 | 42 → 47 |
+| MOM1030 | 60 → 52 | 128 → 129 | 224 → 209 | SO04 | 28 → 28 | 64 → 60 | 41 → 45 |
+| CPI09 | 105 → 105 | 198 → 198 | 207 → 207 | LATE15 | 46 → 45 | 32 → 31 | 32 → 43 |
+| MSEQ | 239 → 239 | 196 → 192 | 185 → 192 | ORFAIL | 42 → 42 | 12 → 10 | 54 → 41 |
+| MOM11 | 70 → 70 | 117 → 116 | 190 → 181 | RV11 | 30 → 30 | −8 → −8 | 38 → 38 |
+| ORB90 | 162 → 162 | 126 → 126 | 174 → 174 | LF06 | 24 → 24 | 35 → 35 | 40 → 35 |
+| MOM13 | 142 → 151 | 168 → 170 | 150 → 153 | ICT | 43 → 21 | 53 → 32 | 61 → 28 |
+| LON | 66 → 56 | 138 → 134 | 133 → 139 | REV06 | 32 → 28 | 40 → 43 | 15 → 27 |
+| NF05 | 72 → 72 | 81 → 77 | 92 → 90 | CAM3 | 8 → 7 | 16 → 16 | 4 → 2 |
+| MSEQS | 60 → 60 | 55 → 55 | 63 → 63 | **Total** | **1.990 → 1.956** | **2.731 → 2.687** | **2.974 → 2.946** |
+
+Totales: PF 1,49 → 1,48 / 1,53 → 1,52 / 1,61 → 1,58; Sharpe 3,84 → 3,79 / 4,16 → 4,08 / 4,70 → 4,57; DD $4.219 → $4.282 / $3.624 → $3.466 / $3.989 → $3.722. La baja del neto es ICT ×2 → ×1 (−$22 / −$21 / −$33 por mes); la tendencia corregida agrega trades a MOM13, ON07, LON, VW13, LATE15 y ORFAIL con efecto neto ≈ 0; ORFAIL y MOM1030 en REAL bajan por el filtro de conflictos con los trades nuevos.
+
+**Campaña (arnés `prop_wf`, mismo código y semillas, caminos reconstruidos desde la lista corregida; `integ_paired.py`, `integ_port.py`, `integ_budget.py`).** Los caminos vivían en un scratchpad de otra sesión (no reproducible); ahora se reconstruyen en `research/tmp/scratch` (`acct_2027.build()`, lista de días `days_real()`, medias ruedas a P&L 0 como NT). Plan 5 × Lucid Flex 150K 6c/3c + 3 × MFFU 1x8, $/mes con cupón, mediana (p10) antes → después:
+
+| Edge | 2020-23 | 2024-26 |
+|---|---|---|
+| Completo | 16.280 (9.529) → **16.173 (9.243)** | 14.739 (7.238) → **14.689 (7.041)** |
+| −35 % | 8.838 (2.188) → **8.824 (2.464)** | 8.610 (2.000) → **8.418 (1.801)**; P(año negativo) 5,0 → 4,2 % |
+| Cero | −699 (−3.660) → **−789 (−3.712)** | −266 (−4.005) → **−566 (−4.182)** |
+
+Por asiento (mediana $/mes): Lucid 150K edge completo 2.467 → 2.417 / 2.260 → 2.242, −35 % 1.423 → 1.378 / 1.406 → 1.342, cuentas perdidas por año 1,51 → 1,39 / 2,75 → 2,69; MFFU 1x8 1.414 → 1.388 / 1.163 → 1.184, −35 % 717 → 703 / 503 → 510. Las reglas pre-registradas de incumbentes no cambian (Lucid 150K 6c/3c y MFFU 1x8 siguen). Precio de lista y presupuesto por plaza: mismas diferencias (≤ 2 %). **Veredicto S3: la corrección de datos y la paridad no mueven la campaña más allá del ruido de la propia corrección (−0,7 % a −2,2 % de mediana; p10 −3 % a +12 %); las cifras del runbook se actualizan con estos valores.**
+
 ## Pendiente del experimento
 
 - **H3, paridad (S2 hecha en la nube; falta la PC):** F5 del parche `patch_parity_s2.py`, Off 2024 → hoy byte a byte igual al Off de v4.2 **salvo** ORFAIL/CAM3/ICT/MSEQS (los únicos módulos tocados), export de trades → `parity_check.py <csv> --set ultra_d4_mnq`: objetivo G1 ≥ 92 %, G3 ≥ 0,95 y los cuatro módulos ≥ 90 %. Después: VOLB 94,5 % y G3 (correlación diaria) si no llegan al 0,95 con el parche; `mnq_fut.npz` tiene 3 días sin barras RTH (2025-08-29, 2026-01-23, 2026-09-28) que no son feriados: revisar el export de barras. Los cuatro módulos de 6 años siguen "paridad pendiente" en el runbook hasta ese export.
 - **H5, slippage real por módulo × franja (P3): en espera.** Al 27-oct no hay cuentas prop operando, así que no hay fills reales; la hipótesis de 1 tick por lado (+4 en estrés) sigue en todas las cifras. Cuando haya exports de cuentas prop, `research/mine/slip_model.py` reemplaza la hipótesis por celda con n ≥ 15. Sim101 en vivo mide el motor de simulación de NinjaTrader (bid/ask del feed, como Playback), no un bróker: solo como respaldo etiquetado.
-- **Neto por contrato por mes por módulo en IS/C24/REAL** con el slippage de H5: se entrega cuando P3 esté.
+- **Neto por contrato por mes por módulo en IS/C24/REAL:** entregado en S3 con la hipótesis de 1 tick; se recalcula con el slippage real cuando haya cuentas prop (H5).
 - Playback Tick1 con 6 contratos (13-15 oct, modo Historical): **pasó** — 16/16 trades iguales al backtest Tick1 (misma barra de entrada y salida, brackets a 1-4 s), fills parciales por volumen de tick con re-dimensión de brackets, NinjaTrader reduce y cancela el hermano, 59 órdenes todas Filled/Cancelled, 90 lotes dentro = 90 fuera, 0 huérfanas. Playback Off del 16-oct (1 contrato): **10/10 trades en la misma barra que el backtest Off, las tres salidas por MaxHold/hora fija incluidas → sin off-by-one de `EntryBar` en vivo para entradas a mercado**; residuo acotado para entradas stop/límite (VOLB/ENG10 MaxHold 400, `orbFirstMin` ±1 min), candidato v4.3 de una línea documentado en `v42/README.md`.
 
 ## Reproducibilidad
