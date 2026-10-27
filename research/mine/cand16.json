@@ -3,34 +3,34 @@
   "2010-14n": {
    "n": 5908,
    "wr": 59.38,
-   "pf": 1.018
+   "pf": 1.024
   },
   "2015-19n": {
    "n": 6449,
    "wr": 61.33,
-   "pf": 1.123
+   "pf": 1.121
   },
   "2020-23": {
    "n": 5160,
    "wr": 66.32,
-   "pf": 1.471,
+   "pf": 1.474,
    "tpd": 5.46,
-   "per_month": 1920,
-   "sharpe": 3.52,
+   "per_month": 1898,
+   "sharpe": 3.51,
    "max_dd": 3122,
-   "worst_month": -1975,
+   "worst_month": -1813,
    "neg_months": 5,
    "months": 47
   },
   "2024-26": {
    "n": 3698,
    "wr": 64.93,
-   "pf": 1.455,
+   "pf": 1.461,
    "tpd": 5.34,
-   "per_month": 2441,
-   "sharpe": 3.52,
-   "max_dd": 5871,
-   "worst_month": -3635,
+   "per_month": 2424,
+   "sharpe": 3.54,
+   "max_dd": 5976,
+   "worst_month": -3832,
    "neg_months": 7,
    "months": 34
   }
@@ -39,34 +39,34 @@
   "2010-14n": {
    "n": 5277,
    "wr": 59.83,
-   "pf": 1.028
+   "pf": 1.036
   },
   "2015-19n": {
    "n": 5682,
    "wr": 61.6,
-   "pf": 1.136
+   "pf": 1.133
   },
   "2020-23": {
    "n": 4588,
    "wr": 66.7,
-   "pf": 1.467,
+   "pf": 1.47,
    "tpd": 4.86,
-   "per_month": 1733,
-   "sharpe": 3.4,
-   "max_dd": 3470,
-   "worst_month": -1366,
+   "per_month": 1710,
+   "sharpe": 3.39,
+   "max_dd": 3304,
+   "worst_month": -1385,
    "neg_months": 9,
    "months": 47
   },
   "2024-26": {
    "n": 3263,
    "wr": 65.58,
-   "pf": 1.492,
+   "pf": 1.501,
    "tpd": 4.71,
-   "per_month": 2332,
-   "sharpe": 3.63,
-   "max_dd": 4570,
-   "worst_month": -2670,
+   "per_month": 2323,
+   "sharpe": 3.66,
+   "max_dd": 4603,
+   "worst_month": -2796,
    "neg_months": 7,
    "months": 34
   }
@@ -75,34 +75,34 @@
   "2010-14n": {
    "n": 4859,
    "wr": 60.86,
-   "pf": 1.023
+   "pf": 1.031
   },
   "2015-19n": {
    "n": 5208,
    "wr": 62.92,
-   "pf": 1.142
+   "pf": 1.139
   },
   "2020-23": {
    "n": 4200,
    "wr": 67.95,
-   "pf": 1.471,
+   "pf": 1.473,
    "tpd": 4.44,
-   "per_month": 1669,
-   "sharpe": 3.32,
-   "max_dd": 3562,
-   "worst_month": -2011,
-   "neg_months": 8,
+   "per_month": 1646,
+   "sharpe": 3.31,
+   "max_dd": 3396,
+   "worst_month": -1849,
+   "neg_months": 9,
    "months": 47
   },
   "2024-26": {
    "n": 2979,
    "wr": 66.53,
-   "pf": 1.501,
+   "pf": 1.51,
    "tpd": 4.3,
-   "per_month": 2265,
-   "sharpe": 3.57,
-   "max_dd": 4354,
-   "worst_month": -2475,
+   "per_month": 2256,
+   "sharpe": 3.6,
+   "max_dd": 4387,
+   "worst_month": -2601,
    "neg_months": 7,
    "months": 34
   }
@@ -147,35 +147,35 @@
   "2010-14n": {
    "n": 3667,
    "wr": 64.44,
-   "pf": 0.991
+   "pf": 0.999
   },
   "2015-19n": {
    "n": 3989,
    "wr": 64.7,
-   "pf": 1.074
+   "pf": 1.072
   },
   "2020-23": {
    "n": 3223,
    "wr": 71.77,
-   "pf": 1.589,
+   "pf": 1.602,
    "tpd": 3.41,
-   "per_month": 1463,
-   "sharpe": 3.72,
-   "max_dd": 2315,
-   "worst_month": -1001,
-   "neg_months": 6,
+   "per_month": 1439,
+   "sharpe": 3.73,
+   "max_dd": 2171,
+   "worst_month": -977,
+   "neg_months": 7,
    "months": 47
   },
   "2024-26": {
    "n": 2350,
    "wr": 68.68,
-   "pf": 1.443,
+   "pf": 1.456,
    "tpd": 3.39,
-   "per_month": 1569,
-   "sharpe": 3.1,
-   "max_dd": 4136,
-   "worst_month": -2950,
-   "neg_months": 8,
+   "per_month": 1554,
+   "sharpe": 3.13,
+   "max_dd": 4181,
+   "worst_month": -2505,
+   "neg_months": 7,
    "months": 34
   }
  },
@@ -183,35 +183,35 @@
   "2010-14n": {
    "n": 3628,
    "wr": 64.61,
-   "pf": 0.985
+   "pf": 0.994
   },
   "2015-19n": {
    "n": 3918,
    "wr": 65.34,
-   "pf": 1.089
+   "pf": 1.086
   },
   "2020-23": {
    "n": 3164,
    "wr": 72.22,
-   "pf": 1.571,
+   "pf": 1.58,
    "tpd": 3.35,
-   "per_month": 1384,
+   "per_month": 1357,
    "sharpe": 3.63,
-   "max_dd": 2621,
-   "worst_month": -1045,
-   "neg_months": 5,
+   "max_dd": 2454,
+   "worst_month": -999,
+   "neg_months": 7,
    "months": 47
   },
   "2024-26": {
    "n": 2291,
    "wr": 69.27,
-   "pf": 1.462,
+   "pf": 1.478,
    "tpd": 3.31,
-   "per_month": 1557,
-   "sharpe": 3.22,
-   "max_dd": 3893,
-   "worst_month": -2885,
-   "neg_months": 8,
+   "per_month": 1553,
+   "sharpe": 3.28,
+   "max_dd": 3386,
+   "worst_month": -2377,
+   "neg_months": 7,
    "months": 34
   }
  }

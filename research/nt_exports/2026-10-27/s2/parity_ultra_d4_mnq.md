@@ -1,6 +1,6 @@
 # Paridad NinjaTrader vs investigación: ultra_d4_mnq (20240122-20260925)
 
-- Commit 329c617, NQMaster.cs SHA-256 bf19f290f541aac2, export `trades_off_2024-01-01_hoy_v43.csv`, generado 2026-10-27.
+- Commit c27cbf7, NQMaster.cs SHA-256 cc319383cde3a0ca, export `trades_off_2024-01-01_hoy_v43.csv`, generado 2026-10-27.
 - G1 emparejados 98.5% (umbral 92.0%) | G2 $ emparejados NT vs investigación -1.6% (±3.0%) | G3 correlación diaria 0.981 (≥ 0.95)
 - Resultado: **PASA**
 
