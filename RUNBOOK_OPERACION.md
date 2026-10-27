@@ -26,7 +26,7 @@ Una página. Si algo de acá contradice una sección vieja de `docs/guia/INDICE.
 
 ## Configuración por cuenta (plan de la ronda 5, 21-oct; solo NQ, sin GoldMaster)
 
-Plan base: **5 Lucid Flex 150K + 3 MFFU Rapid EOD 50K**. Todas las cuentas con Profile Ultra (default 2027, `SixYearModules` true). DLL de la firma **OFF** al comprar. Cifras de investigación (arnés `prop_wf` solo NQ, +1 tick, 1.000 caminos; primer número 2020-23, segundo 2024-26), con la paridad de NinjaTrader pendiente. Fuentes: `research/mine/integ_paired.json`, `integ_eval_150k.json`, `integ_port.json`, `integ_budget.json`, `integ_ladder.json`, `prop_wf.json`.
+Plan base: **5 Lucid Flex 150K + 3 MFFU Rapid EOD 50K**. Todas las cuentas con Profile Ultra (default 2027, `SixYearModules` true). DLL de la firma **OFF** al comprar. Cifras de investigación (arnés `prop_wf` solo NQ, +1 tick, 1.000 caminos; primer número arranques 2020-22, segundo arranques 2023-26 (cortes de `prop_wf`)), con la paridad de NinjaTrader pendiente. Fuentes: `research/mine/integ_paired.json`, `integ_eval_150k.json`, `integ_port.json`, `integ_budget.json`, `integ_ladder.json`, `prop_wf.json`.
 
 | Cuenta | Ajustes | Qué esperar (edge completo / con 35% menos edge) |
 |---|---|---|

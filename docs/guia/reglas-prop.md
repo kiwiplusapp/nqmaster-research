@@ -8,7 +8,7 @@ Pedido de Federico: más pase en evals de 50K, más probabilidad de cobrar por c
 
 **Regla fijada antes de correr:** una plaza o eval nueva reemplaza a la actual solo si, con 35% menos edge, en 2020-23 y en 2024-26 y con los dos niveles de fee, la mediana de la ganancia pareada es > 0 con P ≥ 0,80 y su P(año negativo) no empeora más de 3 puntos (MFFU: además no puede perder más de $100/mes extra sin edge). Nada nuevo pasó: **el plan sigue siendo 5 Lucid Flex 150K + 3 MFFU Rapid EOD 50K**.
 
-### Plazas (cifras de investigación, paridad NT pendiente; 2020-23 / 2024-26)
+### Plazas (cifras de investigación, paridad NT pendiente; arranques 2020-22 / 2023-26, cortes de `prop_wf`)
 
 Cifras del recálculo del 27-oct con la lista corregida (`integ_paired.json`; Lucid Pro recalculada en el mismo arnés).
 

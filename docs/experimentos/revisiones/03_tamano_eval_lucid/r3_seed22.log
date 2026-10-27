@@ -1,0 +1,29 @@
+hc0.0 k1: ep difiere de k6 solo en posiciones [7, 8] (7=kA, 8=kB)
+hc0.0 k2: ep difiere de k6 solo en posiciones [7, 8] (7=kA, 8=kB)
+hc0.0 k3: ep difiere de k6 solo en posiciones [7, 8] (7=kA, 8=kB)
+hc0.0 k4: ep difiere de k6 solo en posiciones [7, 8] (7=kA, 8=kB)
+hc0.0 k5: ep difiere de k6 solo en posiciones [7, 8] (7=kA, 8=kB)
+4s plan k1 hc0.0 T1 med 9238.1 p10 3582.3 neg60 5.67 evp 0.074 apr 93.14 dias 59.0 cumple 5
+7s plan k2 hc0.0 T1 med 12079.3 p10 6411.2 neg60 6.63 evp 0.185 apr 88.52 dias 32.0 cumple 4
+9s plan k3 hc0.0 T1 med 14289.8 p10 7372.5 neg60 6.22 evp 0.541 apr 75.40 dias 21.0 cumple 4
+11s plan k4 hc0.0 T1 med 15197.2 p10 8305.4 neg60 5.67 evp 1.138 apr 61.40 dias 13.0 cumple 3
+13s plan k5 hc0.0 T1 med 15687.3 p10 9148.4 neg60 5.07 evp 1.469 apr 56.68 dias 10.0 cumple 4
+14s plan k6 hc0.0 T1 med 16013.6 p10 9520.0 neg60 4.83 evp 1.885 apr 50.94 dias 9.0 cumple 4
+18s plan k1 hc0.0 T2 med 7718.2 p10 1877.1 neg60 13.86 evp 0.259 apr 81.59 dias 51.0 cumple 3
+20s plan k2 hc0.0 T2 med 10175.8 p10 3515.5 neg60 14.22 evp 0.762 apr 69.30 dias 27.0 cumple 3
+23s plan k3 hc0.0 T2 med 12337.1 p10 5754.2 neg60 12.23 evp 1.401 apr 59.44 dias 18.0 cumple 2
+25s plan k4 hc0.0 T2 med 13648.3 p10 6530.5 neg60 10.68 evp 2.030 apr 53.35 dias 13.0 cumple 2
+27s plan k5 hc0.0 T2 med 14303.7 p10 7411.3 neg60 8.52 evp 2.621 apr 47.94 dias 9.0 cumple 4
+28s plan k6 hc0.0 T2 med 14688.1 p10 7695.6 neg60 7.73 evp 3.218 apr 43.70 dias 8.0 cumple 4
+32s plan k1 hc0.35 T1 med 3671.8 p10 -181.7 neg60 26.06 evp 0.352 apr 72.27 dias 54.0 cumple 2
+35s plan k2 hc0.35 T1 med 6537.8 p10 51.8 neg60 28.44 evp 0.822 apr 62.53 dias 31.0 cumple 1
+38s plan k3 hc0.35 T1 med 7588.5 p10 804.7 neg60 27.79 evp 1.628 apr 50.42 dias 19.0 cumple 1
+40s plan k4 hc0.35 T1 med 8658.2 p10 1695.7 neg60 24.13 evp 2.308 apr 44.33 dias 13.0 cumple 2
+43s plan k5 hc0.35 T1 med 8928.7 p10 2186.9 neg60 22.96 evp 3.116 apr 38.51 dias 11.0 cumple 2
+45s plan k6 hc0.35 T1 med 9185.8 p10 2281.1 neg60 21.93 evp 4.027 apr 33.73 dias 9.0 cumple 3
+49s plan k1 hc0.35 T2 med 3133.2 p10 -316.1 neg60 30.36 evp 0.633 apr 62.05 dias 44.0 cumple 1
+53s plan k2 hc0.35 T2 med 6072.8 p10 -128.0 neg60 31.68 evp 1.480 apr 51.88 dias 27.0 cumple 1
+56s plan k3 hc0.35 T2 med 6994.9 p10 563.8 neg60 29.64 evp 2.393 apr 45.08 dias 19.0 cumple 1
+59s plan k4 hc0.35 T2 med 7806.5 p10 1322.1 neg60 25.39 evp 3.585 apr 38.59 dias 13.0 cumple 1
+61s plan k5 hc0.35 T2 med 8468.6 p10 2092.7 neg60 22.10 evp 4.221 apr 36.63 dias 9.0 cumple 3
+64s plan k6 hc0.35 T2 med 8843.7 p10 2200.9 neg60 20.83 evp 5.678 apr 30.07 dias 8.0 cumple 3

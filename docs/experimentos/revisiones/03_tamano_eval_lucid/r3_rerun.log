@@ -1,0 +1,109 @@
+    1s seat k1 hc0.0  T1 med   1089 p10    171 neg60 10.6 evperd 0.000 aprob 100.0 p22_3  3.0 dias  75 (p75 105) cumple 2
+    2s seat k2 hc0.0  T1 med   1746 p10    846 neg60 13.3 evperd 0.017 aprob 92.8 p22_3 21.3 dias  35 (p75  55) cumple 2
+    2s seat k3 hc0.0  T1 med   2160 p10   1052 neg60 14.3 evperd 0.087 aprob 75.9 p22_3 38.1 dias  21 (p75  33) cumple 2
+    3s seat k4 hc0.0  T1 med   2178 p10   1242 neg60 11.2 evperd 0.201 aprob 59.9 p22_3 54.0 dias  12 (p75  21) cumple 0
+    3s seat k5 hc0.0  T1 med   2368 p10   1414 neg60  8.7 evperd 0.268 aprob 54.7 p22_3 66.4 dias  10 (p75  15) cumple 2
+    3s seat k6 hc0.0  T1 med   2417 p10   1450 neg60  7.9 evperd 0.341 aprob 49.3 p22_3 69.3 dias   8 (p75  12) cumple 2
+    5s seat k1 hc0.0  T2 med   1053 p10    -36 neg60 19.7 evperd 0.007 aprob 95.4 p22_3  4.3 dias  76 (p75 105) cumple 2
+    5s seat k2 hc0.0  T2 med   1260 p10    360 neg60 29.4 evperd 0.107 aprob 71.1 p22_3 21.3 dias  31 (p75  46) cumple 2
+    6s seat k3 hc0.0  T2 med   1710 p10    792 neg60 23.5 evperd 0.225 aprob 59.4 p22_3 39.8 dias  18 (p75  28) cumple 0
+    6s seat k4 hc0.0  T2 med   2071 p10    982 neg60 16.9 evperd 0.359 aprob 51.2 p22_3 58.0 dias  12 (p75  19) cumple 0
+    7s seat k5 hc0.0  T2 med   2174 p10   1117 neg60 13.4 evperd 0.486 aprob 45.1 p22_3 67.0 dias   9 (p75  13) cumple 1
+    7s seat k6 hc0.0  T2 med   2242 p10   1235 neg60 11.4 evperd 0.597 aprob 41.0 p22_3 71.3 dias   7 (p75  11) cumple 1
+    8s seat k1 hc0.35 T1 med    189 p10    -36 neg60 17.0 evperd 0.008 aprob 93.3 p22_3  2.4 dias  93 (p75 138) cumple 2
+    9s seat k2 hc0.35 T1 med   1035 p10    -72 neg60 36.6 evperd 0.097 aprob 67.0 p22_3 14.5 dias  35 (p75  56) cumple 2
+    9s seat k3 hc0.35 T1 med   1018 p10     82 neg60 38.6 evperd 0.268 aprob 49.0 p22_3 30.7 dias  18 (p75  29) cumple 0
+   10s seat k4 hc0.35 T1 med   1242 p10    271 neg60 32.1 evperd 0.408 aprob 41.7 p22_3 42.4 dias  11 (p75  19) cumple 0
+   10s seat k5 hc0.35 T1 med   1360 p10    388 neg60 29.0 evperd 0.567 aprob 35.9 p22_3 49.0 dias   9 (p75  14) cumple 1
+   11s seat k6 hc0.35 T1 med   1378 p10    370 neg60 26.9 evperd 0.753 aprob 30.8 p22_3 54.2 dias   8 (p75  11) cumple 1
+   12s seat k1 hc0.35 T2 med    171 p10    -54 neg60 25.5 evperd 0.036 aprob 74.7 p22_3  2.9 dias  92 (p75 127) cumple 2
+   12s seat k2 hc0.35 T2 med    896 p10   -108 neg60 46.3 evperd 0.214 aprob 50.0 p22_3 17.2 dias  32 (p75  50) cumple 0
+   13s seat k3 hc0.35 T2 med    982 p10     28 neg60 41.1 evperd 0.401 aprob 41.4 p22_3 30.6 dias  19 (p75  29) cumple 0
+   14s seat k4 hc0.35 T2 med   1135 p10    163 neg60 34.0 evperd 0.647 aprob 35.0 p22_3 43.1 dias  12 (p75  18) cumple 0
+   14s seat k5 hc0.35 T2 med   1288 p10    281 neg60 28.3 evperd 0.768 aprob 33.8 p22_3 54.1 dias   9 (p75  13) cumple 1
+   14s seat k6 hc0.35 T2 med   1342 p10    317 neg60 25.4 evperd 1.071 aprob 26.7 p22_3 51.2 dias   7 (p75  10) cumple 1
+   15s seat k1 hc1.0  T1 med    -54 p10    -72 neg60 49.9 evperd 0.150 aprob 18.4 p22_3  1.4 dias  78 (p75 116) cumple 0
+   16s seat k2 hc1.0  T1 med   -125 p10   -179 neg60 80.9 evperd 0.486 aprob 18.9 p22_3  7.9 dias  28 (p75  43) cumple 0
+   17s seat k3 hc1.0  T1 med   -156 p10   -305 neg60 79.3 evperd 0.873 aprob 19.2 p22_3 20.5 dias  14 (p75  21) cumple 0
+   17s seat k4 hc1.0  T1 med    -98 p10   -430 neg60 72.2 evperd 1.286 aprob 17.0 p22_3 29.2 dias  10 (p75  14) cumple 1
+   18s seat k5 hc1.0  T1 med    -34 p10   -538 neg60 65.6 evperd 1.735 aprob 13.9 p22_3 28.3 dias   7 (p75  11) cumple 1
+   18s seat k6 hc1.0  T1 med    -70 p10   -627 neg60 63.2 evperd 2.076 aprob 13.3 p22_3 29.5 dias   6 (p75   9) cumple 1
+   20s seat k1 hc1.0  T2 med    -54 p10    -90 neg60 51.5 evperd 0.172 aprob 17.1 p22_3  1.0 dias  88 (p75 127) cumple 0
+   21s seat k2 hc1.0  T2 med   -125 p10   -215 neg60 80.2 evperd 0.561 aprob 18.1 p22_3  9.0 dias  27 (p75  42) cumple 0
+   21s seat k3 hc1.0  T2 med    -44 p10   -358 neg60 75.0 evperd 1.043 aprob 16.9 p22_3 20.6 dias  14 (p75  22) cumple 0
+   22s seat k4 hc1.0  T2 med    -57 p10   -502 neg60 70.9 evperd 1.580 aprob 15.1 p22_3 27.6 dias   9 (p75  14) cumple 1
+   23s seat k5 hc1.0  T2 med   -115 p10   -645 neg60 68.8 evperd 2.088 aprob 12.7 p22_3 28.6 dias   7 (p75  13) cumple 1
+   23s seat k6 hc1.0  T2 med    -95 p10   -752 neg60 63.0 evperd 2.448 aprob 12.5 p22_3 30.8 dias   6 (p75   9) cumple 1
+   26s PLAN k1 hc0.0  T1 med   9171 p10   3001 neg60  6.0 evperd 0.08 aprob 92.8 dias  60 cumple 5
+   28s PLAN k2 hc0.0  T1 med  12342 p10   5988 neg60  6.6 evperd 0.19 aprob 88.1 dias  32 cumple 4
+   30s PLAN k3 hc0.0  T1 med  14398 p10   7358 neg60  6.0 evperd 0.54 aprob 75.6 dias  21 cumple 4
+   31s PLAN k4 hc0.0  T1 med  15252 p10   8542 neg60  5.4 evperd 1.14 aprob 61.3 dias  14 cumple 3
+   33s PLAN k5 hc0.0  T1 med  15803 p10   9161 neg60  4.5 evperd 1.49 aprob 56.3 dias  10 cumple 4
+   34s PLAN k6 hc0.0  T1 med  16173 p10   9243 neg60  4.5 evperd 1.89 aprob 50.9 dias   9 cumple 4
+   38s PLAN k1 hc0.0  T2 med   7646 p10   1502 neg60 13.9 evperd 0.27 aprob 80.9 dias  52 cumple 2
+   40s PLAN k2 hc0.0  T2 med  10542 p10   3309 neg60 14.3 evperd 0.75 aprob 69.4 dias  27 cumple 3
+   42s PLAN k3 hc0.0  T2 med  12700 p10   5346 neg60 12.7 evperd 1.36 aprob 59.7 dias  18 cumple 2
+   44s PLAN k4 hc0.0  T2 med  13957 p10   5963 neg60 10.8 evperd 1.99 aprob 53.3 dias  13 cumple 2
+   45s PLAN k5 hc0.0  T2 med  14425 p10   6628 neg60  9.6 evperd 2.67 aprob 47.2 dias   9 cumple 4
+   46s PLAN k6 hc0.0  T2 med  14689 p10   7041 neg60  8.5 evperd 3.28 aprob 42.8 dias   8 cumple 4
+   50s PLAN k1 hc0.35 T1 med   3715 p10    -94 neg60 25.7 evperd 0.36 aprob 71.4 dias  55 cumple 2
+   53s PLAN k2 hc0.35 T1 med   6596 p10    234 neg60 27.8 evperd 0.80 aprob 62.5 dias  32 cumple 1
+   55s PLAN k3 hc0.35 T1 med   7356 p10    736 neg60 27.7 evperd 1.62 aprob 50.3 dias  19 cumple 1
+   56s PLAN k4 hc0.35 T1 med   8268 p10   1640 neg60 24.9 evperd 2.29 aprob 44.5 dias  13 cumple 2
+   58s PLAN k5 hc0.35 T1 med   8670 p10   2278 neg60 22.9 evperd 3.08 aprob 38.9 dias  11 cumple 2
+   60s PLAN k6 hc0.35 T1 med   8824 p10   2464 neg60 22.3 evperd 4.00 aprob 34.1 dias   9 cumple 3
+   64s PLAN k1 hc0.35 T2 med   2834 p10   -318 neg60 31.9 evperd 0.64 aprob 61.9 dias  43 cumple 1
+   67s PLAN k2 hc0.35 T2 med   5888 p10   -187 neg60 33.1 evperd 1.51 aprob 51.3 dias  27 cumple 1
+   69s PLAN k3 hc0.35 T2 med   6870 p10    495 neg60 30.7 evperd 2.44 aprob 44.1 dias  19 cumple 1
+   71s PLAN k4 hc0.35 T2 med   7648 p10    983 neg60 27.4 evperd 3.62 aprob 38.0 dias  13 cumple 1
+   72s PLAN k5 hc0.35 T2 med   8323 p10   1876 neg60 24.1 evperd 4.30 aprob 36.1 dias   9 cumple 3
+   74s PLAN k6 hc0.35 T2 med   8418 p10   1801 neg60 22.6 evperd 5.72 aprob 29.9 dias   8 cumple 3
+   80s PLAN k1 hc1.0  T1 med   -624 p10   -936 neg60 80.9 evperd 2.77 aprob 18.4 dias  22 cumple 0
+   83s PLAN k2 hc1.0  T1 med   -998 p10  -1473 neg60 81.1 evperd 4.48 aprob 18.5 dias  21 cumple 0
+   86s PLAN k3 hc1.0  T1 med   -857 p10  -2071 neg60 76.5 evperd 6.39 aprob 18.6 dias  15 cumple 0
+   88s PLAN k4 hc1.0  T1 med   -734 p10  -2686 neg60 70.8 evperd 8.42 aprob 17.2 dias  11 cumple 0
+   91s PLAN k5 hc1.0  T1 med   -522 p10  -3223 neg60 65.3 evperd 10.67 aprob 14.9 dias   9 cumple 1
+   93s PLAN k6 hc1.0  T1 med   -789 p10  -3712 neg60 63.4 evperd 12.42 aprob 14.2 dias   7 cumple 1
+   99s PLAN k1 hc1.0  T2 med   -640 p10   -991 neg60 79.9 evperd 2.91 aprob 17.7 dias  26 cumple 0
+  102s PLAN k2 hc1.0  T2 med   -941 p10  -1578 neg60 79.7 evperd 4.88 aprob 17.9 dias  24 cumple 0
+  106s PLAN k3 hc1.0  T2 med   -598 p10  -2250 neg60 74.0 evperd 7.28 aprob 17.3 dias  16 cumple 0
+  108s PLAN k4 hc1.0  T2 med   -600 p10  -2997 neg60 69.7 evperd 9.84 aprob 16.3 dias  10 cumple 1
+  111s PLAN k5 hc1.0  T2 med   -930 p10  -3728 neg60 68.4 evperd 12.51 aprob 13.8 dias   9 cumple 1
+  113s PLAN k6 hc1.0  T2 med   -566 p10  -4182 neg60 63.1 evperd 14.25 aprob 13.5 dias   7 cumple 1
+  113s CONTIG k1 hc0.0  T1 plan med   7492 p10    906 neg60  7.8 evperd 0.09 aprob 91.5 dias  48 cumple 4
+  114s CONTIG k2 hc0.0  T1 plan med   8299 p10   3887 neg60 12.1 evperd 0.22 aprob 86.3 dias  32 cumple 3
+  114s CONTIG k3 hc0.0  T1 plan med   8509 p10   3823 neg60 16.4 evperd 0.58 aprob 72.8 dias  23 cumple 3
+  114s CONTIG k4 hc0.0  T1 plan med   9567 p10   4143 neg60 18.4 evperd 1.31 aprob 56.6 dias  16 cumple 2
+  114s CONTIG k5 hc0.0  T1 plan med  12784 p10   7278 neg60 12.1 evperd 2.00 aprob 45.8 dias   8 cumple 3
+  114s CONTIG k6 hc0.0  T1 plan med  12685 p10   6925 neg60 12.5 evperd 2.62 aprob 40.2 dias   7 cumple 3
+  115s CONTIG k1 hc0.0  T2 plan med   9156 p10   -441 neg60 26.5 evperd 0.38 aprob 74.2 dias  61 cumple 2
+  115s CONTIG k2 hc0.0  T2 plan med  14858 p10   -123 neg60 28.5 evperd 0.97 aprob 60.8 dias  29 cumple 1
+  116s CONTIG k3 hc0.0  T2 plan med  16542 p10    945 neg60 25.6 evperd 1.29 aprob 57.5 dias  25 cumple 1
+  116s CONTIG k4 hc0.0  T2 plan med  16918 p10    765 neg60 25.0 evperd 2.41 aprob 46.5 dias  16 cumple 1
+  116s CONTIG k5 hc0.0  T2 plan med  18481 p10   1212 neg60 23.2 evperd 2.91 aprob 44.3 dias  12 cumple 1
+  116s CONTIG k6 hc0.0  T2 plan med  18522 p10   2101 neg60 22.4 evperd 3.48 aprob 41.0 dias  10 cumple 3
+  117s CONTIG k1 hc0.35 T1 plan med    923 p10   -439 neg60 42.8 evperd 0.62 aprob 52.4 dias  43 cumple 0
+  117s CONTIG k2 hc0.35 T1 plan med   3483 p10   -746 neg60 47.6 evperd 1.27 aprob 49.0 dias  39 cumple 1
+  117s CONTIG k3 hc0.35 T1 plan med   5125 p10   -662 neg60 41.1 evperd 2.00 aprob 44.7 dias  19 cumple 1
+  117s CONTIG k4 hc0.35 T1 plan med   5274 p10   -751 neg60 43.6 evperd 2.29 aprob 43.4 dias  20 cumple 1
+  117s CONTIG k5 hc0.35 T1 plan med   6584 p10   1298 neg60 31.7 evperd 3.35 aprob 32.1 dias  12 cumple 1
+  118s CONTIG k6 hc0.35 T1 plan med   6163 p10    894 neg60 30.8 evperd 5.03 aprob 24.5 dias  10 cumple 2
+  118s CONTIG k1 hc0.35 T2 plan med   3993 p10   -620 neg60 35.8 evperd 0.88 aprob 46.5 dias  45 cumple 1
+  119s CONTIG k2 hc0.35 T2 plan med   6485 p10   -905 neg60 36.6 evperd 1.73 aprob 41.6 dias  35 cumple 1
+  119s CONTIG k3 hc0.35 T2 plan med   9648 p10  -1190 neg60 36.0 evperd 2.45 aprob 39.4 dias  23 cumple 1
+  119s CONTIG k4 hc0.35 T2 plan med   9419 p10  -1447 neg60 35.2 evperd 4.49 aprob 26.5 dias  17 cumple 1
+  120s CONTIG k5 hc0.35 T2 plan med  11442 p10  -1497 neg60 32.5 evperd 4.97 aprob 27.3 dias  11 cumple 1
+  120s CONTIG k6 hc0.35 T2 plan med  11285 p10  -1502 neg60 27.5 evperd 7.20 aprob 19.9 dias   8 cumple 2
+  121s CONTIG k1 hc1.0  T1 plan med   -779 p10  -1072 neg60 85.4 evperd 3.07 aprob 16.9 dias  26 cumple 0
+  121s CONTIG k2 hc1.0  T1 plan med  -1191 p10  -1578 neg60 81.5 evperd 4.80 aprob 13.8 dias  25 cumple 0
+  121s CONTIG k3 hc1.0  T1 plan med  -1856 p10  -2278 neg60 86.7 evperd 7.00 aprob 18.6 dias  12 cumple 0
+  122s CONTIG k4 hc1.0  T1 plan med  -2461 p10  -2850 neg60 86.1 evperd 9.46 aprob 15.0 dias   9 cumple 1
+  122s CONTIG k5 hc1.0  T1 plan med  -3171 p10  -3664 neg60 79.3 evperd 12.20 aprob 12.3 dias   8 cumple 1
+  122s CONTIG k6 hc1.0  T1 plan med  -3583 p10  -4212 neg60 79.3 evperd 13.68 aprob 13.0 dias   8 cumple 1
+  123s CONTIG k1 hc1.0  T2 plan med   -372 p10  -1267 neg60 82.5 evperd 3.07 aprob 14.2 dias  48 cumple 0
+  123s CONTIG k2 hc1.0  T2 plan med   -606 p10  -1945 neg60 84.1 evperd 5.10 aprob 11.8 dias  24 cumple 0
+  124s CONTIG k3 hc1.0  T2 plan med   1200 p10  -2662 neg60 82.8 evperd 7.47 aprob 14.1 dias  24 cumple 0
+  124s CONTIG k4 hc1.0  T2 plan med   1077 p10  -3739 neg60 81.8 evperd 10.93 aprob 11.6 dias  10 cumple 1
+  125s CONTIG k5 hc1.0  T2 plan med    -12 p10  -4544 neg60 82.4 evperd 14.20 aprob  8.4 dias   6 cumple 1
+  125s CONTIG k6 hc1.0  T2 plan med    512 p10  -5078 neg60 73.2 evperd 16.01 aprob  9.3 dias  11 cumple 0
+DONE 125

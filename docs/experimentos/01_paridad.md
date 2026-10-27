@@ -88,7 +88,7 @@ Totales: PF 1,49 → 1,48 / 1,53 → 1,52 / 1,61 → 1,58; Sharpe 3,84 → 3,79 
 
 **Campaña (arnés `prop_wf`, mismo código y semillas, caminos reconstruidos desde la lista corregida; `integ_paired.py`, `integ_port.py`, `integ_budget.py`).** Los caminos vivían en un scratchpad de otra sesión (no reproducible); ahora se reconstruyen en `research/tmp/scratch` (`acct_2027.build()`, lista de días `days_real()`, medias ruedas a P&L 0 como NT). Plan 5 × Lucid Flex 150K 6c/3c + 3 × MFFU 1x8, $/mes con cupón, mediana (p10) antes → después:
 
-| Edge | 2020-23 | 2024-26 |
+| Edge | arranques 2020-22 | arranques 2023-26 |
 |---|---|---|
 | Completo | 16.280 (9.529) → **16.173 (9.243)** | 14.739 (7.238) → **14.689 (7.041)** |
 | −35 % | 8.838 (2.188) → **8.824 (2.464)** | 8.610 (2.000) → **8.418 (1.801)**; P(año negativo) 5,0 → 4,2 % |
