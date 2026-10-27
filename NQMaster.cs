@@ -503,6 +503,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				{
 					foreach (Mod m in mods) if (m.Parked) m.ParkQty = Math.Max(1, (int)Math.Round(m.ParkQty * (double)lq / hq));
 					if (pend5 != null) pend5Qty = Math.Max(1, (int)Math.Round(pend5Qty * (double)lq / hq));
+					if (ictPendDir != 0) ictPendQty = Math.Max(1, (int)Math.Round(ictPendQty * (double)lq / hq));
 				}
 				edgeDayQty = Qty(); statQty = Qty();	// review L14
 				syncArmed = false; desyncBars = 0; NewsListCheck();
@@ -798,13 +799,16 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				int pdi = ictPendDir;
 				if (ict.InTrade || Working(ict.Entry) || ict.Parked || CurrentBars[0] > ictPendBar + 5 || CurrentBars[1] >= ictPendExp || (pdi == -1 ? High[0] > ictPendExtP : Low[0] < ictPendExtP)) { ictPendDir = 0; Log("ICT deferred setup dropped"); }
-				else if (CurrentBars[0] > ictPendBar && DirectionAllowed(pdi))
+				else if (CurrentBars[0] > ictPendBar)
 				{
-					ictPendDir = 0; ict.Dir = pdi; ictExtPend = ictPendExtP; ictExpiry = ictPendExp; ArmPriceBracket(ict, pdi, ictPendStop);
-					int iqo = OfApply(ict, ictPendQty, pdi);
-					Order ir = iqo <= 0 ? null : (pdi == 1 ? EnterLongLimit(fillBip, true, iqo, ictPendLim, ict.Sig) : EnterShortLimit(fillBip, true, iqo, ictPendLim, ict.Sig));
-					if (ir != null) ict.Entry = ir;
-					Log(string.Format("ICT {0} LIMIT @ {1} | SL {2} (after the deferral)", pdi == 1 ? "BUY" : "SELL", Fmt(ictPendLim), Fmt(ictPendStop)));
+					if (DirectionAllowed(pdi))
+					{
+						ictPendDir = 0; ict.Dir = pdi; ictExtPend = ictPendExtP; ictExpiry = ictPendExp; ArmPriceBracket(ict, pdi, ictPendStop);
+						int iqo = OfApply(ict, ictPendQty, pdi);
+						Order ir = iqo <= 0 ? null : (pdi == 1 ? EnterLongLimit(fillBip, true, iqo, ictPendLim, ict.Sig) : EnterShortLimit(fillBip, true, iqo, ictPendLim, ict.Sig));
+						if (ir != null) { ict.Entry = ir; Log(string.Format("ICT {0} LIMIT @ {1} | SL {2} (after the deferral)", pdi == 1 ? "BUY" : "SELL", Fmt(ictPendLim), Fmt(ictPendStop))); }
+					}
+					else if (!lastDeferred) { ictPendDir = 0; ict.Dir = pdi; ictExtPend = ictPendExtP; ictExpiry = ictPendExp; ArmPriceBracket(ict, pdi, ictPendStop); ParkSetup(ict, true, ictPendLim, ictPendQty); }	// blocked by an opposite POSITION: parked, as the direct path
 				}
 			}
 			ManageParked(openMin, closeMin);
@@ -815,7 +819,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (o.On && inRth && etDate == rthDay && o.OrReady && closeMin >= Math.Max(630, RthOpen + o.Range)) ManageOrb(o, closeMin);
 			// S2 2026-10-27: MSEQS is gated on the RAW ORB60 short signal (research b_mseq: the first ORB60 short of nt_v3_replica with only the
 			// pullback filter), i.e. the first bar whose low trades through OR low - 1 tick on a down-trend pullback day inside the ORB window,
-			// whether or not ManageOrb then skipped the day (ORBt prior-close filter, stop size) or the order filled
+			// whether or not ManageOrb then skipped the day (ORBt prior-close filter, stop size) or the order filled. Needs ORB60 on with its 60-minute
+			// range (the OR is only tracked for modules that are on); with ORB60 off MSEQS never opens, as before this change
 			if (orbSigDir == 0 && orb.On && inRth && etDate == rthDay && orb.OrReady && pullbackDay && trendDir == -1 && closeMin >= Math.Max(630, RthOpen + orb.Range) && closeMin < 780 && Low[0] <= orb.OrL - TickSize) { orbSigDir = -1; orbSigMin = openMin; Log("ORB60 raw short signal (MSEQS gate) @ " + Fmt(orb.OrL - TickSize)); }
 			foreach (Mod m in timeMods)
 			{
@@ -829,11 +834,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (eng10.On) ManageEng10(openMin);
 			if (eng26.On && openMin == 929) Eng26Entry();
 			// S2 2026-10-27: a six-year signal deferred by DirectionAllowed (opposite stop order working, parked there) is retried once on the next
-			// 1-minute bar with the same stop / target, as TimeEntry and MSEQ do; the research has no working orders and takes the trade at once
+			// 1-minute bar with the same stop / target, as TimeEntry and MSEQ do (dropped if that bar crossed the stop, as pend5: the research would have
+			// taken the trade at the signal close and lost 1R; NinjaTrader cannot place that fill); the research has no working orders and enters at once
 			if (orfSig != 0) { int os = orfSig; orfSig = 0; SixEnter(orf, os, orfSl, orfTp); if (lastDeferred) { orfPend = os; orfPendBar = CurrentBars[0]; } }
-			else if (orfPend != 0) { int os = orfPend; orfPend = 0; if (CurrentBars[0] == orfPendBar + 1) { SixEnter(orf, os, orfSl, orfTp); if (!lastDeferred && Working(orf.Entry)) Log("ORFAIL entered after the deferral"); } }
+			else if (orfPend != 0) { int os = orfPend; orfPend = 0; if (CurrentBars[0] != orfPendBar + 1) Log("ORFAIL deferred signal dropped (bar skipped)"); else if (os == 1 ? Low[0] <= orfSl : High[0] >= orfSl) Log("ORFAIL deferred signal dropped (stop crossed during the deferral)"); else { SixEnter(orf, os, orfSl, orfTp); if (!lastDeferred && Working(orf.Entry)) Log("ORFAIL entered after the deferral"); } }
 			if (camSig != 0) { int cs = camSig; camSig = 0; SixEnter(cam3, cs, camSl, camTp); if (lastDeferred) { camPend = cs; camPendBar = CurrentBars[0]; } }
-			else if (camPend != 0) { int cs = camPend; camPend = 0; if (CurrentBars[0] == camPendBar + 1) { SixEnter(cam3, cs, camSl, camTp); if (!lastDeferred && Working(cam3.Entry)) Log("CAM3 entered after the deferral"); } }
+			else if (camPend != 0) { int cs = camPend; camPend = 0; if (CurrentBars[0] != camPendBar + 1) Log("CAM3 deferred signal dropped (bar skipped)"); else if (cs == 1 ? Low[0] <= camSl : High[0] >= camSl) Log("CAM3 deferred signal dropped (stop crossed during the deferral)"); else { SixEnter(cam3, cs, camSl, camTp); if (!lastDeferred && Working(cam3.Entry)) Log("CAM3 entered after the deferral"); } }
 			UpdateDashboard();
 		}
 

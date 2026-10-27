@@ -46,6 +46,21 @@ Baseline (export Standard de P1 contra `ultra_d4`, 2024-01-22 → 2026-10-08): G
 
 **Efecto de los fixes sobre la investigación (`ultra_d4`, sin re-optimizar):** T1 2020-23 n 3.977 → 4.068, PF 1,462 → 1,458, Sharpe 3,53 → 3,55, DD $4.667 → $4.681; T2 2024-26 n 3.421 → 3.505, PF 1,500 → 1,492, $/mes 2.557 → 2.589, Sharpe 4,03 → 3,99, DD y peor mes iguales. Módulos: ICT T2 PF 1,09 (ver arriba); CAM3 T2 PF 0,78 → 0,74 (ya negativo en 2024-26, como en `six_oos`); el resto ±0,05 de PF.
 
+**Revisión adversarial del parche NT (`patch_parity_s2.py`, 27-oct) y disposición (v2):**
+
+| Sev. | Hallazgo | Disposición |
+|---|---|---|
+| media | El reintento de ORFAIL/CAM3 entraba aunque la barra de la deferral hubiera cruzado el stop (`pend5` descarta en ese caso): orden a mercado que llena más allá del stop → "filled beyond stop", una vuelta de comisión; la investigación habría perdido 1R, que NT no puede reproducir. | **Corregido (v2):** se descarta con `Log("… dropped (stop crossed during the deferral)")`. Sesgo residual documentado: NT salta esos perdedores, como ya hace `pend5`. |
+| baja | Reintento perdido en silencio si la barra siguiente retorna antes del despacho (noticias, flatten, `!canTrade`, `LateBar`). | **Corregido (v2):** `Log("… dropped (bar skipped)")`. |
+| baja | Un solo reintento: en vivo, si la cancelación de la stop opuesta no se confirmó en la barra siguiente, se vuelve a diferir y la señal se pierde; sin efecto en el Analyzer. | Aceptado: visible en el Output; se mide en Playback. |
+| baja | `ictPendQty` no se re-escalaba al pasar a vivo (como `pend5Qty` y `ParkQty`). | **Corregido (v2).** Documentado: una señal diferida en la última barra histórica dispara en la primera en vivo (ventana ≤ 5 min), igual que `m.Retry`. |
+| baja | ICT pendiente bloqueado por una POSICIÓN opuesta esperaba 5 barras y se descartaba; el camino directo lo aparca (`ParkSetup`). | **Corregido (v2):** si `DirectionAllowed` falla sin `lastDeferred`, se aparca con el límite, extremo y vencimiento guardados. |
+| baja | Si el límite fue tocado en la barra de la deferral, la investigación llena en la siguiente y NT no lo sabe (llena tarde o nunca; si además violó el extremo, descarta). | Inherente a diferir una barra; causa residual documentada. |
+| baja | La señal virtual de ORB60 exige `orb.On` y rango 60 (el OR solo se trackea para módulos encendidos): Custom con ORB60 apagado → MSEQS nunca habilita (igual que antes). | Documentado en el código. |
+| info | `pullbackDay` queda NaN la sesión posterior a una media rueda (heredado); ahora también afecta al gate de MSEQS. `orbFirstDir/orbFirstMin` sin lectores. | Verificar en la próxima paridad; cosmético. |
+
+Verificado por el revisor: resets por sesión, `lastDeferred` leído en la misma sentencia que `SixEnter`, ManageVolb respeta `deferUntil` y no recoloca la stop antes del reintento, `CurrentBars[1]` válido en el bloque de 1 min, sin doble orden ICT (la serie primaria se procesa primero y el gatillo de 5 min hace `continue` con `ictPendDir != 0`), la señal virtual reproduce `nt_v3_replica` (dirección = tendencia, `l[i] <= orl − tick`, ventana < 13:00, PR < 0,44) y `closeMin > orbSigMin` ⇔ `last1 >= first_short`. Verificación directa pendiente en el Output del Analyzer: un MSEQS en el mismo 5 min que la línea `ORB60 raw short signal`.
+
 **Reproducibilidad:** `cd research/mine && rm wrq_entries_db.pkl && python3 -c "import db_long; db_long.entries_db()" && python3 cand16.py && python3 six_base.py && python3 regen_six_keys.py && python3 six_build.py` (3 min) regenera `ultra_d4`; `python3 wrq_build.py && python3 wrq_feats.py && python3 build_parity_mnq.py` (1,5 min) regenera `ultra_d4_mnq`; `python3 parity_check.py <csv> --set ultra_d4_mnq`. Código NT: `cp archive/backups/NQMaster_backup_pre_fillseries.cs NQMaster.cs && python3 research/mine/patch_fillseries.py && python3 research/mine/patch_parity_s2.py && bash tools/nt8_stub/check.sh NQMaster.cs`.
 
 ## Pendiente del experimento
