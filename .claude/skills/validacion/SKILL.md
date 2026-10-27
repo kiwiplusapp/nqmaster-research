@@ -39,9 +39,9 @@ Una idea entra solo si funciona en IS, C24 y REAL sin re-optimizar. Además, par
 ## Paridad con NinjaTrader
 
 1. Strategy Analyzer: MNQ 1 min, Profile Ultra, Contracts 1, PropMode Off, desde 2024-01-01, comisión $1,90 + 1 tick. Exportar trades a CSV.
-2. `cd research/mine && python3 parity_check.py <csv> --set ultra_d4`.
+2. `cd research/mine && python3 parity_check.py <csv> --set ultra_d4_mnq` (set de paridad construido sobre MNQ, el instrumento del Analyzer; `ultra_d4` sobre NQ es el set de campaña y da ~4 puntos menos de G1 por diferencias de instrumento).
 3. Compuertas: G1 ≥ 92% de trades emparejados, G2 $ dentro de ±3%, G3 correlación diaria ≥ 0,95, G4 cada módulo ≥ 90% si n ≥ 20.
-4. Fallos conocidos: ICT (~82%, el límite de 5m llena más tarde en NT) y MSEQS (~56%, NT exige que ORB60 haya llenado). Cualquier otro fallo es un bug nuevo.
+4. Fallos conocidos hasta el F5 de `patch_parity_s2.py` (27-oct): ORFAIL ~35 % y CAM3 ~56 % (sin reintento al diferir), ICT ~88 % (diferido vuelve a exigir el gatillo), MSEQS ~68 % (gate por fill de ORB60). Después de ese parche, cualquier fallo es un bug nuevo. El set excluye medias ruedas y días FOMC / ATR < 150, como NT.
 5. `research/mine/impl_gap.py` mide la brecha módulo por módulo en vivo.
 
 ## Chequeos de código

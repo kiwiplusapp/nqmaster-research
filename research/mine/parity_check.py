@@ -9,7 +9,8 @@ Gates (fixed 2026-10-16, before looking at new exports):
 Known, explained differences (documented; still reported, never hidden):
   VW13  - research lists the 2nd lot (distance >= 0.30 ATR) as a separate trade, NT books one trade with qty 2 -> research deduplicated
   ICT   - 5-minute limit entry; NT fills the retest a few bars later than research on some days -> tolerance 45 min for ICT
-  holiday windows - research turns the trend filter off ~20 days after holidays (research artifact, not code)
+  (fixed 2026-10-27) trend blackout 20 sessions after a Globex session without RTH bars (research/ict.py); short sessions excluded from the
+  research set (SkipShortSessions); use --set ultra_d4_mnq (same rules on MNQ, the Analyzer's instrument): ultra_d4 is built on NQ.
 Usage (from research/mine):  python parity_check.py <NT trades.csv> [--set ultra_r] [--tol 3]
 Writes parity_<set>_<date>.md (with git commit and NQMaster.cs SHA-256) and returns exit code 1 if any gate fails."""
 import os, sys, hashlib, subprocess, argparse, datetime, numpy as np, pandas as pd

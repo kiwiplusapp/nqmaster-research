@@ -8,7 +8,7 @@ Antes de trabajar leé `docs/ESTADO.md` (estado y 5 problemas abiertos). Reglas 
 ```bash
 bash tools/cloud_setup.sh                       # una vez: pip install + reconstruye los datos .xz (si falta research/data/nq_1m.npz)
 python3 tools/restore_data.py --check           # solo verifica SHA-256
-cd research/mine && python3 parity_check.py <csv de Strategy Analyzer> --set ultra_d4   # paridad NT vs investigación
+cd research/mine && python3 parity_check.py <csv de Strategy Analyzer> --set ultra_d4_mnq   # paridad NT vs investigación (set sobre MNQ; ultra_d4 = set de campaña sobre NQ)
 bash tools/nt8_stub/check.sh NQMaster.cs        # chequeo de sintaxis C# 5 contra un stub
 python3 tools/propcycle_test/run_test.py        # tras tocar PropCycle: tiene que dar 0 diferencias
 python tools/compress_data.py                   # antes de commitear cualquier archivo > 40 MB
