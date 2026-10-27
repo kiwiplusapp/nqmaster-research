@@ -23,7 +23,7 @@ def seat_flow_b(LO, CL, Hh, ep, fee, FL, FC, fp, idx, s0, end, flow, mtm, ev, ac
             net = 0.0
             for d in range(q0, i): net += flow[d]
             if net < -budget:
-                nxt = q0 + qlen if quarterly else end
+                nxt = (i // qlen + 1) * qlen if quarterly else end      # revision comun siguiente (fix 27-oct, revision adversarial: antes q0 + qlen con q0 recortado a s0)
                 if nxt > end: nxt = end
                 stats[0] += nxt - i; stats[1] += 1; i = nxt; continue
         flow[i] -= fee; mtm[i] -= fee
@@ -65,6 +65,23 @@ def plan_cell(M, AL, AM, paths, cand):
     return flows, mtms, evs, nev, tot, st / NB
 
 
+def ref_seat_b(M, A, bi, s0, L, budget, quarterly):
+    """referencia independiente en Python (lista explicita de revisiones comunes) para el autotest con presupuesto finito"""
+    LO, CL, _ = M[A["mix"]]; FL, FC, fp = A["tiers"]; end = s0 + L; flow = np.zeros(len(bi)); mtm = np.zeros(len(bi)); rec = np.zeros(5)
+    reviews = list(range(QLEN, end + QLEN, QLEN)) if quarterly else []
+    i = s0; nev = 0; paused = 0
+    while i < end:
+        last = max([s0] + [r for r in reviews if r <= i]); net = float(flow[last:i].sum())
+        if net < -budget:
+            nxt = min([r for r in reviews if r > i] + [end]); paused += min(nxt, end) - i; i = min(nxt, end); continue
+        flow[i] -= A["fee"]; mtm[i] -= A["fee"]; nev += 1
+        r, j = race(LO, CL, A["Hh"], bi, i, end, A["ep"])
+        if r != 1:
+            i = j + 1; continue
+        fund_flow(FL, FC, fp, bi, j + 1, end, rec, flow, mtm); i = int(rec[4]) + 1
+    return flow, nev, paused
+
+
 def selftest(NB=150):
     days, M, FU, PER = O.setup(); rng = np.random.default_rng(3); bad = 0; tot = 0
     for hc in P.HC:
@@ -80,7 +97,22 @@ def selftest(NB=150):
                         tot += 1
                         if k0 != k1 or not (np.array_equal(f0, f1) and np.array_equal(m0, m1) and np.array_equal(e0[:k0], e1[:k1])): bad += 1
     print(f"selftest: {tot} asientos con presupuesto infinito, {bad} diferencias contra objective.run_seat (flujo, mtm y registro de evals identicos)")
-    return bad
+    bad2 = 0; tot2 = 0; npaused = 0; rng = np.random.default_rng(5)
+    for hc in (1.0, 0.35):                                        # presupuesto finito y plazas escalonadas (s0 > 0) contra la referencia
+        Hm = {m: P.haircut(days, M[m][2], hc) for m in ((0, 4), (0, 8))}
+        for per, ii in PER.items():
+            for name, bud in ((L150, 1500.0), (L150, 2500.0), (MF, 600.0)):
+                A = O.seat_args(FU, hc, name, Hm)
+                for _ in range(NB // 3):
+                    bi = P.boot_idx(ii[0], ii[-1] + 1, H + 25, rng)
+                    for s0 in (0, 5, 10, 15, 20):
+                        for q in (1, 0):
+                            f1 = np.zeros(H + 25); m1 = np.zeros(H + 25); e1 = np.zeros((MAXEV, 5)); st = np.zeros(2)
+                            k1 = run_b(M, A, bi, s0, H, f1, m1, e1, bud, q, st); fr, kr, pr = ref_seat_b(M, A, bi, s0, H, bud, q)
+                            tot2 += 1; npaused += st[0] > 0
+                            if k1 != kr or not np.allclose(f1, fr) or abs(st[0] - pr) > 0: bad2 += 1
+    print(f"selftest: {tot2} asientos con presupuesto finito y s0 en 0..20 ({npaused} con pausa), {bad2} diferencias contra la referencia independiente (flujo, evals y dias de pausa)")
+    return bad + bad2
 
 
 def main(NB=1000):
