@@ -73,6 +73,7 @@ def frame(path, tz, tag, tick_stamped=None, slip_ticks=0, slip_scope="all"):
     op = bar_open(tin_et, ts_flag); xo = bar_open(tout_et, ts_flag)
     print(f"{tag}: {len(t)} trades, fill stamps read as {'tick time' if ts_flag else 'bar close'}" + (f", synthetic slippage {slip_ticks} tick(s) on {slip_scope}" if slip_ticks else ""))
     mods = t["mod"].str.strip(); d = t["d"].values.astype(float); epx = t.epx.values.astype(float); xpx = t.xpx.values.astype(float); u = (t.pnl / t.qty).values.astype(float)
+    epx_raw, xpx_raw = epx.copy(), xpx.copy()        # review 2026-10-27: the impossible-fill check must see the export's prices, not the synthetic slippage
     if slip_ticks:
         ent = mods.map(lambda m: otype(m) != "limit").values
         epx = epx + np.where(ent, d * slip_ticks * TICK, 0.0); u = u - np.where(ent, slip_ticks * TICK * 2.0, 0.0)          # MNQ $2 per point
@@ -83,7 +84,7 @@ def frame(path, tz, tag, tick_stamped=None, slip_ticks=0, slip_scope="all"):
         xpx = xpx + d * slip_ticks * TICK * k; u = u + slip_ticks * TICK * 2.0 * k
     f = pd.DataFrame(dict(date=((op + pd.Timedelta(hours=6)).dt.normalize().dt.strftime("%Y%m%d").astype(int)),
                           mod=mods.values, d=t["d"].values, qty=t.qty.values, u=u, pnl=t.pnl.values,
-                          epx=epx, xpx=xpx, xname=t.xname.values, bars=t.bars.values,
+                          epx=epx, xpx=xpx, epx_raw=epx_raw, xpx_raw=xpx_raw, xname=t.xname.values, bars=t.bars.values,
                           tin=((op.dt.hour * 60 + op.dt.minute - 1080) % 1440).astype(int), tout=((xo.dt.hour * 60 + xo.dt.minute - 1080) % 1440).astype(int),
                           mod_et=(op.dt.hour * 60 + op.dt.minute).astype(int), tin_ts=tin_et.values, tout_ts=tout_et.values))
     f["otype"] = f["mod"].map(otype); f["band"] = f["mod_et"].map(band); f["xkind"] = f["xname"].map(xkind)
@@ -151,7 +152,7 @@ def impossible_fills(F, bars_name, tag):
         q = dates.astype(np.int64) * 1440 + mins.astype(np.int64); i = np.searchsorted(ks, q)
         ok = (i < len(ks)) & (ks[np.minimum(i, len(ks) - 1)] == q); return i, ok
     out = []
-    for col, mcol, what in (("epx", "tin", "entry"), ("xpx", "tout", "exit")):
+    for col, mcol, what in (("epx_raw", "tin", "entry"), ("xpx_raw", "tout", "exit")):
         i, ok = look(F.date.values, F[mcol].values)
         px = F[col].values
         j = np.minimum(i, len(ks) - 1)
@@ -254,7 +255,7 @@ if __name__ == "__main__":
         t, msg = impossible_fills(F, a.bars, tag)
         if t is None: chk.append(msg)
         else: chk.append(t.to_string(index=False))
-    L += ["", f"## Fills outside the 1-minute bar (+/- 1 tick), bars = research/data/{a.bars}", "```"] + chk + ["```"]
+    L += ["", f"## Fills outside the 1-minute bar (+/- 1 tick), bars = research/data/{a.bars}; no_bar = fills on dates the bar file does not cover (not checked)", "```"] + chk + ["```"]
     sc = []
     for F, tag in ((A, "A"), (B, "B")):
         T, line = series_check(F, tag); sc += [T.to_string(index=False), line]

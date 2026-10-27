@@ -14,9 +14,9 @@ Archivos: `trades_off_2024-01-01_hoy.csv` (Off, 3.295 trades), `trades_tick1_202
 | v4.2 vs v4.1 (mismo Tick1) | 392 pares; **exactamente 49 difieren, todos salidas por MaxHold** (ON07 27, NF05 15, LF0430 4, MOM1030, ORFAIL, SO04) con `hold` una barra menos (ahora igual a Off); los otros 343 pares Δ = 0 en entrada, salida y $. 0 cambios de desenlace. |
 | Series | Entradas límite 96,8 % con segundos, stop 96,4 %, `StopX` 96,4 %, `TargetX` 97,6 %; a mercado y salidas por tiempo 0 % (primer tick del minuto siguiente, sellado :00). 0 salidas ≥ 15:58, 0 cierres de NinjaTrader. |
 
-## H1 / H2 final: Tick1 − Off = +0,4 % (IC 95 % −0,0 % .. +0,7 %)
+## H1 / H2 final: Tick1 − Off = +0,4 % (IC 95 % −0,0 % .. +0,7 %); −2,0 % sin desplazar brackets, +3,5 % crudo
 
-Off y Tick1 v4.2 sobre **2026-06-01 → 2026-10-23, mismo Days to load**, 388 pares sin el 25-jun, 100 % emparejados, **0 cambios de desenlace, 0 flips, 0 salidas por tiempo en otra barra**. Comando: `python3 fill_gap.py ../nt_exports/2026-10-26/v41/trades_off_2026-06-01_hoy.csv ../nt_exports/2026-10-26/v42/trades_tick1_2026-06-01_hoy.csv --slip-b 1 --slip-b-scope all --exclude-dates 20260625 --research ultra_d4`.
+Off y Tick1 v4.2 sobre la corrida **2026-06-01 → 2026-10-23 (primer trade 2026-06-22), mismo Days to load**, 388 pares sin el 25-jun (392 con él: +$20, +0,4 %, IC +0,0 .. +0,8 %), 100 % emparejados, **0 cambios de desenlace, 0 flips, 0 salidas por tiempo en otra barra**. Comando: `python3 fill_gap.py ../nt_exports/2026-10-26/v41/trades_off_2026-06-01_hoy.csv ../nt_exports/2026-10-26/v42/trades_tick1_2026-06-01_hoy.csv --slip-b 1 --slip-b-scope all --exclude-dates 20260625 --research ultra_d4`.
 
 | Tipo de entrada | n | Δ entrada (ticks) | Δ salida (ticks) | Δ$/trade (IC 95 %) | Total |
 |---|---|---|---|---|---|

@@ -73,7 +73,7 @@ target        0     169          0
 time/flat     0       0        108
 ```
 
-## Fills outside the 1-minute bar (+/- 1 tick), bars = research/data/mnq_fut.npz
+## Fills outside the 1-minute bar (+/- 1 tick), bars = research/data/mnq_fut.npz; no_bar = fills on dates the bar file does not cover (not checked)
 ```
 side  what  checked  no_bar  feed_offset  outside
    A entry      279     109            0        0
@@ -125,7 +125,7 @@ B: exits at/after 15:58 ET 0 (flatten fills are stamped 15:57:00), exits named b
                             Off v4.2 (jun-hoy)   ORB90         8   8        8 100.0                   3.22  1.65          -239    -213
                             Off v4.2 (jun-hoy)  ORFAIL         9   6        5  55.6                   0.60  1.24           414     416
                             Off v4.2 (jun-hoy)   REV06        23  25       23 100.0                  -0.79 -0.42          -365    -383
-                            Off v4.2 (jun-hoy)    RV11         2   3        1  50.0                  -1.42   NaN          -111    -112
+                            Off v4.2 (jun-hoy)    RV11         1   3        1 100.0                  -1.42   NaN          -111    -112
                             Off v4.2 (jun-hoy)    SO04        10  11       10 100.0                   2.07  1.11            34      55
                             Off v4.2 (jun-hoy)    VOLB        57  50       49  86.0                   0.37  1.45         -1341   -1323
                             Off v4.2 (jun-hoy)    VW13         8   7        7  87.5                   1.91  0.84           227     240
@@ -148,7 +148,7 @@ Tick1 v4.2 (jun-hoy, ticks + 1 tick sintético)   ORB60        11  11       11 1
 Tick1 v4.2 (jun-hoy, ticks + 1 tick sintético)   ORB90         8   8        8 100.0                   3.35  1.74          -239    -212
 Tick1 v4.2 (jun-hoy, ticks + 1 tick sintético)  ORFAIL         9   6        5  55.6                   1.00  3.65           414     418
 Tick1 v4.2 (jun-hoy, ticks + 1 tick sintético)   REV06        23  25       23 100.0                  -0.79 -0.42          -365    -383
-Tick1 v4.2 (jun-hoy, ticks + 1 tick sintético)    RV11         2   3        1  50.0                  -1.42   NaN          -111    -112
+Tick1 v4.2 (jun-hoy, ticks + 1 tick sintético)    RV11         1   3        1 100.0                  -1.42   NaN          -111    -112
 Tick1 v4.2 (jun-hoy, ticks + 1 tick sintético)    SO04        10  11       10 100.0                   2.22  1.12            34      56
 Tick1 v4.2 (jun-hoy, ticks + 1 tick sintético)    VOLB        57  50       49  86.0                   0.35  1.36         -1341   -1324
 Tick1 v4.2 (jun-hoy, ticks + 1 tick sintético)    VW13         8   7        7  87.5                   1.91  0.84           227     240
