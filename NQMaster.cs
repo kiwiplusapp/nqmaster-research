@@ -109,6 +109,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 		#region Fields
 		private TimeZoneInfo etZone;
+		private int clockWarnDay = -1;	// patch_clock_check.py: last session date warned by the clock check
 		private SimpleFont dashFont;
 		private bool badTimeframe;
 		private int fillCfg, fillBip;		// fillCfg = series configured for the orders (0 = 1-minute bars as always, 2 = FillSeries Tick1 / Second1);
@@ -186,6 +187,14 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			catch { }
 			if (shortSession) Log(string.Format("short session (holiday / half day): the market closes {0:00}:{1:00} ET{2}", sessEndMin / 60, sessEndMin % 60, SkipShortSessions ? " - no new entries this session" : ""));
+			// clock check (patch_clock_check.py, 2026-10-29): CME index futures (ETH template) end the session at 17:00 ET; any other end time on a
+			// regular session means the NinjaTrader time zone or the Windows clock is wrong and every clock module would trade shifted. Alert only.
+			int clockDay = Time[0].Year * 10000 + Time[0].Month * 100 + Time[0].Day;
+			if (!shortSession && sessEndMin != 17 * 60 && clockWarnDay != clockDay)
+			{
+				clockWarnDay = clockDay;
+				Warn("nqm_clock", string.Format("NQMaster | CLOCK CHECK: this session ends at {0:00}:{1:00} ET, expected 17:00 ET (CME index futures, ETH template). Check the NinjaTrader time zone (Tools > Options > General) and the Windows clock: every module uses ET clock times.", sessEndMin / 60, sessEndMin % 60));
+			}
 			rollHalt = State == State.Realtime && RollDue();
 			if (rollHalt) Warn("nqm_roll", "NQMaster | ROLL DATE reached for " + Instrument.FullName + ": no new entries. Move the strategy to the next contract (same settings).");
 		}

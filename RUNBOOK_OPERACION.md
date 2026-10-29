@@ -66,6 +66,7 @@ Plan base: **5 Lucid Flex 150K + 3 MFFU Rapid EOD 50K**. Todas las cuentas con P
 | `NEWS LIST ends` | Se terminan las fechas de noticias cargadas. | Actualizá el calendario (ver abajo). |
 | `another account of group ... holds an opposite NQ position / working entry` o `entry cancelled: another account ...` | La guarda entre cuentas bloqueó o canceló una entrada. | Nada. Es la regla de la firma. |
 | `HEDGE GUARD: ... flattened at once` | Una entrada se llenó mientras otra cuenta del mismo grupo tenía la posición opuesta; NQMaster la cerró enseguida. | Revisá las dos cuentas en el broker. Si se repite, mandame el Log de ambas. |
+| `CLOCK CHECK: this session ends at HH:MM ET, expected 17:00 ET` | El fin de sesión no cae a las 17:00 ET en un día normal: la zona horaria de NinjaTrader (Tools > Options > General) o el reloj de Windows están mal, y todos los módulos de reloj operarían corridos (15 minutos de error bajan el Sharpe 0,3-0,7). | Deshabilitá NQMaster, corregí la zona horaria o el reloj, reiniciá NinjaTrader y verificá que el aviso no vuelva. Revisalo sobre todo la semana del cambio de horario de EE.UU. |
 
 ## Reglas de pausa (preacordadas, no se negocian en caliente)
 
