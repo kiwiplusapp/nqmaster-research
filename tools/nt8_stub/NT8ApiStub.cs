@@ -57,7 +57,7 @@ namespace NinjaTrader.NinjaScript {
   public State State; public string Description, Name; public Calculate Calculate; public int EntriesPerDirection; public EntryHandling EntryHandling;
   public bool IsExitOnSessionCloseStrategy, IsFillLimitOnTouch, IsInstantiatedOnEachOptimizationIteration, TraceOrders; public int ExitOnSessionCloseSeconds, Slippage, BarsRequiredToTrade;
   public MaximumBarsLookBack MaximumBarsLookBack; public OrderFillResolution OrderFillResolution; public StartBehavior StartBehavior; public TimeInForce TimeInForce;
-  public RealtimeErrorHandling RealtimeErrorHandling; public StopTargetHandling StopTargetHandling;
+  public RealtimeErrorHandling RealtimeErrorHandling; public StopTargetHandling StopTargetHandling; public bool IgnoreOverfill;
   public Instrument Instrument; public Account Account; public Position Position, PositionAccount; public Bars Bars; public Bars[] BarsArray; public BarsPeriod BarsPeriod; public SystemPerformanceC SystemPerformance;
   public int CurrentBar, BarsInProgress, Count; public int[] CurrentBars; public double TickSize;
   public ISeries<double> Open, High, Low, Close, Volume; public ISeries<DateTime> Time;

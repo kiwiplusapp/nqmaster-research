@@ -1,4 +1,4 @@
-"""patch_clock_check.py v2 (2026-10-29, problema abierto 3 de docs/ESTADO.md: fragilidad horaria; v2 tras la revision adversarial del 29-oct).
+"""patch_clock_check.py v3 (2026-10-29, problema abierto 3 de docs/ESTADO.md: fragilidad horaria; v2 tras la revision adversarial del 29-oct).
 Aplica sobre NQMaster.cs v4.3 (patch_fillseries.py + patch_parity_s2.py). Control de reloj SOLO DE AVISO, dos chequeos:
  (1) plantilla de sesion: los futuros de indices CME (plantilla ETH) terminan una sesion normal a las 17:00 ET; otra hora = la plantilla de horario
      del grafico / de la estrategia no es 'CME US Index Futures ETH'.
@@ -6,7 +6,8 @@ Aplica sobre NQMaster.cs v4.3 (patch_fillseries.py + patch_parity_s2.py). Contro
      1.er domingo de noviembre 02:00) contra ToEt() (reglas 'Eastern Standard Time' de Windows). Si difieren, los datos de zona horaria de Windows
      estan mal y todos los modulos de reloj operarian corridos. (v1 solo hacia el chequeo 1, que no puede ver errores de zona horaria: los cancela.)
 Corre al empezar cada sesion y al pasar a vivo (la primera sesion en vivo se proceso en historico, donde Warn solo imprime). En historico avisa una
-sola vez por corrida y cuenta las sesiones; en vivo, una vez por sesion. No cambia ningun trade. Idempotente.
+sola vez por corrida y cuenta las sesiones; en vivo, una vez por sesion. v3 (revision de codigo del 29-oct): Times[0][0] en vez de Time[0]
+(ClockCheck tambien corre desde OnStateChange al pasar a vivo). No cambia ningun trade. Idempotente.
 Run: python3 research/mine/patch_clock_check.py && bash tools/nt8_stub/check.sh NQMaster.cs"""
 import os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); P = os.path.join(ROOT, "NQMaster.cs")
@@ -50,8 +51,8 @@ rep("""		private DateTime ToEt(DateTime t)
 				return string.Format("this session ends at {0:00}:{1:00} ET, expected 17:00 ET: set the trading-hours template of the chart and of the strategy to 'CME US Index Futures ETH'", sessEndMin / 60, sessEndMin % 60);
 			try
 			{
-				DateTime utc = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(Time[0], DateTimeKind.Unspecified), Core.Globals.GeneralOptions.TimeZoneInfo);
-				double diff = (ToEt(Time[0]) - UsEtFromUtc(utc)).TotalMinutes;
+				DateTime utc = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(Times[0][0], DateTimeKind.Unspecified), Core.Globals.GeneralOptions.TimeZoneInfo);
+				double diff = (ToEt(Times[0][0]) - UsEtFromUtc(utc)).TotalMinutes;
 				if (Math.Abs(diff) > 1) return string.Format("the ET time of this bar differs by {0:0} min from the US daylight-saving rule: update Windows (time-zone data) and check the NinjaTrader time zone (Tools > Options > General)", diff);
 			}
 			catch { }
@@ -61,9 +62,9 @@ rep("""		private DateTime ToEt(DateTime t)
 		{
 			string p = ClockProblem(); if (p == null) return;
 			if (State != State.Realtime) { clockHistCount++; if (clockHistWarned) return; clockHistWarned = true; }
-			else { int d = Time[0].Year * 10000 + Time[0].Month * 100 + Time[0].Day; if (clockWarnDay == d) return; clockWarnDay = d; }
+			else { int d = Times[0][0].Year * 10000 + Times[0][0].Month * 100 + Times[0][0].Day; if (clockWarnDay == d) return; clockWarnDay = d; }
 			Warn("nqm_clock", "NQMaster | CLOCK CHECK: " + p + ". Every module uses ET clock times.");
 		}
 		private DateTime ToEt(DateTime t)
 		{""")
-open(P, "w", encoding="utf-8").write(s); print("patch_clock_check v2 aplicado")
+open(P, "w", encoding="utf-8").write(s); print("patch_clock_check v3 aplicado")
