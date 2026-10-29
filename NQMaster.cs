@@ -86,6 +86,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public int OpenQty, RejToday;
 			public double FixTgt = double.NaN; public bool StructStop, WinHas, Six; public double WinH, WinL, RvolMax;	// six-year modules (2026-10-16)	// lots still open (multi-lot entries close in parts), rejected orders this session
 			// explicit brackets (FillSeries Tick1 / Second1, v4): the levels the Set* calls would have used, the working orders, a market exit waiting for their cancel
+			public double RStopV = double.NaN; public bool RStopPx;	// panel open risk only (patch_open_risk.py): the stop level of the last BracketStop call
 			public bool XStopPrice, XTgtPrice, XExitPending; public double XStopV = double.NaN, XTgtV = double.NaN; public Order XStop, XTgt; public int XExitQty, XExitBar = -1; public string XExitSig;
 		}
 		private List<Mod> mods;
@@ -109,7 +110,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 		#region Fields
 		private TimeZoneInfo etZone;
-		private int clockWarnDay = -1;	// patch_clock_check.py: last session date warned by the clock check
+		private int clockWarnDay = -1, clockHistCount; private bool clockHistWarned;	// patch_clock_check.py: clock check state
 		private SimpleFont dashFont;
 		private bool badTimeframe;
 		private int fillCfg, fillBip;		// fillCfg = series configured for the orders (0 = 1-minute bars as always, 2 = FillSeries Tick1 / Second1);
@@ -187,14 +188,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			}
 			catch { }
 			if (shortSession) Log(string.Format("short session (holiday / half day): the market closes {0:00}:{1:00} ET{2}", sessEndMin / 60, sessEndMin % 60, SkipShortSessions ? " - no new entries this session" : ""));
-			// clock check (patch_clock_check.py, 2026-10-29): CME index futures (ETH template) end the session at 17:00 ET; any other end time on a
-			// regular session means the NinjaTrader time zone or the Windows clock is wrong and every clock module would trade shifted. Alert only.
-			int clockDay = Time[0].Year * 10000 + Time[0].Month * 100 + Time[0].Day;
-			if (!shortSession && sessEndMin != 17 * 60 && clockWarnDay != clockDay)
-			{
-				clockWarnDay = clockDay;
-				Warn("nqm_clock", string.Format("NQMaster | CLOCK CHECK: this session ends at {0:00}:{1:00} ET, expected 17:00 ET (CME index futures, ETH template). Check the NinjaTrader time zone (Tools > Options > General) and the Windows clock: every module uses ET clock times.", sessEndMin / 60, sessEndMin % 60));
-			}
+			ClockCheck();
 			rollHalt = State == State.Realtime && RollDue();
 			if (rollHalt) Warn("nqm_roll", "NQMaster | ROLL DATE reached for " + Instrument.FullName + ": no new entries. Move the strategy to the next contract (same settings).");
 		}
@@ -518,11 +512,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 				syncArmed = false; desyncBars = 0; NewsListCheck();
 				if (atrCount < AtrMin || rthDaysSeen < WarmupDays) Warn("nqm_warmup", string.Format("NQMaster | WARNING: only {0} RTH days loaded, the warm-up needs {1}: modules stay idle until then (set Days to load >= 45).", rthDaysSeen, WarmupDays));
 				rollHalt = RollDue(); if (rollHalt) Warn("nqm_roll", "NQMaster | ROLL DATE reached for " + Instrument.FullName + ": no new entries. Move the strategy to the next contract (same settings).");
+				ClockCheck();	// patch_clock_check.py: the first live session started in history, where Warn only prints
 				Log(string.Format("LIVE on {0} | profile {1} | contracts {2} | prop {3} | max open contracts {4} | account sync guard {5}", Instrument.FullName, Profile, Contracts, PropMode, MaxOpenContracts, AccountSyncGuard ? "on" : "off"));
 				wentLive = true; PrintModuleReport("loaded history"); EdgeRestore();
 			}
 			else if (State == State.Terminated)
 			{
+				if (clockHistCount > 1) Print(string.Format("NQMaster | CLOCK CHECK failed on {0} sessions of this run (the first one is in the Output)", clockHistCount));
 				if (presetSnap != null && cy != null) { RestorePreset(presetSnap); PropMode = realMode; }	// review M4: never leave the simulated phase in the properties
 				try { if (CrossAccountGuard && PosFile != null && File.Exists(PosFile)) File.Delete(PosFile); } catch { }
 				if (zombieCount > 0)
@@ -2272,6 +2268,36 @@ namespace NinjaTrader.NinjaScript.Strategies
 			try { string p = Path.IsPathRooted(PauseFile) ? PauseFile : Path.Combine(Core.Globals.UserDataDir, PauseFile); return File.Exists(p); }
 			catch { return false; }
 		}
+		// ---- clock check (patch_clock_check.py v2, 2026-10-29), alert only. (1) session template: CME index futures (ETH template) end a regular session
+		// at 17:00 ET. (2) ET conversion: ET from the bar's UTC time with the fixed US rule against ToEt() (the Windows 'Eastern Standard Time' rules).
+		// If the US ever changes its daylight-saving rule, update UsEtFromUtc.
+		private static DateTime UsEtFromUtc(DateTime utc)
+		{
+			int y = utc.Year;
+			DateTime mar = new DateTime(y, 3, 1); DateTime dstStart = mar.AddDays((7 - (int)mar.DayOfWeek) % 7 + 7).AddHours(7);	// 2nd Sunday of March, 02:00 EST = 07:00 UTC
+			DateTime nov = new DateTime(y, 11, 1); DateTime dstEnd = nov.AddDays((7 - (int)nov.DayOfWeek) % 7).AddHours(6);		// 1st Sunday of November, 02:00 EDT = 06:00 UTC
+			return utc.AddHours(utc >= dstStart && utc < dstEnd ? -4 : -5);
+		}
+		private string ClockProblem()
+		{
+			if (!shortSession && sessEndMin != 17 * 60)
+				return string.Format("this session ends at {0:00}:{1:00} ET, expected 17:00 ET: set the trading-hours template of the chart and of the strategy to 'CME US Index Futures ETH'", sessEndMin / 60, sessEndMin % 60);
+			try
+			{
+				DateTime utc = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(Time[0], DateTimeKind.Unspecified), Core.Globals.GeneralOptions.TimeZoneInfo);
+				double diff = (ToEt(Time[0]) - UsEtFromUtc(utc)).TotalMinutes;
+				if (Math.Abs(diff) > 1) return string.Format("the ET time of this bar differs by {0:0} min from the US daylight-saving rule: update Windows (time-zone data) and check the NinjaTrader time zone (Tools > Options > General)", diff);
+			}
+			catch { }
+			return null;
+		}
+		private void ClockCheck()
+		{
+			string p = ClockProblem(); if (p == null) return;
+			if (State != State.Realtime) { clockHistCount++; if (clockHistWarned) return; clockHistWarned = true; }
+			else { int d = Time[0].Year * 10000 + Time[0].Month * 100 + Time[0].Day; if (clockWarnDay == d) return; clockWarnDay = d; }
+			Warn("nqm_clock", "NQMaster | CLOCK CHECK: " + p + ". Every module uses ET clock times.");
+		}
 		private DateTime ToEt(DateTime t)
 		{
 			if (etZone == null) return t;
@@ -2293,8 +2319,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// With FillSeries Off every call below falls through to the Set* method it replaces: nothing changes.
 		private void BracketStop(Mod m, CalculationMode mode, double v)
 		{
-			m.XStopPrice = mode == CalculationMode.Price; m.XStopV = v;	// recorded with FillSeries Off too: the panel's open risk (patch_open_risk.py); with Off only PnlAtStops reads it
+			m.RStopPx = mode == CalculationMode.Price; m.RStopV = v;	// panel open risk only (patch_open_risk.py); nothing else reads it
 			if (fillBip == 0) { SetStopLoss(m.Sig, mode, v, false); return; }
+			m.XStopPrice = mode == CalculationMode.Price; m.XStopV = v;
 			if (m.InTrade && Working(m.XStop)) { try { ChangeOrder(m.XStop, m.XStop.Quantity, 0, BracketPx(m, true)); } catch (Exception ex) { Log(m.Sig + " stop change failed: " + ex.Message); } }
 		}
 		private void BracketTarget(Mod m, CalculationMode mode, double v)
@@ -2303,23 +2330,30 @@ namespace NinjaTrader.NinjaScript.Strategies
 			m.XTgtPrice = mode == CalculationMode.Price; m.XTgtV = v;
 			if (m.InTrade && Working(m.XTgt)) { try { ChangeOrder(m.XTgt, m.XTgt.Quantity, BracketPx(m, false), 0); } catch (Exception ex) { Log(m.Sig + " target change failed: " + ex.Message); } }
 		}
-		// open risk for the panel (patch_open_risk.py, 2026-10-29): P&L of the open lots if every one of them hits its stop, from the entry price
-		// (the account balance on the panel is realised cash). A stop already beyond the entry (VOLB break-even) counts in favour. Slippage not included.
-		private double PnlAtStops()
+		// open risk for the panel (patch_open_risk.py v2): P&L of this NQMaster instance's open lots if every one hits its stop, from the entry price
+		// (the panel balance is realised cash), minus the exit commission ($1.90 round turn / 2) and 1 tick of slippage per lot. A stop beyond the entry
+		// (VOLB break-even) counts in favour. realAcct: skip while the account position does not match the strategy's (historical position after enabling).
+		private double PnlAtStops(bool realAcct)
 		{
-			double r = 0;
+			double r = 0; int lots = 0;
 			try
 			{
+				if (realAcct)
+				{
+					int a = SignedQty(PositionAccount), q = SignedQty(Position);
+					if (a == 0 || q == 0 || Math.Sign(a) != Math.Sign(q)) return 0;
+				}
 				foreach (Mod m in mods)
 				{
-					if (!m.InTrade || m.OpenQty <= 0 || double.IsNaN(m.XStopV) || m.EntryPx <= 0) continue;
+					if (!m.InTrade || m.OpenQty <= 0 || double.IsNaN(m.RStopV) || m.EntryPx <= 0) continue;
 					int dir = m.Dir != 0 ? m.Dir : (Position.MarketPosition == MarketPosition.Short ? -1 : 1);
-					double sp = m.XStopPrice ? m.XStopV : m.EntryPx - dir * m.XStopV * TickSize;
-					r += (sp - m.EntryPx) * dir * m.OpenQty * Instrument.MasterInstrument.PointValue;
+					double sp = m.RStopPx ? m.RStopV : m.EntryPx - dir * m.RStopV * TickSize;
+					r += (sp - m.EntryPx) * dir * m.OpenQty * Instrument.MasterInstrument.PointValue; lots += m.OpenQty;
 				}
+				r -= lots * (0.95 + TickSize * Instrument.MasterInstrument.PointValue);
 			}
 			catch { return 0; }
-			return r;
+			return lots > 0 ? r : 0;
 		}
 		private double BracketPx(Mod m, bool stop)
 		{
@@ -2747,8 +2781,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 					else
 						b.AppendLine(string.Format("Cuenta actual: FONDEADA #{0}  ·  día {1}  ·  retiros {2}", cyFundN, cy.Days + 1, cy.Pays));
 					b.AppendLine(string.Format("Saldo {0}  ·  límite de pérdida {1}  ·  colchón {2}", Usd(bal), Usd(StartBalance + cy.Thr), Usd(prof - cy.Thr)));
-					double pst = PnlAtStops();
-					if (pst != 0) b.AppendLine(string.Format("Si tocan todos los stops abiertos: {0}  ·  colchón que queda {1}{2}", Usd(pst), Usd(prof - cy.Thr + pst), prof - cy.Thr + pst <= 0 ? "  ·  ATENCIÓN: alcanza para perder la cuenta" : ""));
+					double pst = PnlAtStops(false);
+					if (pst != 0) b.AppendLine(string.Format("Si tocan los stops abiertos de NQMaster (este gráfico, con comisión y 1 tick): {0}  ·  colchón que queda {1}{2}", Usd(pst), Usd(prof - cy.Thr + pst), prof - cy.Thr + pst <= 0 ? "  ·  ATENCIÓN: alcanza para perder la cuenta" : ""));
 					if (!cy.Funded && cy.Cons > 0 && cy.Bal > 0 && cy.Best > cy.Cons * Math.Max(cy.T, cy.Bal))
 						b.AppendLine(string.Format("Consistencia: el mejor día ({0}) obliga a llegar a {1}", Usd(cy.Best), Usd(cy.Best / cy.Cons)));
 					if (cy.Funded) b.AppendLine("Próximo retiro: " + cy.NextPayout(Usd));
@@ -2771,8 +2805,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double eq = PropEquity();
 				b.AppendLine(string.Format("CUENTA REAL  ·  {0}  ·  {1}", Account != null ? Account.Name : "", PhaseName(PropMode)));
 				b.AppendLine(string.Format("Saldo {0} ({1})  ·  límite {2}  ·  colchón {3}", Usd(eq), Usd(eq - StartBalance), Usd(propThr), Usd(eq - propThr)));
-				double pstR = PnlAtStops();
-				if (pstR != 0) b.AppendLine(string.Format("Si tocan todos los stops abiertos: {0}  ·  colchón que queda {1}{2}", Usd(pstR), Usd(eq - propThr + pstR), eq - propThr + pstR <= 0 ? "  ·  ATENCIÓN: alcanza para perder la cuenta" : ""));
+				double pstR = PnlAtStops(true);
+				if (pstR != 0) b.AppendLine(string.Format("Si tocan los stops abiertos de NQMaster (este gráfico, con comisión y 1 tick): {0}  ·  colchón que queda {1}{2}", Usd(pstR), Usd(eq - propThr + pstR), eq - propThr + pstR <= 0 ? "  ·  ATENCIÓN: alcanza para perder la cuenta" : ""));
 				if (!double.IsNaN(propDayStart)) b.AppendLine("Hoy: " + Usd(eq - propDayStart));
 				if (eq <= propThr) b.AppendLine("ATENCIÓN: el saldo está en el límite: verificá la cuenta en la firma");
 				if (PropMode == NQMasterPropMode.Eval && EvalTarget > 0) b.AppendLine(string.Format("Objetivo: {0} de {1}", Usd(eq - StartBalance), Usd(EvalTarget)));
