@@ -129,6 +129,10 @@ Federico delegó las decisiones pendientes con el criterio de rendimiento del bo
 
 - `research/mine/exp08_monitor.py`, informe `docs/experimentos/08_monitor_borde.md`: `os_adapt.py` dividía antes de 2020 un P&L normalizado (ya en unidades de 2 × ATR × 100) otra vez por 2 × ATR. Con el z corregido, el set y los k / h vigentes, el monitor alarma 4 veces en 2010-19 y nunca en 2020-26. **Sin cambio:** la respuesta implementada (252 días sin los módulos con PF de 5 años ≤ 1,05) sigue siendo la mejor en 2013-19 (Sharpe 1.25 contra 1.08 sin respuesta y 1.04-1.20 con pausas) y es idéntica en 2020-26; el medio tamaño con el aviso cuesta 9-10 % del neto en 2020-26 y no pasa. Un solo camino histórico: ventaja frágil.
 
+## Experimento 09 (2026-10-29, nube): contratos de Lucid según la volatilidad (frente 5C)
+
+- `research/mine/exp09_volsize.py`, informe `docs/experimentos/09_contratos_por_volatilidad.md`: contratos = base × ATR de referencia / ATR del día (eval 3-9, fondeada 2-4). **Sin cambio:** empata en 2020-22 (14 de 20 condiciones contra 14) y en 2023-26 pierde 6 % / 11 % de la mediana (edge completo / −35 %) y rompe M2 en el bootstrap (10.8 %). El edge rinde más que proporcionalmente con ATR alto; igualar el riesgo en dólares le saca ingreso a los mejores días. Anotado en `Conocimiento/Descartado`.
+
 ## Siguiente paso
 
 Frentes 5A y 5B cerrados; decisiones delegadas tomadas (función objetivo D1, regla 6 retirada). 5C en curso: experimento 07 cerrado (regla de pausa 1 retirada, la 4 queda pero no protege en el primer año; ninguna regla basada en el P&L puede hacerlo). Experimento 08 cerrado (el monitor y su respuesta quedan como están; el error de unidades de `os_adapt.py` no cambiaba la elección). Falta en la PC el F5 del `IctMultiplier = 1` con Output y settings.
