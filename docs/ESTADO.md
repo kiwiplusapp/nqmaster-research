@@ -133,13 +133,17 @@ Federico delegó las decisiones pendientes con el criterio de rendimiento del bo
 
 - `research/mine/exp09_volsize.py`, informe `docs/experimentos/09_contratos_por_volatilidad.md`: contratos = base × ATR de referencia / ATR del día (eval 3-9, fondeada 2-4). **Sin cambio:** empata en 2020-22 (14 de 20 condiciones contra 14) y en 2023-26 pierde 6 % / 11 % de la mediana (edge completo / −35 %) y rompe M2 en el bootstrap (10.8 %). El tercil de ATR bajo rinde ~40 % menos por punto de ATR (t ≈ 1,9) y la regla le carga 7-9 contratos; entre ATR medio y alto el edge es proporcional. Revisión adversarial: aprobado con reservas de texto (implementación verificada al bit, explicación corregida). Anotado en `Conocimiento/Descartado`.
 
+## Experimento 10 (2026-10-29, nube): estrés de la campaña por costos y por edge de régimen (frente 5D)
+
+- `research/mine/exp10_stress.py`, informe `docs/experimentos/10_estres_costos_regimen.md`: costo extra 0 a +3 ticks por lado × edge completo / −35 % / 2015-19 (32 % del actual) / cero, plan completo, mismos caminos. **Con el edge completo el plan aguanta al menos +3 ticks por lado sin romper M1 en el bootstrap** (cada tick cuesta ~$1.100-1.250 por mes de mediana); sobre historia contigua de 2023-26 el p10 rompe con +1 tick; **con −35 % no hay margen** (el p10 queda en el borde según los caminos). Edge de 2015-19: mediana +$3.290 / +$3.243 por mes, p10 −$2.000 / −$2.200, 26-27 % de años negativos. Sin edge la media es positiva solo con los costos actuales (+1 tick: negativa). **Umbral operativo en el runbook:** si el costo real por contrato ida y vuelta supera $3,90, no comprar cuentas nuevas hasta recalcular. D6 queda atada a ese umbral.
+
 ## Siguiente paso
 
 Frentes 5A (paridad y fills), 5B (motor de campaña, experimentos 02-06) y 5C (régimen, experimentos 07-09) cerrados en la nube, todos con revisión adversarial. Decisiones delegadas D1-D6 en `docs/DECISIONES_2026-10-29.md`: función objetivo D1; reglas de pausa 1 y 6 retiradas y la 4 como señal de revisión (ninguna pausa automática: sin edge la campaña tiene valor esperado positivo); ICT ×1 con regla de salida; campaña sobre NQ. Ninguna palanca de política, de régimen ni de tamaño mejoró la función objetivo; lo que falla (ventanas de 60 días negativas sobre historia contigua y con −35 %) viene de tramos malos reales del mercado. Mejoras de operación listas para F5: control de reloj (plantilla y horario de verano) y riesgo abierto en el panel.
 
 **Para la PC (Federico):** F5 de `NQMaster.cs` (trae `IctMultiplier = 1`, el control de reloj y el riesgo abierto del panel; los dos últimos no cambian trades) y Off 2024 → hoy con el Output: el export tiene que ser idéntico al de v4.3 salvo los lotes de ICT (2 → 1). Después del domingo 1-nov (fin del horario de verano en EE.UU.), mirar que no aparezca `CLOCK CHECK` en la primera sesión.
 
-**Siguiente en la nube:** frente 5D (robustez: campaña con caminos de régimen 2010-19 reescalados y estrés de costos) o 5F (revisión de código del resto de `NQMaster.cs`).
+**Siguiente en la nube:** 5D en curso (experimento 10 cerrado: estrés de costos y de edge); después 5F (revisión de código del resto de `NQMaster.cs`).
 
 - **Regenerar `NQMaster.cs` (29-oct):** `cp archive/backups/NQMaster_backup_pre_fillseries.cs NQMaster.cs && python3 research/mine/patch_fillseries.py && python3 research/mine/patch_parity_s2.py && python3 research/mine/patch_clock_check.py && python3 research/mine/patch_open_risk.py && bash tools/nt8_stub/check.sh NQMaster.cs`.
 

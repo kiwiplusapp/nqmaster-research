@@ -42,6 +42,8 @@ Plan base: **5 Lucid Flex 150K + 3 MFFU Rapid EOD 50K**. Todas las cuentas con P
 
 **Plan completo (5 Lucid 150K + 3 MFFU, mismo camino de mercado, escalonadas 5 días), $/mes (recalculado el 27-oct con la lista corregida de paridad e ICT ×1, igual que las filas por plaza de la tabla, `integ_paired.json`; antes entre paréntesis):** edge completo mediana $16.173 / $14.689 (16.280 / 14.739); con 35% menos $8.824 / $8.418 (8.838 / 8.610; p10 $2.464 / $1.801, P(año negativo) 3,9 / 4,2%); sin edge −$789 / −$566 con cupón (−$1.604 / −$1.551 con precio de lista; 56-63% de años negativos; la media sin edge es +$251 / +$81 por mes porque las pérdidas se acotan a las fees y los retiros son convexos: por eso no hay pausa automática, decisión D6).
 
+**Umbral de costos de ejecución (experimento 10, 29-oct):** las cifras de campaña cargan $3,90 por contrato ida y vuelta ($1,90 de comisión + 4 ticks); en Lucid (comisión $1,00) eso equivale a ~2,9 ticks de slippage por lado. Con el edge completo el plan aguanta hasta ~$6,90 sin romper el ingreso mínimo; con 35 % menos de edge no tiene margen. **Cuando tengas fills reales de las cuentas prop: si el costo medido por contrato ida y vuelta supera $3,90, no compres cuentas nuevas hasta recalcular la campaña con ese costo.**
+
 **Presupuesto por plaza: retirado el 29-oct** (ver el punto 6 de las reglas de pausa y `docs/DECISIONES_2026-10-29.md`). Referencia: en modo anual (−$4.000 Lucid / −$1.500 MFFU, sin volver a comprar en 12 meses) acotaba el p10 sin edge a −$2.095 por mes, pero con −35 % en arranques 2023-26 bajaba el p10 del plan de $1.801 a $1.452.
 
 - **Misma firma = mismo perfil en todas las cuentas.** Lucid y MFFU prohíben posiciones opuestas entre cuentas propias.
