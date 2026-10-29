@@ -119,9 +119,15 @@ Plan aprobado: `docs/PLAN_2026-10-26.md`. Programa completo (5A-5F) en la consig
 
 Federico delegó las decisiones pendientes con el criterio de rendimiento del bot. **D1, función objetivo:** se mantienen M1 (mediana > $2.759 y p10 ≥ $1.600), M2 (ventanas negativas de 60 días < 10 %, leída también sobre historia contigua y con −35 %) y M5 (días para aprobar ≤ 10); M4 pasa a P(fondeado ≤ 22 días con ≤ 3 evals) ≥ 65 % en la eval de Lucid; M3 (evals perdidas) deja de ser condición y se informa como costo (ninguna política la cumple y su costo ya está en M1). Con D1 la base cumple 5 de 5 con el edge completo en el bootstrap y 4 de 5 en contiguo: **falla M2 (12,5 / 22,4 % contiguo; 22 % con −35 %)**. **D2:** regla 6 (presupuesto por plaza) retirada del runbook; la protección contra un edge muerto queda en las pausas 1-4, que se validan en 5C. **D3:** siguiente frente 5C (régimen) con M2 como objetivo. `objective.py` tiene `verdict_d1` y `python3 objective.py d1`.
 
+## Experimento 07 (2026-10-29, nube): reglas de pausa 1 y 4 del runbook en la campaña (frente 5C)
+
+- **Qué:** `research/mine/exp07_pause_rules.py` (+ `exp07_open_balance.py`): pausa del perfil (todas las cuentas) cuando el P&L del sistema por contrato base cumple la regla; escenarios edge completo / −35 % / cero y edge que muere en el día 63 o 126; 1.000 caminos (sin regla reproduce la base al dólar) + historia contigua; regla pre-registrada `docs/PLAN_2026-10-29_exp07.md`; informe `docs/experimentos/07_reglas_pausa.md`.
+- **Veredicto: regla 1 retirada, regla 4 queda pero no protege en 12 meses.** La 1 (acumulado < 0 desde el día 60) con −35 % pausa 24-28 % de los años (contiguo 46-49 %) y lleva P(año negativo) de 4 % a 23-26 %; sin edge acota el p10 pero no la mediana. La 4 (dos trimestres negativos) casi no cuesta pero sin edge actúa en el día 126-189. El saldo abierto al pausar no cambia el veredicto. Con desvío diario de $423 / $467 y media de ~$104 por contrato, separar −35 % de edge cero exige ~150-200 días: ninguna regla basada en el P&L protege el primer año. El costo del escenario sin edge es el que ya figura en las cifras de la campaña. Runbook actualizado.
+- **Siguiente (5C):** re-validar el monitor de borde y su respuesta a la alarma sobre 2010-19 con el z corregido (`os_adapt.py` dividía antes de 2020 un P&L ya en % del ATR otra vez por 2 × ATR, y usó k/h viejos).
+
 ## Siguiente paso
 
-Frentes 5A (paridad y fills) y 5B (motor de campaña, experimentos 02-06) cerrados en la nube. Decisiones delegadas del 29-oct tomadas (función objetivo D1, regla 6 retirada). Con D1 la base cumple todo salvo M2 sobre historia contigua y con −35 %. Siguiente: frente 5C (régimen), primero el relevamiento de lo ya probado y después un experimento pre-registrado contra la base con D1. Falta en la PC el F5 del `IctMultiplier = 1` con Output y settings.
+Frentes 5A y 5B cerrados; decisiones delegadas tomadas (función objetivo D1, regla 6 retirada). 5C en curso: experimento 07 cerrado (regla de pausa 1 retirada, la 4 queda pero no protege en el primer año; ninguna regla basada en el P&L puede hacerlo). Siguiente: experimento 08, re-validación del monitor de borde y su respuesta a la alarma sobre 2010-19 con el z corregido. Falta en la PC el F5 del `IctMultiplier = 1` con Output y settings.
 
 ## Dónde mirar
 

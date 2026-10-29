@@ -69,13 +69,13 @@ Plan base: **5 Lucid Flex 150K + 3 MFFU Rapid EOD 50K**. Todas las cuentas con P
 
 ## Reglas de pausa (preacordadas, no se negocian en caliente)
 
-Pausá un perfil (Enabled = false) si se cumple cualquiera de estas:
+Pausá un perfil (Enabled = false) si se cumple cualquiera de estas (vigentes: 2, 3 y 4; la protección contra un edge muerto durante el primer año no existe: ver experimento 07):
 
-1. Después de 60 días hábiles en vivo, el P&L acumulado por contrato base es negativo.
+1. ~~Después de 60 días hábiles en vivo, el P&L acumulado por contrato base es negativo.~~ **Retirada el 29-oct** (experimento 07, `docs/experimentos/07_reglas_pausa.md`): con −35 % de edge pausaba la campaña en 1 de cada 4 años (P(año negativo) del plan de 4 % a 23-26 %) y con el edge muerto no mejoraba la mediana; con 60 días el P&L no alcanza para distinguir un edge más bajo de uno muerto (hacen falta ~150-200 días).
 2. El monitor de borde saltó **y** el año de fallback también termina negativo.
 3. `python impl_gap.py <csv de la cuenta real>` da ALERTA de cuenta: los últimos 60 días quedan por debajo del 65% de lo esperado y la diferencia supera 2 errores estándar.
 
-4. **Dos trimestres calendario seguidos con P&L negativo por contrato base** (`forward2027.py`): con el edge completo pasa 0,3% de los años, con 35% menos 6%, sin edge 55%.
+4. **Dos trimestres calendario seguidos con P&L negativo por contrato base.** Medida el 29-oct en la campaña (experimento 07; las cifras que se citaban de `forward2027.py` no se podían rastrear): pausa el plan en 0,1-1,5 % de los años con el edge completo, 5-8 % con −35 % y 56-59 % sin edge, casi sin costo (P(perder > 5 %) ≤ 0,04), pero **no protege dentro de los primeros 12 meses** (actúa en el día 126-189 y no mejora la mediana sin edge). Queda como freno para los años siguientes.
 5. **Un trimestre negativo** no pausa, pero **apaga la escalera** (`FundedLadderStep` 0) hasta cerrar un trimestre positivo: con el edge completo pasa 14% de los años, con 35% menos 46%.
 6. ~~Presupuesto por plaza~~ **Retirada el 29-oct** (`docs/DECISIONES_2026-10-29.md`, D2; experimento 05): con reinicio trimestral no actuaba, y las variantes que actúan (anual, "acumula hasta disparar") bajan el p10 del plan con −35 % sin mejorar nada con el edge completo. La protección contra un edge muerto queda en los puntos 1-4, que se validan en el frente 5C.
 
