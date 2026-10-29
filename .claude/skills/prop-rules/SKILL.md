@@ -50,7 +50,7 @@ Variantes: `Mffu50KLadder` (escalera 1→4 contratos, retiro desde 11.600) es op
 ## Reglas comunes
 
 - Lucid y MFFU permiten bots, y las dos prohíben posiciones opuestas entre cuentas propias. Misma firma = mismo perfil en todas las cuentas y en la misma PC (`HedgeGroup` LUCID / MFFU lo pone el preset).
-- Evaluación nueva el día después de cada quiebre. Presupuesto por plaza: parar al llegar a −4.000 netos (Lucid) o −1.500 (MFFU).
+- Evaluación nueva el día después de cada quiebre. Presupuesto por plaza: retirado el 29-oct (`docs/DECISIONES_2026-10-29.md`, D2; experimento 05).
 - El backtest de NinjaTrader no retira ni quiebra cuentas. Para ciclos usar el panel (`CycleSim`) o `research/mine/dash_cycle_ref.py`.
 - Apex prohíbe automatización desde 2026-03-01 y Topstep solo permite TopstepX: no usar.
 - Si cambia el motor de cuentas, correr `python3 tools/propcycle_test/run_test.py` (tiene que dar 0 diferencias).

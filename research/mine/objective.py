@@ -192,6 +192,16 @@ def contiguous():
     return OUT
 
 
+THR_D1 = dict(med_mes=2759.0, p10_mes=1600.0, neg60=10.0, p22_3_L150=65.0, dias_aprobar_L150=10.0)
+
+
+def verdict_d1(plan, seat_l150):
+    """Funcion objetivo de docs/DECISIONES_2026-10-29.md (D1): M1 y M2 sobre el plan; M4 = P(fondeado <= 22 d, <= 3 evals) y M5 = dias para
+    aprobar, ambos de la eval de Lucid 150K (fila del asiento L150, que trae p22_3 sobre inicios reales). M3 (evals perdidas) se informa, no es condicion."""
+    return {"med_mes": plan["med_mes"] > THR_D1["med_mes"], "p10_mes": plan["p10_mes"] >= THR_D1["p10_mes"], "neg60": plan["neg60"] < THR_D1["neg60"],
+            "p22_3_L150": seat_l150.get("p22_3", float("nan")) >= THR_D1["p22_3_L150"], "dias_aprobar_L150": seat_l150["dias_aprobar"] <= THR_D1["dias_aprobar_L150"]}
+
+
 def verdict(r):
     return {"med_mes": r["med_mes"] > THR["med_mes"], "p10_mes": r["p10_mes"] >= THR["p10_mes"], "neg60": r["neg60"] < THR["neg60"],
             "evals_perdidas_mes": r["evals_perdidas_mes"] < THR["evals_perdidas_mes"], "aprobacion": r["aprobacion"] >= THR["aprobacion"], "dias_aprobar": r["dias_aprobar"] <= THR["dias_aprobar"]}
@@ -299,6 +309,21 @@ def selftest(NB=200):
     return bad
 
 
+def table_d1(path=os.path.join(HERE, "objective_baseline.json")):
+    """La base del experimento 02 leida con la funcion objetivo D1 (bootstrap y contiguo; p22_3 sale de la fila bootstrap del asiento, es sobre inicios reales)."""
+    O = json.load(open(path)); rows = []
+    for src, ssrc in (("plan", "asientos"), ("plan_contiguo", "asientos_contiguo")):
+        for hc in P.HC:
+            for per in ("T1", "T2"):
+                pl = O[src][f"5 L150 + 3 MFFU | hc{hc} | {per} | coupon"]; se = dict(O[ssrc][f"L150 6c/3c | hc{hc} | {per} | coupon"])
+                se["p22_3"] = O["asientos"][f"L150 6c/3c | hc{hc} | {per} | coupon"]["p22_3"]; v = verdict_d1(pl, se)
+                rows.append((src, hc, per, pl["med_mes"], pl["p10_mes"], pl["neg60"], se["p22_3"], se["dias_aprobar"], pl.get("evals_perdidas_mes", float("nan")), sum(v.values()), v))
+    return rows
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "selftest": sys.exit(1 if selftest() else 0)
+    if len(sys.argv) > 1 and sys.argv[1] == "d1":
+        for r in table_d1(): print(f"{r[0]:14s} hc{r[1]:<4} {r[2]} med {r[3]:7.0f} p10 {r[4]:7.0f} neg60 {r[5]:5.1f} p22_3 L150 {r[6]:5.1f} dias L150 {r[7]:3.0f} evperd/mes {r[8]:5.2f} cumple {r[9]}/5 " + " ".join(("+" if x else "-") + k for k, x in r[10].items()))
+        sys.exit(0)
     baseline(int(sys.argv[1]) if len(sys.argv) > 1 else 1000)
