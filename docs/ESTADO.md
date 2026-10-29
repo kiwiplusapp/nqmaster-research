@@ -135,7 +135,11 @@ Federico delegó las decisiones pendientes con el criterio de rendimiento del bo
 
 ## Siguiente paso
 
-Frentes 5A y 5B cerrados; decisiones delegadas tomadas (función objetivo D1, regla 6 retirada). 5C en curso: experimento 07 cerrado (regla de pausa 1 retirada, la 4 queda pero no protege en el primer año; ninguna regla basada en el P&L puede hacerlo). Experimento 08 cerrado (el monitor y su respuesta quedan como están; el error de unidades de `os_adapt.py` no cambiaba la elección). Experimento 09 cerrado (contratos por volatilidad: sin cambio). Falta en la PC el F5 del `IctMultiplier = 1` con Output y settings.
+Frentes 5A (paridad y fills), 5B (motor de campaña, experimentos 02-06) y 5C (régimen, experimentos 07-09) cerrados en la nube, todos con revisión adversarial. Decisiones delegadas D1-D6 en `docs/DECISIONES_2026-10-29.md`: función objetivo D1; reglas de pausa 1 y 6 retiradas y la 4 como señal de revisión (ninguna pausa automática: sin edge la campaña tiene valor esperado positivo); ICT ×1 con regla de salida; campaña sobre NQ. Ninguna palanca de política, de régimen ni de tamaño mejoró la función objetivo; lo que falla (ventanas de 60 días negativas sobre historia contigua y con −35 %) viene de tramos malos reales del mercado. Mejoras de operación listas para F5: control de reloj (plantilla y horario de verano) y riesgo abierto en el panel.
+
+**Para la PC (Federico):** F5 de `NQMaster.cs` (trae `IctMultiplier = 1`, el control de reloj y el riesgo abierto del panel; los dos últimos no cambian trades) y Off 2024 → hoy con el Output: el export tiene que ser idéntico al de v4.3 salvo los lotes de ICT (2 → 1). Después del domingo 1-nov (fin del horario de verano en EE.UU.), mirar que no aparezca `CLOCK CHECK` en la primera sesión.
+
+**Siguiente en la nube:** frente 5D (robustez: campaña con caminos de régimen 2010-19 reescalados y estrés de costos) o 5F (revisión de código del resto de `NQMaster.cs`).
 
 - **Regenerar `NQMaster.cs` (29-oct):** `cp archive/backups/NQMaster_backup_pre_fillseries.cs NQMaster.cs && python3 research/mine/patch_fillseries.py && python3 research/mine/patch_parity_s2.py && python3 research/mine/patch_clock_check.py && python3 research/mine/patch_open_risk.py && bash tools/nt8_stub/check.sh NQMaster.cs`.
 
