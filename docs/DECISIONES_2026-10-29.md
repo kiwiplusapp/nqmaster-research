@@ -46,3 +46,11 @@ Experimento 05 y su revisión: con reinicio en cada revisión trimestral la regl
 ## D3. Siguiente frente: 5C (régimen), con M2 sobre historia contigua y con −35 % como objetivo
 
 El frente 5B cerró sin mover la función objetivo: las palancas de campaña (tamaño de eval, retiro, presupuesto, escalonado) no tocan la condición que falla (M2), y el plan de 8 cuentas es una sola cuenta multiplicada (diagnóstico 06). Las ventanas negativas vienen de los tramos malos del mercado: es un problema de régimen. Reglas del frente: solo información disponible en tiempo real, nada se re-optimiza, una idea entra solo si funciona en IS, C24 y REAL, y se mide con la función objetivo de D1 sobre los caminos de campaña.
+
+## D4. ICT a 1 contrato: se queda, con regla de salida
+
+ICT standalone T2 PF 1,09 (1,04 con +4 ticks) está debajo del piso del protocolo (1,2), pero es positivo en IS, C24 y REAL a ×1 (+$21 / $32 / $28 por mes por contrato, `docs/experimentos/01_paridad.md`) y en NinjaTrader (Off 2024 → hoy +$2.365 con ×2). Federico ya decidió bajarlo a ×1 el 27-oct. **Regla de salida (fijada hoy, se aplica en cada revisión trimestral):** ICT se apaga si su PF de los últimos 12 meses en el export Off de NinjaTrader es < 1,0, o si su PF de investigación en 2024-26 con datos actualizados cae debajo de 1,05. Lo revertiría: que la revisión con datos nuevos lo deje debajo de esos pisos.
+
+## D5. La campaña sigue sobre los sets construidos en NQ
+
+Los caminos de campaña usan NQ real 2020-02 → 2026-10 (T1 y T2 completos); los sets sobre MNQ existen solo desde 2024-02. La paridad muestra que la diferencia es de instrumento en los bordes de las señales (G1 98,5 % sobre MNQ contra 94,1 % sobre NQ, mismo export de NinjaTrader) y no cambia el neto (G2 −1,6 %). Pasar REAL a MNQ achicaría T2 a la mitad sin ganar precisión en la campaña. En la próxima reconstrucción de caminos se agrega una verificación cruzada del período 2024-26 sobre MNQ. Lo revertiría: una diferencia de neto mayor a 5 % entre NQ y MNQ en 2024-26.
