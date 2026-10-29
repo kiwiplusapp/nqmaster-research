@@ -386,7 +386,7 @@ Optimizado sobre el ciclo completo de 12 meses: evaluación, fondeada, cobros y 
 - Probabilidad de un año negativo: menos de 4%.
 
 **Alternativa APROBACIÓN** (si preferís perder menos evaluaciones aunque se gane menos):
-- EvalCushionFull = 900, EvalDailyStop = 700, AtrStartMax = 1,15 (empezar solo con el panel en "OK").
+- EvalCushionFull = 900, EvalDailyStop = 700, AtrStartMax = 1,15 (empezar solo con el panel en "OK"). **Obsoleto:** la compuerta de ATR se descartó el 13-oct (el efecto cambia de signo entre períodos, `smallacct_timing.json`) y `AtrStartMax` se fuerza a 0 en el código desde el 21-oct.
 - FundedCushionSafe = 1500, FundedHighFull = false, cobro a $6.000.
 - Aprobación 95 / 82 / 89%, pero ~$475-800 por mes por cuenta.
 
@@ -672,7 +672,7 @@ El oro sigue operando todo el tiempo.
 | NQMaster (MNQ 1 min) | Profile **Ultra**, Contracts **1**, AdaptiveSize **false**, DailyLossLimit **0** |
 | NQMaster, grupo 07 | PropMode **Eval**, EvalTarget **3000**, Trailing drawdown **2000**, Eval: full mode when cushion ≥ **1200**, Eval: modules below the cushion **Estable**, EvalProfitStop **1400**, ConsistencyPct **50**, AtrStartMax **1.15** |
 | GoldMaster (MGC 1 min) | Profile **WinRate**, Contracts **2** |
-| Arranque | Comprá o empezá la evaluación **solo el día en que el panel diga "OK to start a new eval"**: el ATR del día es menor a 1,15 veces su mediana de 60 días, y pasa en ~7 de cada 10 días. |
+| Arranque | ~~Comprá o empezá la evaluación solo el día en que el panel diga "OK to start a new eval" (ATR del día < 1,15 veces su mediana de 60 días).~~ **Obsoleto:** descartado el 13-oct (el efecto cambia de signo entre períodos) y retirado del código el 21-oct; la eval nueva se compra el día después de cada quiebre. |
 
 ### Resultado (simulación exacta minuto a minuto, Lucid Flex 50K, cada día posible de inicio)
 | Plan | Aprueba CFD 2024-26 | Aprueba MNQ real 2024-26 | Aprueba CFD 2020-23 | Mediana de días hábiles |
