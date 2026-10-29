@@ -65,6 +65,7 @@ namespace NinjaTrader.NinjaScript {
   protected virtual void OnStateChange(){} protected virtual void OnBarUpdate(){} public virtual string DisplayName { get { return ""; } }
   protected virtual void OnOrderUpdate(Order order, double limitPrice, double stopPrice, int quantity, int filled, double averageFillPrice, OrderState orderState, DateTime time, ErrorCode error, string nativeError){}
   protected virtual void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity, MarketPosition marketPosition, string orderId, DateTime time){}
+  protected virtual void OnPositionUpdate(Position position, double averagePrice, int quantity, MarketPosition marketPosition){}
   protected virtual void OnMarketData(MarketDataEventArgs e){}
   public void RemoveDrawObject(string tag){} public void Print(object o){} public void AddDataSeries(BarsPeriodType t, int v){} public void SetState(State s){}
   public void Alert(string id, Priority p, string msg, string sound, int rearm, System.Windows.Media.Brush b, System.Windows.Media.Brush f){}
