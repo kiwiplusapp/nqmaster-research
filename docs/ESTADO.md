@@ -127,7 +127,7 @@ Federico delegó las decisiones pendientes con el criterio de rendimiento del bo
 
 ## Experimento 08 (2026-10-29, nube): monitor de borde re-validado con el z corregido (frente 5C)
 
-- `research/mine/exp08_monitor.py`, informe `docs/experimentos/08_monitor_borde.md`: `os_adapt.py` dividía antes de 2020 un P&L normalizado (ya en unidades de 2 × ATR × 100) otra vez por 2 × ATR. Con el z corregido, el set y los k / h vigentes, el monitor alarma 4 veces en 2010-19 y nunca en 2020-26. **Sin cambio:** la respuesta implementada (252 días sin los módulos con PF de 5 años ≤ 1,05) sigue siendo la mejor en 2013-19 (Sharpe 1.25 contra 1.08 sin respuesta y 1.04-1.20 con pausas) y es idéntica en 2020-26; el medio tamaño con el aviso cuesta 9-10 % del neto en 2020-26 y no pasa. Un solo camino histórico: ventaja frágil.
+- `research/mine/exp08_monitor.py`, informe `docs/experimentos/08_monitor_borde.md`: `os_adapt.py` dividía antes de 2020 un P&L normalizado (ya en unidades de 2 × ATR × 100) otra vez por 2 × ATR. Con el z corregido, el set y los k / h vigentes, el monitor alarma 4 veces en 2010-19 y nunca en 2020-26. **Sin cambio:** la respuesta implementada (252 días sin los módulos con PF de 5 años ≤ 1,05) sigue siendo la mejor en 2013-19 (Sharpe 1.25 contra 1.08 sin respuesta y 1.04-1.20 con pausas) y es idéntica en 2020-26 (por construcción de h); el medio tamaño con el aviso cuesta 8-9 % del neto en 2020-26 y no pasa. **Revisión adversarial (aprobado con reservas):** ningún retador la supera de forma estable, pero su ventaja sobre "solo alerta" no es significativa (P 0,77-0,94) y con arranque en 2012 gana la pausa de 126 días; el JSON del control se regeneró.
 
 ## Experimento 09 (2026-10-29, nube): contratos de Lucid según la volatilidad (frente 5C)
 

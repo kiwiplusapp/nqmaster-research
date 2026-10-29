@@ -6,37 +6,37 @@
   "A": {
    "alarmas": 9,
    "2013-19 norm": {
-    "net": 7705,
-    "sharpe": 0.96,
-    "maxdd": 1500
+    "net": 6832,
+    "sharpe": 0.91,
+    "maxdd": 1368
    },
    "2020-23 real": {
-    "net": 85993,
-    "sharpe": 3.44,
-    "maxdd": 4415
+    "net": 78272,
+    "sharpe": 3.35,
+    "maxdd": 3454
    },
    "2024-26 real": {
-    "net": 87124,
-    "sharpe": 3.97,
-    "maxdd": 3557
+    "net": 78363,
+    "sharpe": 3.77,
+    "maxdd": 4480
    }
   },
   "W252": {
-   "alarmas": 5,
+   "alarmas": 4,
    "2013-19 norm": {
-    "net": 9065,
-    "sharpe": 1.24,
-    "maxdd": 1373
+    "net": 7915,
+    "sharpe": 1.15,
+    "maxdd": 1220
    },
    "2020-23 real": {
-    "net": 85993,
-    "sharpe": 3.44,
-    "maxdd": 4415
+    "net": 78272,
+    "sharpe": 3.35,
+    "maxdd": 3454
    },
    "2024-26 real": {
-    "net": 86597,
-    "sharpe": 3.94,
-    "maxdd": 3622
+    "net": 78363,
+    "sharpe": 3.77,
+    "maxdd": 4480
    }
   }
  },
