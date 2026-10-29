@@ -80,7 +80,7 @@ Plan base: **5 Lucid Flex 150K + 3 MFFU Rapid EOD 50K**. Todas las cuentas con P
 ## Reglas de manejo de la estrategia (revisión de código del 29-oct)
 
 - **Nunca deshabilites ni edites NQMaster con una posición abierta.** Para cambiar algo, primero el archivo de pausa y esperar a estar plano. Al deshabilitar, NinjaTrader puede cancelar el stop y el target (Tools > Options > Strategies: revisá "Cancel exit orders when a strategy is disabled" y dejala sin marcar). Si igual pasa, aparece `STOPPED WITH AN OPEN POSITION`.
-- **Cuenta nueva o reset con el mismo nombre:** poné EvalStartDate = hoy o borrá `nqmaster_prop_<cuenta>.txt` en Documentos\NinjaTrader 8\; si no, la eval nueva hereda el mejor día de la anterior.
+- **Cuenta nueva o reset con el mismo nombre:** poné EvalStartDate = hoy o borrá `nqmaster_prop_<cuenta>.txt` (carpeta Documentos de NinjaTrader 8); si no, la eval nueva hereda el mejor día de la anterior.
 - **Primer día de cada cuenta:** el panel tiene que decir "EN VIVO" y "CUENTA REAL" (una cuenta cuyo nombre empiece con "Sim" o "Playback" se trata como simulación).
 - **Retiros:** pedilos con la estrategia deshabilitada y la cuenta plana, fuera de sesión (un retiro debitado en sesión puede disparar el stop diario de la escalera de MFFU).
 - **`NQAccountGuard.cs` no se usa con este plan:** su archivo de pausa es global de la PC (pausa todas las cuentas, Lucid y MFFU) y su lista FOMC termina el 2026-12-09.
