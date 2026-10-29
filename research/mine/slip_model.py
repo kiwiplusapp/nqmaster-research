@@ -16,6 +16,8 @@ the fixed 1 tick in the campaign recalculation. -> <out>.md, <out>_trades.csv, <
 Usage (from research/mine):
   python3 slip_model.py --standard <SA_standard.csv> --real <acct1.csv> [--real <acct2.csv> ...] [--sim Sim101,Playback]
                         [--tz America/Argentina/Buenos_Aires] [--tol 3] [--out slip_<tag>]
+Cost check vs the campaign (2026-10-29): mean $ per contract real - Standard < -$1.00 with n >= 30 = real costs above the campaign model
+(the campaign charges $1 per contract round trip more than the Standard backtest) -> runbook: no new accounts until the campaign is recalculated.
 Self-test: --standard X --real X must give 100% matched and slippage exactly +1.00 tick on stop / market entries and on stop exits
 (the 1 tick the Standard backtest itself assumes) and 0 on limit entries; 'excess' = slippage - that backtest assumption."""
 import os, sys, argparse, datetime, json, numpy as np, pandas as pd
@@ -115,6 +117,16 @@ if __name__ == "__main__":
             L += ["", "## Decision (H5, prop accounts only): cells with n >= 15 and median entry slippage > 2 ticks",
                   "```", (hit.to_string(index=False) if len(hit) else "none"), "```"]
             cellj = {f"{r.otype}|{r.band}": dict(n=int(r.n), median_ticks=float(r.median), mean_ticks=float(r.mean), p90_ticks=float(r.p90), excess_median_ticks=float(r.excess_med), use=bool(r.n >= 15)) for r in c.itertuples()}
+            # 2026-10-29 (experimento 10, umbral de costos del runbook): la campana carga lo del Standard ($1,90 + 1 tick en entradas a mercado / stop y
+            # salidas por stop) + $1 por contrato ida y vuelta (cc). Real peor que la campana <=> media de (u real - u Standard) < -$1,00 por contrato.
+            dd = Mk.d_usd.to_numpy(float); n = len(dd); mu = float(dd.mean()); se = float(dd.std(ddof=1) / np.sqrt(n)) if n > 1 else float("nan")
+            alert = bool(n >= 30 and mu < -1.0)
+            L += ["", "## Costo real contra el modelado por la campaña (cuentas prop; RUNBOOK_OPERACION.md, umbral de costos)",
+                  f"- $ por contrato, real - backtest Standard: media {mu:+.2f} (error estándar {se:.2f}, n {n}); la campaña ya descuenta $1,00 más que el Standard.",
+                  "- Por tipo de entrada: " + ", ".join(f"{k} {g.d_usd.mean():+.2f} (n {len(g)})" for k, g in Mk.groupby("otype")),
+                  ("- **SUPERA LO MODELADO: no comprar cuentas nuevas hasta recalcular la campaña con el costo medido.**" if alert else
+                   ("- Dentro de lo modelado." if n >= 30 else "- Todavía hay menos de 30 trades emparejados: sin veredicto."))]
+            cellj["_costo_vs_campana"] = dict(n=n, media_usd_real_menos_std=mu, error_estandar=se, umbral=-1.0, supera_lo_modelado=alert)
     txt = "\n".join(L) + "\n"
     open(out + ".md", "w", encoding="utf-8").write(txt); M.to_csv(out + "_trades.csv", index=False)
     json.dump(dict(reference=os.path.basename(a.standard), period=[int(lo), int(hi)], tick=TICK, prop_cells=cellj), open(out + ".json", "w"), indent=1)
