@@ -125,9 +125,13 @@ Federico delegó las decisiones pendientes con el criterio de rendimiento del bo
 - **Veredicto: regla 1 retirada, regla 4 queda pero no protege en 12 meses.** La 1 (acumulado < 0 desde el día 60) con −35 % pausa 24-28 % de los años (contiguo 46-49 %) y lleva P(año negativo) de 4 % a 23-26 %; sin edge acota el p10 pero no la mediana. La 4 (dos trimestres negativos) casi no cuesta pero sin edge actúa en el día 126-189. El saldo abierto al pausar no cambia el veredicto. Con desvío diario de $423 / $467 y media de ~$104 por contrato, separar −35 % de edge cero exige ~150-200 días: ninguna regla basada en el P&L protege el primer año. El costo del escenario sin edge es el que ya figura en las cifras de la campaña. Runbook actualizado.
 - **Siguiente (5C):** re-validar el monitor de borde y su respuesta a la alarma sobre 2010-19 con el z corregido (`os_adapt.py` dividía antes de 2020 un P&L ya en % del ATR otra vez por 2 × ATR, y usó k/h viejos).
 
+## Experimento 08 (2026-10-29, nube): monitor de borde re-validado con el z corregido (frente 5C)
+
+- `research/mine/exp08_monitor.py`, informe `docs/experimentos/08_monitor_borde.md`: `os_adapt.py` dividía antes de 2020 un P&L normalizado (ya en unidades de 2 × ATR × 100) otra vez por 2 × ATR. Con el z corregido, el set y los k / h vigentes, el monitor alarma 4 veces en 2010-19 y nunca en 2020-26. **Sin cambio:** la respuesta implementada (252 días sin los módulos con PF de 5 años ≤ 1,05) sigue siendo la mejor en 2013-19 (Sharpe 1.25 contra 1.08 sin respuesta y 1.04-1.20 con pausas) y es idéntica en 2020-26; el medio tamaño con el aviso cuesta 9-10 % del neto en 2020-26 y no pasa. Un solo camino histórico: ventaja frágil.
+
 ## Siguiente paso
 
-Frentes 5A y 5B cerrados; decisiones delegadas tomadas (función objetivo D1, regla 6 retirada). 5C en curso: experimento 07 cerrado (regla de pausa 1 retirada, la 4 queda pero no protege en el primer año; ninguna regla basada en el P&L puede hacerlo). Siguiente: experimento 08, re-validación del monitor de borde y su respuesta a la alarma sobre 2010-19 con el z corregido. Falta en la PC el F5 del `IctMultiplier = 1` con Output y settings.
+Frentes 5A y 5B cerrados; decisiones delegadas tomadas (función objetivo D1, regla 6 retirada). 5C en curso: experimento 07 cerrado (regla de pausa 1 retirada, la 4 queda pero no protege en el primer año; ninguna regla basada en el P&L puede hacerlo). Experimento 08 cerrado (el monitor y su respuesta quedan como están; el error de unidades de `os_adapt.py` no cambiaba la elección). Falta en la PC el F5 del `IctMultiplier = 1` con Output y settings.
 
 ## Dónde mirar
 

@@ -18,8 +18,12 @@ def build(with_new=True):
     D = getD("nqdb.npz")
     days = np.array(sorted(set(D.daydate[(D.ro >= 0)]))); days = days[(days >= 20100701) & ~np.isin(days, list(NEWS["FOMC"]))]
     atr = pd.Series(D.atr, index=D.daydate).groupby(level=0).last().reindex(days).to_numpy()
-    sets, cur = load(); R, N = cur[0].copy(), cur[1].copy()
-    if with_new:
+    if with_new == "os_adapt_set":                                                            # el set exacto de os_adapt.py (UltraR + CPI09 sin x4)
+        C = pickle.load(open(os.path.join(HERE, "cand16_trades.pkl"), "rb")); Q = pickle.load(open(os.path.join(HERE, "ultraq_trades.pkl"), "rb"))["UltraQ"]
+        R, N = C["UltraR"]; R = pd.concat([R, Q[0][Q[0]["mod"] == "CPI09"]], ignore_index=True); N = pd.concat([N, Q[1][Q[1]["mod"] == "CPI09"]], ignore_index=True)
+    else:
+        sets, cur = load(); R, N = cur[0].copy(), cur[1].copy()
+    if with_new is True:
         TR = {}
         for f in ("trades_db_old.pkl", "trades_db_new.pkl"): TR.update(pickle.load(open(os.path.join(HERE, f), "rb")))
         for nm, key in NEW.items():
@@ -83,7 +87,7 @@ if __name__ == "__main__":
     OUT = {"k": K, "h": Hh, "aviso": HW, "control_os_adapt": {}, "politicas": {}}
     # control: set de os_adapt (sin los 4 de 6 anios), z mal escalado y k / h viejos -> debe reproducir os_adapt.json
     ref = json.load(open(os.path.join(HERE, "os_adapt.json")))
-    days, atr, mods, Mv, N, post = build(with_new=False)
+    days, atr, mods, Mv, N, post = build(with_new="os_adapt_set")
     for pol, key in (("A", "A"), ("W252", "W252")):
         x, al, wa, off, half = run(days, atr, mods, Mv, N, post, pol, 0.0758, 18.57, 1e18, zmode="os_adapt")
         rec = summary(days, x); OUT["control_os_adapt"][pol] = dict(alarmas=len(al), **{q: rec[q] for q in PER})
