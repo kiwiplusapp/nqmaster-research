@@ -131,11 +131,11 @@ Federico delegó las decisiones pendientes con el criterio de rendimiento del bo
 
 ## Experimento 09 (2026-10-29, nube): contratos de Lucid según la volatilidad (frente 5C)
 
-- `research/mine/exp09_volsize.py`, informe `docs/experimentos/09_contratos_por_volatilidad.md`: contratos = base × ATR de referencia / ATR del día (eval 3-9, fondeada 2-4). **Sin cambio:** empata en 2020-22 (14 de 20 condiciones contra 14) y en 2023-26 pierde 6 % / 11 % de la mediana (edge completo / −35 %) y rompe M2 en el bootstrap (10.8 %). El edge rinde más que proporcionalmente con ATR alto; igualar el riesgo en dólares le saca ingreso a los mejores días. Anotado en `Conocimiento/Descartado`.
+- `research/mine/exp09_volsize.py`, informe `docs/experimentos/09_contratos_por_volatilidad.md`: contratos = base × ATR de referencia / ATR del día (eval 3-9, fondeada 2-4). **Sin cambio:** empata en 2020-22 (14 de 20 condiciones contra 14) y en 2023-26 pierde 6 % / 11 % de la mediana (edge completo / −35 %) y rompe M2 en el bootstrap (10.8 %). El tercil de ATR bajo rinde ~40 % menos por punto de ATR (t ≈ 1,9) y la regla le carga 7-9 contratos; entre ATR medio y alto el edge es proporcional. Revisión adversarial: aprobado con reservas de texto (implementación verificada al bit, explicación corregida). Anotado en `Conocimiento/Descartado`.
 
 ## Siguiente paso
 
-Frentes 5A y 5B cerrados; decisiones delegadas tomadas (función objetivo D1, regla 6 retirada). 5C en curso: experimento 07 cerrado (regla de pausa 1 retirada, la 4 queda pero no protege en el primer año; ninguna regla basada en el P&L puede hacerlo). Experimento 08 cerrado (el monitor y su respuesta quedan como están; el error de unidades de `os_adapt.py` no cambiaba la elección). Falta en la PC el F5 del `IctMultiplier = 1` con Output y settings.
+Frentes 5A y 5B cerrados; decisiones delegadas tomadas (función objetivo D1, regla 6 retirada). 5C en curso: experimento 07 cerrado (regla de pausa 1 retirada, la 4 queda pero no protege en el primer año; ninguna regla basada en el P&L puede hacerlo). Experimento 08 cerrado (el monitor y su respuesta quedan como están; el error de unidades de `os_adapt.py` no cambiaba la elección). Experimento 09 cerrado (contratos por volatilidad: sin cambio). Falta en la PC el F5 del `IctMultiplier = 1` con Output y settings.
 
 - **Regenerar `NQMaster.cs` (29-oct):** `cp archive/backups/NQMaster_backup_pre_fillseries.cs NQMaster.cs && python3 research/mine/patch_fillseries.py && python3 research/mine/patch_parity_s2.py && python3 research/mine/patch_clock_check.py && python3 research/mine/patch_open_risk.py && bash tools/nt8_stub/check.sh NQMaster.cs`.
 
