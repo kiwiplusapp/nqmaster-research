@@ -15,7 +15,8 @@ Aplica sobre NQMaster.cs v4.3 + patch_clock_check.py v3 + patch_open_risk.py v2.
 v2 (revision adversarial del parche, 29-oct): el estado desconocido activa el tope de riesgo directamente (la v1 lo hacia bajando el colchon, que no
 alcanzaba en Lucid); archivo de estado viejo detectado por el saldo; el override de limite sube el pico guardado; la guarda publica solo la posicion de
 la cuenta antes de sincronizar y tambien en OnPositionUpdate; ExitOrd se limpia al pasar a vivo, la salida suprimida se reintenta y hay vigia de salida
-trabada; el aplanado escala a Account.Flatten si en 3 barras no queda plano; IgnoreOverfill tambien en Configure y en la linea LIVE; mensajes por motivo.
+trabada; el aplanado escala a Account.Flatten si en 3 barras no queda plano; IgnoreOverfill tambien en Configure y en la linea LIVE; mensajes por motivo;
+el archivo de estado se guarda tambien en la barra siguiente a quedar plano (asi el chequeo de archivo viejo no salta si NinjaTrader no corrio una sesion).
 Idempotente. Run: python3 research/mine/patch_live_safety.py && bash tools/nt8_stub/check.sh NQMaster.cs"""
 import os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); P = os.path.join(ROOT, "NQMaster.cs")
@@ -29,7 +30,7 @@ def rep(a, b, n=1):
 rep("			public bool XStopPrice, XTgtPrice, XExitPending;",
     "			public Order ExitOrd; public int ExitBar = -1; public bool ExitAgain, ExitWarned;	// patch_live_safety.py: the module's last exit order (live only)\n			public bool XStopPrice, XTgtPrice, XExitPending;")
 rep("		private int otherDirBar = -1; private bool otherLong, otherShort, otherPosLong, otherPosShort, hedgeFlat;\n",
-    "		private int otherDirBar = -1; private bool otherLong, otherShort, otherPosLong, otherPosShort, hedgeFlat;\n		private int ownBars, lateRun, hedgeBars; private bool propStateUnknown; private string hedgeWhy;	// patch_live_safety.py\n")
+    "		private int otherDirBar = -1; private bool otherLong, otherShort, otherPosLong, otherPosShort, hedgeFlat;\n		private int ownBars, lateRun, hedgeBars; private bool propStateUnknown, propSaveDue; private string hedgeWhy;	// patch_live_safety.py\n")
 rep("				RealtimeErrorHandling = RealtimeErrorHandling.IgnoreAllErrors;	// rejections handled in OnOrderUpdate\n",
     "				RealtimeErrorHandling = RealtimeErrorHandling.IgnoreAllErrors;	// rejections handled in OnOrderUpdate\n				IgnoreOverfill = true;	// patch_live_safety.py: an overfill does not stop the strategy (that would cancel the other modules' stops): LotOwnershipCheck flattens\n")
 rep("""			if (desyncHalt) return;
@@ -66,6 +67,7 @@ rep("""			CheckAccountSync();
 			if (desyncHalt) return;
 			LotOwnershipCheck();
 			ExitRetries();
+			if (propSaveDue && State == State.Realtime && Position.MarketPosition == MarketPosition.Flat) { propSaveDue = false; if (!propStateUnknown) PropSave(curSessDay); }	// v2: last balance seen (stale-file check)
 			CrossAccountCancelOpp();
 """)
 rep("""		// H2: real session end""", """		// patch_live_safety.py (code review 2026-10-29): lots the strategy holds that no module owns (a double exit / overfill reverses the position
@@ -205,6 +207,7 @@ rep("""account sync guard {5}", Instrument.FullName, Profile, Contracts, PropMod
 rep("""		private void ProcessClosedTrades()""", """		protected override void OnPositionUpdate(Position position, double averagePrice, int quantity, MarketPosition marketPosition)
 		{
 			CrossAccountPublish();	// patch_live_safety.py v2: the strategy position just changed (it returns at once outside live / without the guard)
+			if (propLive && State == State.Realtime && marketPosition == MarketPosition.Flat) propSaveDue = true;	// saved on the next bar, once the account cash has the trade
 		}
 
 		private void ProcessClosedTrades()""")

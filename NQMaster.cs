@@ -725,6 +725,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (desyncHalt) return;
 			LotOwnershipCheck();
 			ExitRetries();
+			if (propSaveDue && State == State.Realtime && Position.MarketPosition == MarketPosition.Flat) { propSaveDue = false; if (!propStateUnknown) PropSave(curSessDay); }	// v2: last balance seen (stale-file check)
 			CrossAccountCancelOpp();
 			if (hedgeFlat)
 			{
@@ -1682,7 +1683,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		//  (3) every bar, own working entries opposite to another account's OPEN position are cancelled.
 		//  (4) an own entry that fills while another account holds the opposite position is flattened at once (+ Alert + log).
 		private int otherDirBar = -1; private bool otherLong, otherShort, otherPosLong, otherPosShort, hedgeFlat;
-		private int ownBars, lateRun, hedgeBars; private bool propStateUnknown; private string hedgeWhy;	// patch_live_safety.py
+		private int ownBars, lateRun, hedgeBars; private bool propStateUnknown, propSaveDue; private string hedgeWhy;	// patch_live_safety.py
 		private string PosDir { get { try { return Path.Combine(Core.Globals.UserDataDir, "nqmaster_positions"); } catch { return null; } } }
 		private string PosFile { get { string d = PosDir; return d == null ? null : Path.Combine(d, (HedgeGroup ?? "") + "_" + (Account != null ? Account.Name : "acct") + "_NQ.txt"); } }
 		private void CrossAccountPublish()
@@ -2330,6 +2331,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		protected override void OnPositionUpdate(Position position, double averagePrice, int quantity, MarketPosition marketPosition)
 		{
 			CrossAccountPublish();	// patch_live_safety.py v2: the strategy position just changed (it returns at once outside live / without the guard)
+			if (propLive && State == State.Realtime && marketPosition == MarketPosition.Flat) propSaveDue = true;	// saved on the next bar, once the account cash has the trade
 		}
 
 		private void ProcessClosedTrades()
