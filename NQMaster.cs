@@ -2293,8 +2293,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 		// With FillSeries Off every call below falls through to the Set* method it replaces: nothing changes.
 		private void BracketStop(Mod m, CalculationMode mode, double v)
 		{
+			m.XStopPrice = mode == CalculationMode.Price; m.XStopV = v;	// recorded with FillSeries Off too: the panel's open risk (patch_open_risk.py); with Off only PnlAtStops reads it
 			if (fillBip == 0) { SetStopLoss(m.Sig, mode, v, false); return; }
-			m.XStopPrice = mode == CalculationMode.Price; m.XStopV = v;
 			if (m.InTrade && Working(m.XStop)) { try { ChangeOrder(m.XStop, m.XStop.Quantity, 0, BracketPx(m, true)); } catch (Exception ex) { Log(m.Sig + " stop change failed: " + ex.Message); } }
 		}
 		private void BracketTarget(Mod m, CalculationMode mode, double v)
@@ -2302,6 +2302,24 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (fillBip == 0) { SetProfitTarget(m.Sig, mode, v); return; }
 			m.XTgtPrice = mode == CalculationMode.Price; m.XTgtV = v;
 			if (m.InTrade && Working(m.XTgt)) { try { ChangeOrder(m.XTgt, m.XTgt.Quantity, BracketPx(m, false), 0); } catch (Exception ex) { Log(m.Sig + " target change failed: " + ex.Message); } }
+		}
+		// open risk for the panel (patch_open_risk.py, 2026-10-29): P&L of the open lots if every one of them hits its stop, from the entry price
+		// (the account balance on the panel is realised cash). A stop already beyond the entry (VOLB break-even) counts in favour. Slippage not included.
+		private double PnlAtStops()
+		{
+			double r = 0;
+			try
+			{
+				foreach (Mod m in mods)
+				{
+					if (!m.InTrade || m.OpenQty <= 0 || double.IsNaN(m.XStopV) || m.EntryPx <= 0) continue;
+					int dir = m.Dir != 0 ? m.Dir : (Position.MarketPosition == MarketPosition.Short ? -1 : 1);
+					double sp = m.XStopPrice ? m.XStopV : m.EntryPx - dir * m.XStopV * TickSize;
+					r += (sp - m.EntryPx) * dir * m.OpenQty * Instrument.MasterInstrument.PointValue;
+				}
+			}
+			catch { return 0; }
+			return r;
 		}
 		private double BracketPx(Mod m, bool stop)
 		{
@@ -2729,6 +2747,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 					else
 						b.AppendLine(string.Format("Cuenta actual: FONDEADA #{0}  ·  día {1}  ·  retiros {2}", cyFundN, cy.Days + 1, cy.Pays));
 					b.AppendLine(string.Format("Saldo {0}  ·  límite de pérdida {1}  ·  colchón {2}", Usd(bal), Usd(StartBalance + cy.Thr), Usd(prof - cy.Thr)));
+					double pst = PnlAtStops();
+					if (pst != 0) b.AppendLine(string.Format("Si tocan todos los stops abiertos: {0}  ·  colchón que queda {1}{2}", Usd(pst), Usd(prof - cy.Thr + pst), prof - cy.Thr + pst <= 0 ? "  ·  ATENCIÓN: alcanza para perder la cuenta" : ""));
 					if (!cy.Funded && cy.Cons > 0 && cy.Bal > 0 && cy.Best > cy.Cons * Math.Max(cy.T, cy.Bal))
 						b.AppendLine(string.Format("Consistencia: el mejor día ({0}) obliga a llegar a {1}", Usd(cy.Best), Usd(cy.Best / cy.Cons)));
 					if (cy.Funded) b.AppendLine("Próximo retiro: " + cy.NextPayout(Usd));
@@ -2751,6 +2771,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double eq = PropEquity();
 				b.AppendLine(string.Format("CUENTA REAL  ·  {0}  ·  {1}", Account != null ? Account.Name : "", PhaseName(PropMode)));
 				b.AppendLine(string.Format("Saldo {0} ({1})  ·  límite {2}  ·  colchón {3}", Usd(eq), Usd(eq - StartBalance), Usd(propThr), Usd(eq - propThr)));
+				double pstR = PnlAtStops();
+				if (pstR != 0) b.AppendLine(string.Format("Si tocan todos los stops abiertos: {0}  ·  colchón que queda {1}{2}", Usd(pstR), Usd(eq - propThr + pstR), eq - propThr + pstR <= 0 ? "  ·  ATENCIÓN: alcanza para perder la cuenta" : ""));
 				if (!double.IsNaN(propDayStart)) b.AppendLine("Hoy: " + Usd(eq - propDayStart));
 				if (eq <= propThr) b.AppendLine("ATENCIÓN: el saldo está en el límite: verificá la cuenta en la firma");
 				if (PropMode == NQMasterPropMode.Eval && EvalTarget > 0) b.AppendLine(string.Format("Objetivo: {0} de {1}", Usd(eq - StartBalance), Usd(EvalTarget)));
