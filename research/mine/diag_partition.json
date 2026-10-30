@@ -1,0 +1,415 @@
+{
+ "modulos": [
+  "CAM3",
+  "CPI09",
+  "CRT11",
+  "ICT",
+  "LATE15",
+  "LATEFH",
+  "LF0430",
+  "LF06",
+  "LON",
+  "MOM1030",
+  "MOM11",
+  "MOM13",
+  "MSEQ",
+  "MSEQS",
+  "NF05",
+  "ON07",
+  "ORB60",
+  "ORB90",
+  "ORFAIL",
+  "REV06",
+  "RV11",
+  "SO04",
+  "VOLB",
+  "VW13",
+  "VW13b"
+ ],
+ "corr_media_entre_modulos_T1": 0.034,
+ "particiones": {
+  "alterna": {
+   "A": [
+    "VOLB",
+    "MOM1030",
+    "MOM13",
+    "MSEQ",
+    "NF05",
+    "CRT11",
+    "LATE15",
+    "ICT",
+    "ON07",
+    "VW13",
+    "LF06",
+    "LATEFH",
+    "SO04"
+   ],
+   "B": [
+    "ORB60",
+    "CPI09",
+    "ORB90",
+    "MOM11",
+    "ORFAIL",
+    "VW13b",
+    "REV06",
+    "MSEQS",
+    "LF0430",
+    "LON",
+    "RV11",
+    "CAM3"
+   ]
+  },
+  "favorable": {
+   "A": [
+    "CPI09",
+    "ICT",
+    "LF0430",
+    "MOM1030",
+    "MSEQS",
+    "NF05",
+    "ON07",
+    "ORB60",
+    "ORFAIL",
+    "REV06",
+    "SO04",
+    "VW13"
+   ],
+   "B": [
+    "CAM3",
+    "CRT11",
+    "LATE15",
+    "LATEFH",
+    "LF06",
+    "LON",
+    "MOM11",
+    "MOM13",
+    "MSEQ",
+    "ORB90",
+    "RV11",
+    "VOLB",
+    "VW13b"
+   ]
+  }
+ },
+ "periodos": {
+  "T1 2020-23": {
+   "dias": 537,
+   "base": {
+    "1500": {
+     "p_quiebre_a": 92.0,
+     "p_quiebre_b": 92.0,
+     "quiebres_por_par": 1.841,
+     "p_ambas": 92.0
+    },
+    "2000": {
+     "p_quiebre_a": 42.8,
+     "p_quiebre_b": 42.8,
+     "quiebres_por_par": 0.856,
+     "p_ambas": 42.8
+    },
+    "media_dia_par": 235.6
+   },
+   "posthoc_renovacion": {
+    "base": {
+     "1500": {
+      "quiebres_a": 2.32,
+      "quiebres_b": 2.32,
+      "quiebres_por_par": 4.63,
+      "coincidencia": 100.0
+     },
+     "2000": {
+      "quiebres_a": 0.54,
+      "quiebres_b": 0.54,
+      "quiebres_por_par": 1.07,
+      "coincidencia": 100.0
+     }
+    },
+    "alterna": {
+     "1500": {
+      "quiebres_a": 6.48,
+      "quiebres_b": 5.49,
+      "quiebres_por_par": 11.97,
+      "coincidencia": 35.7
+     },
+     "2000": {
+      "quiebres_a": 3.91,
+      "quiebres_b": 2.81,
+      "quiebres_por_par": 6.71,
+      "coincidencia": 6.7
+     }
+    },
+    "favorable": {
+     "1500": {
+      "quiebres_a": 3.65,
+      "quiebres_b": 10.11,
+      "quiebres_por_par": 13.76,
+      "coincidencia": 26.1
+     },
+     "2000": {
+      "quiebres_a": 1.83,
+      "quiebres_b": 6.28,
+      "quiebres_por_par": 8.11,
+      "coincidencia": 10.3
+     }
+    }
+   },
+   "alterna": {
+    "1500": {
+     "p_quiebre_a": 100.0,
+     "p_quiebre_b": 99.9,
+     "quiebres_por_par": 1.999,
+     "p_ambas": 99.9,
+     "pasa": false
+    },
+    "2000": {
+     "p_quiebre_a": 99.1,
+     "p_quiebre_b": 95.0,
+     "quiebres_por_par": 1.94,
+     "p_ambas": 94.0,
+     "pasa": false
+    },
+    "media_dia_par": 235.6,
+    "corr_A_B": 0.284
+   },
+   "favorable": {
+    "1500": {
+     "p_quiebre_a": 98.0,
+     "p_quiebre_b": 100.0,
+     "quiebres_por_par": 1.98,
+     "p_ambas": 98.0,
+     "pasa": false
+    },
+    "2000": {
+     "p_quiebre_a": 81.1,
+     "p_quiebre_b": 100.0,
+     "quiebres_por_par": 1.811,
+     "p_ambas": 81.0,
+     "pasa": false
+    },
+    "media_dia_par": 235.6,
+    "corr_A_B": 0.216
+   }
+  },
+  "T2 2024-26": {
+   "dias": 941,
+   "base": {
+    "1500": {
+     "p_quiebre_a": 99.8,
+     "p_quiebre_b": 99.8,
+     "quiebres_por_par": 1.995,
+     "p_ambas": 99.8
+    },
+    "2000": {
+     "p_quiebre_a": 94.5,
+     "p_quiebre_b": 94.5,
+     "quiebres_por_par": 1.89,
+     "p_ambas": 94.5
+    },
+    "media_dia_par": 223.2
+   },
+   "posthoc_renovacion": {
+    "base": {
+     "1500": {
+      "quiebres_a": 5.29,
+      "quiebres_b": 5.29,
+      "quiebres_por_par": 10.59,
+      "coincidencia": 100.0
+     },
+     "2000": {
+      "quiebres_a": 2.67,
+      "quiebres_b": 2.67,
+      "quiebres_por_par": 5.34,
+      "coincidencia": 100.0
+     }
+    },
+    "alterna": {
+     "1500": {
+      "quiebres_a": 10.61,
+      "quiebres_b": 5.36,
+      "quiebres_por_par": 15.97,
+      "coincidencia": 24.2
+     },
+     "2000": {
+      "quiebres_a": 6.73,
+      "quiebres_b": 2.9,
+      "quiebres_por_par": 9.63,
+      "coincidencia": 17.8
+     }
+    },
+    "favorable": {
+     "1500": {
+      "quiebres_a": 6.92,
+      "quiebres_b": 11.4,
+      "quiebres_por_par": 18.33,
+      "coincidencia": 53.1
+     },
+     "2000": {
+      "quiebres_a": 3.7,
+      "quiebres_b": 6.49,
+      "quiebres_por_par": 10.19,
+      "coincidencia": 42.2
+     }
+    }
+   },
+   "alterna": {
+    "1500": {
+     "p_quiebre_a": 100.0,
+     "p_quiebre_b": 99.9,
+     "quiebres_por_par": 1.998,
+     "p_ambas": 99.9,
+     "pasa": false
+    },
+    "2000": {
+     "p_quiebre_a": 100.0,
+     "p_quiebre_b": 95.8,
+     "quiebres_por_par": 1.958,
+     "p_ambas": 95.8,
+     "pasa": false
+    },
+    "media_dia_par": 223.2,
+    "corr_A_B": 0.194
+   },
+   "favorable": {
+    "1500": {
+     "p_quiebre_a": 100.0,
+     "p_quiebre_b": 100.0,
+     "quiebres_por_par": 2.0,
+     "p_ambas": 100.0,
+     "pasa": false
+    },
+    "2000": {
+     "p_quiebre_a": 97.7,
+     "p_quiebre_b": 100.0,
+     "quiebres_por_par": 1.977,
+     "p_ambas": 97.6,
+     "pasa": false
+    },
+    "media_dia_par": 223.2,
+    "corr_A_B": 0.218
+   }
+  }
+ },
+ "posthoc_edge": {
+  "T1 edge -35%": {
+   "base": {
+    "1500": {
+     "quiebres_a": 5.58,
+     "quiebres_b": 5.58,
+     "quiebres_por_par": 11.15,
+     "coincidencia": 100.0
+    },
+    "2000": {
+     "quiebres_a": 2.58,
+     "quiebres_b": 2.58,
+     "quiebres_por_par": 5.15,
+     "coincidencia": 100.0
+    }
+   },
+   "favorable": {
+    "1500": {
+     "quiebres_a": 5.24,
+     "quiebres_b": 13.65,
+     "quiebres_por_par": 18.89,
+     "coincidencia": 51.2
+    },
+    "2000": {
+     "quiebres_a": 3.28,
+     "quiebres_b": 8.22,
+     "quiebres_por_par": 11.49,
+     "coincidencia": 17.0
+    }
+   }
+  },
+  "T1 edge -100%": {
+   "base": {
+    "1500": {
+     "quiebres_a": 12.97,
+     "quiebres_b": 12.97,
+     "quiebres_por_par": 25.94,
+     "coincidencia": 100.0
+    },
+    "2000": {
+     "quiebres_a": 8.11,
+     "quiebres_b": 8.11,
+     "quiebres_por_par": 16.21,
+     "coincidencia": 100.0
+    }
+   },
+   "favorable": {
+    "1500": {
+     "quiebres_a": 10.73,
+     "quiebres_b": 20.28,
+     "quiebres_por_par": 31.01,
+     "coincidencia": 81.3
+    },
+    "2000": {
+     "quiebres_a": 7.57,
+     "quiebres_b": 13.93,
+     "quiebres_por_par": 21.5,
+     "coincidencia": 58.6
+    }
+   }
+  },
+  "T2 edge -35%": {
+   "base": {
+    "1500": {
+     "quiebres_a": 6.43,
+     "quiebres_b": 6.43,
+     "quiebres_por_par": 12.86,
+     "coincidencia": 100.0
+    },
+    "2000": {
+     "quiebres_a": 4.42,
+     "quiebres_b": 4.42,
+     "quiebres_por_par": 8.85,
+     "coincidencia": 100.0
+    }
+   },
+   "favorable": {
+    "1500": {
+     "quiebres_a": 8.45,
+     "quiebres_b": 14.76,
+     "quiebres_por_par": 23.21,
+     "coincidencia": 53.1
+    },
+    "2000": {
+     "quiebres_a": 5.19,
+     "quiebres_b": 8.74,
+     "quiebres_por_par": 13.93,
+     "coincidencia": 47.8
+    }
+   }
+  },
+  "T2 edge -100%": {
+   "base": {
+    "1500": {
+     "quiebres_a": 12.56,
+     "quiebres_b": 12.56,
+     "quiebres_por_par": 25.12,
+     "coincidencia": 100.0
+    },
+    "2000": {
+     "quiebres_a": 8.33,
+     "quiebres_b": 8.33,
+     "quiebres_por_par": 16.65,
+     "coincidencia": 100.0
+    }
+   },
+   "favorable": {
+    "1500": {
+     "quiebres_a": 11.76,
+     "quiebres_b": 23.26,
+     "quiebres_por_par": 35.02,
+     "coincidencia": 68.8
+    },
+    "2000": {
+     "quiebres_a": 8.15,
+     "quiebres_b": 15.2,
+     "quiebres_por_par": 23.34,
+     "coincidencia": 57.9
+    }
+   }
+  }
+ },
+ "veredicto": "no pasa: 5D cerrado"
+}
