@@ -173,7 +173,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			desyncHalt = true;
 			try { Account.Flatten(new[] { Instrument }); } catch (Exception ex) { flatFail = true; Print("NQMaster | account flatten failed: " + ex.Message); }
 			if (flatFail) Warn("nqm_flatfail2", "NQMaster | FLATTEN FAILED on " + Instrument.FullName + ": the account position may still be open and the strategy stops. Close it by hand NOW (Positions tab).");	// patch_live_safety.py v4
-			Warn("nqm_desync", string.Format("NQMaster | ACCOUNT / STRATEGY POSITION MISMATCH for 2 bars: account {0}, strategy {1} ({2}). The account position and orders of this instrument were closed and the strategy stops. Check the Positions / Orders tabs, then enable it again.", acct, strat, Instrument.FullName));
+			else Warn("nqm_desync", string.Format("NQMaster | ACCOUNT / STRATEGY POSITION MISMATCH for 2 bars: account {0}, strategy {1} ({2}). The account position and orders of this instrument were closed and the strategy stops. Check the Positions / Orders tabs, then enable it again.", acct, strat, Instrument.FullName));
 			try { SetState(State.Terminated); } catch { }
 		}
 		// patch_live_safety.py (code review 2026-10-29): lots the strategy holds that no module owns (a double exit / overfill reverses the position
@@ -758,7 +758,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 					desyncHalt = true;	// no more managed exits: with the account already flat they would open a reverse position
 					try { Account.Flatten(new[] { Instrument }); } catch (Exception ex) { flatFail = true; Print("NQMaster | account flatten failed: " + ex.Message); }
 					if (flatFail) Warn("nqm_flatfail2", "NQMaster | FLATTEN FAILED on " + Instrument.FullName + ": the account position may still be open and the strategy stops. Close it by hand NOW (Positions tab).");
-					Warn("nqm_flatfail", string.Format("NQMaster | the strategy could not get flat in 3 bars ({0}): the account position and orders of {1} were closed directly and the strategy stops. Check the Positions and Orders tabs, then enable it again.", hedgeWhy ?? "cross-account hedge guard", Instrument.FullName));
+					else Warn("nqm_flatfail", string.Format("NQMaster | the strategy could not get flat in 3 bars ({0}): the account position and orders of {1} were closed directly and the strategy stops. Check the Positions and Orders tabs, then enable it again.", hedgeWhy ?? "cross-account hedge guard", Instrument.FullName));
 					try { SetState(State.Terminated); } catch { }
 					return;
 				}
@@ -1844,7 +1844,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 				File.WriteAllText(edgeTmp, string.Join(";", new string[] { Profile.ToString(), edgeLastDate.ToString(CultureInfo.InvariantCulture), edgeS.ToString("R", CultureInfo.InvariantCulture),
 					edgeDays.ToString(CultureInfo.InvariantCulture), edgeAlarm ? "1" : "0", edgeFbLeft.ToString(CultureInfo.InvariantCulture),
 					edgeFbOff == null ? "" : string.Join(" ", edgeFbOff.ToArray()), edgeWarned ? "1" : "0", EdgeMonitorStart ?? "", edgeK.ToString("R", CultureInfo.InvariantCulture), edgeH.ToString("R", CultureInfo.InvariantCulture) }));
-				if (File.Exists(EdgeFile)) File.Replace(edgeTmp, EdgeFile, null); else File.Move(edgeTmp, EdgeFile);	// patch_edge_restore.py: atomic (no truncated file after a cut)
+				try { if (File.Exists(EdgeFile)) File.Replace(edgeTmp, EdgeFile, null); else File.Move(edgeTmp, EdgeFile); }	// patch_edge_restore.py: atomic (no truncated file after a cut)
+				catch (Exception ex) { Print("NQMaster | edge monitor: atomic save failed (" + ex.Message + "), copying directly"); File.Copy(edgeTmp, EdgeFile, true); }
 			}
 			catch { }
 		}
@@ -1868,7 +1869,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!int.TryParse(p[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out d) || !double.TryParse(p[2], NumberStyles.Any, CultureInfo.InvariantCulture, out sv)
 				|| !int.TryParse(p[3], NumberStyles.Integer, CultureInfo.InvariantCulture, out days) || !int.TryParse(p[5], NumberStyles.Integer, CultureInfo.InvariantCulture, out fb)) return false;
 			DateTime dt;
-			if (d != 0 && !DateTime.TryParseExact(p[1], "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dt)) return false;	// v3: no impossible dates (20260231)
+			if (d != 0 && (d < 20000101 || d > 21000101 || !DateTime.TryParseExact(p[1], "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))) return false;	// v3: no impossible dates (20260231); v4: 2000-2100
 			if (double.IsNaN(sv) || double.IsInfinity(sv) || sv < 0 || days < 0 || fb < 0) return false;	// v3: a NaN CUSUM would never alarm
 			alarm = p[4] == "1"; warned = p[7] == "1";
 			foreach (string x in p[6].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)) off.Add(x);
@@ -2259,6 +2260,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 		{
 			if (desyncHalt) return;
 			if (State == State.Realtime && Working(m.ExitOrd)) { m.ExitAgain = true; Log(m.Sig + " exit already working, retried next bar if still needed: " + why); return; }	// patch_live_safety.py
+			// v5: an exit is never sent while the account and the strategy differ (an external flatten left the account flat: it would open a reverse position)
+			if (State == State.Realtime && AccountSyncGuard && desyncBars > 0) { m.ExitAgain = true; Log(m.Sig + " exit held: account and strategy differ, retried next bar if they agree again: " + why); return; }
+			if (State == State.Realtime && !AccountSyncGuard && m.ExitOrd != null && m.ExitTrade == m.TradeNo && (m.ExitOrd.OrderState == OrderState.Cancelled || m.ExitOrd.OrderState == OrderState.Rejected))
+			{ Log(m.Sig + " exit not resent: the previous one was " + m.ExitOrd.OrderState + " and the account sync guard is off: " + why); return; }
 			if (fillBip > 0) { ModuleMarketExit(m, Math.Max(1, m.OpenQty > 0 ? m.OpenQty : Position.Quantity), m.Sig + "X"); Log(m.Sig + " exit: " + why); return; }
 			m.ExitBar = CurrentBars[0]; m.ExitAgain = false; m.ExitTrade = m.TradeNo;
 			if (Position.MarketPosition == MarketPosition.Long) m.ExitOrd = ExitLong(fillBip, Math.Max(1, Position.Quantity), m.Sig + "X", m.Sig);

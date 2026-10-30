@@ -1,4 +1,4 @@
-"""patch_edge_restore.py v3 (2026-10-30, frente 5F: revision de codigo completa de NQMaster.cs, hallazgo medio del monitor de borde,
+"""patch_edge_restore.py v4 (2026-10-30, frente 5F: revision de codigo completa de NQMaster.cs, hallazgo medio del monitor de borde,
 docs/experimentos/revisiones/codigo_2026-10-29/code_review_nqmaster_2026-10-29.md).
 Aplica sobre NQMaster.cs v4.3 + patch_clock_check.py v3 + patch_open_risk.py v2 + patch_live_safety.py v3.
 
@@ -30,13 +30,14 @@ avisos de una alarma repuesta dicen que el dia viene del historico; los avisos d
 v3 (revision conjunta, 30-oct): EdgeParse rechaza fechas imposibles (20260231), CUSUM NaN / negativo y contadores negativos; un archivo propio
 danado (menos de 9 campos, k / h ilegibles) avisa como danado, no como "otra configuracion"; el guardado es atomico (temporal + File.Replace),
 asi un corte a mitad de escritura no deja un archivo truncado.
+v4 (revision del delta, 30-oct): si File.Replace falla, copia directa con Print; fecha entre 2000 y 2100.
 Idempotente. Run: python3 research/mine/patch_edge_restore.py [NQMaster.cs] && bash tools/nt8_stub/check.sh NQMaster.cs"""
 import os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 P = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "NQMaster.cs")
 s = open(P, encoding="utf-8").read()
-if "edgeTmp" in s: print("ya aplicado"); sys.exit(0)
-if "EdgeStep(" in s: sys.exit("NQMaster.cs trae la v1 de patch_edge_restore.py: regenerar desde el backup (ver docs/ESTADO.md)")
+if "atomic save failed" in s: print("ya aplicado"); sys.exit(0)
+if "EdgeStep(" in s: sys.exit("NQMaster.cs trae una version vieja de patch_edge_restore.py: regenerar desde el backup (ver docs/ESTADO.md)")
 if "ExitDone(" not in s: sys.exit("falta patch_live_safety.py v3")
 
 def rep(a, b):
@@ -55,7 +56,8 @@ rep("""			if (State != State.Realtime || !EdgeMonitor || EdgeFile == null) retur
 				File.WriteAllText(EdgeFile,""")
 rep("""edgeWarned ? "1" : "0", EdgeMonitorStart ?? "" }));""",
     """edgeWarned ? "1" : "0", EdgeMonitorStart ?? "", edgeK.ToString("R", CultureInfo.InvariantCulture), edgeH.ToString("R", CultureInfo.InvariantCulture) }));
-				if (File.Exists(EdgeFile)) File.Replace(edgeTmp, EdgeFile, null); else File.Move(edgeTmp, EdgeFile);	// patch_edge_restore.py: atomic (no truncated file after a cut)""")
+				try { if (File.Exists(EdgeFile)) File.Replace(edgeTmp, EdgeFile, null); else File.Move(edgeTmp, EdgeFile); }	// patch_edge_restore.py: atomic (no truncated file after a cut)
+				catch (Exception ex) { Print("NQMaster | edge monitor: atomic save failed (" + ex.Message + "), copying directly"); File.Copy(edgeTmp, EdgeFile, true); }""")
 rep("""				File.WriteAllText(EdgeFile, string.Join(";", new string[] { Profile.ToString(),""", """				string edgeTmp = EdgeFile.Substring(0, EdgeFile.Length - 4) + ".tmp";
 				File.WriteAllText(edgeTmp, string.Join(";", new string[] { Profile.ToString(),""")
 
@@ -153,7 +155,7 @@ newr = """		// patch_edge_restore.py: days the loaded history closed (date key, 
 			if (!int.TryParse(p[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out d) || !double.TryParse(p[2], NumberStyles.Any, CultureInfo.InvariantCulture, out sv)
 				|| !int.TryParse(p[3], NumberStyles.Integer, CultureInfo.InvariantCulture, out days) || !int.TryParse(p[5], NumberStyles.Integer, CultureInfo.InvariantCulture, out fb)) return false;
 			DateTime dt;
-			if (d != 0 && !DateTime.TryParseExact(p[1], "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dt)) return false;	// v3: no impossible dates (20260231)
+			if (d != 0 && (d < 20000101 || d > 21000101 || !DateTime.TryParseExact(p[1], "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))) return false;	// v3: no impossible dates (20260231); v4: 2000-2100
 			if (double.IsNaN(sv) || double.IsInfinity(sv) || sv < 0 || days < 0 || fb < 0) return false;	// v3: a NaN CUSUM would never alarm
 			alarm = p[4] == "1"; warned = p[7] == "1";
 			foreach (string x in p[6].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)) off.Add(x);
@@ -263,4 +265,4 @@ newr = """		// patch_edge_restore.py: days the loaded history closed (date key, 
 """
 s = s[:j0] + newr + s[j1:]
 open(P, "w", encoding="utf-8").write(s)
-print("patch_edge_restore v3 aplicado")
+print("patch_edge_restore v4 aplicado")

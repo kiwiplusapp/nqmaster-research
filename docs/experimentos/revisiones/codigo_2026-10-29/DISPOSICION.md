@@ -100,3 +100,19 @@ Veredicto del revisor: F5 sí. Dinero real todavía no, pero solo por las prueba
 | Info: histórico intacto, 9 / 11 campos, `EdgeRestore` antes de `PropGoLive` | info | Verificado por el revisor. Lo nuevo de v4 / v3 corre solo en vivo. `TradeNo` sube también en el histórico, pero solo se lee en vivo. |
 
 `check.sh` 0. `cr_fmtcheck`: 126 llamadas, 0 sospechosas. La cadena de 6 parches se regenera desde el backup y es idempotente; cada parche corta si encuentra una versión anterior de sí mismo.
+
+## Disposición de la revisión del delta v4 / v3 (`revision_v4_edge_v3.md`, tal cual)
+
+Veredicto del revisor: F5 sí. Dinero real todavía no, solo por las pruebas de la PC. Sin altas ni medias. De las 8 bajas anteriores, 7 están verificadas y la 1 solo en parte. `patch_live_safety.py` v5 y `patch_edge_restore.py` v4:
+
+| Hallazgo | Severidad | Qué se hizo |
+|---|---|---|
+| 1. El control de acuerdo solo frena a `ExitRetries`; las salidas por tiempo y Londres salen igual | baja | **Corregido** como pidió: el control pasa a `ExitModule`, así vale para toda salida en vivo. Con la guarda de sincronización contando una diferencia (`desyncBars > 0`), la salida se retiene (`ExitAgain`) y se reintenta cuando vuelven a coincidir; si la diferencia dura 2 barras, la guarda aplana y detiene. Sin la guarda, no se reenvía una salida cancelada del trade en curso: queda el aviso de cerrar a mano. Se usa `desyncBars` y no la comparación directa, para no frenar el cierre de la posición virtual antes de `syncArmed`. |
+| 2. Después de `FLATTEN FAILED` sale igual el aviso de "cerrado" | baja | **Corregido:** con `flatFail` solo sale `FLATTEN FAILED`, en el escalamiento y en la guarda de sincronización. |
+| Info: un rechazo asíncrono de `Account.Flatten` no es una excepción | info | **Runbook:** si NinjaTrader muestra un rechazo después de la detención, el cierre no se hizo: cerrar a mano. |
+| Info: `EdgeSave` sin plan B si `File.Replace` falla | info | **Corregido:** `Print` y copia directa del temporal. |
+| Info: `TryParseExact` no limita el año | info | **Corregido:** fecha entre 2000 y 2100. |
+| Info: texto del parche sobre la v2 | info | **Corregido** ("una versión vieja"). |
+| Info: histórico intacto | info | Verificado por el revisor. En el delta v5 / v4 todo lo nuevo también corre solo en vivo (`State == State.Realtime` en `ExitModule`; `EdgeSave` solo en vivo). |
+
+Este último delta (v5 / v4) es chico: lo revisé yo, pero no pasó por otra revisión independiente. Lo prueban el F5, el export Off y los dos Playback. `check.sh` 0; `cr_fmtcheck` 126 llamadas, 0 sospechosas; la cadena de 6 parches se regenera desde el backup, es idempotente y corta sobre versiones viejas.

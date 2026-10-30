@@ -1,4 +1,4 @@
-"""patch_live_safety.py v4 (2026-10-30, frente 5F: revision de codigo completa de NQMaster.cs, research/mine/code_review_nqmaster_2026-10-29.md).
+"""patch_live_safety.py v5 (2026-10-30, frente 5F: revision de codigo completa de NQMaster.cs, research/mine/code_review_nqmaster_2026-10-29.md).
 Aplica sobre NQMaster.cs v4.3 + patch_clock_check.py v3 + patch_open_risk.py v2. Todo lo que puede cambiar ordenes corre SOLO EN VIVO
 (State.Realtime), asi el export Off del Strategy Analyzer tiene que salir identico:
  1. Doble salida / overfill (hallazgo alto 1): una ejecucion de salida con mas lotes que los abiertos del modulo -> alerta y aplanado; control por
@@ -27,11 +27,14 @@ v4 (revision conjunta v3 + borde v2, 30-oct): una salida muerta solo se reintent
 cancela con la cuenta ya plana) y solo si es del trade en curso (numero de trade por modulo); el reintento no corre en la barra siguiente a un
 FlattenAll; si Account.Flatten falla, aviso FLATTEN FAILED, y al terminar con la cuenta posicionada no se borra el archivo de posiciones (alerta si
 el aplanado fallo); PropPeakOverride menor que el saldo inicial se ignora con aviso.
+v5 (revision del delta v4, 30-oct): el control de acuerdo cuenta / estrategia pasa a ExitModule, asi vale para toda salida (por tiempo, Londres,
+reintentos): con la guarda de sincronizacion contando una diferencia la salida se retiene una barra; sin la guarda no se reenvia una salida
+cancelada del trade en curso; despues de FLATTEN FAILED no sale el aviso de "cerrado".
 Idempotente. Run: python3 research/mine/patch_live_safety.py && bash tools/nt8_stub/check.sh NQMaster.cs"""
 import os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); P = os.path.join(ROOT, "NQMaster.cs")
 s = open(P, encoding="utf-8").read()
-if "flatFail" in s: print("ya aplicado"); sys.exit(0)
+if "exit held:" in s: print("ya aplicado"); sys.exit(0)
 if "LotOwnershipCheck" in s: sys.exit("NQMaster.cs trae una version vieja de patch_live_safety.py: regenerar desde el backup (ver docs/ESTADO.md)")
 def rep(a, b, n=1):
     global s
@@ -50,6 +53,10 @@ rep("""			if (desyncHalt) return;
 			else if (Position.MarketPosition == MarketPosition.Short) ExitShort(fillBip, Math.Max(1, Position.Quantity), m.Sig + "X", m.Sig);""",
 """			if (desyncHalt) return;
 			if (State == State.Realtime && Working(m.ExitOrd)) { m.ExitAgain = true; Log(m.Sig + " exit already working, retried next bar if still needed: " + why); return; }	// patch_live_safety.py
+			// v5: an exit is never sent while the account and the strategy differ (an external flatten left the account flat: it would open a reverse position)
+			if (State == State.Realtime && AccountSyncGuard && desyncBars > 0) { m.ExitAgain = true; Log(m.Sig + " exit held: account and strategy differ, retried next bar if they agree again: " + why); return; }
+			if (State == State.Realtime && !AccountSyncGuard && m.ExitOrd != null && m.ExitTrade == m.TradeNo && (m.ExitOrd.OrderState == OrderState.Cancelled || m.ExitOrd.OrderState == OrderState.Rejected))
+			{ Log(m.Sig + " exit not resent: the previous one was " + m.ExitOrd.OrderState + " and the account sync guard is off: " + why); return; }
 			if (fillBip > 0) { ModuleMarketExit(m, Math.Max(1, m.OpenQty > 0 ? m.OpenQty : Position.Quantity), m.Sig + "X"); Log(m.Sig + " exit: " + why); return; }
 			m.ExitBar = CurrentBars[0]; m.ExitAgain = false; m.ExitTrade = m.TradeNo;
 			if (Position.MarketPosition == MarketPosition.Long) m.ExitOrd = ExitLong(fillBip, Math.Max(1, Position.Quantity), m.Sig + "X", m.Sig);
@@ -259,7 +266,7 @@ rep("""			if (hedgeFlat) { if (Position.MarketPosition == MarketPosition.Flat) h
 					desyncHalt = true;	// no more managed exits: with the account already flat they would open a reverse position
 					try { Account.Flatten(new[] { Instrument }); } catch (Exception ex) { flatFail = true; Print("NQMaster | account flatten failed: " + ex.Message); }
 					if (flatFail) Warn("nqm_flatfail2", "NQMaster | FLATTEN FAILED on " + Instrument.FullName + ": the account position may still be open and the strategy stops. Close it by hand NOW (Positions tab).");
-					Warn("nqm_flatfail", string.Format("NQMaster | the strategy could not get flat in 3 bars ({0}): the account position and orders of {1} were closed directly and the strategy stops. Check the Positions and Orders tabs, then enable it again.", hedgeWhy ?? "cross-account hedge guard", Instrument.FullName));
+					else Warn("nqm_flatfail", string.Format("NQMaster | the strategy could not get flat in 3 bars ({0}): the account position and orders of {1} were closed directly and the strategy stops. Check the Positions and Orders tabs, then enable it again.", hedgeWhy ?? "cross-account hedge guard", Instrument.FullName));
 					try { SetState(State.Terminated); } catch { }
 					return;
 				}
@@ -292,4 +299,5 @@ rep("""			bool newOverride = double.IsNaN(storedOverride) || Math.Abs(PropPeakOv
 			bool newOverride = double.IsNaN(storedOverride) || Math.Abs(pov - storedOverride) > 0.01;
 			if (pov > 0) propPeak = newOverride ? pov : Math.Max(propPeak, pov);""")
 rep("propStateUnknown = !stateOk && !(PropPeakOverride > 0 && newOverride) && ThrOv() <= 0", "propStateUnknown = !stateOk && !(pov > 0 && newOverride) && ThrOv() <= 0")
-open(P, "w", encoding="utf-8").write(s); print("patch_live_safety v4 aplicado")
+rep('			Warn("nqm_desync", string.Format(', '			else Warn("nqm_desync", string.Format(')	# v5: not after FLATTEN FAILED
+open(P, "w", encoding="utf-8").write(s); print("patch_live_safety v5 aplicado")
