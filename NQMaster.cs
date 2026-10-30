@@ -2989,7 +2989,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				case "trading": return "operando";
 				case "waiting": return "esperando datos";
 				// patch_panel_risk.py: the statuses that stop trading, in Spanish (display only)
-				case "NEWS BLACKOUT": return "noticia de alto impacto: sin entradas";
+				case "NEWS BLACKOUT": return "noticia de alto impacto: sin posiciones ni entradas";
 				case "ACCOUNT / STRATEGY POSITION MISMATCH - see Output": return "LA CUENTA Y LA ESTRATEGIA NO COINCIDEN: ver Output";
 				case "the account refuses orders - see Output": return "la cuenta rechaza órdenes: ver Output";
 				case "holiday / half-day session: no trading": return "feriado o media sesión: no opera";
@@ -2997,13 +2997,13 @@ namespace NinjaTrader.NinjaScript.Strategies
 				case "FOMC day: no trading": return "día de FOMC: no opera";
 				case "eval target reached": return "objetivo de la eval alcanzado: no opera";
 				case "drawdown guard": return "guarda de drawdown: detenida";
-				case "daily loss limit": return "límite de pérdida diaria: sin entradas hasta mañana";
-				case "prop daily stop": return "stop del día de la cuenta: sin entradas hasta mañana";
+				case "daily loss limit": return "límite de pérdida diaria: sin entradas hasta la próxima sesión (18:00 ET)";
+				case "prop daily stop": return "stop del día de la cuenta: sin entradas hasta la próxima sesión (18:00 ET)";
 				case "MANUAL PAUSE (file)": return "PAUSA MANUAL (archivo de pausa)";
 				case "EDGE MONITOR ALARM - review before trading": return "ALARMA DEL MONITOR DE BORDE: revisar antes de operar";
-				case "another account holds the opposite NQ position / entry (cross-account guard)": return "otra cuenta del grupo tiene la posición opuesta (guarda entre cuentas)";
+				case "another account holds the opposite NQ position / entry (cross-account guard)": return "otra cuenta del grupo tiene la posición o una entrada opuesta (guarda entre cuentas)";
 				default:
-					if (status.StartsWith("low volatility (ATR ")) return "volatilidad baja: no opera " + status.Substring("low volatility ".Length);
+					if (status.StartsWith("low volatility (ATR ", StringComparison.Ordinal)) return "volatilidad baja: no opera " + status.Substring("low volatility ".Length);
 					return status;
 			}
 		}
@@ -3064,22 +3064,25 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (eq <= propThr) b.AppendLine("ATENCIÓN: el saldo está en el límite: verificá la cuenta en la firma");
 				if (PropMode == NQMasterPropMode.Eval && EvalTarget > 0)
 				{	// patch_panel_risk.py: the consistency rule raises the target (same formula as the eval target check)
-					double best = Math.Max(propBestDay, double.IsNaN(propDayStart) ? 0 : eq - propDayStart), needT = EvalTarget;
+					double un = 0; try { un = Account.Get(AccountItem.UnrealizedProfitLoss, Currency.UsDollar); } catch { }	// same equity as the target check
+					double best = Math.Max(propBestDay, double.IsNaN(propDayStart) ? 0 : eq + un - propDayStart), needT = EvalTarget;
 					if (ConsistencyPct > 0) needT = Math.Max(needT, best * 100.0 / ConsistencyPct);
-					b.AppendLine(string.Format("Objetivo: {0} de {1}{2}", Usd(eq - StartBalance), Usd(needT),
+					b.AppendLine(string.Format("Objetivo: {0} de {1}{2}", Usd(eq + un - StartBalance), Usd(needT),
 						needT > EvalTarget + 0.5 ? string.Format("  (el mejor día, {0}, obliga a más que {1} por la consistencia)", Usd(best), Usd(EvalTarget)) : ""));
 				}
 				if (PropMode == NQMasterPropMode.Funded) b.AppendLine((eq - StartBalance >= FundedPayoutAt ? "RETIRO DISPONIBLE: " : "Retiro: ") + payoutHint);
 			}
 			return b.ToString().TrimEnd();
 		}
-		// patch_panel_risk.py: base contracts of the day and the funded risk cap / step-up state (display only)
+		// patch_panel_risk.py: lots per module today and the risk cap / step-up state (display only)
 		private string RiskLine()
 		{
-			string r = string.Format("Contratos base hoy {0}", Math.Max(1, edgeDayQty));
-			if (PropMode == NQMasterPropMode.Funded && RiskCapPerContract > 0)
+			string r = string.Format("Lotes por módulo hoy {0}", Math.Max(1, edgeDayQty));
+			if (!noBoost) r += string.Format(" (MOM1030 {0}, CPI09 {1})", HwQty(Mom1030Multiplier), HwQty(Cpi09Multiplier));
+			double capCush = PropMode == NQMasterPropMode.Eval ? EvalRiskCapCushion : FundedRiskCapCushion;
+			if (RiskCapPerContract > 0 && (PropMode == NQMasterPropMode.Funded || capCush > 0))
 				r += RiskCapActive ? string.Format("  ·  tope de riesgo ACTIVO: se saltean los trades de más de {0} por contrato", Usd(RiskCapPerContract))
-					: string.Format("  ·  tope de riesgo apagado (se activa con colchón menor a {0})", Usd(FundedRiskCapCushion));
+					: string.Format("  ·  tope de riesgo apagado (se activa si el colchón al abrir la sesión es menor a {0})", Usd(capCush));
 			if (StepUpOn) r += "  ·  escalón de contratos activo";
 			return r;
 		}
@@ -3092,7 +3095,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			string t = "";
 			if (ps > 0) t += string.Format("  ·  stop de ganancia del día en +{0}{1}", Usd(ps), ev ? " (consistencia)" : "");
 			if (ls > 0) t += string.Format("  ·  stop de pérdida del día en {0}", Usd(-ls));
-			if (propStopped) t += "  ·  DETENIDO por hoy (saltó un stop del día)";
+			if (propStopped) t += "  ·  DETENIDO hasta la próxima sesión (18:00 ET): saltó un stop del día";
 			return t;
 		}
 		private string DashWarnings()
