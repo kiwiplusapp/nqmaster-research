@@ -152,7 +152,30 @@ Frentes 5A (paridad y fills), 5B (motor de campaña, experimentos 02-06) y 5C (r
 
 **Para la PC (Federico):** F5 de `NQMaster.cs` (trae `IctMultiplier = 1`, el control de reloj, el riesgo abierto del panel y la capa de seguridad en vivo de la revisión de código; nada de eso cambia trades del backtest) y Off 2024 → hoy con el Output: el export tiene que ser idéntico al de v4.3 salvo los lotes de ICT (2 → 1). Antes de comprar cuentas: los simulacros en Sim del runbook (desconexión de 30 s y 3 min; 2 cuentas con señales opuestas; deshabilitar con una posición abierta para oír `STOPPED WITH AN OPEN POSITION`) y repetir con el `NQMaster.cs` nuevo los dos Playback ya hechos (Tick1 6 contratos 13-15 oct y Off 16 oct): 0 `OVERFILL`, 0 `LOTS WITHOUT OWNER`, 0 `could not get flat`, 0 `exit retried` y 0 `exit order working`. En la primera cuenta real, la prueba única del control de estado de la cuenta (runbook, "Primer día de cada cuenta"). Después del domingo 1-nov (fin del horario de verano en EE.UU.), mirar que no aparezca `CLOCK CHECK` en la primera sesión.
 
-**Siguiente en la nube:** 5D cerrado (diagnóstico 11: repartir módulos entre plazas multiplica los quiebres; las reglas de cuenta de la consigna ya estaban descartadas). 5E: panel de riesgo de la cuenta real hecho (`patch_panel_risk.py`), revisión en curso. 5F cerrado hasta el F5.
+## Diagnóstico 11 (2026-10-30, nube): repartir los módulos entre plazas (frente 5D)
+
+`docs/experimentos/11_particion_plazas.md`; revisión tal cual y disposición en `docs/experimentos/revisiones/diag11/`.
+
+Que la mitad de las plazas opere un grupo de módulos y la otra mitad el otro, cada una con el doble de contratos, multiplica los quiebres por par de plazas: ×1,5 a ×1,7 en 2023-26, ×2,8 a ×6,2 en 2020-22 y ×1,2 a ×2,0 con −35 % y con edge cero. A cambio, los quiebres coinciden en 6-47 % de los casos, contra 100 % hoy.
+
+- **Por qué:** los módulos casi no se correlacionan (0,034), así que cada plaza ya está diversificada por dentro.
+- **Criterio pre-registrado:** no fue evaluable (saturado). La evidencia es post-hoc.
+- **Revisión:** aprobado con reservas, corregidas (períodos, set exacto, alcance).
+- **Lo que no se midió:** M2 (ventanas de 60 días) no se midió en el motor.
+- **5D queda cerrado para la partición y para las reglas de cuenta de la consigna.** Quedan sin probar partir por firma y usar perfiles distintos por plaza a 1×.
+
+## Frente 5E (2026-10-30, nube): panel de riesgo de la cuenta real
+
+`research/mine/patch_panel_risk.py` v2, solo panel. En la CUENTA REAL agrega:
+- el estado en castellano;
+- los lotes por módulo (MOM1030 y CPI09 aparte);
+- el tope de riesgo (decidido con el colchón al abrir la sesión);
+- los stops del día y "DETENIDO hasta la próxima sesión";
+- el objetivo de la eval con la consistencia.
+
+Revisión adversarial: F5 sí; detalles de texto corregidos (`docs/experimentos/revisiones/panel_2026-10-30/`). Las líneas solo aparecen en una cuenta real: el runbook pide mirarlas el primer día.
+
+**Siguiente en la nube:** 5D y 5E cerrados. 5F cerrado hasta el F5: los 7 parches esperan la PC. Lo que queda abierto es de la PC (ver arriba). En la nube, la consolidación de la cadena de parches en una fuente única (5F) conviene hacerla después del F5, para no tocar el archivo que se va a compilar.
 
 - **Regenerar `NQMaster.cs` (29-oct):** `cp archive/backups/NQMaster_backup_pre_fillseries.cs NQMaster.cs && python3 research/mine/patch_fillseries.py && python3 research/mine/patch_parity_s2.py && python3 research/mine/patch_clock_check.py && python3 research/mine/patch_open_risk.py && python3 research/mine/patch_live_safety.py && python3 research/mine/patch_edge_restore.py && python3 research/mine/patch_panel_risk.py && bash tools/nt8_stub/check.sh NQMaster.cs`.
 

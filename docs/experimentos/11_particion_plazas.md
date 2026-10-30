@@ -1,86 +1,97 @@
 # Diagnóstico 11 (2026-10-30, frente 5D): repartir los módulos entre plazas
 
-**Veredicto: no pasa, con el criterio pre-registrado y con la lectura post-hoc.**
-- **Proxy pre-registrado (caída máxima en 252 días):** quedó saturado cerca del 100 % y no discrimina; ver la sección del criterio.
-- **Lectura post-hoc (no pre-registrada; quiebres por año con renovación):** repartir los módulos en dos grupos y darle a cada plaza el doble de contratos multiplica los quiebres por par de plazas:
-  - ×1,5 a ×1,9 en 2024-26;
-  - ×2,6 a ×7,6 en 2020-23.
-  - A cambio, los quiebres de las dos plazas coinciden menos: 7-53 % de las veces, contra 100 % hoy.
-- **Consecuencia:** no se corre en el motor de campaña y el **frente 5D queda cerrado**. No queda ninguna regla de cuenta sin probar.
+**Veredicto: no conviene.** El criterio pre-registrado no se pudo evaluar, y la evidencia que decide es post-hoc.
 
-Plan pre-registrado: `docs/PLAN_2026-10-30_diag11.md`. Script: `research/mine/diag_partition.py` (5 s) → `diag_partition.json`.
+**El criterio pre-registrado.** Usaba la caída máxima en 252 días, y esa medida satura: en un año, 1 contrato del set completo casi siempre cae más que el umbral. Además, el criterio era imposible por construcción. Como P(quiebran las dos) ≥ P(A) + P(B) − 1, bajar ese número un 30 % con la base en 93-99 % exigía que cada plaza quebrara menos que en la base, justo lo contrario de la hipótesis.
+
+**La lectura post-hoc (no pre-registrada).** Se cuentan los quiebres por año, y cada vez que una plaza quiebra arranca de nuevo. Repartir los módulos en dos grupos, con el doble de contratos por plaza, multiplica los quiebres por par de plazas:
+- **Edge completo:** ×1,5 a ×1,7 en 2023-26 y ×2,8 a ×6,2 en 2020-22.
+- **Corte del plan (2024):** ×1,5 a ×1,9 en 2024-26 y ×2,1 a ×2,5 en 2020-23.
+- **Con −35 % y con edge cero:** ×1,2 a ×2,0.
+
+A cambio, los quiebres de las dos plazas coinciden menos: entre 6 % y 47 % de las veces, contra 100 % hoy.
+
+**Consecuencia.** La partición no se corre en el motor de campaña. 5D queda cerrado **para la partición y para las reglas de cuenta de la consigna**. Lo que queda sin probar está al final.
+
+- Plan: `docs/PLAN_2026-10-30_diag11.md`. Ojo: se commiteó junto con este informe, así que el pre-registro no se puede verificar por git.
+- Script: `research/mine/diag_partition.py` (v2, 12 s) → `diag_partition.json`.
+- Revisión adversarial: `docs/experimentos/revisiones/diag11/`.
 
 ## Qué se midió
 
-Datos y costos:
-- NQ real 2020-10 a 2026-10 (`six_ultra6_trades.pkl`), en $ por contrato.
-- Costos de la lista de investigación: $1,90 de comisión + 1 tick por lado.
-- Set 2027 sin CA04V, GD03 ni ENG26: 25 módulos.
-- T1 = 2020-23 (537 días, acá se eligió la partición). T2 = 2024-26 (941 días).
+**Set.** Es el set exacto de la campaña: `nt_compare.research_set('ultra_d4')`, NQ real de 2020-10 a 2026-10, en $ por contrato y con los costos de la lista ($1,90 + 1 tick por lado). Son 23 módulos, con `conflict_filter`. La v1 usaba 25 módulos (con LATEFH, que está apagado por defecto) y no aplicaba el filtro.
 
-Las dos plazas del par:
-- **Base:** las dos operan el set completo a 1×.
-- **Partición:** una opera el grupo A y la otra el grupo B, cada una a 2×. La exposición del plan a cada módulo es la misma de la base.
+**Períodos.** Se usa el mismo corte que `prop_wf`:
+- **T1:** 2020-10 a 2022-12 (536 días). Acá se elige la partición.
+- **T2:** 2023-01 a 2026-10 (941 días).
 
-Las dos particiones:
-- **Alternada:** módulos ordenados por $/día de T1 y repartidos A/B uno y uno.
-- **Favorable:** entre 2.000 particiones al azar con medias parecidas, la de menor correlación A-B en T1.
+La v1 los rotulaba mal como 2020-23 / 2024-26. Como sensibilidad post-hoc, también se corrió con el corte de 2024 que decía el plan.
 
-Bootstrap: 2.000 caminos de 252 días, en bloques de 21 días.
+**Comparación.**
+- **Base:** las dos plazas operan el set completo a 1×.
+- **Partición:** una opera el grupo A y la otra el B, cada una a 2×. La exposición del plan a cada módulo es la misma.
+- **Grupos:**
+  - "Alternada": módulos ordenados por $/día de T1 y repartidos uno y uno.
+  - "Favorable": entre las 494 particiones al azar (de 2.000) con medias de T1 a ±10 %, la de menor correlación A-B en T1.
+- **Bootstrap:** 2.000 caminos de 252 días en bloques de 21, los mismos para la base y para la partición.
 
-**Dato de fondo:** la correlación diaria promedio entre módulos es 0,034. Una plaza ya está diversificada por dentro. Partirla resigna esa diversificación a cambio de desincronizar los quiebres entre plazas.
+**Dato de fondo.** La correlación diaria promedio entre módulos es 0,034. Cada plaza ya está diversificada por dentro, y partirla resigna esa diversificación a cambio de desincronizar los quiebres.
 
-## Resultado
+## Resultado post-hoc (quiebres por año con renovación)
 
-**Criterio pre-registrado.** Una plaza quiebra si la caída máxima desde el pico, en 252 días, alcanza $1.500 o $2.000 por contrato. Para que la partición pase, los quiebres por par no deben subir más de 10 % y P(quiebran las dos) debe bajar al menos 30 %.
+Cada celda: quiebres por par de plazas en 252 días, y entre paréntesis la coincidencia. La coincidencia es el % de quiebres de una plaza que caen a ±5 días de un quiebre de la otra; se da A→B / B→A.
 
-| Período | Umbral | Base: P(quiebre) / P(las dos) | Favorable: P(quiebre A / B) / P(las dos) | Pasa |
+| Período | Umbral por contrato | Base | Alternada | Favorable |
 |---|---|---|---|---|
-| T1 | $1.500 | 92,0 % / 92,0 % | 98,0 / 100,0 % / 98,0 % | no |
-| T1 | $2.000 | 42,8 % / 42,8 % | 81,1 / 100,0 % / 81,0 % | no |
-| T2 | $1.500 | 99,8 % / 99,8 % | 100 / 100 % / 100 % | no |
-| T2 | $2.000 | 94,5 % / 94,5 % | 97,7 / 100 % / 97,6 % | no |
+| T1 2020-22 | $1.500 | 4,55 (100 %) | 13,03 (38 / 43 %) | 12,67 (15 / 27 %) |
+| T1 2020-22 | $2.000 | 1,02 (100 %) | 6,20 (6 / 8 %) | 6,37 (6 / 12 %) |
+| T2 2023-26 | $1.500 | 10,41 (100 %) | 15,31 (27 / 40 %) | 16,08 (34 / 47 %) |
+| T2 2023-26 | $2.000 | 5,74 (100 %) | 9,67 (21 / 36 %) | 9,46 (28 / 38 %) |
 
-En un año, la caída máxima de 1 contrato del set completo supera el umbral casi siempre. El proxy satura y no puede mostrar la desincronización. El veredicto pre-registrado es "no pasa", pero por sí solo no es concluyente.
+Los umbrales representan dos cuentas: $1.500 por contrato es la Lucid 150K fondeada a 3c (trailing $4.500), y $2.000 es la MFFU 50K a 1c.
 
-**Lectura post-hoc (no pre-registrada).** Se agregó al ver la saturación. Cada vez que una plaza quiebra, arranca de nuevo, y se cuentan los quiebres por año. "Coincidencia" es el % de quiebres de A que caen a ±5 días de un quiebre de B.
+**Con el corte del plan (2024):**
 
-| Período | Umbral | Base: quiebres por par / coincidencia | Alternada | Favorable |
-|---|---|---|---|---|
-| T1 | $1.500 | 4,63 / 100 % | 11,97 / 36 % | 13,76 / 26 % |
-| T1 | $2.000 | 1,07 / 100 % | 6,71 / 7 % | 8,11 / 10 % |
-| T2 | $1.500 | 10,59 / 100 % | 15,97 / 24 % | 18,33 / 53 % |
-| T2 | $2.000 | 5,34 / 100 % | 9,63 / 18 % | 10,19 / 42 % |
+| Período | $1.500 | $2.000 |
+|---|---|---|
+| T1 2020-23 | 6,38 → 13,6-13,7 | 3,04 → 7,6 |
+| T2 2024-26 | 10,50 → 15,8-16,3 | 5,15 → 9,4-9,7 |
 
-Cada quiebre cuesta una eval nueva y el colchón perdido. Pasar de 1,07 a 6,7-8,1 quiebres por par en 2020-23, o de 5,3 a 9,6-10,2 en 2024-26, cuesta mucho más de lo que vale desincronizar.
+**Con menos edge (partición favorable):** a cada plaza se le resta por igual una parte de su media diaria.
 
-Con menos edge (también post-hoc, partición favorable) se repite el mismo patrón. A cada plaza se le resta, por igual, una parte de su media diaria. Cada celda muestra quiebres por par en la base → con partición, y entre paréntesis la coincidencia con partición.
-
-| Período | Edge | Umbral $1.500 | Umbral $2.000 |
+| Período | Edge | $1.500: base → partición (coincidencia) | $2.000: base → partición (coincidencia) |
 |---|---|---|---|
-| T1 | −35 % | 11,2 → 18,9 (51 %) | 5,2 → 11,5 (17 %) |
-| T1 | cero | 25,9 → 31,0 (81 %) | 16,2 → 21,5 (59 %) |
-| T2 | −35 % | 12,9 → 23,2 (53 %) | 8,9 → 13,9 (48 %) |
-| T2 | cero | 25,1 → 35,0 (69 %) | 16,7 → 23,3 (58 %) |
+| T1 | −35 % | 10,0 → 16,6 (22 %) | 4,7 → 9,5 (14 %) |
+| T1 | cero | 24,6 → 29,4 (46 %) | 16,1 → 19,5 (38 %) |
+| T2 | −35 % | 13,0 → 21,0 (39 %) | 9,1 → 12,7 (37 %) |
+| T2 | cero | 24,1 → 31,9 (57 %) | 15,7 → 21,0 (40 %) |
+
+Cada quiebre cuesta una eval nueva y el colchón perdido. La exposición del plan no cambia, así que el ingreso esperado tampoco cambia por la partición: solo cambia cómo se reparte entre plazas. Cada plaza a 2× con la mitad de los módulos tiene más varianza: según el revisor, con el set de la v1, su Sharpe cae de 4,26 a 2,90-4,12 en T1 y de 3,65 a 2,39-3,22 en T2. Una plaza con el set completo y ~1,3× contratos la domina.
+
+**Cotas del revisor (calculadas con el set de la v1; con el set exacto da ×1,17 a ×6,76, el mismo patrón).**
+- Con la mejor partición posible, elegida directamente por quiebres en T1 (1.574 candidatas), los quiebres por par suben ×3,98 en T1 y ×1,46 / ×1,73 en T2.
+- Con umbrales de $500 a $6.000, ninguna celda con edge sube 10 % o menos; el mínimo es ×1,18.
+- Con 5 semillas, la celda extrema queda en ×5,95-7,41.
 
 ## Límites
 
-- Es un diagnóstico, no el motor de campaña. No modela evals, retiros, fees, el tope de riesgo de la fondeada ni el trailing con traba en +$100.
-- El umbral por contrato es un proxy de la Lucid 150K a 3c y de la MFFU 50K a 1c.
-- La diferencia es tan grande que ningún detalle del motor la da vuelta: los quiebres crecen ×1,2 a ×7,6 en todas las celdas, con los tres casos de edge.
-- No se probó partir sin duplicar los contratos. Eso es bajar el tamaño, y el tamaño ya se estudió (experimento 03, acct_k, ladder).
+- Es un diagnóstico, no el motor de campaña. No modela evals, retiros, fees, el tope de riesgo de la fondeada ni el trailing con traba en +$100. Sin la traba, el proxy da ~5 quiebres por año, contra 1,5-2 en el motor.
+- No se midió M2, que es la métrica que hoy falla: las ventanas de 60 días con caja negativa. La partición desincroniza los quiebres, y eso podría mejorar M2 aunque haya más quiebres. No está probado que no lo haga. Lo que sí se ve es que sube el costo por quiebres en todas las celdas.
+- El plan tiene 5 Lucid + 3 MFFU y no se parte en mitades exactas.
 
-## Frente 5D
+## Qué queda sin probar en 5D
 
-Las reglas de cuenta de la consigna ya estaban probadas y descartadas:
-- tope diario por ATR, semanal y mensual, y límite de riesgo abierto (ddlab, 0/40);
-- tamaño según el colchón (`Conocimiento/Descartado/Ronda de mejoras 3-oct`);
-- pausa tras racha (experimento 07);
-- tamaño según la volatilidad (experimento 09).
+**Ya probado y descartado:**
+- Tope diario por ATR, semanal y mensual, y límite de riesgo abierto (ddlab, 0/40).
+- Tamaño según el colchón en la fondeada (`Conocimiento/Descartado/Ronda de mejoras 3-oct`).
+- La escalera de MFFU con y sin stop diario de $1.500 por contrato. En la integración de la ronda 5 (`research/mine/integ_ladder.json`) no pasó: con −35 %, P(ganancia) quedó en 0,54-0,63, por debajo de 0,80, y P(año negativo) empeoró 14-22 puntos.
+- Pausa tras racha (experimento 07).
+- Tamaño según la volatilidad (experimento 09).
+- Estrés de costos y de régimen (experimento 10).
+- Esta partición.
 
-El estrés de costos y de régimen está en el experimento 10. La única palanca que quedaba, que las plazas operen cosas distintas, tampoco sirve.
+**Sin probar:**
+- Partir por firma (Lucid = un grupo, MFFU = el otro).
+- Perfiles distintos por plaza a 1×, por ejemplo algunas plazas en WR70Plus o Durable. Esto baja la exposición del plan y además es una decisión de perfil.
 
-Lo que sigue en pie para el problema 4 de ESTADO (los meses malos queman fondeadas):
-- el monitor de borde;
-- la regla 4 como señal de revisión;
-- el umbral de costos del runbook.
+Ninguna de las dos se puede leer bien sin el motor de campaña. Las dos chocan con lo que muestra este diagnóstico: a igual exposición, una plaza con menos módulos quiebra más.

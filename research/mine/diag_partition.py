@@ -4,8 +4,10 @@ Pregunta (diagnostico 06: el plan es una sola cuenta multiplicada): si la mitad 
 grupo B, con el doble de contratos para conservar la exposicion del plan, los quiebres dejan de coincidir. Pero cada plaza queda menos
 diversificada. Pre-registro en docs/PLAN_2026-10-30_diag11.md.
 
-Datos: six_ultra6_trades.pkl (real NQ 2020-10 .. 2026-10, $ por contrato con costos de la lista), sin CA04V / GD03 / ENG26 (fuera del set
-2027). Dias sin trades = 0. T1 = 2020-23 (aca se elige la particion), T2 = 2024-26 (control).
+Datos: v2 (revision adversarial 30-oct): el set exacto de la campana, nt_compare.research_set('ultra_d4') = six_ultra6_trades.pkl sin
+CA04V / GD03 / ENG26 / LATEFH y con conflict_filter (23 modulos; la v1 usaba 25, con LATEFH y sin el filtro). Real NQ 2020-10 .. 2026-10,
+$ por contrato con costos de la lista. Dias sin trades = 0. Corte en 2023-01-01 como prop_wf: T1 = 2020-10..2022-12 (aca se elige la
+particion), T2 = 2023-01..2026-10 (control); la v1 los rotulaba mal como 2020-23 / 2024-26. Sensibilidad post-hoc con corte 2024-01-01.
 Particiones: (a) "alterna": modulos ordenados por $/dia de T1, A / B alternados (medias parecidas); (b) "favorable": entre 2.000 particiones
 al azar con medias de T1 a +-10 %, la de menor correlacion diaria A-B en T1 (lo mas a favor de la idea).
 Proxy de quiebre por plaza: caminos bootstrap de 252 dias (bloques de 21, 2.000 caminos, rng 20261030), caida maxima desde el pico (incluye el
@@ -26,8 +28,8 @@ THR = (1500.0, 2000.0)
 
 
 def daily():
-    T = pickle.load(open(os.path.join(HERE, "six_ultra6_trades.pkl"), "rb"))["Ultra6"]
-    T = T[~T["mod"].isin(["CA04V", "GD03", "ENG26"])].copy()
+    from nt_compare import research_set
+    T = research_set("ultra_d4")[0].copy()        # the campaign set (ultra_d4): Ultra + durable four, conflict_filter applied
     T["pnl"] = T.u * T.w
     return T.pivot_table(index="date", columns="mod", values="pnl", aggfunc="sum").fillna(0.0)
 
@@ -76,11 +78,11 @@ def posthoc(a, b, idx, W=5):
     r = {}
     for t in THR:
         ca, da = renewal(np.ascontiguousarray(a[idx]), t); cb, db = renewal(np.ascontiguousarray(b[idx]), t)
-        near = np.zeros_like(db)
-        for k in range(-W, W + 1): near |= np.roll(db, k, axis=1)
-        co = (da & near).sum() / max(1, da.sum())
+        nb_, na_ = np.zeros_like(db), np.zeros_like(da)
+        for k in range(-W, W + 1): nb_ |= np.roll(db, k, axis=1); na_ |= np.roll(da, k, axis=1)
+        co = (da & nb_).sum() / max(1, da.sum()); co2 = (db & na_).sum() / max(1, db.sum())     # v2: both directions (A vs B, B vs A)
         r[str(int(t))] = dict(quiebres_a=round(float(ca.mean()), 2), quiebres_b=round(float(cb.mean()), 2), quiebres_por_par=round(float(ca.mean() + cb.mean()), 2),
-                              coincidencia=round(100 * float(co), 1))
+                              coincidencia=round(100 * float(co), 1), coincidencia_ba=round(100 * float(co2), 1))
     return r
 
 
@@ -88,15 +90,16 @@ def main():
     D = daily(); t1 = D.index < 20230101; mods = list(D.columns)
     m1 = D[t1].mean(); order = m1.sort_values(ascending=False).index.tolist()
     alt = (order[0::2], order[1::2])
-    rng = np.random.default_rng(SEED); tot = m1.sum(); best, bc = None, 9.0
+    rng = np.random.default_rng(SEED); tot = m1.sum(); best, bc, nok = None, 9.0, 0
     for _ in range(2000):
         msk = rng.random(len(mods)) < 0.5; A = [m for m, k in zip(mods, msk) if k]; B = [m for m, k in zip(mods, msk) if not k]
         if not A or not B or abs(m1[A].sum() - tot / 2) > 0.1 * tot / 2: continue
+        nok += 1
         c = np.corrcoef(D.loc[t1, A].sum(axis=1), D.loc[t1, B].sum(axis=1))[0, 1]
         if c < bc: bc, best = c, (A, B)
     res = dict(modulos=mods, corr_media_entre_modulos_T1=round(float(np.corrcoef(D[t1].T.values)[np.triu_indices(len(mods), 1)].mean()), 3),
-               particiones={"alterna": dict(A=alt[0], B=alt[1]), "favorable": dict(A=best[0], B=best[1])}, periodos={})
-    for per, msk in (("T1 2020-23", t1), ("T2 2024-26", ~t1)):
+               particiones={"alterna": dict(A=alt[0], B=alt[1]), "favorable": dict(A=best[0], B=best[1], sorteos_con_medias_parejas=nok)}, periodos={})
+    for per, msk in (("T1 2020-10..2022-12", t1), ("T2 2023-01..2026-10", ~t1)):
         X = D[msk]; full = X.sum(axis=1).to_numpy(); idx = boot_idx(len(X), np.random.default_rng(SEED))
         out = dict(dias=int(msk.sum()), base=pair_stats(full, full, idx))
         out["posthoc_renovacion"] = dict(base=posthoc(full, full, idx))
@@ -105,6 +108,12 @@ def main():
             out[nm] = pair_stats(a, b, idx); out[nm]["corr_A_B"] = round(float(np.corrcoef(a, b)[0, 1]), 3)
             out["posthoc_renovacion"][nm] = posthoc(a, b, idx)
         res["periodos"][per] = out
+    res["posthoc_corte_2024"] = {}                  # sensibilidad post-hoc: el corte que decia el plan (T1 hasta 2023-12, T2 desde 2024)
+    t1b = D.index < 20240101
+    for per, msk in (("T1 2020-10..2023-12", t1b), ("T2 2024-01..2026-10", ~t1b)):
+        X = D[msk]; idx = boot_idx(len(X), np.random.default_rng(SEED)); full = X.sum(axis=1).to_numpy(); o = dict(base=posthoc(full, full, idx))
+        for nm, (A, B) in (("alterna", alt), ("favorable", best)): o[nm] = posthoc(2 * X[A].sum(axis=1).to_numpy(), 2 * X[B].sum(axis=1).to_numpy(), idx)
+        res["posthoc_corte_2024"][per] = o
     res["posthoc_edge"] = {}                        # post-hoc tambien con -35 % y edge cero (resta pareja de la media diaria de cada plaza)
     for per, msk in (("T1", t1), ("T2", ~t1)):
         X = D[msk]; idx = boot_idx(len(X), np.random.default_rng(SEED)); A, B = best
@@ -133,7 +142,10 @@ def main():
     for per, o in res["periodos"].items():
         for nm in ("base", "alterna", "favorable"):
             q = o["posthoc_renovacion"][nm]
-            print("  %s %-9s " % (per[:2], nm) + " | ".join("DD>=%s: %.2f + %.2f = %.2f por par, coincidencia %.1f %%" % (t, q[t]["quiebres_a"], q[t]["quiebres_b"], q[t]["quiebres_por_par"], q[t]["coincidencia"]) for t in ("1500", "2000")))
+            print("  %s %-9s " % (per[:2], nm) + " | ".join("DD>=%s: %.2f + %.2f = %.2f por par, coincidencia %.1f / %.1f %%" % (t, q[t]["quiebres_a"], q[t]["quiebres_b"], q[t]["quiebres_por_par"], q[t]["coincidencia"], q[t]["coincidencia_ba"]) for t in ("1500", "2000")))
+    for per, o in res["posthoc_corte_2024"].items():
+        for nm in ("base", "alterna", "favorable"):
+            q = o[nm]; print("  corte 2024 %s %-9s " % (per[:2], nm) + " | ".join("DD>=%s: %.2f por par (coinc %.0f / %.0f %%)" % (t, q[t]["quiebres_por_par"], q[t]["coincidencia"], q[t]["coincidencia_ba"]) for t in ("1500", "2000")))
     for k, v in res["posthoc_edge"].items():
         print("  %-14s " % k + " | ".join("DD>=%s base %.2f favorable %.2f (coincidencia %.0f %%)" % (t, v["base"][t]["quiebres_por_par"], v["favorable"][t]["quiebres_por_par"], v["favorable"][t]["coincidencia"]) for t in ("1500", "2000")))
 
