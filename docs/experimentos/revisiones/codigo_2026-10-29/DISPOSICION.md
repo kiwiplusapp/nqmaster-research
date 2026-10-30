@@ -77,3 +77,26 @@ Veredicto del revisor: F5 sí; para operar se puede; antes de feb-2027, corregir
 | Info: histórico idéntico, reposición sin doble conteo | info | Verificado por el revisor; la v2 no toca el camino del histórico salvo `edgeCoverFrom` (solo anota). |
 
 `check.sh` 0; `cr_fmtcheck` 123 llamadas, 0 sospechosas; cadena de 6 parches regenerada desde el backup e idempotente. Para la PC: F5; Sim101 con PrintLog, dejar pasar un cierre de las 18:00 ET, deshabilitar y volver a habilitar al día siguiente antes y después de las 18:00: el Output tiene que decir "state restored (fecha, archivo) + N days" sin contar un día dos veces.
+
+## Disposición de la revisión conjunta de live_safety v3 y edge_restore v2 (`revision_v3_edge_v2.md`, tal cual)
+
+Veredicto del revisor: F5 sí. Dinero real todavía no, pero solo por las pruebas de la PC. Sin altas ni medias. Recomienda corregir las bajas 1-3 antes de la primera cuenta real. `patch_live_safety.py` v4 y `patch_edge_restore.py` v3:
+
+| Hallazgo | Severidad | Qué se hizo |
+|---|---|---|
+| 1. Se reintenta una salida muerta con la cuenta desincronizada (un Flatten externo) | baja | **Corregido:** una salida cancelada o rechazada se reintenta solo con `AccountSyncGuard` prendido, `desyncBars == 0` y la cuenta igual a la estrategia. Con la guarda apagada no se reintenta: aviso para cerrar a mano. |
+| 2. `FlattenAll` lanzado entre barras y reintento en la barra siguiente | baja | **Corregido:** el reintento tampoco corre en la barra siguiente a un `FlattenAll` (`flattenBar < CurrentBars[0] - 1`). |
+| 3. Si `Account.Flatten` falla: aviso engañoso, sin alerta y se borra el archivo de posiciones | baja | **Corregido:** `flatFail` con aviso `FLATTEN FAILED ... close it by hand NOW`, en el escalamiento y en la guarda de sincronización. En `Terminated`, con la cuenta posicionada el archivo de posiciones no se borra. Después de una detención, la alerta suena solo si el aplanado falló. |
+| 4. "Dos PCs" contradice la v3 | baja | **Corregido:** el caso que no se detecta es un `PropThresholdOverride` cargado. |
+| 5. `EdgeParse` acepta fechas imposibles y NaN | baja | **Corregido:** fecha con `TryParseExact("yyyyMMdd")`; CUSUM finito y ≥ 0; contadores ≥ 0. Probado en mono con 8 casos (20260231, 20261131, NaN, −1 y días negativos se rechazan). |
+| 6. Archivo propio vacío o truncado tomado como "otra configuración" | baja | **Corregido:** se avisa como dañado (menos de 9 campos, o k / h ilegibles) y el guardado pasa a ser atómico (temporal + `File.Replace`), así un corte no deja un archivo truncado. |
+| 7. Un reintento puede cerrar un trade nuevo | baja | **Corregido:** cada módulo lleva un número de trade (`TradeNo`, sube en `ExitDone`). Solo se reintenta la salida del trade en curso (`ExitTrade == TradeNo`). |
+| 8. `PropPeakOverride` sin validar | baja | **Corregido:** un pico menor que el saldo inicial se ignora con aviso. |
+| Info: `ExitRetries` no corre en ciertas franjas | info | Sin cambio (en esas franjas ya hay aplanado o detención). |
+| Info: el tope de 2 reintentos solo frena a `ExitRetries` | info | Sin cambio (las salidas por tiempo solo cierran lotes del módulo). |
+| Info: `thrOvBad` no se calcula en Sim | info | Sin cambio. Se prueba en la primera cuenta real, igual que el estado desconocido. |
+| Info: lo que quedó de B1 | info | Sin cambio (es conservador). |
+| Info: `RUNBOOK:83` no nombra los parámetros de calibración | info | **Corregido** en la fila. |
+| Info: histórico intacto, 9 / 11 campos, `EdgeRestore` antes de `PropGoLive` | info | Verificado por el revisor. Lo nuevo de v4 / v3 corre solo en vivo. `TradeNo` sube también en el histórico, pero solo se lee en vivo. |
+
+`check.sh` 0. `cr_fmtcheck`: 126 llamadas, 0 sospechosas. La cadena de 6 parches se regenera desde el backup y es idempotente; cada parche corta si encuentra una versión anterior de sí mismo.

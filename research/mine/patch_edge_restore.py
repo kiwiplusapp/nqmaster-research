@@ -1,4 +1,4 @@
-"""patch_edge_restore.py v2 (2026-10-30, frente 5F: revision de codigo completa de NQMaster.cs, hallazgo medio del monitor de borde,
+"""patch_edge_restore.py v3 (2026-10-30, frente 5F: revision de codigo completa de NQMaster.cs, hallazgo medio del monitor de borde,
 docs/experimentos/revisiones/codigo_2026-10-29/code_review_nqmaster_2026-10-29.md).
 Aplica sobre NQMaster.cs v4.3 + patch_clock_check.py v3 + patch_open_risk.py v2 + patch_live_safety.py v3.
 
@@ -27,12 +27,15 @@ la lectura es atomica (TryParse a variables locales); el control "mas nuevo que 
 correccion "alarma sin modo defensivo" solo se aplica al archivo propio y avisa; no se reponen dias del calentamiento; un estado con fecha 0
 se compara con EdgeMonitorStart; la reposicion corre antes de PropGoLive (el modo defensivo repuesto apaga sus modulos enseguida); los
 avisos de una alarma repuesta dicen que el dia viene del historico; los avisos de hueco y de historico corto ya no proponen subir Days to load.
+v3 (revision conjunta, 30-oct): EdgeParse rechaza fechas imposibles (20260231), CUSUM NaN / negativo y contadores negativos; un archivo propio
+danado (menos de 9 campos, k / h ilegibles) avisa como danado, no como "otra configuracion"; el guardado es atomico (temporal + File.Replace),
+asi un corte a mitad de escritura no deja un archivo truncado.
 Idempotente. Run: python3 research/mine/patch_edge_restore.py [NQMaster.cs] && bash tools/nt8_stub/check.sh NQMaster.cs"""
 import os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 P = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "NQMaster.cs")
 s = open(P, encoding="utf-8").read()
-if "EdgeParse(" in s: print("ya aplicado"); sys.exit(0)
+if "edgeTmp" in s: print("ya aplicado"); sys.exit(0)
 if "EdgeStep(" in s: sys.exit("NQMaster.cs trae la v1 de patch_edge_restore.py: regenerar desde el backup (ver docs/ESTADO.md)")
 if "ExitDone(" not in s: sys.exit("falta patch_live_safety.py v3")
 
@@ -51,7 +54,10 @@ rep("""			if (State != State.Realtime || !EdgeMonitor || EdgeFile == null) retur
 			{
 				File.WriteAllText(EdgeFile,""")
 rep("""edgeWarned ? "1" : "0", EdgeMonitorStart ?? "" }));""",
-    """edgeWarned ? "1" : "0", EdgeMonitorStart ?? "", edgeK.ToString("R", CultureInfo.InvariantCulture), edgeH.ToString("R", CultureInfo.InvariantCulture) }));""")
+    """edgeWarned ? "1" : "0", EdgeMonitorStart ?? "", edgeK.ToString("R", CultureInfo.InvariantCulture), edgeH.ToString("R", CultureInfo.InvariantCulture) }));
+				if (File.Exists(EdgeFile)) File.Replace(edgeTmp, EdgeFile, null); else File.Move(edgeTmp, EdgeFile);	// patch_edge_restore.py: atomic (no truncated file after a cut)""")
+rep("""				File.WriteAllText(EdgeFile, string.Join(";", new string[] { Profile.ToString(),""", """				string edgeTmp = EdgeFile.Substring(0, EdgeFile.Length - 4) + ".tmp";
+				File.WriteAllText(edgeTmp, string.Join(";", new string[] { Profile.ToString(),""")
 
 # --- restore before PropGoLive (its PropSessionStart applies the fallback list to the modules)
 rep("""				liveStartPnl = netPnl; liveStartTrades = totalTrades; liveStart = ToEt(Times[0][0]);
@@ -146,7 +152,9 @@ newr = """		// patch_edge_restore.py: days the loaded history closed (date key, 
 			if (p == null || p.Length < 9) return false;
 			if (!int.TryParse(p[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out d) || !double.TryParse(p[2], NumberStyles.Any, CultureInfo.InvariantCulture, out sv)
 				|| !int.TryParse(p[3], NumberStyles.Integer, CultureInfo.InvariantCulture, out days) || !int.TryParse(p[5], NumberStyles.Integer, CultureInfo.InvariantCulture, out fb)) return false;
-			if (d != 0 && (d < 19000101 || d > 30000101 || d / 100 % 100 < 1 || d / 100 % 100 > 12 || d % 100 < 1 || d % 100 > 31)) return false;
+			DateTime dt;
+			if (d != 0 && !DateTime.TryParseExact(p[1], "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dt)) return false;	// v3: no impossible dates (20260231)
+			if (double.IsNaN(sv) || double.IsInfinity(sv) || sv < 0 || days < 0 || fb < 0) return false;	// v3: a NaN CUSUM would never alarm
 			alarm = p[4] == "1"; warned = p[7] == "1";
 			foreach (string x in p[6].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)) off.Add(x);
 			return true;
@@ -192,7 +200,10 @@ newr = """		// patch_edge_restore.py: days the loaded history closed (date key, 
 						Warn("nqm_edge_read", string.Format("NQMaster | edge monitor: the saved state ({0}) could not be read{1}. The monitor runs on the loaded history only and the file is left as it is (nothing is saved in this run). If it repeats, close NinjaTrader and check or delete the file.", src, err != null ? " (" + err + ")" : ""));
 						return;
 					}
-					if (!EdgeFits(q, false)) Warn("nqm_edge_other", "NQMaster | edge monitor: the saved state is for another profile, start date or calibration and was ignored: " + src);
+					double k9, h9;
+					bool damaged = q.Length < 9 || (q.Length >= 11 && (!double.TryParse(q[9], NumberStyles.Any, CultureInfo.InvariantCulture, out k9) || !double.TryParse(q[10], NumberStyles.Any, CultureInfo.InvariantCulture, out h9)));	// v3
+					if (damaged) Warn("nqm_edge_read", string.Format("NQMaster | edge monitor: the saved state ({0}) is damaged ({1} fields) and is replaced by the state rebuilt now.", src, q.Length));
+					else if (!EdgeFits(q, false)) Warn("nqm_edge_other", "NQMaster | edge monitor: the saved state is for another profile, start date or calibration and was ignored: " + src);
 					else if (curSessDay > 0 && int.Parse(q[1], CultureInfo.InvariantCulture) >= curSessDay) Warn("nqm_edge_other", "NQMaster | edge monitor: the saved state is newer than the loaded data (a Playback?) and was ignored: " + src);
 					else { p = q; own = true; }
 				}
@@ -252,4 +263,4 @@ newr = """		// patch_edge_restore.py: days the loaded history closed (date key, 
 """
 s = s[:j0] + newr + s[j1:]
 open(P, "w", encoding="utf-8").write(s)
-print("patch_edge_restore v2 aplicado")
+print("patch_edge_restore v3 aplicado")
