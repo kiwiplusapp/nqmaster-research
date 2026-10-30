@@ -87,7 +87,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			public double FixTgt = double.NaN; public bool StructStop, WinHas, Six; public double WinH, WinL, RvolMax;	// six-year modules (2026-10-16)	// lots still open (multi-lot entries close in parts), rejected orders this session
 			// explicit brackets (FillSeries Tick1 / Second1, v4): the levels the Set* calls would have used, the working orders, a market exit waiting for their cancel
 			public double RStopV = double.NaN; public bool RStopPx;	// panel open risk only (patch_open_risk.py): the stop level of the last BracketStop call
-			public Order ExitOrd; public int ExitBar = -1; public bool ExitAgain, ExitWarned;	// patch_live_safety.py: the module's last exit order (live only)
+			public Order ExitOrd; public int ExitBar = -1, ExitTries; public bool ExitAgain, ExitWarned;	// patch_live_safety.py: the module's last exit order (live only)
 			public bool XStopPrice, XTgtPrice, XExitPending; public double XStopV = double.NaN, XTgtV = double.NaN; public Order XStop, XTgt; public int XExitQty, XExitBar = -1; public string XExitSig;
 		}
 		private List<Mod> mods;
@@ -188,6 +188,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (!hedgeFlat) Warn("nqm_owner", string.Format("NQMaster | LOTS WITHOUT OWNER for 2 bars: modules {0} ({2}), strategy {1} -> flattening this instrument (a double exit or an overfill left lots without a stop)", own, strat, OwnerList()));
 			hedgeFlat = true; hedgeWhy = "lots without owner";
 		}
+		private double ThrOv() { return thrOvBad ? 0 : PropThresholdOverride; }	// patch_live_safety.py v3
 		private string OwnerList() { StringBuilder b = new StringBuilder(); foreach (Mod m in mods) if (m.InTrade && m.OpenQty > 0) b.Append(m.Sig + ":" + (m.Dir * m.OpenQty) + " "); return b.Length > 0 ? b.ToString().TrimEnd() : "none"; }
 		// patch_live_safety.py v2: an exit suppressed because the previous one was still working is retried once that one is done; an exit working
 		// for 3 bars (not filled, not cancelled) is reported. Live only.
@@ -202,9 +203,19 @@ namespace NinjaTrader.NinjaScript.Strategies
 					continue;
 				}
 				m.ExitWarned = false;
-				if (m.ExitAgain) { m.ExitAgain = false; if (m.InTrade && m.OpenQty > 0) ExitModule(m, "exit retried (the previous exit was still working)"); }
+				if (!m.InTrade || m.OpenQty <= 0) { m.ExitAgain = false; continue; }
+				bool dead = m.ExitOrd != null && (m.ExitOrd.OrderState == OrderState.Cancelled || m.ExitOrd.OrderState == OrderState.Rejected);	// v3
+				if (dead && m.ExitTries >= 2)
+				{
+					if (m.ExitTries == 2) { m.ExitTries = 3; Warn("nqm_exitdead", string.Format("NQMaster | {0} exit cancelled / rejected 3 times and {1} lots still open: disable the strategy, then close them by hand", m.Sig, m.OpenQty)); }
+					m.ExitAgain = false; continue;
+				}
+				if (dead) { m.ExitTries++; m.ExitAgain = false; ExitModule(m, "exit retried (the previous exit was " + m.ExitOrd.OrderState + ")"); }
+				else if (m.ExitAgain) { m.ExitAgain = false; ExitModule(m, "exit retried (the previous exit was still working)"); }
 			}
 		}
+		// v3: the module is flat or starts a new trade: nothing of the previous trade's exit is retried (a still-working exit stays watched)
+		private void ExitDone(Mod m) { if (!Working(m.ExitOrd)) m.ExitOrd = null; m.ExitAgain = false; m.ExitTries = 0; }
 		// H2: real session end (holidays / half days end at 13:00-13:15 ET; NinjaTrader's trading-hours template knows them)
 		private void SessionBounds()
 		{
@@ -724,22 +735,20 @@ namespace NinjaTrader.NinjaScript.Strategies
 			CheckAccountSync();
 			if (desyncHalt) return;
 			LotOwnershipCheck();
-			ExitRetries();
 			if (propSaveDue && State == State.Realtime && Position.MarketPosition == MarketPosition.Flat) { propSaveDue = false; if (!propStateUnknown) PropSave(curSessDay); }	// v2: last balance seen (stale-file check)
 			CrossAccountCancelOpp();
 			if (hedgeFlat)
 			{
 				if (Position.MarketPosition == MarketPosition.Flat) { hedgeFlat = false; hedgeBars = 0; hedgeWhy = null; }
-				else
+				else if (State == State.Realtime && ++hedgeBars >= 3)	// patch_live_safety.py v3: the managed exits did not get flat in 3 bars -> stop like the sync guard
 				{
-					FlattenAll(hedgeWhy ?? "cross-account hedge guard");
-					if (State == State.Realtime && ++hedgeBars >= 3)	// patch_live_safety.py v2: the managed exits did not get flat in 3 bars
-					{
-						hedgeBars = 0;
-						try { Account.Flatten(new[] { Instrument }); } catch (Exception ex) { Print("NQMaster | account flatten failed: " + ex.Message); }
-						Warn("nqm_flatfail", string.Format("NQMaster | the strategy could not get flat in 3 bars ({0}): the account position of {1} was flattened directly. Check the Positions and Orders tabs.", hedgeWhy ?? "cross-account hedge guard", Instrument.FullName));
-					}
+					desyncHalt = true;	// no more managed exits: with the account already flat they would open a reverse position
+					try { Account.Flatten(new[] { Instrument }); } catch (Exception ex) { Print("NQMaster | account flatten failed: " + ex.Message); }
+					Warn("nqm_flatfail", string.Format("NQMaster | the strategy could not get flat in 3 bars ({0}): the account position and orders of {1} were closed directly and the strategy stops. Check the Positions and Orders tabs, then enable it again.", hedgeWhy ?? "cross-account hedge guard", Instrument.FullName));
+					try { SetState(State.Terminated); } catch { }
+					return;
 				}
+				else FlattenAll(hedgeWhy ?? "cross-account hedge guard");
 			}
 
 			if (Bars.IsFirstBarOfSession)
@@ -824,6 +833,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
 			// exits: module time exits, London exit, flatten
 			if (closeMin >= FlatMin && closeMin < 18 * 60) { FlattenAll(shortSession ? "early close (holiday / half day)" : "end of day"); UpdateDashboard(); return; }
+			if (!hedgeFlat && flattenBar != CurrentBars[0]) ExitRetries();	// patch_live_safety.py v3: after this bar's flattens (a retry plus a flatten = a double exit)
 			foreach (Mod m in timeMods)
 				if (m.InTrade && m.MaxHold > 0 && CurrentBars[0] - m.EntryBar >= m.MaxHold) ExitModule(m, "time exit");
 			if (rsi.InTrade && CurrentBars[0] - rsi.EntryBar >= rsi.MaxHold) ExitModule(rsi, "time exit");
@@ -1683,7 +1693,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 		//  (3) every bar, own working entries opposite to another account's OPEN position are cancelled.
 		//  (4) an own entry that fills while another account holds the opposite position is flattened at once (+ Alert + log).
 		private int otherDirBar = -1; private bool otherLong, otherShort, otherPosLong, otherPosShort, hedgeFlat;
-		private int ownBars, lateRun, hedgeBars; private bool propStateUnknown, propSaveDue; private string hedgeWhy;	// patch_live_safety.py
+		private int ownBars, lateRun, hedgeBars; private bool propStateUnknown, propSaveDue, thrOvBad; private string hedgeWhy;	// patch_live_safety.py
 		private string PosDir { get { try { return Path.Combine(Core.Globals.UserDataDir, "nqmaster_positions"); } catch { return null; } } }
 		private string PosFile { get { string d = PosDir; return d == null ? null : Path.Combine(d, (HedgeGroup ?? "") + "_" + (Account != null ? Account.Name : "acct") + "_NQ.txt"); } }
 		private void CrossAccountPublish()
@@ -2021,8 +2031,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 			if (PropPeakOverride > 0) propPeak = newOverride ? PropPeakOverride : Math.Max(propPeak, PropPeakOverride);
 			// patch_live_safety.py (code review 2026-10-29): no readable state file and a balance that is not the start balance = the trailing peak is unknown
 			double cash0 = double.NaN; try { cash0 = AcctCash(); } catch { }
-			propStateUnknown = !stateOk && PropPeakOverride <= 0 && PropThresholdOverride <= 0 && !double.IsNaN(cash0) && cash0 > 0 && Math.Abs(cash0 - StartBalance) > 50;
-			if (propStateUnknown) Warn("nqm_prop", string.Format("NQMaster | PROP STATE UNKNOWN for {0}: no readable state file and the balance ({1:0}) is not the start balance, so the trailing-drawdown peak may be wrong. Set PropPeakOverride (the firm's highest end-of-day balance) or PropThresholdOverride (the firm's loss limit). Until then the per-contract risk cap stays on in the funded account and the state is not saved.", Account != null ? Account.Name : "", cash0));
+			thrOvBad = PropThresholdOverride > 0 && (PropThresholdOverride < StartBalance - PropTrailingDD - 1 || PropThresholdOverride > StartBalance + 101);	// v3: a typo (e.g. the drawdown instead of the level)
+			if (thrOvBad) Warn("nqm_thr_bad", string.Format("NQMaster | PropThresholdOverride {0:0} is outside the possible loss limits ({1:0} to {2:0}) and is ignored: type the firm's loss-limit LEVEL, not the drawdown amount.", PropThresholdOverride, StartBalance - PropTrailingDD, StartBalance + 100));
+			// v3: an override already stored (left loaded from an earlier start) does not vouch for today's state
+			propStateUnknown = !stateOk && !(PropPeakOverride > 0 && newOverride) && ThrOv() <= 0 && !double.IsNaN(cash0) && cash0 > 0 && Math.Abs(cash0 - StartBalance) > 50;
+			if (propStateUnknown) Warn("nqm_prop", string.Format("NQMaster | PROP STATE UNKNOWN for {0}: no readable state file and the balance ({1:0}) is not the start balance, so the trailing-drawdown peak may be wrong. Set PropPeakOverride to the firm's highest end-of-day balance (a new value: one already used before does not count), or PropThresholdOverride (the firm's loss-limit level). Until then the per-contract risk cap stays on in the funded account and the state is not saved.", Account != null ? Account.Name : "", cash0));
 			// first start of the day (no saved state): the day started at equity now minus what the account already realized today
 			if (double.IsNaN(propDayStart)) { try { propDayStart = PropEquity() - Account.Get(AccountItem.RealizedProfitLoss, Currency.UsDollar); } catch { } }
 			// the last session NinjaTrader saw start was not closed by it (shut down before 18:00): its P&L = today's start - its start
@@ -2044,11 +2057,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (double.IsNaN(propPeak)) propPeak = Math.Max(StartBalance, PropPeakOverride > 0 ? PropPeakOverride : eq);
 				double eqRef = restored ? propDayStart : eq;			// intraday cash is not an end-of-day balance
 				if (eqRef > propPeak) propPeak = eqRef;
-				if (propLive && PropThresholdOverride > 0) propPeak = Math.Max(propPeak, PropThresholdOverride + PropTrailingDD);	// patch_live_safety.py v2
+				if (propLive && ThrOv() > 0) propPeak = Math.Max(propPeak, ThrOv() + PropTrailingDD);	// patch_live_safety.py v2
 				if (!propStateUnknown) PropSave(tday);	// patch_live_safety.py: never persist a peak computed without a state file or an override
 				propThr = propPeak >= StartBalance + PropTrailingDD + 100 ? StartBalance + 100 : propPeak - PropTrailingDD;
-				if (PropThresholdOverride > 0) propThr = PropThresholdOverride;
-				if (State == State.Realtime && PropThresholdOverride > 0) Warn("nqm_thr", string.Format("NQMaster | PropThresholdOverride is set ({0:0}): the loss limit stays fixed and does not follow the trailing drawdown. Clear it once the panel's limit matches the firm's.", PropThresholdOverride));
+				if (ThrOv() > 0) propThr = ThrOv();	// patch_live_safety.py v3: validated at go-live
+				if (State == State.Realtime && ThrOv() > 0) Warn("nqm_thr", string.Format("NQMaster | PropThresholdOverride is set ({0:0}): the loss limit stays fixed and does not follow the trailing drawdown. Prefer PropPeakOverride; clear this one once PropPeakOverride is set.", ThrOv()));
 				if (CyLive) { propPeak = StartBalance + cy.Pk; propThr = StartBalance + cy.Thr; }	// simulated seat: the audited rules engine
 				propCushion = eqRef - propThr;
 				if (PropMode == NQMasterPropMode.Eval) gate = propCushion >= EvalCushionFull ? GateMode.Full : GateMode.Safe;
@@ -2343,7 +2356,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (first)
 				{
 				if (UseOrderFlowBoost) { ofEntries++; if (m.OfQ0 > 0 && execution.Order.Quantity > m.OfQ0) ofBoosted++; }
-				InactivityFill(m); CrossAccountPublish(); CrossAccountOnFill(m);
+				ExitDone(m); InactivityFill(m); CrossAccountPublish(); CrossAccountOnFill(m);	// ExitDone: patch_live_safety.py v3
 				if (m == orb) { orb.Trades++; if (orbFirstDir == 0) { orbFirstDir = orb.Dir; DateTime eo = ToEt(FillBarTime(time, execution.Order)).AddMinutes(-1); orbFirstMin = eo.Hour * 60 + eo.Minute; } }
 				if (m == orb2) orb2.Trades++;
 				if (m == volb) { volbDone = true; volb.EntryBar = FillBar(time, execution.Order); volbBeSet = false; volbTrades++; }
@@ -2373,7 +2386,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				if (State == State.Realtime && quantity > exitMod.OpenQty)	// patch_live_safety.py: more lots exited than the module had = double exit / overfill
 				{ Warn("nqm_overfill", string.Format("NQMaster | OVERFILL {0}: {1} x{2} with {3} lots open (modules: {4}) -> flattening this instrument (a reverse position would have no stop)", exitMod.Sig, execution.Order.Name, quantity, exitMod.OpenQty, OwnerList())); hedgeFlat = true; hedgeWhy = "overfill"; }
-				exitMod.OpenQty = Math.Max(0, exitMod.OpenQty - quantity); if (exitMod.OpenQty == 0) { exitMod.InTrade = false; CancelBrackets(exitMod); }	// the sibling bracket, if NinjaTrader did not cancel it
+				exitMod.OpenQty = Math.Max(0, exitMod.OpenQty - quantity); if (exitMod.OpenQty == 0) { exitMod.InTrade = false; CancelBrackets(exitMod); ExitDone(exitMod); }	// the sibling bracket, if NinjaTrader did not cancel it
 				Log(string.Format("{0} exit fill: {1} x{2} @ {3}{4}", exitMod.Sig, execution.Order.Name, quantity, Fmt(price), State == State.Realtime ? string.Format(" | account cash {0:0}", AcctCash()) : ""));
 				// research/mine/reentry_lab.py (2026-10-17): VOLB 2R re-armed once after a stop-out (not after the break-even stop), same levels, either
 				// side, before 15:00: 181 trades 2020-26, PF 1.52 / 1.32 (T1 / T2), +$58 per month per contract, Sharpe up in both periods, but max DD +6%
@@ -2381,11 +2394,11 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (exitMod == volb && exitMod.OpenQty == 0 && VolbReArm && !volbTrendOnly && volb.R >= 1.5 && !volbBeSet && volbTrades < 2 && !Working(volb.Entry) && (execution.Order.Name == "Stop loss" || execution.Order.Name == "StopX"))
 				{ volbDone = false; Log("VOLB stopped out: re-armed for a second attempt (VolbReArm)"); }
 			}
-			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; if (fillBip > 0) CancelBrackets(x); }
+			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; ExitDone(x); if (fillBip > 0) CancelBrackets(x); }
 			CrossAccountPublish();	// patch_live_safety.py: exits too (it returns at once outside live / without the guard)
 		}
 
-		protected override void OnPositionUpdate(Position position, double averagePrice, int quantity, MarketPosition marketPosition)
+		protected override void OnPositionUpdate(NinjaTrader.Cbi.Position position, double averagePrice, int quantity, MarketPosition marketPosition)
 		{
 			CrossAccountPublish();	// patch_live_safety.py v2: the strategy position just changed (it returns at once outside live / without the guard)
 			if (propLive && State == State.Realtime && marketPosition == MarketPosition.Flat) propSaveDue = true;	// saved on the next bar, once the account cash has the trade
@@ -2403,7 +2416,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 				if (netPnl > eqPeak) eqPeak = netPnl;
 			}
 			tradesProcessed = count;
-			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; if (fillBip > 0) CancelBrackets(x); }
+			if (Position.MarketPosition == MarketPosition.Flat) foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; ExitDone(x); if (fillBip > 0) CancelBrackets(x); }
 		}
 
 		private bool PauseActive()

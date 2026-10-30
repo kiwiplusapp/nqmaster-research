@@ -1,4 +1,4 @@
-"""patch_live_safety.py v2 (2026-10-29, frente 5F: revision de codigo completa de NQMaster.cs, research/mine/code_review_nqmaster_2026-10-29.md).
+"""patch_live_safety.py v3 (2026-10-30, frente 5F: revision de codigo completa de NQMaster.cs, research/mine/code_review_nqmaster_2026-10-29.md).
 Aplica sobre NQMaster.cs v4.3 + patch_clock_check.py v3 + patch_open_risk.py v2. Todo lo que puede cambiar ordenes corre SOLO EN VIVO
 (State.Realtime), asi el export Off del Strategy Analyzer tiene que salir identico:
  1. Doble salida / overfill (hallazgo alto 1): una ejecucion de salida con mas lotes que los abiertos del modulo -> alerta y aplanado; control por
@@ -17,20 +17,27 @@ alcanzaba en Lucid); archivo de estado viejo detectado por el saldo; el override
 la cuenta antes de sincronizar y tambien en OnPositionUpdate; ExitOrd se limpia al pasar a vivo, la salida suprimida se reintenta y hay vigia de salida
 trabada; el aplanado escala a Account.Flatten si en 3 barras no queda plano; IgnoreOverfill tambien en Configure y en la linea LIVE; mensajes por motivo;
 el archivo de estado se guarda tambien en la barra siguiente a quedar plano (asi el chequeo de archivo viejo no salta si NinjaTrader no corrio una sesion).
+v3 (revision adversarial de la v2, 30-oct): si el aplanado no queda plano en 3 barras, Account.Flatten y la estrategia se detiene como la guarda de
+sincronizacion (la v2 seguia mandando salidas gestionadas con la cuenta ya plana = posicion inversa); un PropPeakOverride viejo (el mismo ya guardado) no
+apaga el estado desconocido; el reintento de salidas corre despues de los aplanados de la barra y no corre con un aplanado en curso; una salida
+cancelada o rechazada se reintenta hasta 2 veces y despues avisa; al quedar plano o al entrar de nuevo el modulo no arrastra salidas del trade anterior;
+PropThresholdOverride fuera de [inicial - trailing, inicial + 100] se ignora con aviso; OnPositionUpdate con NinjaTrader.Cbi.Position; detecta un
+NQMaster.cs con la v1 / v2 (regenerar desde el backup).
 Idempotente. Run: python3 research/mine/patch_live_safety.py && bash tools/nt8_stub/check.sh NQMaster.cs"""
 import os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); P = os.path.join(ROOT, "NQMaster.cs")
 s = open(P, encoding="utf-8").read()
-if "LotOwnershipCheck" in s: print("ya aplicado"); sys.exit(0)
+if "ExitDone(" in s: print("ya aplicado"); sys.exit(0)
+if "LotOwnershipCheck" in s: sys.exit("NQMaster.cs trae una version vieja de patch_live_safety.py: regenerar desde el backup (ver docs/ESTADO.md)")
 def rep(a, b, n=1):
     global s
     if s.count(a) != n: sys.exit(f"ancla no encontrada ({s.count(a)}): {a[:100]}")
     s = s.replace(a, b)
 # 1. overfill / lots without owner
 rep("			public bool XStopPrice, XTgtPrice, XExitPending;",
-    "			public Order ExitOrd; public int ExitBar = -1; public bool ExitAgain, ExitWarned;	// patch_live_safety.py: the module's last exit order (live only)\n			public bool XStopPrice, XTgtPrice, XExitPending;")
+    "			public Order ExitOrd; public int ExitBar = -1, ExitTries; public bool ExitAgain, ExitWarned;	// patch_live_safety.py: the module's last exit order (live only)\n			public bool XStopPrice, XTgtPrice, XExitPending;")
 rep("		private int otherDirBar = -1; private bool otherLong, otherShort, otherPosLong, otherPosShort, hedgeFlat;\n",
-    "		private int otherDirBar = -1; private bool otherLong, otherShort, otherPosLong, otherPosShort, hedgeFlat;\n		private int ownBars, lateRun, hedgeBars; private bool propStateUnknown, propSaveDue; private string hedgeWhy;	// patch_live_safety.py\n")
+    "		private int otherDirBar = -1; private bool otherLong, otherShort, otherPosLong, otherPosShort, hedgeFlat;\n		private int ownBars, lateRun, hedgeBars; private bool propStateUnknown, propSaveDue, thrOvBad; private string hedgeWhy;	// patch_live_safety.py\n")
 rep("				RealtimeErrorHandling = RealtimeErrorHandling.IgnoreAllErrors;	// rejections handled in OnOrderUpdate\n",
     "				RealtimeErrorHandling = RealtimeErrorHandling.IgnoreAllErrors;	// rejections handled in OnOrderUpdate\n				IgnoreOverfill = true;	// patch_live_safety.py: an overfill does not stop the strategy (that would cancel the other modules' stops): LotOwnershipCheck flattens\n")
 rep("""			if (desyncHalt) return;
@@ -66,7 +73,6 @@ rep("""			CheckAccountSync();
 """, """			CheckAccountSync();
 			if (desyncHalt) return;
 			LotOwnershipCheck();
-			ExitRetries();
 			if (propSaveDue && State == State.Realtime && Position.MarketPosition == MarketPosition.Flat) { propSaveDue = false; if (!propStateUnknown) PropSave(curSessDay); }	// v2: last balance seen (stale-file check)
 			CrossAccountCancelOpp();
 """)
@@ -97,9 +103,19 @@ rep("""		// H2: real session end""", """		// patch_live_safety.py (code review 2
 					continue;
 				}
 				m.ExitWarned = false;
-				if (m.ExitAgain) { m.ExitAgain = false; if (m.InTrade && m.OpenQty > 0) ExitModule(m, "exit retried (the previous exit was still working)"); }
+				if (!m.InTrade || m.OpenQty <= 0) { m.ExitAgain = false; continue; }
+				bool dead = m.ExitOrd != null && (m.ExitOrd.OrderState == OrderState.Cancelled || m.ExitOrd.OrderState == OrderState.Rejected);	// v3
+				if (dead && m.ExitTries >= 2)
+				{
+					if (m.ExitTries == 2) { m.ExitTries = 3; Warn("nqm_exitdead", string.Format("NQMaster | {0} exit cancelled / rejected 3 times and {1} lots still open: disable the strategy, then close them by hand", m.Sig, m.OpenQty)); }
+					m.ExitAgain = false; continue;
+				}
+				if (dead) { m.ExitTries++; m.ExitAgain = false; ExitModule(m, "exit retried (the previous exit was " + m.ExitOrd.OrderState + ")"); }
+				else if (m.ExitAgain) { m.ExitAgain = false; ExitModule(m, "exit retried (the previous exit was still working)"); }
 			}
 		}
+		// v3: the module is flat or starts a new trade: nothing of the previous trade's exit is retried (a still-working exit stays watched)
+		private void ExitDone(Mod m) { if (!Working(m.ExitOrd)) m.ExitOrd = null; m.ExitAgain = false; m.ExitTries = 0; }
 		// H2: real session end""")
 # 2. prop state unknown
 rep("""			propLive = true; propPeak = StartBalance; propDayStart = double.NaN; propBestDay = EvalBestDaySoFar;
@@ -114,8 +130,11 @@ rep("""			if (PropPeakOverride > 0) propPeak = newOverride ? PropPeakOverride : 
 """, """			if (PropPeakOverride > 0) propPeak = newOverride ? PropPeakOverride : Math.Max(propPeak, PropPeakOverride);
 			// patch_live_safety.py (code review 2026-10-29): no readable state file and a balance that is not the start balance = the trailing peak is unknown
 			double cash0 = double.NaN; try { cash0 = AcctCash(); } catch { }
-			propStateUnknown = !stateOk && PropPeakOverride <= 0 && PropThresholdOverride <= 0 && !double.IsNaN(cash0) && cash0 > 0 && Math.Abs(cash0 - StartBalance) > 50;
-			if (propStateUnknown) Warn("nqm_prop", string.Format("NQMaster | PROP STATE UNKNOWN for {0}: no readable state file and the balance ({1:0}) is not the start balance, so the trailing-drawdown peak may be wrong. Set PropPeakOverride (the firm's highest end-of-day balance) or PropThresholdOverride (the firm's loss limit). Until then the per-contract risk cap stays on in the funded account and the state is not saved.", Account != null ? Account.Name : "", cash0));
+			thrOvBad = PropThresholdOverride > 0 && (PropThresholdOverride < StartBalance - PropTrailingDD - 1 || PropThresholdOverride > StartBalance + 101);	// v3: a typo (e.g. the drawdown instead of the level)
+			if (thrOvBad) Warn("nqm_thr_bad", string.Format("NQMaster | PropThresholdOverride {0:0} is outside the possible loss limits ({1:0} to {2:0}) and is ignored: type the firm's loss-limit LEVEL, not the drawdown amount.", PropThresholdOverride, StartBalance - PropTrailingDD, StartBalance + 100));
+			// v3: an override already stored (left loaded from an earlier start) does not vouch for today's state
+			propStateUnknown = !stateOk && !(PropPeakOverride > 0 && newOverride) && ThrOv() <= 0 && !double.IsNaN(cash0) && cash0 > 0 && Math.Abs(cash0 - StartBalance) > 50;
+			if (propStateUnknown) Warn("nqm_prop", string.Format("NQMaster | PROP STATE UNKNOWN for {0}: no readable state file and the balance ({1:0}) is not the start balance, so the trailing-drawdown peak may be wrong. Set PropPeakOverride to the firm's highest end-of-day balance (a new value: one already used before does not count), or PropThresholdOverride (the firm's loss-limit level). Until then the per-contract risk cap stays on in the funded account and the state is not saved.", Account != null ? Account.Name : "", cash0));
 """)
 rep("""				PropSave(tday);
 				propThr = propPeak >= StartBalance + PropTrailingDD + 100 ? StartBalance + 100 : propPeak - PropTrailingDD;
@@ -123,7 +142,7 @@ rep("""				PropSave(tday);
 """, """				if (!propStateUnknown) PropSave(tday);	// patch_live_safety.py: never persist a peak computed without a state file or an override
 				propThr = propPeak >= StartBalance + PropTrailingDD + 100 ? StartBalance + 100 : propPeak - PropTrailingDD;
 				if (PropThresholdOverride > 0) propThr = PropThresholdOverride;
-				if (State == State.Realtime && PropThresholdOverride > 0) Warn("nqm_thr", string.Format("NQMaster | PropThresholdOverride is set ({0:0}): the loss limit stays fixed and does not follow the trailing drawdown. Clear it once the panel's limit matches the firm's.", PropThresholdOverride));
+				if (State == State.Realtime && ThrOv() > 0) Warn("nqm_thr", string.Format("NQMaster | PropThresholdOverride is set ({0:0}): the loss limit stays fixed and does not follow the trailing drawdown. Prefer PropPeakOverride; clear this one once PropPeakOverride is set.", ThrOv()));
 """)
 # 3. terminated with an open position
 rep("""				try { if (CrossAccountGuard && PosFile != null && File.Exists(PosFile)) File.Delete(PosFile); } catch { }
@@ -187,7 +206,7 @@ rep("""			try { File.WriteAllText(PropFile, string.Format(CultureInfo.InvariantC
 			try { File.WriteAllText(PropFile, string.Format(CultureInfo.InvariantCulture, "{0:0.00};{1};{2:0.00};{3:0.00};{4:0.00};{5:0.00}", propPeak, tradeDay, propDayStart, propBestDay, PropPeakOverride, eqs)); } catch { }""")
 # E. a threshold override raises the saved peak accordingly (otherwise clearing it brings back the wrong peak)
 rep("""				if (!propStateUnknown) PropSave(tday);""",
-    """				if (propLive && PropThresholdOverride > 0) propPeak = Math.Max(propPeak, PropThresholdOverride + PropTrailingDD);	// patch_live_safety.py v2
+    """				if (propLive && ThrOv() > 0) propPeak = Math.Max(propPeak, ThrOv() + PropTrailingDD);	// patch_live_safety.py v2
 				if (!propStateUnknown) PropSave(tday);""")
 # G. ExitOrd from the history is not a live order
 rep("""				edgeDayQty = Qty(); statQty = Qty();	// review L14
@@ -204,7 +223,7 @@ rep("""			else if (State == State.Configure)
 rep("""account sync guard {5}", Instrument.FullName, Profile, Contracts, PropMode, MaxOpenContracts, AccountSyncGuard ? "on" : "off"));""",
     """account sync guard {5} | IgnoreOverfill {6}", Instrument.FullName, Profile, Contracts, PropMode, MaxOpenContracts, AccountSyncGuard ? "on" : "off", IgnoreOverfill));""")
 # K. publish on every position change too
-rep("""		private void ProcessClosedTrades()""", """		protected override void OnPositionUpdate(Position position, double averagePrice, int quantity, MarketPosition marketPosition)
+rep("""		private void ProcessClosedTrades()""", """		protected override void OnPositionUpdate(NinjaTrader.Cbi.Position position, double averagePrice, int quantity, MarketPosition marketPosition)
 		{
 			CrossAccountPublish();	// patch_live_safety.py v2: the strategy position just changed (it returns at once outside live / without the guard)
 			if (propLive && State == State.Realtime && marketPosition == MarketPosition.Flat) propSaveDue = true;	// saved on the next bar, once the account cash has the trade
@@ -220,16 +239,27 @@ rep("""			if (hedgeFlat) { if (Position.MarketPosition == MarketPosition.Flat) h
 """, """			if (hedgeFlat)
 			{
 				if (Position.MarketPosition == MarketPosition.Flat) { hedgeFlat = false; hedgeBars = 0; hedgeWhy = null; }
-				else
+				else if (State == State.Realtime && ++hedgeBars >= 3)	// patch_live_safety.py v3: the managed exits did not get flat in 3 bars -> stop like the sync guard
 				{
-					FlattenAll(hedgeWhy ?? "cross-account hedge guard");
-					if (State == State.Realtime && ++hedgeBars >= 3)	// patch_live_safety.py v2: the managed exits did not get flat in 3 bars
-					{
-						hedgeBars = 0;
-						try { Account.Flatten(new[] { Instrument }); } catch (Exception ex) { Print("NQMaster | account flatten failed: " + ex.Message); }
-						Warn("nqm_flatfail", string.Format("NQMaster | the strategy could not get flat in 3 bars ({0}): the account position of {1} was flattened directly. Check the Positions and Orders tabs.", hedgeWhy ?? "cross-account hedge guard", Instrument.FullName));
-					}
+					desyncHalt = true;	// no more managed exits: with the account already flat they would open a reverse position
+					try { Account.Flatten(new[] { Instrument }); } catch (Exception ex) { Print("NQMaster | account flatten failed: " + ex.Message); }
+					Warn("nqm_flatfail", string.Format("NQMaster | the strategy could not get flat in 3 bars ({0}): the account position and orders of {1} were closed directly and the strategy stops. Check the Positions and Orders tabs, then enable it again.", hedgeWhy ?? "cross-account hedge guard", Instrument.FullName));
+					try { SetState(State.Terminated); } catch { }
+					return;
 				}
+				else FlattenAll(hedgeWhy ?? "cross-account hedge guard");
 			}
 """)
-open(P, "w", encoding="utf-8").write(s); print("patch_live_safety v2 aplicado")
+# v3: ExitRetries after this bar's flattens; ExitDone on flat / new trade; validated threshold override
+rep("""			foreach (Mod m in timeMods)
+				if (m.InTrade && m.MaxHold > 0 && CurrentBars[0] - m.EntryBar >= m.MaxHold) ExitModule(m, "time exit");""",
+    """			if (!hedgeFlat && flattenBar != CurrentBars[0]) ExitRetries();	// patch_live_safety.py v3: after this bar's flattens (a retry plus a flatten = a double exit)
+			foreach (Mod m in timeMods)
+				if (m.InTrade && m.MaxHold > 0 && CurrentBars[0] - m.EntryBar >= m.MaxHold) ExitModule(m, "time exit");""")
+rep("if (exitMod.OpenQty == 0) { exitMod.InTrade = false; CancelBrackets(exitMod); }", "if (exitMod.OpenQty == 0) { exitMod.InTrade = false; CancelBrackets(exitMod); ExitDone(exitMod); }")
+rep("foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; if (fillBip > 0) CancelBrackets(x); }", "foreach (Mod x in mods) { x.InTrade = false; x.OpenQty = 0; ExitDone(x); if (fillBip > 0) CancelBrackets(x); }", 2)
+rep("				InactivityFill(m); CrossAccountPublish(); CrossAccountOnFill(m);", "				ExitDone(m); InactivityFill(m); CrossAccountPublish(); CrossAccountOnFill(m);	// ExitDone: patch_live_safety.py v3")
+rep("if (PropThresholdOverride > 0) propThr = PropThresholdOverride;", "if (ThrOv() > 0) propThr = ThrOv();	// patch_live_safety.py v3: validated at go-live")
+rep("""		private string OwnerList()""", """		private double ThrOv() { return thrOvBad ? 0 : PropThresholdOverride; }	// patch_live_safety.py v3
+		private string OwnerList()""")
+open(P, "w", encoding="utf-8").write(s); print("patch_live_safety v3 aplicado")
