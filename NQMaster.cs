@@ -2988,7 +2988,23 @@ namespace NinjaTrader.NinjaScript.Strategies
 			{
 				case "trading": return "operando";
 				case "waiting": return "esperando datos";
-				default: return status;
+				// patch_panel_risk.py: the statuses that stop trading, in Spanish (display only)
+				case "NEWS BLACKOUT": return "noticia de alto impacto: sin entradas";
+				case "ACCOUNT / STRATEGY POSITION MISMATCH - see Output": return "LA CUENTA Y LA ESTRATEGIA NO COINCIDEN: ver Output";
+				case "the account refuses orders - see Output": return "la cuenta rechaza órdenes: ver Output";
+				case "holiday / half-day session: no trading": return "feriado o media sesión: no opera";
+				case "ROLL DATE: move the strategy to the next contract": return "FECHA DE ROLL: pasá la estrategia al contrato siguiente";
+				case "FOMC day: no trading": return "día de FOMC: no opera";
+				case "eval target reached": return "objetivo de la eval alcanzado: no opera";
+				case "drawdown guard": return "guarda de drawdown: detenida";
+				case "daily loss limit": return "límite de pérdida diaria: sin entradas hasta mañana";
+				case "prop daily stop": return "stop del día de la cuenta: sin entradas hasta mañana";
+				case "MANUAL PAUSE (file)": return "PAUSA MANUAL (archivo de pausa)";
+				case "EDGE MONITOR ALARM - review before trading": return "ALARMA DEL MONITOR DE BORDE: revisar antes de operar";
+				case "another account holds the opposite NQ position / entry (cross-account guard)": return "otra cuenta del grupo tiene la posición opuesta (guarda entre cuentas)";
+				default:
+					if (status.StartsWith("low volatility (ATR ")) return "volatilidad baja: no opera " + status.Substring("low volatility ".Length);
+					return status;
 			}
 		}
 		private string DashAccount()
@@ -3041,14 +3057,43 @@ namespace NinjaTrader.NinjaScript.Strategies
 				double eq = PropEquity();
 				b.AppendLine(string.Format("CUENTA REAL  ·  {0}  ·  {1}", Account != null ? Account.Name : "", PhaseName(PropMode)));
 				b.AppendLine(string.Format("Saldo {0} ({1})  ·  límite {2}  ·  colchón {3}", Usd(eq), Usd(eq - StartBalance), Usd(propThr), Usd(eq - propThr)));
+				b.AppendLine(RiskLine());	// patch_panel_risk.py
 				double pstR = PnlAtStops(true);
 				if (pstR != 0) b.AppendLine(string.Format("Si tocan los stops abiertos de NQMaster (este gráfico, con comisión y 1 tick): {0}  ·  colchón que queda {1}{2}", Usd(pstR), Usd(eq - propThr + pstR), eq - propThr + pstR <= 0 ? "  ·  ATENCIÓN: alcanza para perder la cuenta" : ""));
-				if (!double.IsNaN(propDayStart)) b.AppendLine("Hoy: " + Usd(eq - propDayStart));
+				if (!double.IsNaN(propDayStart)) b.AppendLine("Hoy: " + Usd(eq - propDayStart) + DayStopsText());	// patch_panel_risk.py: the day's stops
 				if (eq <= propThr) b.AppendLine("ATENCIÓN: el saldo está en el límite: verificá la cuenta en la firma");
-				if (PropMode == NQMasterPropMode.Eval && EvalTarget > 0) b.AppendLine(string.Format("Objetivo: {0} de {1}", Usd(eq - StartBalance), Usd(EvalTarget)));
+				if (PropMode == NQMasterPropMode.Eval && EvalTarget > 0)
+				{	// patch_panel_risk.py: the consistency rule raises the target (same formula as the eval target check)
+					double best = Math.Max(propBestDay, double.IsNaN(propDayStart) ? 0 : eq - propDayStart), needT = EvalTarget;
+					if (ConsistencyPct > 0) needT = Math.Max(needT, best * 100.0 / ConsistencyPct);
+					b.AppendLine(string.Format("Objetivo: {0} de {1}{2}", Usd(eq - StartBalance), Usd(needT),
+						needT > EvalTarget + 0.5 ? string.Format("  (el mejor día, {0}, obliga a más que {1} por la consistencia)", Usd(best), Usd(EvalTarget)) : ""));
+				}
 				if (PropMode == NQMasterPropMode.Funded) b.AppendLine((eq - StartBalance >= FundedPayoutAt ? "RETIRO DISPONIBLE: " : "Retiro: ") + payoutHint);
 			}
 			return b.ToString().TrimEnd();
+		}
+		// patch_panel_risk.py: base contracts of the day and the funded risk cap / step-up state (display only)
+		private string RiskLine()
+		{
+			string r = string.Format("Contratos base hoy {0}", Math.Max(1, edgeDayQty));
+			if (PropMode == NQMasterPropMode.Funded && RiskCapPerContract > 0)
+				r += RiskCapActive ? string.Format("  ·  tope de riesgo ACTIVO: se saltean los trades de más de {0} por contrato", Usd(RiskCapPerContract))
+					: string.Format("  ·  tope de riesgo apagado (se activa con colchón menor a {0})", Usd(FundedRiskCapCushion));
+			if (StepUpOn) r += "  ·  escalón de contratos activo";
+			return r;
+		}
+		// patch_panel_risk.py: the account's daily stops, the same values PropDailyCheck uses (display only)
+		private string DayStopsText()
+		{
+			bool ev = PropMode == NQMasterPropMode.Eval;
+			double ls = ev ? EvalDailyStop : (PropMode == NQMasterPropMode.Funded && DailyLossPerContract > 0 ? DailyLossPerContract * Math.Max(1, edgeDayQty) : 0);
+			double ps = ev ? EvalProfitStop : (PropMode == NQMasterPropMode.Funded ? FundedProfitStop : 0);
+			string t = "";
+			if (ps > 0) t += string.Format("  ·  stop de ganancia del día en +{0}{1}", Usd(ps), ev ? " (consistencia)" : "");
+			if (ls > 0) t += string.Format("  ·  stop de pérdida del día en {0}", Usd(-ls));
+			if (propStopped) t += "  ·  DETENIDO por hoy (saltó un stop del día)";
+			return t;
 		}
 		private string DashWarnings()
 		{

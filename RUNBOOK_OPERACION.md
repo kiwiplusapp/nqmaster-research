@@ -51,7 +51,7 @@ Plan base: **5 Lucid Flex 150K + 3 MFFU Rapid EOD 50K**. Todas las cuentas con P
 
 ## Cada día (2 minutos)
 
-- Mirá el panel del gráfico: estado, cushion, monitor de borde (% de la alarma) y alertas.
+- Mirá el panel del gráfico: estado, colchón, contratos y tope de riesgo, stops del día, objetivo (en la eval, con la consistencia), monitor de borde (% de la alarma) y alertas. Si dice "DETENIDO por hoy", saltó un stop del día: no hay nada que hacer hasta mañana.
 - No hace falta tocar nada. **No apagues módulos a mano por un mal día o una mala semana**: está probado que empeora.
 
 ## Qué hacer ante cada alerta
